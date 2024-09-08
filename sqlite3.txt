@@ -1,0 +1,165 @@
+sqlite3
+
+. commands are for admin things
+.help
+.exit (crtl + d)
+.tables
+.schema tablename
+.connect (have multiple databases connected together)
+
+single quotes - value string
+double quotes - sql strings
+
+"%hello" finds 0 or more letters before hello
+"hello%" finds 0 or more letters after hello
+"%hello%" finds 0 or more letters before and after hello
+SELECT column FROM table WHERE column LIKE '%hello';
+
+Pagination (offset)
+SELECT * FROM table LIMIT 5 OFFSET 10;
+
+Pagination (where)
+SELECT * FROM table WHERE columnid >= 16 LIMIT 5;
+
+orderby/ASC/DESC
+SELECT * FROM table ORDER BY column DESC LIMIT 5;
+
+Upate
+UPDATE table SET column = 'new_val' WHERE name = 'old_val';
+
+Updating then selecting the same row (two queries in one)
+UPDATE table SET column = 'new_val' WHERE name = 'old_val' RETURNING *;
+
+Creating (review)
+CREATE TABLE table (
+	id INTEGER PRIMARY KEY,
+	name TEXT UNIQUE NOT NULL,
+	role TEXT VARCHAR
+);
+
+Theres only 5 types
+NULL, INTEGER, REAL, TEXT, BLOB
+if you want something else like VARCHAR(100)
+it tries it best to make it work
+same with INT, TINYINT, BIGINT -> INTEGER
+etc
+
+Alter (review)
+ALTER TABLE table ADD COLUMN colum TYPE;
+ALTER TABLE table DROP COLUMN colum;
+example
+ALTER TABLE table ADD COLUMN column TEXT NOT NULL DEFAULT 'US'
+
+Join (review)
+SELECT table1.colum, table2.colum FROM table2 JOIN table1 ON table1.id = table2.id;
+SELECT table1.colum, table2.colum FROM table2 JOIN table1 ON table1.id = table2.id WHERE table1.colum = 'val';
+you can join multiple times if needed
+
+JOIN = INNER JOIN (default)
+FULL OUTER JOIN (I might have two tables that dont have either give me everything)
+NATURAL JOIN figure it out by column name (bad idea)
+
+respects foriegn keys (per connection)
+PRAGMA foreign_keys=on;
+so if you delete something that has it as a foriegn key you will know get an error
+or insert a foreign key that doesn't exist
+NOTE: make sure you set it always when opening a connection
+
+Aggregration function
+SELECT COUNT(DISTINCT columnname) FROM table
+MAX
+MIN
+These don't work in in a WHERE because it applies to initial result set so
+we can use the HAVING:
+SELECT table1.column, table2.column, COUNT(table1.column)
+FROM
+	table1
+JOIN
+	table2
+ON
+	table2.column = table1.column
+GROUP BY
+	table1.column
+HAVING
+	COUNT(table1.column) > 300;
+
+HAVING filters on the aggregated set not the result set
+
+CREATE VIEW viewname AS then your long query
+in the future you can just query the viewname instead
+of query your long query
+
+both of these measure performance
+EXPLAIN query
+EXPLAIN QUERY PLAN query
+you can turn it on by default (.eqp on)
+
+shows indexs
+PRAGMA index_list('tablename')
+
+Create indexs for columns your querying a lot
+CREATE INDEX indexname ON table (column)
+then run EXPLAIN QUERY PLAN query
+should see your index instead of --SCAN
+now its using a BTree (log(n))
+if you have a high writable table this becomes slower because it has to update
+both the rows and indexs
+
+If your searching on multiple tables, like spotify search term (album, track, etc) these would be coming from multiple tables.
+We can use a Full Text Search for this operation to be faster and easier:
+CREATE VIRTUAL TABLE nameofnewtable USING FTS5(content="view/tablename", content_rowid='yourid', table1, table2, table3 etc)
+then you have to insert the data into the virtual table:
+INSERT INTO nameofnewtable SELECT table1, table2, table3 FROM view/tablename
+find the results:
+SELECT * FROM nameofnewtable WHERE nameofnewtable MATCH 'value'
+SELECT * FROM nameofnewtable WHERE nameofnewtable = 'value'
+SELECT * FROM nameofnewtable('value')
+
+if you want a score for how well the virtual table does a match:
+SELECT bm25(nameofnewtable), * FROM nameofnewtable WHERE nameofnewtable MATCH 'value' ORDER BY bm25(nameofnewtable) LIMIT 15;
+
+installing sqlite packages:
+you can search for some on the official site:
+example json
+sqlpkg install sqlite/json1
+sqlpkg which sqlite/json1
+copy the pathname of the which and enter sqlite cli
+.load pastethewhichlocationhere
+
+store data not in json but jsonb
+you can extract data out:
+SELECT data -> 'name' ->> 'first', data -> 'name' ->> 'last' FROM users WHERE ...
+
+you can use table value functions
+SELECT value FROM generate_series(5, 50)
+
+Litestream goes from database to an s3 bucket for backups
+MinIO lets you run s3 locally
+fly.io similar to herkou
+litefs have a replica running locally
+libSQL is SQLite for modern applications
+
+Always develop local first if using a db makes the experience so much better
+sqld (libSQL) for making requests via API locally then syncing to db
+code is simple to setup:
+
+import { createClient } from "@libsql/client"
+
+const db = createClient({
+	url: "file:local-data.db",
+	syncUrl: "https://localhost:5000",
+	syncPeriod: 60
+})
+
+const rep = await db.sync();
+
+
+FOR POSTRGES
+eletric-sql.com
+
+
+
+
+
+
+

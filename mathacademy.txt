@@ -1,0 +1,502 @@
+Vecotr equation of straight line passing through P and parallel to v:
+r = p + tv
+
+example:
+P(-2, 5, -3) v = <1, -1, 2>
+AP = sqrt(24)
+
+(<-2, 5, -3> + t<1, -1, 2>) - <-2, 5, -3>
+= <-1, 4, -1> - <-2, 5, -3>
+= t<1, -1, 2>
+= <t, -t, 2t>
+|<t, -t, 2t>| = sqrt(24)
+sqrt(t^2 + -t^2 + 2t^2) = sqrt(24)
+sqrt(6t^2) = sqrt(24)
++/-t sqrt(6) = 2sqrt(6)
+t = +/- 2
+OA1-> = <-2, 5, -3> + 2<1, -1, 2> = <0, 3, 1>
+OA2-> = <-2, 5, -3> - 2<1, -1, 2> = <-4, 7, -7>
+
+example:
+P(3, 1, -1) v = <2, 1, 3>
+AP = sqrt(14)
+
+(<3, 1, -1> + t<2, 1, 3>) - <3, 1, -1>
+= <5, 2, 2> - <3, 1, -1>
+= t<2, 1, 3>
+= <2t, t, 3t>
+|<2t, t, 3t>| = sqrt(14)
+sqrt(2t^2 + t^2 + 3t^2) = sqrt(14)
++/-tsqrt(14) = sqrt(14)
+t = +/-1
+
+OA1-> = <3, 1, -1> + 1<2, 1, 3> = <5, 2, 2>
+OA2-> = <3, 1, -1> - 1<2, 1, 3> = <1, 0, -4>
+
+Find the parametric equations of the straight line that passes through
+P(1, 4, -2) and Q(5, 3, 0)
+
+[5, 3, 0] - [1, 4, -2] = [4, -1, 2]
+[1, 4, -2] + t[4, -1, 2]
+= [x, y, z] = [1 + 4t, 4 - t, 2t - 2]
+
+Cartesian (canonical) equation of the straight line that passes through the point P(x0, y0, z0) and is parallel to the vector v = <vx, vy, vz> is given by:
+(x - x0)/vx = (y - y0)/vy = (z - z0)/vz = t
+
+==================================================
+
+Equation of the plane that contains the point P(sqrt(2), 3, 4) and is perpendicular to the vector n = 2sqrt(2)i + 7j - 6k
+The equation of the plane that passes through the point P(x0, y0, z0) and it perpendicular to the vector n can be given as:
+(r - p) ⋅ n = 0
+
+example:
+r ⋅ n - p ⋅ n = 0
+r ⋅ n = p ⋅ n
+r ⋅ (2sqrt(2)i + 7j - 6k) = (sqrt(2)i + 3j + 4k) ⋅ (2sqrt(2)i + 7j - 6k)
+r ⋅ (2sqrt(2)i + 7j - 6k) = 1
+
+example:
+P(2, -5, 3) and n = <-1, 2, -3>
+r ⋅ <-1, 2, -3> = <2, -5, 3> ⋅ <-1, 2, -3>
+r ⋅ <-1, 2, -3> = -21
+
+==================================================
+
+Hyperbolic cosine (pronounced "cosh"):
+
+cosh x = 1/2(e^x + e^-x)
+
+example:
+evaluate cosh(ln2)
+cosh(ln2) = 1/2(e^(ln2) + e^(-ln2))
+= 1/2(e^(ln2) + e^(ln2^-1))
+= 1/2(2 + 2^-1)
+= 1/2(2 + 1/2)
+= 1/2((4 + 1)/2)
+= 5/4
+
+example:
+cosh(lnsqrt(3))
+= 1/2(e^(lnsqrt(3)) + e^(-lnsqrt(3)))
+= 1/2(e^(lnsqrt(3)) + e^(ln(1/sqrt(3))))
+= 1/2(sqrt(3) + 1/sqrt(3))
+= 1/2((3 + 1)/sqrt(3))
+= 4/2sqrt(3)
+= 2/sqrt(3)
+
+Hyperbolic sine (pronounced "shine"):
+
+sinh x = 1/2(e^x - e^-x)  also can be: (e^x - e^-x)/2
+
+example:
+sinh 1
+= 1/2(e^1 - e^-1)
+= 1/2(e - 1/e)
+= 1/2((e^2 - 1)/e)
+= (e^2 - 1)/2e
+
+example:
+sinh(lnsqrt(2))
+= 1/2(e^(lnsqrt(2)) - e^(ln(1/sqrt(2))))
+= 1/2(sqrt(2) - 1/sqrt(2))
+= 1/2((2 - 1)/sqrt(2))
+= 1/2sqrt(2)
+
+Hyperbolic tangent (pronounced "tanch"):
+
+tanh x sinh/cosh = (e^x - e^-x)/(e^x + e^-x)
+
+has horizontal asymptotes y = +/- 1
+
+we can write down the same equation by multiplying
+numerator and denomenator e^x or e^-x
+
+(e^x - e^-x)/(e^x + e^-x) * e^x/e^x
+= (e^(2x) - 1)/(e^(2x) + 1)
+
+(e^x - e^-x)/(e^x + e^-x) * e^-x/e^-x
+= (1 - e^(-2x))/(1 + e^(-2x))
+
+example:
+tanh 4 (using the second definition)
+= (e^(2(4)) - 1)/(e^(2(4)) + 1)
+= (e^8 - 1)/(e^8 + 1)
+
+example:
+tanh (2ln3)
+= (e^(2(2ln3)) - 1)/(e^(2(2ln3)) + 1)
+= (e^(4ln3) - 1)/(e^(4ln3) + 1)
+= (e^(ln3^4) - 1)/(e^(ln3^4) + 1)
+= (3^4 - 1)/(3^4 + 1)
+= (81 - 1)/(81 + 1)
+= 80/82
+= 40/41
+
+example:
+tanh(-ln2) (using the third definition)
+= (1 - e^(-2(-ln2))) / (1 + e^(-2(-ln2)))
+= (1 - e^(2ln2)) / (1 + e^(2ln2))
+= (1 - e^(ln2^2)) / (1 + e^(ln2^2))
+= (1 - e^(ln4)) / (1 + e^(ln4))
+= (1 - 4) / (1 + 4)
+= -3/5
+
+Relationship between trigonometric and hyperbolic cosine:
+Euler's formula:
+e^(iθ) = cosθ + isinθ
+
+replace θ with -θ:
+e^(-iθ) = cosθ - isinθ
+
+adding the two equations:
+e^(iθ) + e^(-iθ) = 2cosθ
+cosθ = 1/2(e^(iθ) + e^(-iθ))
+identity:
+cosθ = cosh(iθ)
+
+Same relationship between trigonometric and hyperbolic sine
+Euler's formula:
+e^(iθ) = cosθ + isinθ
+e^(-iθ) = cosθ - isinθ
+
+subtracting the two equations
+e^(iθ) - e^(-iθ) = 2isinθ
+
+sinθ = 1/2i(e^(iθ) - e^(-iθ))
+= -i/2(e^(iθ) - e^(-iθ))
+identity:
+sinθ = -isinh(iθ)
+
+==================================================
+
+Calculating a Cofactor
+for any nxn matrix A, the cofactor Cij of the entry aij is:
+Cij = (-1)^(i+j)Mij
+
+example:
+d23 (second row, third column)
+C23 = (-1)^(i+j)M23 = -M23
+
+example:
+cofactor can be an equation of the first row:
+det(A) = a11C11 + a12C12 + ... + a1nC1n
+(I will indicate | for the next row)
+
+A = [
+  -3  0 0  5
+   0  0 3 -2
+   4 -1 2 -3
+  -1  6 0  0
+]
+-3*C11 + 5*C14
+
+(-3)(-1)^1+1 [
+				0  3 -2
+			   -1  2 -3
+			    6  0  0
+			 ]
++ 5(-1)^1+4 [
+				0  0 3
+				 4 -1 2
+				-1  6 0
+			]
+
+= -3 [
+	   0  3 -2
+      -1  2 -3
+       6  0  0
+	 ]
+= -5 [
+	   0  0 3
+	   4 -1 2
+	  -1  6 0
+	 ]
+
+= -3(0*[2 -3|0 0]-3*[-1 -3|6 0]-2*[-1 2|6 0])
+= -5(0*[-1 2|6 0]-0*[4 2|-1 0]+3*[4 -1|-1 6])
+= -3*(-3*(0+18) + (-2)*(0-12) -5*(3*(24-1)))
+= 90 -345
+= -255
+
+example:
+A = [
+	  0 8 0 0
+	  -1 0 0 0
+	  3 1 6 2
+	  1 0 -1 2
+	]
+
+8(-1)^1+2 [
+	-1  0 0
+	 3  6 2
+	 1 -1 2
+   ]
+
+= -8(-1*[6 2|-1 2]-0[3 2|1 2]+0[3 6|1 2])
+= 8(6 * 2 - (-1) * 2) - 0 + 0
+= 8 * 14
+= 112
+
+==================================================
+
+We don't always have to use the first row, we can use any row or column and this is known as a Laplace expansion. It's useful to use this along a row or column with the most 0's
+
+2 [
+	2  1 -1
+	-4 -2 1
+	1  2  0
+]
+
+2(2*[-2 1|2 0]-1*[-4 1|1 0]-1*[-4 -2|1 2])
+= 2(-2) 1 -1
+= -8
+
+
+example:
+A [
+	1  2  1 -1
+	0 -4 -2  1
+	2  0  0  1
+	-3 1  2  0
+]
+= 2*(-1)^3+1 [
+				2   1 -1
+				-4 -2  1
+				1   2  0
+			 ]
++
+1*(-1)^3+4 [
+				1  2  1
+				0 -4 -2
+				-3 1  2
+		   ]
+
+= 2 [
+	2   1 -1
+	-4 -2  1
+	1   2  0
+]
+-
+[
+	1  2  1
+	0 -4 -2
+	-3 1  2
+]
+
+Now we can compute the first 3x3 determinant by applying laplace expansion:
+
+2 [
+	2   1 -1
+	-4 -2  1
+	1   2  0
+] = 1*C31 + 2*C32 + 0*C33
+= 1*(-1)^3+1 * [1 -1|-2 1] + 2*(-1)^3+2 * [2 -1|-4 1]
+= [1 -1|-2 1]-2[2 -1|-4 1]
+= (1 - 2) - 2(2 - 4)
+= -1 + 4
+= 3
+
+Second 3x3 from above
+- [
+	1  2  1
+	0 -4 -2
+	-3 1  2
+] = 0*C21 + (-4)*C22 + (-2)*C23
+= (-4)*(-1)^2+2 * [1 1|-3 2] + (-2)*(-1)^2+3 * [1 2|-3 1]
+= -4[1 1|-3 2] + 2[1 2|-3 1]
+= -4(2+3) + 2(1+6)
+= -20 + 14
+= -6
+
+THEREFORE:
+[
+	1  2  1 -1
+	0 -4 -2  1
+	2  0  0  1
+	-3 1  2  0
+] = 2 * 3 - (-6) = 12
+
+==================================================
+
+Three basic properties of determinants:
+1) The determinant of an nxn identity matrix is equal to 1
+(this means 1s on diagonal and 0s everywhere else)
+det(I) = 1
+
+2) The determinant of a triangular or diagonal matrix is equal to the product of the entries on the main diagonal.
+(this means all 0s triangle above/below the diagonal)
+
+3) The determinant of A^T, the transpose of A, is the same as the determinant of A:
+det(A^T) = det(A)
+ 
+example:
+[
+  -2 0 0 0
+  -4 1 0 0
+  1 10 sqrt(3) 0
+  -3 0 6 -2
+] = (-2) * 1 * sqrt(3) * (-2) = 4sqrt(3)
+
+You can use the determinant to find the volume of a parallelepiped (absolute value):
+V = |det(M)|
+
+The determinant of the product of two square matrices is equal to the product of the determinants:
+det(A * B) = det(A) * det(B)
+
+Another useful property of determinants is that, for any invertible matrix A, we have:
+det(A^-1) = 1/det(A)
+
+Remember A * A^-1 = I for any invertible matrix A. So we have:
+A * A^-1 = I
+det(A * A^-1) = det(I)
+det(A) * det(A^-1) = 1
+det(A^-1) = 1/det(A)
+We can only apply this formula if A is invertible meaning that det(A) != 0
+
+Calculating a determinant using linearity of the determinate:
+(you can view a screenshot of this +/- between rows/columns)
+example:
+[
+  107 215 99
+   6   8  11
+  107 215 100
+]
+Notice the 1st row of our determinant is almost equal to the 3rd row. So we can rewrite the given determinant as follows:
+[
+  107 215 99
+   6   8  11
+  107 215 100
+] = [
+  107 215 99
+   6   8  11
+107+0 215+0 99+1	
+]
+
+=
+
+[
+  107 215 99
+   6   8  11
+  107 215 99
+] + [
+  107 215 99
+   6   8  11
+   0   0   1
+]
+The first determinant must be zero since it has two identical rows, while the second determinant can be expanded across the 3rd row:
+= 0 + 1(-1)^3+3*[107 215|6 8]
+= 107 * 8 - 215 * 6
+= -434
+
+We can also use factorization to find the determinant:
+example:
+we are given:
+[
+  a+3 -5
+   b   6
+] = -7
+
+find:
+[
+  a+2 -5
+  b+4  6
+] = [
+  (a+3)-1 -5
+    b+4    6
+]
+
+=
+
+[
+  a+3 -5
+   b   6
+] + [
+  -1 -5
+   4  6
+]
+= -7 + (-6 + 20) = 7
+
+==================================================
+
+(This applies to columns as well)
+remember three standard row operations:
+1) swapping two rows
+2) Multiplying a row by a non-zero number
+3) Adding a multiple of one row to another row
+only 3 preserves the determinant.
+swapping any two rows changes the sign of the determinant
+multiplying a row by a number scales the determinant by that number
+
+if we multiply the same number across multiple rows say 2rows and we use 3 then this scales the determinant 3^2
+= det(k * A) = k^n * det(A)
+
+example:
+A is a 4x4 matrix and det(A)=5 what is the value of det(2A)
+k = 2 and n = 4
+det(2A) = 2^4 * det(A)
+= 16 * 5
+= 80
+
+
+if a matrix has an entire row/column as 0 its determinant is zero
+if a square matrix has at least two identical rows/columns, its determinant equals 0 (because we can subtract one row/column from another making it 0)
+if a square matrix has at least two proportional rows/columns, its determinant equals zero
+if a row/column has a linear combination of other rows/columns determinant is 0
+
+det(A) = 0 if and only if one of the rows/columns of A is a linear combination of other rows/columns of A
+
+==================================================
+
+The first non-zero entry on each row (from left to right) is called the leading entry of that row.
+
+row echelon form:
+1) all the zeros rows (rows with only zeros) if any, are placed at the bottom of the matrix
+2) Each leading entry of a row is in a column to the right of the leading entry of the row above it.
+
+==================================================
+
+When an augmented matrix is in row echelon form, we can solve the system using a method called back substitution.
+back substitution involves:
+
+starting with the lowest equation (which is already solved for one variable)
+
+substituting the result into the next-lowest equation to find the solution for another variable, and
+
+continuing to substitute the result into the next-lowest equation until the values of all the variables have been found.
+
+The procedure for reducing a matrix to row echelon form using elementary row operations is called Gaussian elimination
+
+Step 1) We want to make an entry the pivot element and we will make this entry equal to 1
+example:
+{
+	2x + 6y = -2
+	3x
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

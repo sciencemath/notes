@@ -1,0 +1,183 @@
+yamllint.com will find any errors you have in you .yml file
+or jsonformatter.org/yaml-validator
+
+# run on a single event
+on:
+  push:
+    branches:
+      - main
+
+
+
+# mulitple events
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  release:
+    types: [published, created]
+
+
+
+
+# run actions on a schedule
+on:
+  schedule:
+    - cron: '30 5 * * 1,3'
+# (5:30 Monday and Wednesday)
+# to learn more: https://crontab.guru/
+# */5 * * * * (every 5 minutes)
+# you could ask ChatGPT
+
+
+
+# name a job and step
+job:
+  hello_world:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo current time
+        run: echo "The current server time is $(date)"
+
+
+
+
+
+
+# Trigger a workflow manually via github CLI:
+gh workflow run greet.yml \
+-f name=mona \
+-f gretting=hello \
+-F data=@myfile.txt
+# in order to run this it has to be configured:
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Name of the person to greet'
+        required: true
+        type: string
+      greeting:
+        description: 'Type of greeting'
+        required: true
+        type: string
+      data:
+        description: 'Base64 encoded content of a file'
+        required: false
+        type: string
+# you can define up to 10 inputs for a workflow_dispatch event.
+
+
+
+
+
+# Trigger an external webhook:
+on:
+  repository_dispatch:
+    types:
+      - webhook
+# when you make the request to the webhook:
+# POST to repository endpoint api.github.com/repos/owner/repo/dispatches
+# Accept type for application/vnd.github+json
+# provide auth access token
+# pass event type webhook: {"event_type": "webhook", "client_payload": {}}
+
+
+# Conditionals can be used:
+name: example-workflow
+on: [push]
+jobs:
+  production-deploy:
+    if: github.repository == 'username/repo'
+# if a conditional starts with ! must be wrapped:
+if: ${{ !startsWith(github.ref, 'ref/tags/') }}
+
+
+
+
+# functions:
+# contains(searchString, searchValue)
+# startsWith(searchString, searchValue)
+# endsWith(searchString, searchValue)
+# format(string, replaceValue1, replaceValue2)
+# join(array, optionalSeperator)
+# toJSON(value)
+# fromJSON(value)
+# hasFiles(path)
+# status functions:
+# success()
+# always()
+# cancelled()
+# failure()
+
+
+
+# Set env vars:
+steps:
+  - name: Set env var
+    run: echo "ACTION_ENV=production" >> $GITHUB_ENV
+# Adding to System Path
+steps:
+  - name: Add directory to PATH
+    run: echo "/path/to/dir" >> $GITHUB_PATH
+# Outputs that can be used by other jobs
+steps:
+  - name: Set output
+  	id: example_step
+    run: echo "/path/to/dir" >> $GITHUB_PATH
+
+  - name: Use output
+    run: echo "The output was ${{ steps.example_step.outputs.result }}"
+
+
+
+
+# Contexts a way to access information ${{ <context> }}:
+# github
+# env
+# vars
+# job
+# jobs
+# steps
+# runner
+# secrets
+# strategy
+# matrix
+# needs
+# inputs
+
+name: Context Examples
+on: ['push']
+jobs:
+  my-context:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "My Step"
+        run: |
+          echo "Action! $MY_ACTION"
+          echo "Actor! $MY_ACTOR"
+        env:
+          MY_ACTION: ${{ github.action }}
+          MY_ACTOR: ${{ github.actor }}
+
+
+
+
+
+# Dependent Jobs:
+jobs:
+  job1:
+  job2:
+    needs: job1
+  job3:
+    needs: [job1, job2]
+
+
+
+
+
+
+

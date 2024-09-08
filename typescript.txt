@@ -1,0 +1,44 @@
+THINGS TO STUDY:
+Variance over type params
+Invariance & Bivariance
+(strickFunctionTypes)
+
+type x = Extract<list, type>
+type x = Exclude<list, type>
+
+type PickWindowProperties<Keys extends keyof Window> = {
+	[Key in Keys]: Window[Key]
+}
+type PartOfWindow = PickWindowProperties<'document' | 'navigator' | 'setTimeout'>
+
+
+type PickProperties<ValueType, Keys extends keyof ValueType> = {
+	[Key in Keys]: ValueType[Key]
+}
+type PartOfWindow2 = PickProperties<Window, 'document' | 'navigator' | 'setTimeout'>
+
+// Make all properties in T required
+type _Required<T> = {
+	[P in keyof T]-?: T[P]
+}
+
+// Filtering properties: filter keys first then extract what you need
+type DocKeys = Extract<keyof Document, `query${string}`>
+type KeyFilteredDoc = {
+	[K in DocKeys]: Document[K]
+}
+
+// Contravariant over type T (in):
+interface Example<in T> {
+	package: (item: T) => void;
+	//produce: () => T; <- this violates contravary behavior
+}
+
+// Covariant over type T (out):
+interface Example<out T> {
+	package: (item: T) => void;
+	produce: () => T;
+}
+
+
+
