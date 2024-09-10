@@ -1551,6 +1551,74 @@ Q(2, -1)
 = P'(0,0)
 = Q'(-8,-1)
 
+An invertible affine transformation is orientation-preserving if it preserves the orientation of any polygon in the plane
+
+We can identify whether an affine transformation is orientation-perserving or not by matrix A of the associated linear map:
+T: R^2 -> R^2 is defined as
+x = Au + b
+where x, u and b are column vectors in R^2 and A is a 2x2 matrix then T preserves orientation if:
+det(A) > 0
+does not preserve:
+det(A) < 0 (orientation-reversing)
+
+example:
+(triangle shape)
+[
+	1 -2
+	1 1
+] [
+	0 1 0
+	0 0 1 
+]
+(1)(0)+(-2)(0) (1)(1)+(-2)(0) (1)(0)+(-2)(1)
+(1)(0)+(1)(0) (1)(1)+(1)(0) (1)(0)+(1)(1)
+[
+	0 1 -2
+	0 1 1
+] + [
+	0  0  0
+ -1 -1 -1
+]
+=
+[
+	0 1 -2
+ -1 0  0
+]
+
+example:
+(square shape)
+x = u + v + 1
+y = u - v
+
+[
+	1  1
+	1 -1
+] [
+	0 1 1 0
+	0 0 1 1
+]
+(1)(0)+(1)(0) (1)(1)+(1)(0) (1)(1)+(1)(1) (1)(0)+(1)(1)
+(1)(0)+(-1)(0) (1)(1)+(-1)(0) (1)(1)+(-1)(1) (1)(0)+(-1)(1)
+[
+	0 1 2  1
+	0 1 0 -1
+] + [
+	1 1 1 1 
+	0 0 0 0
+]
+=
+[
+	1 2 3  2
+	0 1 0 -1
+]
+
+The area scale factor of T is given by the determinant of A
+We can identify whether an affine transformation increases or decreases the area of a polygon (P) by the area scale factor:
+* if |det(A)| > 1 the image of P under the action T will have a larger area than P
+* if |det(A)| = 1 the image of P under the action of T will have same area as P
+* if 0 < |det(A)| < 1 the image of P under the action of T will have a smaller area than P
+
+If det(A) = 0 the image of P is not a polygon
 
 
 
