@@ -2423,9 +2423,1616 @@ H ⊆ R^n is a subspace of R^n if it satisfies:
 
 if a set does not contain the zero vector then the set is not closed under scalar multiplication
 
+example:
+let L be the line with equation x = 2y in R^2
+[
+	2y
+	y
+]
+L contains the zero vector:
+(0) = 2(0)
+0 = 0
+L is closed under vector addition:
+a = [
+	2a
+	a
+]
+b = [
+	2b
+	b
+] = [
+	2(a + b)
+	 a + b
+]
+which satisfies x = 2y, a+b in L
+L is closed under scalar multiplication:
+k*a
+a = [
+	2a
+	a
+] * k
+= [
+	2ka
+	ka
+]
+L is a subspace of R^2
+
+three dimentional space:
+L be the line in R^3 passes through the points (1, 2, 2) and (2, 1, 1)
+
+the direction vector of the L is:
+d = [
+	2
+	1
+	1
+] - [
+	1
+	2
+	2
+] = [
+	1
+	-1
+	-1
+]
+This means the vector equation of the line is
+r = [
+	1
+	2
+	2
+] + t[
+	1
+ -1
+ -1
+]
+The Cartesian equation is
+x - 1 = (y - 2)/-1 = (z - 2)/-1
+but this line does not pass through origin:
+
+(0) - 1 != ((0) - 2)/-1 = ((0) - 2)/-1
+L does not contain the zero-vector
+
+L is not closed under vector addition:
+lets consider the vectors:
+[
+	1
+	2
+	2
+]
+and
+[
+	2
+	1
+	1
+]
+=
+[
+	3
+	3
+	3
+]
+the point (3,3,3) does not belong to L since:
+(3) - 1 != ((3) - 2)/-1 = ((3) - 2)/-1
+
+L is not closed under scalar multiplication
+since 0 in not in L
+L is not a subspace of R^3
+direction:
+d = [
+	1
+ -1
+	1
+] - [
+	0
+	0
+	0
+] = [
+	1
+	-1
+	1
+]
+vector equation:
+r = [
+	0
+	0
+	0
+] + t[
+	1
+	-1
+	1
+] = [
+	t
+	-t
+	t
+]
+cartesian equation:
+x = -y = z
+zero-vector, closed under vector addition and scalar multiplication
+
+A plane is a subspace of three-dimensional space?
+example:
+x + 4y - 3z = 2 in R^3:
+[
+	2 - 4y + 3z
+	    y
+	    z
+]
+does not pass through origin (zero-vector):
+(0) + 4(0) - 3(0) = 2
+0 != 2
+
+is not closed under vector addition:
+a = [
+	2
+	0
+	0
+]
+b = [
+	1
+	1
+	1
+] = [
+	3
+	1
+	1
+]
+(3) + 4(1) - 3(1) = 2
+4 != 2
+
+is not closed under scalar multiplication 0 is not in the set
+[
+	x
+	y
+ x-y
+]
+
+==================================================
+
+The only non-trivial subspaces in R^2 are straight lines that pass through the origin.
+
+every subspace must contain the origin
+
+The only non-trivial subspaces in R^3 are straight lines or planes that pass through the origin
+
+R which belongs to the family of vector spaces R^n (when n = 1). This vector space has only two subspaces:
+The zero subspace {0}. which contains only the number 0
+The whole space R, contains all real numbers
+
+==================================================
+
+Is b in Col(B). What are the values of x1 and x2 where x1 and x2 are real numbers sub that b = x1b1 + x2b2 and b1, b2 are the respective columns of B
+B = [
+	5  -2
+	15 -6
+	0   1
+]
+b = [
+	7
+	21
+	0
+]
+in order to determine whether b lies in Col(B) we need to check if the equation Bx = b is consistent:
+[
+	5  -2 | 7
+	15 -6 | 21
+	0   1 | 0
+]
+R2 := R2 - 3R1
+[
+	5  -2 | 7
+	0   0 | 0
+	0   1 | 0
+]
+R2 <-> R3
+[
+	5  -2 | 7
+	0   1 | 0
+	0   0 | 0
+]
+{
+	5x1 - 2x2 = 7
+	x2 = 0
+	0 = 0
+} = {
+	5x1 - 2x2 = 7
+	x2 = 0
+}
+x1 = 7/5
+one way to write b as a linear combination of b1 and b2
+[
+	7
+	21
+	0
+] = 7/5[
+	5
+	15
+	0
+] + 0[
+	-2
+	-6
+	1
+]
+
+determine if the value of an unknown given a vector thats in the column space:
+A = [
+	1 2
+	3 -2
+	5 -1
+]
+b = [
+	10
+	-2
+ 2 + k
+] (belongs to Col(A))
+Ax = b must be consistant
+[
+	1  2 | 10
+	3 -2 | -2
+	5 -1 | 2 + k
+]
+R2 := R2 - 3R1
+[
+	1  2 | 10
+	0 -8 | -32
+	5 -1 | 2 + k
+]
+R3 := R2 - 5R1
+[
+	1  2 | 10
+	0 -8 | -32
+	0 -11 | k - 48
+]
+R2 := 1/8R2
+[
+	1  2 | 10
+	0  1 | 4
+	0 -11 | k - 48
+]
+R3 := R3 + 11R2
+[
+	1  2 | 10
+	0  1 | 4
+	0  0 | k - 4
+]
+= {
+	x1 + 2x2 = 10
+	x2 = 4
+	0 = k - 4
+}
+k = 4
+
+example:
+[
+	3 8 | 14
+	-2 -11 | -15
+	1 6 | k + 5
+]
+R1 <-> R3
+[
+	1 6 | k + 5
+	-2 -11 | -15
+	3 8 | 14
+]
+R2 := R2 + (2)R1
+[
+	1 6 | k + 5
+	0 1 | 2k - 5
+	3 8 | 14
+]
+R3 := R3 - (3)R1
+[
+	1 6 | k + 5
+	0 1 | 2k - 5
+	0 -10 | -3k - 1
+]
+R3 := R3 + (10)R2
+[
+	1 6 | k + 5
+	0 1 | 2k - 5
+	0 0 | 17k - 51
+]
+= {
+	x1 + 6x2 = k+5
+	x2 = 2k - 5
+	0 = 17k - 51
+}
+k = 3
+
+example:
+[
+	1 -2 | 1
+	2 -2 | 3
+	5 -8 | k
+]
+R2 := R2 + (-2)R1
+[
+	1 -2 | 1
+	0  2 | 1
+	5 -8 | k
+]
+R3 := R3 + (-5)R1
+[
+	1 -2 | 1
+	0  2 | 1
+	0  2 | k - 5
+]
+R3 := R3 - R2
+[
+	1 -2 | 1
+	0  2 | 1
+	0  0 | k - 6
+]
+k = 6
+
+larger matrices is b in Col(E):
+E = [
+	1 -4  7  1 | 2
+	4 -16 28 4 | 7
+	1 -3  0 -1 | 0
+]
+R2 := R2 + (-4)R1
+[
+	1 -4  7  1 | 2
+	0  0  0  0 | -1
+	1 -3  0 -1 | 0
+] = system is inconsisten b is not in Col(E)
+
+example:
+[
+	1 -1 3 | 2
+	2  0 4 | -1
+	1 -3 0 | 7
+]
+R2 := R2 + (-2)R1
+[
+	1 -1 3 | 2
+	0  2 -2 | -5
+	1 -3 0 | 7
+]
+R3 := R3 - R1
+[
+	1 -1 3 | 2
+	0  2 -2 | -5
+	0 -2 -3 | 5
+]
+R3 := R3 + R2
+[
+	1 -1 3 | 2
+	0 2 -2 | -5
+	0 0 -5 | 0
+]
+= {
+	x1 - x2 + 3x3 = 2
+	2x2 - 2x3 = -5
+	-5x3 = 0
+}
+x3 = 0
+2x2 - 2(0) = -5
+x2 = -5/2
+2 + (-5/2) - 3(0)
+x1 = -1/2
+
+==================================================
+
+null space of a matrix A is the equation Ax = 0 and the proper syntax: Null(A)
+
+example:
+[
+	3  -6
+	-5 10
+	-8 16
+][
+	6
+	3
+]
+(3)(6)+(-6)(3)
+(-5)(6)+(10)(3)
+(-8)(6)+(16)(3)
+= [
+	0
+	0
+	0
+]
+example:
+[
+	2 4
+	4 8
+	1 2
+][
+	-8
+	4
+]
+(2)(-8)+(4)(4)
+(4)(-8)+(8)(4)
+(1)(-8)+(2)(4)
+[
+	2 4
+	4 8
+	1 2
+][
+	4
+	-2
+]
+(2)(4)+(4)(-2)
+(4)(4)+(8)(-2)
+(1)(4)+(2)(-2)
+[
+	2 4
+	4 8
+	1 2
+][
+	-4
+	3
+]
+(first two NULL(A))
+
+example:
+[
+	2 -4
+	1  5
+][
+	2
+ -3
+]
+(2)(2)+(-4)(-3)
+[
+	2 -4
+	1  5
+][
+	5
+ -1
+]
+(2)(5)+(-4)(-1)
+[
+	2 -4
+	1  5
+][
+ -3
+  1
+]
+(2)(-3)+(-4)(1)
+None are NULL just by examining first entry
+
+find a variable in a NULL space:
+[
+	3 2 -4
+	-3 3 -1
+	6 -6 2
+][
+	2
+	k
+	3
+] = [
+	0
+	0
+	0
+]
+[
+	6 + 2k - 12
+	-6 + 3k - 3
+	12 - 6k + 6
+] = [
+	0
+	0
+	0
+] 
+= {
+	2k - 6 = 0
+	3k - 9 = 0
+	-6k + 18 = 0
+}
+k = 3
+
+example:
+[
+	3  -1
+	-12 4
+	9  -3
+][
+	k
+ -6
+]
+= {
+	3k + 6 = 0
+	-12k - 24 = 0
+	9k + 18 = 0
+}
+k = -2
+
+example:
+[
+	0 3 -15
+	-1 1 -3
+][
+	2
+	k
+	1
+]
+= {
+	3k - 15 = 0
+	k - 5 = 0
+}
+k = 5
+
+using set builder notation:
+A = [
+	-1 3 -2
+	5 -15 10
+	2 -6 4
+]
+
+R1 := R1 + R3
+[
+	1 -3 2
+	5 -15 10
+	2 -6 4
+]
+R2 := R2 + (-5)R1
+[
+	1 -3 2
+	0 0 0
+	2 -6 4
+]
+R3 := R3 + (-2)R1
+[
+	1 -3 2
+	0 0 0
+	0 0 0
+]
+= {
+	x1 - 3x2 + 2x3 = 0
+}
+x1 = 3x2 - 2x3
+= {[
+	3x2 - 2x3
+	    x2
+	    x3
+] : x2,x3 in R}
 
 
+[
+	3 6
+	6 12
+]
+R1 := 1/3R1 
+[
+	1 2
+	6 12
+]
+R2 := R2 + (-6)R1
+[
+	1 2
+	0 0
+]
+= {
+	x1 + 2x2 = 0
+}
+x1 = -2x2
+= {[
+	-2x2
+	 x2
+]: x2 in R}
 
+==================================================
+
+finding a basis of a space spanned by a set of vectors:
+a1 = [2|3]
+a2 = [3|4]
+a3 = [1|1]
+S = Span{a1, a2, a3}
+
+the basis of S is a set of lineraly independent vectors that spans S
+a2 is a linear combination of vectors a1 and a3
+a2 = 1*a1 + 1*a3
+
+Vector a2 can be removed from Span{a1,a2,a3} without chaing the span therefor basis of S is {a1,a3}
+B = {
+	[2|3],
+	[1|1]
+}
+
+example:
+a1 = [3|1]
+a2 = [2|2]
+a3 = [1|-1]
+a1 is a linear combination
+a1 = 1*a2 + 1*a3
+S = Span{a1,a2,a3} is {a2,a3}
+B = {[2|2], [1|-1]}
+
+example:
+a1 = [2|0]
+a2 = [1|3]
+a3 = [3|3]
+a3 is a linear combination
+a3 = 1*a1 + 1*a2
+S = Span{a1,a2,a3} is {a1,a2}
+B = {[2|0], [1|3]}
+
+You can also find a subset of linearly independent vectors and compute RREF
+
+The pivot columns are linearly independent vectors and the non-pivots correspond to linear dependent (or redundant) vectors that can be removed.
+
+Pick the columns from origin matrix not from the reduced one.
+example:
+a1 = [5|2]
+a2 = [10|4]
+a3 = [15|5]
+[
+	5 10 15
+	2 4 5
+]
+R1 := 1/5R1
+[
+	1 2 3
+	2 4 5
+]
+R2 := R2 + (-2)R1
+[
+	1 2 3
+	0 0 -1
+]
+(1st and 3rd column pivot, 2nd non-pivot)
+therefore:
+B = {[5|2], [15|5]}
+
+Determining whether a given set is a basis of a span:
+a1 = [
+	1
+	-1
+	-3
+]
+a2 = [
+	0
+	1
+	0
+]
+a3 = [
+	1
+	-1
+	-2
+]
+a4 = [
+	2
+	-2
+	1
+]
+= {
+	x1 + x3 = 2
+	-x1 + x2 - x3 = -2
+	-3x1 -2x3 = 1
+}
+We must use RREF (1's for pivots and 0's below and above pivot points), not just REF
+[
+	 1 0  1 | 2
+	-1 1 -1 | -2
+	-3 0 -2 | 1
+]
+R2 := R2 + R1
+[
+	 1 0  1 | 2
+	 0 1  0 | 0
+	-3 0 -2 | 1
+]
+R3 := R3 + 3R1
+[
+	 1 0  1 | 2
+	 0 1  0 | 0
+	 0 0  1 | 7
+]
+R1 := R1 + (-1)R3
+[
+	 1 0  0 | -5
+	 0 1  0 | 0
+	 0 0  1 | 7
+]
+B is indeed a basis of Span{a1,a2,a3,a4}, x1 = 5, x2 = 0 and x3 = 7
+= -5[
+	1
+	-1
+	-3
+] + 0[
+	0
+	1
+	0
+] + 7[
+	1
+	-1
+	-2
+] = [
+	2
+	-2
+	1
+]
+x1+x2+x3 = -5+0+7 = 2
+
+example:
+[
+	1 -1 1  | -1
+	-2 3 -2 | 2
+	5 -5 6  | 2
+]
+R2 := R2 + (2)R1
+[
+	1 -1 1  | -1
+	0 1  0  | 0
+	5 -5 6  | 2
+]
+R3 := R3 + (-5)R1
+[
+	1 -1 1  | -1
+	0  1 0  | 0
+	0  0 1  | 7
+]
+R1 := R1 - R2 | OR (R1 + (-1)R3)
+[
+	1  0 1  | -1
+	0  1 0  | 0
+	0  0 1  | 7
+]
+R1 := R1 - R3 | OR (R1 + R2 from previous)
+[
+	1  0 0  | -8
+	0  1 0  | 0
+	0  0 1  | 7
+]
+x1+x2+x3 = -8 + 0 + 7 = -1
+
+[
+	1 -1 | 2
+	-2 4 | -2
+]
+R2 := R2 + (2)R1
+[
+	1 -1 | 2
+	0 2 | 2
+]
+R2 := 1/2R2
+[
+	1 -1 | 2
+	0 1 | 1
+]
+R1 := R1 + R2
+[
+	1 0 | 3
+	0 1 | 1
+]
+= 3[
+	1
+	-2
+] + 1[
+	-1
+	4
+] = [
+	2
+	-2
+]
+x1*x2 = 3
+
+example:
+[
+	2 -6 0
+	1 -1 1
+	3 1 5
+]
+R1 <-> R2
+[
+	1 -1 1
+	2 -6 0
+	3 1 5
+]
+R2 := R2 + (-2)R1
+[
+	1 -1 1
+	0 -4 -2
+	3 1 5
+]
+R3 := R3 + (-3)R1
+[
+	1 -1 1
+	0 -4 -2
+	0 4 2
+]
+R3 := R3 + R2
+[
+	1 -1 1
+	0 -4 -2
+	0 0 0
+]
+OR (REF)
+R2 := R2 + (-1/2)R1
+[
+	2 -6 0
+	0 2 1
+	3 1 5
+]
+R3 := R3 + (-3/2)R1
+[
+	2 -6 0
+	0 2 1
+	0 10 5
+]
+R3 := R3 + (-5)R2
+[
+	2 -6 0
+	0 2 1
+	0 0 0
+]
+columns 1,2 pivots therefore:
+B = {
+	[
+		2
+		1
+		3
+	],
+	[
+		-6
+		-1
+		1
+	]
+}
+
+example:
+[
+	0 0 0
+	0 0 3
+	1 0 2
+]
+R1 <-> R3
+[
+	1 0 2
+	0 0 0
+	0 0 3
+]
+B = {
+	[
+		0
+		0
+		1
+	],
+	[
+		0
+		3
+		2
+	]
+}
+
+find linear combination:
+[
+	1 3 4
+	-2 -6 5
+]
+R2 := R2 + (2)R1
+[
+	1 3 4
+	0 0 13
+]
+R2 := 1/13R2
+[
+	1 3 4
+	0 0 1
+]
+R1 := R1 + (-4)R2
+[
+	1 3 0
+	0 0 1
+]
+basis of Col(A) is {a1,a2}
+B = {
+	[
+		1
+		-2
+	],
+	[
+		4
+		5
+	]
+}
+Since 2nd is non pivot this tells us that a2 is a linear combination of all other columns in original matrix:
+[
+	3
+	-6
+] = 3[
+	1
+	-2
+] + 0[
+	4
+	5
+]
+x1*x3 = 3 * 0 = 3
+
+example:
+[
+	1 0 -1
+	0 -2 -6
+]
+R2 := -1/2R2
+[
+	1 0 -1
+	0 1 3
+]
+column 3 is non-pivot
+
+[
+	1 0 2 1
+	0 5 10 5
+	1 0 2 2
+]
+
+R3 := R3 - R1
+[
+	1 0 2 1
+	0 5 10 5
+	0 0 0 1
+]
+R2 := 1/5R2
+[
+	1 0 2 1
+	0 1 2 1
+	0 0 0 1
+]
+Col(A) is {a1,a2,a4}
+B = {a1,a2} is not a basis of Col(A)
+
+[
+	1 2 -1 0
+	0 4 -4 4
+	3 5 -2 -1
+]
+R3 := R3 + (-3)R1
+[
+	1 2 -1 0
+	0 4 -4 4
+	0 -1 1 -1
+]
+R2 := 1/4R2
+[
+	1 2 -1 0
+	0 1 -1 1
+	0 -1 1 -1
+]
+R1 := R1 + (-2)R2
+[
+	1 0  1 -2
+	0 1 -1 1
+	0 -1 1 -1
+]
+R3 := R3 + R2
+[
+	1 0  1 -2
+	0 1 -1 1
+	0 0 0  0
+]
+OR we can reverse the last two steps above.
+Col(A) is {a1,a2}
+B = {
+	[
+		1
+		0
+		3
+	],
+	[
+		2
+		4
+		5
+	]
+}
+therefore we can use the 4th column as a linear combination of all other columns:
+[
+	0
+	4
+	-1
+] = -2[
+	1
+	0
+	3
+] + 1[
+	2
+	4
+	5
+]
+
+example of finding a basis of Null(A)
+[
+	1 0 1 0
+	0 1 0 1
+	0 0 0 0
+]
+{
+	x1 + x3 = 0
+	x2 + x4 = 0
+}
+x1 = -x3, x2 = -x4
+[
+	x1
+	x2
+	x3
+	x4
+] = [
+	-x3
+	-x4
+	x3
+	x4
+]
+resulting in:
+= x3[
+ -1
+	0
+	1
+	0
+] + x4[
+	0
+	-1
+	0
+	1
+]
+
+example (finding basis of Null(A))
+[
+	1 0 1
+	0 1 0
+	0 0 0
+]
+= {
+	x1 = -x3
+	x2 = 0
+}
+x3[
+	-1
+	0
+	1
+]
+x3 is the only free variable
+
+give the matrix A find a basis of Null(A) (RREF)
+A = [
+	1 -2 -1
+	0  0  5
+	5 -10 7
+]
+R3 := R3 + (-5)R1
+[
+	1 -2 -1
+	0  0  5
+	0  0 12
+]
+R3 := R3 + (-12)R2
+[
+	1 -2 -1
+	0  0  1
+	0  0  0
+]
+R1 := R1 + R2
+[
+	1 -2  0
+	0  0  1
+	0  0  0
+]
+{
+	x1 - 2x2 = 0
+	x3 = 0
+}
+x1 = 2x2, x3 = 0
+x2 is the free variable
+x2 [
+	2
+	1
+	0
+]
+
+example:
+A = [
+	1 -2 8
+	0 -4 10
+	-2 0 -6
+]
+R3 := R3 + (2)R1
+[
+	1 -2 8
+	0 -4 10
+	0 -4 10
+]
+R3 := R3 + (-1)R2
+[
+	1 -2 8
+	0 -4 10
+	0 0 0
+]
+R2 := -1/4R2
+[
+	1 -2 8
+	0 1 -5/2
+	0 0 0
+]
+R1 := R1 + 2R2
+[
+	1 0 8
+	0 1 -5/2
+	0 0 0
+]
+= {
+	x1 + 3x3 = 0
+	x2 - 5/2x3 = 0
+}
+x1 = -3x2, x2 = 5/2x3
+x3 is a free variable
+[
+	-3x3
+	5/2x3
+	x3
+] = x3[
+	-3
+	5/2
+	1
+]
+
+finding coordinates of vector x relative to basis B = {b1,b2}
+[
+	1 -3  | 10
+	4 -10 | 8
+	-2 6  | -20
+]
+R2 := R2 + (-4)R1
+[
+	1 -3 | 10
+	0  2 | -32
+	-2 6 | -20
+]
+
+R3 := R3 + (2)R1
+[
+	1 -3 | 10
+	0  2 | -32
+	0  0 | 0
+]
+{
+	x1 + 48 = 10
+	2x2 = -32
+}
+x2 = -16
+x1 = -38
+[x]_B = [-38|-16]
+
+example:
+[
+	1 2 | 2
+	-2 1 | 6
+]
+R2 := R2 + (2)R1
+[
+	1 2 | 2
+	0 5 | 10
+]
+R2 := 1/5R2
+[
+	1 2 | 2
+	0 1 | 2
+]
+= {
+	x1 + 4 = 2
+	x2 = 2
+}
+x1 = -2
+x2 = 2
+[x]_B = [-2|2]
+
+solving with more than two vectors:
+[
+	1  2  0 | 2
+	-1 0  0 | 2
+	2  0 -1 | -5
+	0  4  0 | 4
+]
+R2 := R2 + R1
+[
+	1  2  0 | 2
+	0  2  0 | 4
+	2  0 -1 | -5
+	0  4  0 | 4
+]
+R3 := R3 + (-2)R1
+[
+	1  2  0 | 2
+	0  2  0 | 4
+	0  -4 -1 | -9
+	0  4  0 | 4
+]
+R3 := R3 + 2R2
+[
+	1  2  0 | 2
+	0  2  0 | 4
+	0  0 -1 | -1
+	0  4  0 | 4
+]
+R4 := R4 + (-2)R2
+[
+	1  2  0 | 2
+	0  2  0 | 4
+	0  0 -1 | -1
+	0  0  0 | -4
+]
+= {
+	x1 + 2x2 = 2
+	2x2 = 4
+	-x3 = -1
+	0 = 4
+}
+column 4 is always false, no solutions
+
+[
+	1 2 0  | 5
+	-2 1 0 | 10
+	4 -2 3 | -17
+]
+R2 := R2 + (2)R1
+[
+	1 2 0  | 5
+	0 5 0 | 20
+	4 -2 3 | -17
+]
+R3 := R3 + (-4)R1
+[
+	1 2 0  | 5
+	0 5 0 | 20
+	0 -10 3 | -37
+]
+R2 := 1/5R2
+[
+	1 2 0  | 5
+	0 1 0 | 4
+	0 -10 3 | -37
+]
+R3 := R3 + (10)R2
+[
+	1 2 0 | 5
+	0 1 0 | 4
+	0 0 3 | 3
+]
+= {
+	x1 + 8 = 5
+	x2 = 4
+	3x3 = 3
+}
+x3 = 1
+x2 = 4
+x1 = -3
+[x]_B = [
+	-3
+	4
+	1
+]
+
+R^2 and R^3 have special notations for the vectors of standard basis:
+R^2 : {
+	[
+		1
+		0
+	],
+	[
+		0
+		1
+	]
+}
+R^3 : {
+	[
+		1
+		0
+		0
+	],
+	[
+		0
+		1
+		0
+	],
+	[
+		0
+		0
+		1
+	]
+}
+
+In general the standard basis of R^n is:
+{
+	[
+		1
+		0
+		0
+		.
+		.
+		.
+		0
+	],
+	[
+		0
+		1
+		0
+		.
+		.
+		.
+		0
+	],
+	...
+	[
+		0
+		0
+		0
+		.
+		.
+		.
+		1
+	],
+}
+
+==================================================
+
+Writting a two-dimensional vector in a different basis:
+Let B = {b1,b2} be a basis of R^2 and [x]_B = [5|-2] the coordinates of x relative to the basis C = {c1,c2} where c1 = -b2 and c2 = 3b1:
+
+x = 5b1 - 2b2
+= -2b2 + 5b1
+= 2(-b2) - 5/3(-3b1)
+= 2c1 - 5/3c2
+therefore: [x]_c = [2|-5/3]
+
+example:
+[x]_b = [3|-7] basis C = {c1,c2} c1 = 5b2 and c2 = 4b1 
+
+x = 3b1 - 7b2
+= -7/5(5b2) + 3/4(4b1)
+= -7/5c1 + 3/4c2
+therefore: [x]_c = [-7/5|3/4]
+* Remember when substituting make sure they equal to the original values
+
+example:
+[x]_c = [1|-2] basis B = {b1,b2} b1 = -c2 and b2 = 3c1
+(swapped c and b from last example, doesn't matter)
+
+x = c1 - 2c2
+= -2c2 + c1
+= 2(-c2) + 1/3(3c1)
+= 2b1 + 1/3b2
+[x]_B = [2|1/3]
+
+example:
+(three dimensions)
+[x]_B = [-2|-3|5] basis C = {c1,c2,c3} c1 = -3b2, c2 = -b3, and c3 = -4b1
+
+x = -2b1 - 3b2 + 5b3
+= -3b2 + 5b3 - 2b1
+= (-3b2) - 5(-b3) + 1/2(-4b1)
+= c1 - 5c2 + 1/2c3
+[x]_c = [
+	1
+	-5
+	1/2
+]
+
+example:
+[x]_B = [-3|4|-6] basis C = {c1,c2,c3} c1 = 3b2 c2 = -b3 c3 = 4b1
+
+x = -3b1 + 4b2 - 6b3
+= 4b2 - 6b3 - 3b1
+= 4/3(3b2) + 6(-b3) - 3/4(4b1)
+= 4/3c1 + 6c2 - 3/4c3
+[x]_c = [
+	4/3
+	6
+	-3/4
+]
+
+example:
+[x]_B = [4|-5|2] basis C = {c1,c2,c3} c1 = -2b2 c2 = b3 c3 = -3b1
+
+x = 4b1 - 5b2 + 2b3
+= -5b2 + 2b3 + 4b1
+= 5/2(-2b2) + 2(b3) - 4/3(-3b1)
+[x]_c = [
+	5/2
+	2
+	-4/3
+]
+
+writting a vector in a different basis given a linear relationship between two bases:
+[x]_B = [5|-2] basis C = {c1,c2} b1 = 2c1 - c2 b2 = c1 + c2
+
+x = 5b1 - 2b2
+= 5(2c1 - c2) - 2(c1 + c2)
+= 10c1 - 5c2 - 2c1 - 2c2
+= 8c1 - 7c2
+[x]_c = [8|-7]
+
+
+example:
+[x]_B = [1|-3] basis C = {c1,c2} c1 = b2 - b1 c2 = 2b1 - 3b2
+
+{
+	c1 = b2 - b1
+	c2 = 2b1 - 3b2
+}
+
+b's in terms of c's multiply first equation by 2 and add equations:
+
+2c1 + c2 = -b2   =>   b2 = -2c1 - c2
+
+substituting into first equation:
+c1 = (-2c1 - c2) - b1   =>   b1 = -3c1 - c2
+
+x = b1 - 3b2
+= (-3c1 - c2) - 3(-2c1 - c2)
+= -3c1 - c2 + 6c1 + 3c2
+= 3c1 + 2c2
+[x]_c = [3|2]
+
+example:
+[x]_B = [2|-3] basis C = {c1,c2} c1 = b1 - 2b2, c2 = b1 + b2
+
+{
+	c1 = b1 - 2b2
+	c2 = b1 + b2
+}
+
+multiply second equation by 2 add the equations:
+
+c1 + 2c2 = 3b1   =>   b1 = 1/3c1 + 2/3c2
+
+substitute into first equation:
+
+c1 = (1/3c1 + 2/3c2) - 2b2   =>   b2 = -1/3c1 + 1/3c2
+
+x = 2(1/3c1 + 4/3c2) - 3(-1/3c1 + 1/3c2)
+= 2/3c1 + 4/3c2 + c1 - c2
+= 5/3c1 + 1/3c2
+[x]_c = [5/3|1/3]
+
+example:
+[x]_B = [-3|4] basis C = {c1,c2} c1 = b1 + b2, c2 = -b1
+
+{
+	c1 = b1 + b2
+	c2 = -b1
+}
+
+b1 = -c2 (from second equation)
+c1 = (-c2) + b2   =>   b2 = c1 + c2 (substitution)
+
+x = -3b1 + 4b2
+= -3(-c2) + 4(c1 + c2)
+= 3c2 + 4c1 + 4c2
+= 4c1 + 7c2
+[x]_c = [4|7]
+
+==================================================
+
+The change-of-coordinates matrix allows us to express the vector [x]_B in the basis C via transformation:
+[x]_c = P_B->c * [x]_B
+
+B = {b1,b2} and C = {c1,c2} bases of R^2 c1 = b2 - 4b1 c2 = 5b1 + 7b2
+[c1]_B = [-4|1], [c2]_B = [5|7]
+P_c->B = [
+	-4 5
+	 1 7
+]
+
+example:
+B={b1,b2,b3},C={c1,c2,c3} what are a, b, c?
+b1 = c1 + 2c2 - c3
+b2 = 5c3 + 2c2
+b3 = c2 - c1
+
+change-of-coordinates B -> C
+P_B->C = [
+	1 0 -1
+	a b 1
+	-1 c 0
+]
+[b1]_c = [
+	1
+	2
+	-1
+]
+[b2]_c = [
+	0
+	2
+	5
+]
+[b3]_c = [
+	-1
+	1
+	0
+]
+The change-of-coordinates matrix from B to C is a matrix columns are the coordinates of the vectors of B relative to the basis C:
+P_B->c = [
+	1 0 -1
+	2 2 1
+	-1 5 0
+]
+a = 2, b = 2, c = 5
+
+Change-of-coordinates matrix are linearly independent the matrix must be invertible
+P_B->c^-1 = P_c->B   Inverting a matrix
+[
+	-4 -6
+	 3  5
+]^-1
+= 1/(-4)*5 - (-6)*3 [
+	 5  6
+	-3 -4
+]
+= (-1/2)[
+	 5  6
+	-3 -4
+]
+= [
+	-5/2 -3
+	 3/2  2
+]
+
+example:
+[
+	 3 -5
+	-6  9
+]^-1
+= (-1/3)[
+	9 5
+	6 3
+]
+= [
+	-3 -5/3
+	-2 -1
+]
+
+1/3
+[
+	-6 3
+	-3 1
+]
+
+example:
+B = {[1|3],[-3|-6]} basis of R^2 let S be standard basis of R^2, find change-of-coordinates matrix S to B:
+Using REF
+[
+	1 -3 | 1 0
+	3 -6 | 0 1
+]
+R2 := R2 + (-3)R1
+[
+	1 -3 |  1 0
+	0  3 | -3 1
+]
+R2 := 1/3R2
+[
+	1 -3 |  1 0
+	0  1 | -1 1/2
+]
+R1 := R1 + 3R2
+[
+	1  0 | -2 1
+	0  1 | -1 1/2
+]
+right side we obtain change-of-coordinates from S to B
+
+[
+	1 -2 | 2 -3
+	-4 6 | -7 2
+]
+R2 := R2 + (4)R1
+[
+	1 -2 | 2 -3
+	0 -2 | 1 -10
+]
+R1 := R1 + (-1)R2
+[
+	1  0 | 1 7
+	0 -2 | 1 -10
+]
+R2 := -1/2R2
+[
+	1 0 | 1 7
+	0 1 | -1/2 5
+]
+P_B->c = [
+	1 7
+	-1/2 5
+]
 
 
 
