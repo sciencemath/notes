@@ -4034,6 +4034,683 @@ P_B->c = [
 	-1/2 5
 ]
 
+example:
+[x]_c: x = 5b1 - b2
+
+P_B-c = [
+	3 -5 1
+	-6 9 0
+	1 -1 1
+][
+	5
+ -1
+	0
+] = [
+	20
+ -39
+	6
+]
+
+Coordinates of a vector in a new basis given the inverse change-of-coordinates matrix:
+from B to C. Find [x]_B x = 2c1 - 6c2, [x]_c = [2|-6]
+P_B->c = [
+	-4 3
+	6 -4
+]
+[x]_B = P_c->B ⋅ [x]_c
+first find change-of-coordinates matrix P_c->B we compute the inverse of P_B->c:
+P_c->B = P^-1_B->c 
+= [
+	-4 3
+	6 -4
+]^-1
+= (-1/2)[
+	-4 -3
+	-6 -4
+]
+= [
+	2 3/2
+	3 2
+][
+	2
+	-6
+] = [
+	-5
+	-6
+]
+
+Remember in order to find [x]_B we need P_c->B and [x]_c we are given P_B->c so we need to reverse to find P_c->B
+
+[x]_B = [6|-9]
+B = {
+	[
+		0
+		-2
+	], [
+		1
+		0
+	]
+}
+C = {
+	[
+		1
+		3
+	], [
+		1
+		4
+	]
+}
+[ 
+	1 1 | 0 1
+	3 4 | -2 0
+]
+R2 := R2 + (-3)R1
+[ 
+	1 1 | 0 1
+	0 1 | -2 -3
+]
+R1 := R1 + (-1)R2
+[ 
+	1 0 | 2 4
+	0 1 | -2 -3
+]
+= [
+	2 4
+	-2 -3
+][
+	6
+	-9
+]
+[
+ -24
+  15
+]
+==================================================
+
+If the vector space V has a basis with n vectors, then any basis of V has exactly n vectors.
+The number n vectors in any basis of V is called the dimension of the space V dim(V)
+
+If a vector space has a basis with a finite number of vectors then it is called finite-dimensional
+
+If there is no finite basis, the vector space is called infinite-dimensional.
+
+finding span with RREF:
+[
+	2 -2 2
+	-2 1 -2
+	1 -1 3
+]
+R2 := R2 + R1
+[
+	2 -2 2
+	0 -1 0
+	1 -1 3
+]
+R3 := R3 + (-1/2)R1
+[
+	2 -2 2
+	0 -1 0
+	0  0 2
+]
+
+example:
+V = [
+	3 5
+	-6 -10
+]
+R2 := R2 + (2)R1
+[
+	3 5
+	0 0
+]
+dim(Span(V)) = 1
+
+The dimension of column space of matrix A is called the rank of A: rank(A)
+rank(A) = dim(Col(A))
+
+A is a 4x7 with 3 non-pivot find rank(A)
+7 - 3 = 4: rank(A) = 4
+
+rank(A) is the number of non-zero rows (pivot columns) in the corresponding REF matrix of A
+
+example:
+A = [
+	-2 1 3 -2
+	6 -2 -7 5
+	0 2 4 -3
+	0 -3 -6 3
+]
+R2 := R2 + (3)R1
+[
+	-2 1 3 -2
+	0 1 2 -1
+	0 2 4 -3
+	0 -3 -6 3
+]
+R3 := R3 + (-2)R2
+[
+	-2 1 3 -2
+	0 1 2 -1
+	0 0 0 -1
+	0 -3 -6 3
+]
+R4 := (-1/3)R4
+[
+	-2 1 3 -2
+	0 1 2 -1
+	0 0 0 -1
+	0 1 2 -1
+]
+R4 := R4 - R2
+[
+	-2 1 3 -2
+	0 1 2 -1
+	0 0 0 -1
+	0 0 0 0
+]
+(the answer was 3 operations but same output):
+R2 := R2 + (3)R1
+R3 := R3 + (-2)R2
+R4 := R4 + 3R2
+
+example:
+[
+	-4 6
+	0 -1
+	2 -3
+]
+R3 := R3 + (1/2)R1
+[
+	-4 6
+	0 -1
+	0 0
+]
+= rank(2)
+
+dim(Null(A)) is equal to the number of non-pivot columns (free variables) in the corresponding REF of A
+
+If A is a 9x11 matrix that has 9 pivot columns whats dim(Null(A))
+11 - 9 = 2
+dim(Null(A)) = 2
+
+the dimension of the null space of a matrix A is often called the nullity of A:
+nullity(A) = dim(Null(A))
+
+using REF:
+D = [
+	2 1 2 3 1
+	0 4 -2 1 -2
+	8 0 10 9 7
+	0 8 -4 2 -4
+]
+R3 := R3 + (-4)R1
+[
+	2 1 2 3 1
+	0 4 -2 1 -2
+	0 -4 2 -3 3
+	0 8 -4 2 -4
+]
+R2 := R2 + R3
+[
+	2 1 2 3 1
+	0 0 0 -2 1
+	0 -4 2 -3 3
+	0 8 -4 2 -4
+]
+R4 := R4 + (2)R3
+[
+	2 1 2 3 1
+	0 0 0 -2 1
+	0 -4 2 -3 3
+	0 0 0 -4 2
+]
+(answer did this differenty)
+R3 := R3 + (-4)R1
+R3 := R3 + R2
+R4 := R4 + (-2)R2
+dim(Null(D)) = 2
+
+D = [
+	1 -2 0
+	5 -7 9
+	-3 6 -1
+]
+R3 := R3 + (3)R1
+[
+	1 -2 0
+	5 -7 9
+	0 0 -1
+]
+R2 := R2 + (-5)R1
+[
+	1 -2 0
+	0 3 9
+	0 0 -1
+]
+nullity(D) = dim(Null(D)) = 0
+
+A is invertible:
+Col(A) = R^n
+dim(Col(A)) = n = rank(A)
+Null(A) = {0}
+dim(Null(A)) = 0 = nullity(A)
+
+if A is a nxn matrix and Null(A) = {0} then rank(A) = n
+if A is a nxn matrix and Null(A) = {0} then A has n pivot columns
+
+if A is a nxn matrix and det(A) != 0 
+- Null(A) has no basis
+- A has n pivot columns
+
+if A is a 7x7 matrix and A is invertiable Col(A) = R^7
+
+The rank-nullity theorem relates the rank of a matrix to the dimension of its null space
+dim(Col(A)) + dim(Null(A)) = dim(R^n)
+or rank(A) + nullity(A) = n
+
+8x6 matrix A, if rank(A) = 5 then what is nullity(A)?
+rank(A) + nullity(A) = n
+5 + nullity(A) = 6
+nullity(A) = 6 - 5
+= 1
+
+Let A be a 3x6 matrix. if B = {b1,b2,b3} is a basis of Col(A) find dim(Null(A)).
+n = 6, B is formed by 3 vectors: rank(A) = 3
+dim(Null(A)) = 3
+
+==================================================
+
+An eigenvector of A is a non-zero vector:
+Av = λv
+eigenvalue is the scalar λ corresponding to the eigenvector for example:
+(using | to denote next row to save space)
+
+Av = [
+	2  2
+	2 -1
+] ⋅ [1|-2] = [-2|4]
+= (-2) ⋅ [1|-2]
+= -2v
+
+v = [1|-2] is the eigenvector
+λ = -2 is the eigenvalue (the multiple of the final results)
+
+example:
+Av = [
+	1 3
+	3 1
+] ⋅ [1|1] = [4|4]
+= 4v
+v eigenvector, eigenvalue λ = 4
+
+example:
+Av = [
+	-1 8
+	-1 -7
+]⋅[-4|1] = [12|-3]
+= (-3)⋅[-4|1]
+= -3v
+v eigenvector, eigenvalue λ = -3
+
+example:
+Av = [
+	-1 -6
+	-3  2
+]⋅[-1|1] = [-5|5]
+= (5)⋅[-1|1]
+= 5v
+v eigenvector, eigenvalue λ = 5
+
+unknown value given an eigenvector and eigenvalue:
+A = [
+	2 1
+	1 2
+][1|2c]
+λ = 6c is [1|2c]
+= [
+	2 + 2c
+	1 + 4c
+] = [6c|12c^2]
+= {
+	2 + 2c = 6c
+	1 + 4c = 12c^2
+}
+solving c in first equation:
+c = 1/2
+substitution into second:
+1 + 4(1/2) = 12(1/2)^2
+3 = 3
+
+example:
+λ = 2k + 1
+A = [
+	1 5
+	4 0
+]
+v = [
+		5
+	3k - 2
+]
+
+Av = λv
+[
+	1 5
+	4 0
+][
+		5
+	3k - 2
+]
+=
+(2k + 1)[
+		5
+	3k - 2
+]
+
+Next step:
+[
+	5 + 5(3k - 2)
+			20
+] = [
+			5(2k + 1)
+	(2k + 1)(3k - 2)
+]
+
+Next step:
+[
+	-5 + 15k
+		20
+] = [
+	10k + 5
+	6k^2 - k - 2
+]
+= {
+	-5 + 15k = 10k + 5
+	20 = 6k^2 - k - 2
+}
+-5 + 15k = 10k + 5
+5k = 10
+k = 2
+
+substitute:
+20 = 6(2)^2 - (2) - 2
+20 = 20
+final solution to the system is k = 2
+
+example:
+[
+	-2 -1
+	 4  3
+][
+	4
+ -2c
+]
+=
+(2)[
+	4
+ -2c
+]
+
+=
+[
+	-8 + 2c
+	16 - 6c
+] = [
+	8
+	-4c
+]
+= {
+	-8 + 2c = 8
+	16 - 6c = -4c
+}
+2c = 16
+c = 8
+16 - 6(8) = -4(8)
+-32 = -32
+final answer: c = 8
+
+Any non-zero multiple of an eigenvector is again an eigenvector, and the corresponding eigenvalue is the same
+
+there should be at least one non-zero vector v that lies in Null(A - λI), the null space of the matrix: A - λI
+Av = λv
+Av - λv = 0
+Av - λIv = 0
+(A - λI)v = 0
+
+The invertible matrix theorem tells us that the matrix A - λI must be singular meaning det(A - λI) = 0
+
+This is called the characteristic equatiion:
+First matrix A - λI:
+A - λI = [
+	2  5
+ -1 -4
+] - λ[
+	1 0
+	0 1
+]
+= [
+	2-λ   5
+  -1  -4-λ
+]
+then solve the characteristic equation det(A - λI) = 0
+|2-λ  5 |
+|-1 -4-λ| = 0
+(2 - λ)(-4 - λ) - 5 ⋅ (-1) = 0
+-8 - 2λ + 4λ + λ^2 + 5 = 0
+λ^2 + 2λ - 3 = 0
+(λ + 3)(λ - 1) = 0
+eigenvalues are: λ = -3, λ = 1
+
+Characteristic equations:
+example:
+[
+	5-λ   3
+	 0   5-λ
+]
+(5-λ)(5-λ) - 3 * 0 = 0
+25 - 5λ - 5λ + λ^2 = 0
+λ^2 - 10λ + 25 = 0
+
+example:
+[
+	2-λ   2
+	 -8   -6-λ
+]
+(2-λ)(-6-λ) - 2 * (-8) = 0
+-12 - 2λ + 6λ + λ^2 + 16 = 0
+λ^2 + 4λ + 4 = 0
+
+The characteristic equation of any 2x2 matrix A is always a quadratic equation, which implies that A has at most 2 eigenvalues. Possible cases:
+* Two distinct real eigenvalues
+* One repeated real eigenvalue (or two eigenvalues that are the same)
+* No real eigenvalues (or two complex eigenvalues)
+
+computing eigenvalues of matrix with two distinct eigenvalues:
+A - λI = [
+	10-λ  3
+	  6  7-λ
+]
+det(A - λI) = 0
+|10-λ 3|
+|6  7-λ| = 0
+(10-λ)(7-λ) - 3 * 6 = 0
+70 - 7λ - 10λ + λ^2 - 18 = 0
+λ^2 - 17λ + 52 = 0
+
+using the quadratic formula to find the eigenvalues:
+
+λ = (17 +/- sqrt((-17)^2 - 4 * 1 * 52))/2 * 1
+= (17 +/- sqrt(81))/2
+= (17 +/- 9)/2
+= 13, 4
+eigenvalues are λ = 13, and λ = 4
+
+example:
+(excluding matrix to save space)
+(-4-λ)(7-λ) - 2 * 6 = 0
+-28 + 4λ - 7λ + λ^2 - 12 = 0
+λ^2 - 3λ - 40 = 0
+
+λ = (3 +/- sqrt((-3)^2 - 4 * 1 * 40))/2 * 1
+= (3 +/- sqrt(169))/2
+= (3 +/- 13)/2
+= 8, -5
+eigenvalues are λ = 8, and λ = -5
+
+example:
+(-6-λ)(2-λ) - 3 * 3 = 0
+-12 + 6λ - 2λ + λ^2 - 9 = 0
+λ^2 + 4λ - 21 = 0
+
+λ = (-4 +/- sqrt((4)^2 - 4 * 1 * (-21)))/2 * 1
+= (-4 +/- sqrt(100))/2
+= (-4 +/- 10)/2
+λ = 3, λ = -7
+
+example:
+(-6-λ)(-10-λ) - (-3) * 2 = 0
+60 + 6λ + 10λ + λ^2 + 6 = 0
+λ^2 + 16λ + 66 = 0
+
+λ = (-16 +/- sqrt((16)^2 - 4 * 1 * (66)))/2 * 1
+((16)^2 - 4 * 1 * (66)) isolating
+= 256 - 254
+= -8 its < 0 therefore no real eigenvalues
+
+example:
+(3-λ)(1-λ) - 1 * (-1) = 0
+3 - 3λ - λ + λ^2 + 1 = 0
+λ^2 - 4λ + 4 = 0
+(λ - 2)(λ - 2)
+(λ - 2)^2
+one eigenvalue (double root) λ = 2
+
+
+eigenvalues of a tiangular/diagonal matrix
+A - λI = [
+	3-λ 		0
+	 9  -2sqrt(3)-λ
+]
+(3 - λ)(-2sqrt(3) - λ) - 9 * 0 = 0
+(λ - 3)(λ + 2sqrt(3)) = 0
+λ = 3 and λ = -2sqrt(3)
+the eigenvalues are the entries on the main diagonal. The eigenvalues of a triangular or diagonal matrix are always given by the entries on the main diagonal
+
+For a general matrix (which is neither triangular nor diagonal), probably isn't the case
+
+example:
+[
+	sqrt(3) 0
+	  4     2
+]
+(sqrt(3) - λ)(2 - λ) - 0 * 4 = 0
+(sqrt(3) - λ)(2 - λ) = 0
+λ = sqrt(3) and λ = 2
+
+example:
+[
+	sqrt(2)  0
+   	0  -sqrt(3)  
+]
+(sqrt(2) - λ)(-sqrt(3) - λ) - 0 * 0 = 0
+(λ - sqrt(2))(λ + sqrt(3))
+λ = sqrt(2) and λ = -sqrt(3)
+
+==================================================
+
+calculating eigenvector from an eigenvalue if v = [a|b] is an eigenvector of A = [2 5|-1 -4] that has the eigenvalue λ = 1 what is b/a
+we need to find non-zero solutions of the matrix equation:
+(A - λI)x = 0
+in this example λ = 1
+A - λI = [
+	 2  5
+	-1 -4 
+] - [
+	1 0
+	0 1
+] = [
+	 1  5
+	-1 -5
+]
+= {
+	x1 + 5x2 = 0
+ 	-x1 - 5x2 = 0
+}
+[
+	 1  5 | 0
+	-1 -5 | 0
+]
+R2 := R2 + R1
+[
+	1 5 | 0
+	0 0 | 0
+]
+(first column pivot, x2 free)
+x1 + 5x2 = 0  =>  x1 = -5x2
+= [
+	-5x2
+	 x2
+]
+for instance x2 = -1 we get the eigenvector:
+v = [a|b] = [5|-1]
+b/a = -1/5
+
+example:
+λ = 3
+what is the value of b/a
+A - 3I = [
+	1 -2
+	-2 1
+] - 3[
+	1 0
+	0 1
+] = [
+	-2 -2
+	-2 -2
+]
+= {
+	-2x1 - 2x2 = 0
+	-2x1 - 2x2 = 0
+}
+[
+	-2 -2 | 0
+	-2 -2 | 0
+]
+R2 := R2 + (-1)R1
+[
+	-2 -2 | 0
+	 0  0 | 0
+]
+-2x1 - 2x2 = 0  =>  x1 = -x2
+[
+	-x2
+	x1
+]
+setting x2 = 1 we get the eigenvector
+[
+	-1
+	 1
+]
+1/-1 = -1
+
+example:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
