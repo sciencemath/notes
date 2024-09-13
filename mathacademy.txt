@@ -4693,26 +4693,554 @@ setting x2 = 1 we get the eigenvector
 1/-1 = -1
 
 example:
+what is the eigenvector of A if v = [a|b]
+λ = 5 what is the value of a/b
+A - 5I = [
+	 7  5
+	-4 -5
+] - 5[
+	1 0
+	0 1
+] = [
+	 2   5
+	-4 -10
+]
+= {
+	2x1 + 5x2 = 0
+	-4x1 - 10x2 = 0
+}
+= [
+	 2   5 | 0
+	-4 -10 | 0
+]
+R2 := R2 + (2)R1
+[
+	 2   5 | 0
+	 0   0 | 0
+]
+2x1 + -5x2 = 0  =>  x1 = -5/2x2
+[
+	-5/2x2
+	  x2
+]
+setting x2 = 2 we get the following eigenvector:
+v = [a|b] = [-5|2]
+a/b = -5/2
 
+finding the eigenvector of A
+λ = 0
+A = [
+	-6 4
+	-3 2
+] - 0[
+	1 0
+	0 1
+] = [
+	-6 4
+	-3 2
+]
+= {
+	-6x1 + 4x2 = 0
+	-3x1 + 2x2 = 0
+}
+= [
+	-6 4 | 0
+	-3 2 | 0
+]
+R2 := R2 + (-1/2)R1
+[
+	-6 4 | 0
+	 0 0 | 0
+]
+-6x1 + 4x2 = 0
+-6x1 = -4x2
+x1 = 4/6x2
+x1 = 2/3x2
+[
+	2/3x2
+	 x2
+]
+setting x2 = 3 we get the eigenvector:
+[
+	2
+	3
+]
 
+example:
+λ = -3
+A = [
+	7 -10
+	2 -5
+] - (-3)[
+	1 0
+	0 1
+] = [
+	10 -10
+	2 -2
+]
+[
+	10 -10 | 0
+	2  -2  | 0
+]
+R2 := R2 + (-1/5)R1
+[
+	10 -10 | 0
+	0   0  | 0
+]
+10x1 = 10x2
+x1 = x2
+[
+	x2
+	x2
+]
+setting x2 = 1 we get the eigenvector:
+[
+	1
+	1
+]
 
+given a matrix A with an eigenvalue λ, the eigenspace V_λ can be defined as the set of all possible eigenvetors corresponding to λ plus the vector 0:
 
+V_λ = {the eigenvetors corresponding to λ} U {0}
 
+The eigenspace consists of all (not only non-zero) solutions of the equation (A - λI)x = 0, the eigenspace can also be viewed as the null space of the matrix A - λI:
 
+V_λ = Null(A - λI)
 
+Eigenvectors that correspond to different eigenvalues are always linearly independent
 
+finding two linearly independent eigenvectors:
+λ = 1 and λ = -4 
 
+for λ = 1
+A - λI = [
+	1 -1
+	0 -4
+] - 1[
+	1 0
+	0 1
+] = [
+	0 -1
+	0 -5
+]
+[
+	0 -1 | 0
+	0 -5 | 0
+]
+R2 := R2 + (-5)R1
+[
+	0 -1 | 0
+	0  0 | 0
+]
+(second column is the pivot so x1 is free)
+x2 = 0
+[
+	x1
+	0
+]
+setting x1 = 1 we get eigenvector v1 = [1|0]
+for λ = -4
+A - λI = [
+	1 -1
+	0 -4
+] - (-4)[
+	1 0
+	0 1
+] = [
+	5 -1
+	0 0
+]
+[
+	5 -1 | 0
+	0  0 | 0
+]
+(x2 is free)
+x1 = 1/5x2
+[
+	1/5x2
+	 x2
+]
+setting x2 = 5 we get eigenvector v2 = [1|5]
 
+example:
+λ = -3 and λ = 4 
 
+λ = -3
+A = [
+	-10 -7
+	 14 11
+] - (-3)[
+	1 0
+	0 1
+] = [
+	-7 -7
+	14 14
+]
+[
+	-7 -7 | 0
+	14 14 | 0
+]
+R2 := R2 + (2)R1
+[
+  -7 -7 | 0
+	0   0 | 0
+]
+(x2 free)
+x1 = -x2
+[
+	-x2
+	 x2
+]
+setting to x2 = 1 we get eigenvector v1 = [-1|1]
+λ = 4
+A = [
+	-10 -7
+	 14 11
+] - 4[
+	1 0
+	0 1
+] = [
+	-14 -7
+	 14  7
+]
+[
+	-14 -7 | 0
+	 14  7 | 0
+]
+R2 := R2 + R1
+[
+	-14 -7 | 0
+	 0   0 | 0
+]
+(x2 free)
+x1 = -1/2x2
+[
+	-1/2x2
+	  x2
+]
+setting x2 = 2 we get eigenvector v2 = [-1|2]
+two linearly independent eigenvectors of matrix A:
+[-1|1] and [-1|2]
 
+example:
+λ = 1 and λ = 5
 
+for λ = 1
+A = [
+	3 2
+	2 3
+] - [
+	1 0
+	0 1
+] = [
+	2 2
+	2 2
+]
+[
+	2 2 | 0
+	2 2 | 0
+]
+R2 := R2 - R1
+[
+	2 2 | 0
+	0 0 | 0
+]
+(x2 free)
+x1 = -x2
+[
+	-x2
+	 x2
+]
+we can set x2 = 1 eigenvector: [-1|1]
 
+for λ = 5
+A = [
+	3 2
+	2 3
+] - 5[
+	1 0
+	0 1
+] = [
+	-2  2
+	 2 -2
+]
+[
+	-2  2 | 0
+	 2 -2 | 0
+]
+R2 := R2 + R1
+[
+	-2  2 | 0
+	 0  0 | 0
+]
+(x2 free)
+[
+	x2
+	x2
+]
+setting x2 = 1, we get eigenvector v2 = [1|1]
+two linearly independent eigenvectors of matrix A:
+[-1|1], [1|1]
 
+The determinant of a triangular or diagonal matrix is given by the product of the elements on the main diagonal, calculating eigenvlaues of a 3x3 matrix:
+determine all real eigenvalues λ of A
 
+A = [
+	-9 4  8
+	 0 9 -7
+]
+A - λI = [
+	-9-λ 4   8
+	 0  9-λ -7
+	 0   0  6-λ
+]
+the characteristic equation is det(A - λI) = 0
+The determinant or diagonal matrix is given by the product of entries on the main diagonal:
+(-9 - λ)(9 - λ)(6 - λ) = 0
+(λ + 9)(λ - 9)(λ - 6) = 0
+eigenvalues are λ1 = -9, λ2 = 9, λ3 = 6
 
+example:
+find the characteristic equation
+[
+	-3 2 -1
+	 5 2  3
+	 0 0  1
+]
+A - λI = [
+	-3-λ  2  -1
+	 5   2-λ  3
+	 0    0  1-λ
+]
+expanding the determinant across the 3rd row:
+(1 - λ)| -3-λ  2 |
+       |   5  2-λ| = 0
 
+(1 - λ)((-3 - λ)(2 - λ) - 2*5) = 0
+(1 - λ)(λ^2 + λ - 16) = 0
 
+example:
+find all real eigenvalues of λ
+A = [
+	 3  0 0
+	 1 -2 0
+	-2  3 4
+]
+A - λI = [
+	3-λ  0   0
+	1  -2-λ  0
+	-2   3  4-λ
+]
+(3 - λ)(-2 - λ)(4 - λ) = 0
+(λ - 3)(λ + 2)(λ - 4) = 0
+λ1 = -2, λ2 = 3, λ3 = 4
 
+The algebraic multiplicity of an eigenvalue λ is the number of times it is a solution of the characteristic equation. 6x6 matrix A with the characteristic equation:
+(λ - 4)(λ - 4)(λ - 1)(λ + 8)^3 = 0
+eigenvalue λ = 4 is a double root, it has algebraic multiplicity = 2
+λ = 1 has algebraic multiplicity 1
+λ = -8 has a algebraic multiplicity of 3
+
+Eigenvalues of 4x4 matrix containing a block of zeros
+P = [
+	3  0 -8 -2
+	0 -1  3  5
+	0  0  4  0
+	0  7 -3  1
+]
+P - λI = [
+	3-λ  0  -8  -2
+	0  -1-λ  3   5
+	0    0  4-λ  0
+	0    7  -3  1-λ
+]
+
+we can expand 4x4 determinant across the 1st column:
+[
+	3-λ  0  -8  -2
+	0  -1-λ  3   5
+	0    0  4-λ  0
+	0    7  -3  1-λ
+]
+       |-1-λ  3   5 |
+(3 - λ)|  0  4-λ  0 | = 0
+       |  7  -3  1-λ|
+
+now we can expand 3x3 determinant across 2nd row:
+
+(3 - λ)(4 - λ)|-1-λ  5 |
+              |  7  1-λ| = 0
+
+(3 - λ)(4 - λ)((-1 - λ)(1 - λ) - 35) = 0
+(3 - λ)(4 - λ)(λ^2 - 36) = 0
+(λ - 3)(λ - 4)(λ - 6)(λ + 6) = 0
+
+eigenvalues of P are λ = 3, λ = 4, λ = 6, λ = -6
+all with algebraic multiplicity 1
+
+example:
+P = [
+	 -1  -9 -18 -3
+	  0 -10   0  0
+	  0   0 -10  0
+	-18  18 -36 -4
+]
+P - λI = [
+	-1-λ  -9  -18 -3
+	  0 -10-λ   0  0
+	  0   0  -10-λ 0
+	-18 18   -36 -4-λ
+]
+we can expand 4x4 determinant across the 2nd row:
+			 |-1-λ  -18  -3 |
+(-10-λ)| 0  -10-λ   0 | = 0
+			 |-18  -36  -4-λ|
+
+expanding the 3x3 detereminant across the 2nd row:
+
+(-10-λ)(-10-λ) |-1-λ -3 |
+							 |-18 -4-λ| = 0
+
+(-10 - λ)^2((-1 - λ)(-4 - λ) - 54) = 0
+(10 + λ)^2(λ^2 + 5λ - 50) = 0
+(10 + λ)^2(λ + 10)(λ - 5) = 0
+(10 + λ)^3(λ - 5) = 0
+eigenvalues are λ = -10 with AM 3 (alegraic multiplicity) and λ = 5
+
+eigenvalues of a general 3x3 matrix:
+A = [
+	1 -1 -2
+	-1 1 -2
+	-2 -2 -7
+]
+A - λI = [
+	1-λ  -1   -2
+	 -1 1-λ   -2
+	 -2  -2 -7-λ
+]
+expanding the determinant across the 1st row:
+
+(1-λ)|1-λ -2 |-(-1)|-1   -2|+(-2)|-1 1-λ|
+	   |-2 -7-λ|     |-2 -7-λ|     |-2  -2| = 0
+
+(-λ^2 - 5λ^2 + 17λ - 11)+(3 + λ)-2(4 - 2λ) = 0
+-λ^3 - 5λ^2 + 22λ - 16 = 0
+λ^3 + 5λ^2 - 22λ + 16 = 0
+
+now we need to solve this equation, we find the first root by testing values. According to the rational zeros theorem, a list of good first guesses consists of all divisors of 16:
++/-1, +/-2, +/-4, +/-8, +/-16
+
+picking x = 1:
+(1)^3 + 5(1)^2 - 22(1) + 16 = 0
+
+λ = 1 is a root of the equation. We can factor (λ - 1) out of λ^3 + 5λ^2 - 22λ + 16 using synthetic division:
+
+1 | 1 5 -22  16
+  |   1   6 -16
+  |____________
+    1 6 -16  0
+
+factorization:
+(λ - 1)(λ^2 + 6λ - 16) = 0
+(λ - 1)(λ - 2)(λ + 8) = 0
+λ1 = 1, λ2 = 2, λ3 = -8
+
+example:
+(finding eigenvalues)
+A = [
+	 4  2  1
+	-2 -1 -2
+	 2  2  3
+]
+A - λI = [
+	 4-λ  2  1
+	 -2 -1-λ -2
+	  2   2  3-λ
+]
+expanding the determinant across the 1st row:
+
+(4-λ)|-1-λ -2|-2|-2 -2|+(1)|-2 -1-λ|
+	   | 2  3-λ|  |2 3-λ|    |2     2| = 0
+
+expanding first part:
+(4 - λ)((-1 - λ)(3 - λ) - (-2)(2))
+(4 - λ)(-3 + λ - 3λ + λ^2 + 4)
+-12 + 4λ - 12λ + 4λ^2 + 16 + 3λ - λ^2 + 3λ^2 - λ^3 - 4λ
+-λ^3 + 6λ^2 - 9λ + 4
+
+expanding second part:
+((-2)(3 - λ) - (-2)(2))
+(-6 + 2λ + 4)
+-2(-2 + 2λ)
+
+expanding third part:
+((-2)(2) - (-1-λ)(2))
++(-4 + 2 + 2λ)
++(-2 + 2λ)
+
+altogether:
+(-λ^3 + 6λ^2 - 9λ + 4) - 2(-2 + 2λ) + (-2 + 2λ) = 0
+
+combining like terms (with multiplying the 2):
+-λ^3 + 6λ^2 - 11λ + 6 = 0
+λ^3 - 6λ^2 + 11λ - 6 = 0
+
+test values that are divors of 6:
++/-1, +/-2, +/-3, +/-6
+
+lets pick x = 1
+(1)^3 - 6(1)^2 + 11(1) - 6 = 0
+
+λ = 1 is a root, so factor out (λ - 1) from λ^3 - 6λ^2 + 11λ - 6
+using synthetic division
+
+1 | 1 -6 11 -6
+  |    1 -5  6
+  |____________
+    1 -5  6  0
+
+(λ - 1)(λ^2 - 5λ + 6) = 0
+(λ - 1)(λ - 2)(λ - 3) = 0
+λ1 = 1, λ2 = 2, λ3 = 3
+
+example:
+(finding characteristic)
+A = [
+	 0 -2 -3
+	-2  3  6
+	 2 -2 -5
+]
+A - λI = [
+	 0-λ -2 -3
+	 -2  3-λ  6
+	  2  -2 -5-λ
+]
+(0-λ)|3-λ   6 |-(-2)|-2  6 |+(-3)|-2 3-λ|
+	   | -2 -5-λ|     |2 -5-λ|     |2   -2| = 0
+
+expanding first:
+((3 - λ)(-5 - λ) - (6)(-2))
+-15 - 3λ + 5λ + λ^2 + 12
+(0 - λ)(λ^2 + 2λ - 3)
+-λ^3 - 2λ^2 + 3λ
+
+expanding second:
+((-2)(-5 - λ) - (6)(2))
+(10 + 2λ - 12)
+2(-2 + 2λ)
+
+(MADE A MISTAKE HERE and below took the wrong cross determinant A - λI)
+(corrected now)
+expanding third:
+((-2)(-2) - (3 - λ)(2))
+-2 + 2λ
+-3(-2 + 2λ)
+
+altogether:
+(-λ^3 - 2λ^2 + 3λ) + 2(-2 + 2λ) - 3(-2 + 2λ) = 0
+λ^3 + 2λ^2 - λ - 2 = 0
+
+^ these are easy to mess up, they take a lot of time and careful persision.
 
 
 
