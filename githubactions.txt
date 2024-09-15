@@ -165,8 +165,6 @@ jobs:
 
 
 
-
-
 # Dependent Jobs:
 jobs:
   job1:
@@ -174,6 +172,84 @@ jobs:
     needs: job1
   job3:
     needs: [job1, job2]
+
+
+# Add script to workflow:
+jobs:
+  example-job:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./scripts
+    steps:
+      - name: Check out the repository to the runner
+        uses: actions/checkout@v4
+      - name: Run a script
+        run: ./my-script.sh
+      - name: Run another script
+        run: ./my-other-script.sh
+# you can write bash scripts here that would save a lot of inline code
+
+
+you can use for checking out github packages
+uses: docker/login-action
+uses: docker/metadata-action
+uses: docker/build-push-action
+
+running and connecting to postgres service as a service container
+jobs:
+  container-job:
+    runs-on: ubuntu-latest
+    container: node:10.18-jessie
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+      - name: Install dependencies
+        run: npm ci
+      - name: Connect to PostgreSQL
+        run: node client.js
+        env:
+          POSTGRES_HOST: postgres
+          POSTGRES_POST: 5432
+
+
+
+to use cache to commonly used files:
+npm/yarn/nnpm - setup-node
+pip/pipenv/poetry - setup-python
+- uses: ruby/setup-ruby@v1
+  with:
+    bundler-cache: true
+
+
+
+if you have a self-hosted runner for github enterprise
+you have to specify an IP Allowlists
+
+create an action.yml for inputs and outputs
+
+
+
+
+
+
+
+
+
+
+
 
 
 
