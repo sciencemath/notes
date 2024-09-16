@@ -1,0 +1,38 @@
+Calculating dot product:
+u = [
+	7
+	5
+   -9
+	3
+]
+v = [
+	1
+	2
+   -5
+   -2
+]
+and v⋅v = 34, what is (u⋅2v)/(3v⋅v)
+we compute u⋅v first then multiply the result by 2:
+u⋅2v = 2(u⋅v)
+= 2(u1⋅v1 + u2⋅v2 + u3⋅v3 + u4⋅v4)
+= 2(7⋅1 + 5⋅2 + (-9)⋅(-5) + 3⋅(-2))
+= 2(7+10+45-6)
+= 2⋅56
+= 112
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

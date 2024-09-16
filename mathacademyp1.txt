@@ -1,3 +1,24 @@
+Set Theory
+Set Operations
+Properties of Sets
+Vector Geometry
+Hyperbolic functions
+
+Determinants
+Guaussian Elimation
+Inverse matrix
+affine transformations
+
+vectors in N-Dimensional space
+subspaces of N-Dimensional space
+basis of N-Dimensional space
+dimension and Rank in N-Dimensional Space
+
+Eigenvectors and Eigenvalues
+Diagonalization
+
+-------------------------------------------------
+
 Vecotr equation of straight line passing through P and parallel to v:
 r = p + tv
 
@@ -7329,22 +7350,397 @@ P = [
 	sqrt(2)/2 sqrt(2)/2
 ]
 
+If there are repeated eigenvalues, the eigenvectors might not be orthogonal.
 
+example:
+Whats the third column of P?
+P = [
+	sqrt(3)/3  sqrt(2)/2 *
+	sqrt(3)/3    0       *
+	sqrt(3)/3 -sqrt(2)/2 *
+]
+norm of third column is 1:
+[
+	sqrt(6)/6
+	-sqrt(6)/3
+	sqrt(6)/6
+]
+= sqrt((sqrt(6)/6)^2 (-sqrt(6)/3)^2 (sqrt(6)/6)^2)
+[
+	1/6
+	2/3
+	1/6
+] = 6/6 = sqrt(1) = 1
+third column must be orthogonal to the first and second columns:
 
+example:
+Whats the third column of P?
+P = [
+	sqrt(2)/2  sqrt(2)/2 *
+		 0 					0      *
+	sqrt(2)/2 -sqrt(2)/2 *
+]
+=
+[
+	 0
+	-1
+	 0
+]
 
+Review:
+A is symmetric and D is diagonal, therefore D = P^TAP orthogonal of diagonalization of A
 
+example:
+find the third column of matrix P
+(COME BACK, not sure how the answer got here)
+λ3 = 4
+A - 4I = [
+	 1  1 -1
+	 1  1 -1
+	-1 -1  3
+] - 4[
+	1 0 0
+	0 1 0
+	0 0 1
+] = [
+	-3  1 -1
+	 1 -3 -1
+	-1 -1 -1
+]
+non-zero solution of (A - 4I)x = 0 eigenvector:
+v3 = [-1 | -1 | 2]
+v3/||v3|| = 1/sqrt(6)[-1|-1|2] = [
+	-sqrt(6)/6
+	-sqrt(6)/6
+	sqrt(6)/3
+]
 
+example:
+find the third column in P
+D = [
+	0 0 0
+	0 1 0
+	0 0 3
+]
+A = [
+	 1 -1 0
+	-1  2 1
+	 0  1 1
+] - 3[
+	1 0 0
+	0 1 0
+	0 0 1
+] = [
+	-2 -1  0
+	-1 -1  1
+	 0  1 -2
+]
+R1 := -1/2R1
+[
+	 1 1/2 0 | 0
+	-1 -1  1 | 0
+	 0  1 -2 | 0
+]
+R2 := R2 + R1
+[
+	 1 1/2  0 | 0
+	 0 -1/2 1 | 0
+	 0  1  -2 | 0
+]
+R3 := R3 + 2R2
+[
+	 1 1/2  0 | 0
+	 0 -1/2 1 | 0
+	 0  0   0 | 0
+]
+R2 := (-2)R2
+[
+	 1 1/2  0 | 0
+	 0  1  -2 | 0
+	 0  0   0 | 0
+]
+x2 - 2x3 = 0
+x2 = 2x3
+x1 + 1/2(2x3) = 0
+x1 + x3 = 0
+x1 = -x3
+setting x3 to 1
+v3 = [-1 | 2 | 1]
+||v3|| = sqrt(6)
+v3/||v3|| = 1/sqrt(6)[-1|2|1] = [
+	-sqrt(6)/6
+	sqrt(6)/3
+	sqrt(6)/6
+]
+^ third column of P
 
+example:
+find the third column of P
+D = [
+	-3  0 0
+	 0 -3 0
+	 0  0 0
+]
+A = [
+	-2  1  1
+	 1 -2  1
+	 1  1 -2
+] - 0[
+	1 0 0
+	0 1 0
+	0 0 1
+] = [
+	-2  1  1
+	 1 -2  1
+	 1  1 -2
+]
+R1 := -1/2R1
+[
+	 1  -1/2 -1/2 | 0
+	 1    -2  1   | 0
+	 1     1 -2   | 0
+]
+R2 := R2 + (-1)R1
+[
+	 1  -1/2 -1/2 | 0
+	 0  -3/2  3/2 | 0
+	 1     1   -2 | 0
+]
+R3 := R3 + (-1)R1
+[
+	 1  -1/2 -1/2 | 0
+	 0  -3/2  3/2 | 0
+	 0   3/2 -3/2 | 0
+]
+R2 := -3/2R2
+[
+	 1  -1/2 -1/2 | 0
+	 0    1   -1  | 0
+	 0   3/2 -3/2 | 0
+]
+R3 := R3 + (-3/2)R2
+[
+	 1  -1/2 -1/2 | 0
+	 0    1    -1 | 0
+	 0    0     0 | 0
+]
+x2 - x3 = 0
+x2 = x3
+x1 - 1/2(x3) - 1/2x3 = 0
+x1 - x3 = 0
+x1 = x3
+setting x3 to 1 we get
+[
+	1
+	1
+	1
+]
+||v3|| = sqrt(3) dividing by norm:
+v3/||v3|| = 1/sqrt(3)[1 | 1 | 1] = [
+	sqrt(3)/3
+	sqrt(3)/3
+	sqrt(3)/3
+]
 
+if A has mutually distinct eigenvalues, the eigenvectors will automatically be orthogonal, so we only need to normalize them
 
+if A has repeated eigenvalues, then eigenvectors corresponding to these repeated eigenvalues may not be orthogonal. Then we have to apply the Gram-Schmidt process to obtian orthogonal vectors.
 
+example:
+A = [
+	 2 -2 2
+	-2  2 2
+	 2  2 2
+]
+λ1 = 4, λ2 = 4, λ3 = -2
+eigenvectors:
+v1 = [-1|1|0], v2 = [1|0|1], v3 = [-1|-1|1]
+v1 and v2 are not orthogonal 
+(the dot product = -1)
 
+Lets proceed with Gram-Schmidt process:
+e1 = v1= [
+	-1
+	 1
+	 0
+]
+find e2 as follows:
+e2 = v2 - (v2 * e1)/(e1 * e1)e1
+= v2 - 1/2e1
+= [
+	1
+	0
+	1
+] - (-1/2)[
+	-1
+	 1
+	 0
+] = [
+	1/2
+	1/2
+	 1
+]
+Vectors e1, e2 and v3 form an orthogonal basis of R^3. Dividing each eigenvector by its norm, we get the unit orthogonal eigenvectors:
+u1 = e1/||e1|| = [
+	-sqrt(2)/2
+	 sqrt(2)/2
+	     0
+]
+u2 = e2/||e2|| = [
+	sqrt(6)/6
+	sqrt(6)/6
+  sqrt(6)/3
+]
+u3 = e3/||e3|| = [
+	-sqrt(3)/3
+	-sqrt(3)/3
+	sqrt(3)/3
+]
+D = [
+	4 0  0
+	0 4  0
+	0 0 -2
+]
+(using the vars here to save space)
+P = [u1 | u2 | u3]
 
+example:
+first and second columns of P:
+D = [
+	4 0 0
+	0 4 0
+	0 0 9
+]
+A = [
+	4  0  0
+	0  5 -2
+	0 -2  8
+] - 4[
+	1 0 0
+	0 1 0
+	0 0 1
+] = [
+	0  0  0
+	0  1 -2
+	0 -2  4
+]
+(x1 is free)
+x2 = 2x3
+-2(2x3) + 4x3 = 0
+-4x3 + 4x3 = 0
+x3 = 1
+x2 = 2 (substitution)
+solution space
+[
+	x1
+	2x3
+	x3
+]
+x1 can be any value, typically choose 0
+v1 = [
+	0
+	2
+	1
+]
+we can also set x1 to be 1 and we find another eigenvector:
+v2 = [
+	1
+	0
+	0
+]
+v1 and v2 are orthogonal, so just divide by norm
+v1/||v1|| = 1/1[1 | 0 | 0] = [
+	1
+	0
+	0
+]
+v2/||v2|| = 1/sqrt(5)[0 | 2 | 1] = [
+	    0
+	2sqrt(5)/5
+	 sqrt(5)/5
+]
 
+example:
+find the first and second columns of P
+D = [
+	-3 0 0
+	0 -3 0
+	0  0 0
+]
+A = [
+	-2  1  1
+	 1 -2  1
+	 1  1 -2
+] -(-3)[
+	1 0 0
+	0 1 0
+	0 0 1
+] = [
+	1 1 1
+	1 1 1
+	1 1 1
+]
+x1 + x2 + x3 = 0
+since this subspace can be many solutions
+we can pick any values
 
+x1 = -1 (choosing)
+x2 = 0 (choosing)
 
+-1 + 0 + x3 = 0
+x3 = 1
+v1 = [
+	-1
+	0
+	1
+]
 
+x1 = -1 (choosing)
+x2 = 1 (choosing)
 
+-1 + 1 + x3 = 0
+x3 = 0
+v2 = [
+	-1
+	1
+	0
+]
+we know if we choose the right eigenvectors by confirming with the
+resulting A-(-3)I matrix:
+[
+	1(-1)+1(1)+1(0)
+	1(-1)+1(1)+1(0)
+	1(-1)+1(1)+1(0)
+] = [0 | 0 | 0]
+(must all equal zero)
+
+these are not orthoginal so we proceed with the Gram-Schmidt process:
+e1 = v1 = [-1 | 0 | 1]
+e2 = v2 - (v2 * e1)/(e1 * e1)e1
+= v2 - 1/2e1
+= [
+	-1
+	1
+	0
+] - 1/2[
+	-1
+	0
+	1
+] = [
+	-1/2
+	  1
+  -1/2
+]
+e1/||e1|| = 1/sqrt(2)[-1 | 0 | 1] = [
+	-sqrt(2)/2
+	    0
+	 sqrt(2)/2
+]
+e2/||e2|| = 1/sqrt(3/2)[-1/2 | 1 | -1/2] = [
+	-sqrt(6)/6
+	sqrt(6)/3
+	-sqrt(6)/6
+]
 
 
 
