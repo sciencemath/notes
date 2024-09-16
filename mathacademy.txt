@@ -6799,11 +6799,6 @@ D = [
 
 example:
 find missing values (a,b) then a/b
-A = [
-	10  -7  5
-	16 -12 10
-	 8  -7  7
-]
 D = [
 	1 0 0
 	0 2 0
@@ -6814,7 +6809,6 @@ P = [
 	2  0 b
 	1  8 0
 ]
-
 A = [
 	10  -7  5
 	16 -12 10
@@ -6914,7 +6908,6 @@ D = [
 	0 1  0
 	0 0 -1
 ]
-
 A = [
 	1  0 0
 	2 -1 0
@@ -6995,9 +6988,13 @@ R2 := 1/5R2
 	0   2  1 | 0
 	0   0  0 | 0
 ]
-(x3 is free)
-x2 = -1/2x3
-5x1 = 1/2 - x3
+5x1 + x2 + x3 = 0
+2x2 + x3 = 0
+x3 = -2x2
+5x1 + x2 - 2x2 =0
+5x1 - x2 = 0
+x2 = 5x1
+x3 = -10x1
 v3 = [
 	-1
 	-5
@@ -7008,6 +7005,340 @@ P = [
 	0 -1 -5
 	0  1 10
 ]
+
+==================================================
+
+A square matrix A is symmetric if it is equal to its transpose:
+A^T = A
+
+An nxn matrix is symmetric if a_ij = a_ji for all 1 <= i,j <= n
+
+this really means that it is symmetric across its main diagonal
+
+examples:
+P is symmetric P = P^T
+P = [
+	 1 -6
+	-6  1
+]
+Q is symmetric Q = Q^T
+Q = [
+	0 3
+	3 0
+]
+P is symmetric P = P^T
+P = [
+	2  0  1
+	0 -3 -2
+	1 -2  1
+]
+R is symmetric R = R^T
+R = [
+	5  8
+	8 -5
+]
+
+if A is a symmetric matrix:
+-A is symmetric
+A^m is symmetric for any positive integer m
+A^-1 is symmetric for nonsingular A
+
+if A and B are nxn symmetric matrices:
+A + B is symmetric
+A ⋅ B is not always symmetric, example:
+A = [
+	0 1
+	1 0
+] ⋅ B = [
+	1 1
+	1 0
+] = [
+	1 0
+	1 1
+]
+NOT symmetric ^
+
+to construct symmetric matrices:
+A + A^T is symmetric for any square matrix A
+A^TA and AA^T are symmetric for any matrix A
+
+For any matrix A:
+(A + A)^T = A^T + (A^T)^T
+= A^T + A
+= A + A^T
+
+(AA^T)^T = (A^T)^TA^T
+= AA^T
+
+(A + B)^T = A^T + B^T
+= A + B
+
+(A^-1)^T = (A^T)^-1
+= A^-1
+
+A square matrix A is orthogonally diagonalizable if there exists an orthogonal matrix P such that:
+A = PDP^T
+D = P^TAP (equivalent)
+
+theorem:
+A matrix A with real entries is orthogonally diagonalizable iff it is symmetric
+
+every symmetric matrix is orthogonally diagonalizable
+
+example:
+A = [
+	3  3
+	3 -5
+]
+orthogonally diagonalization:
+(P = [
+	3/sqrt(10)  1/sqrt(10)
+	1/sqrt(10) -3/sqrt(10)
+]
+D = [
+	4  0
+	0 -6
+]
+P^T = [
+	3/sqrt(10)  1/sqrt(10)
+	1/sqrt(10) -3/sqrt(10)
+]) = A
+P is orthogonal and D is diagonal. D are the eigenvalues, and columns of P are orthonormal eigenvectors corresponding to the eigenvalues of A
+
+orthogonal diagonalization is almost the same as the diagonalization of a matrix:
+Step 1: find eigenvalues of A
+Step 2: find a basis of R^2 consisting of unit orthogonal eigenvectors of A
+Step 3: construct the matrices D and P
+
+we must ensure that we normalize the eigenvectors
+
+example:
+what is the first column of P?
+P = [
+	* -sqrt(10)/10
+	* -3sqrt(10)/10
+]
+=
+[
+	3sqrt(10)/10
+	-sqrt(10)/10
+]
+
+example:
+what is the second column of P?
+P = [
+	sqrt(2)/2 *
+	sqrt(2)/2 *
+]
+the second column must be orthogonal to the first column
+the norm of the second column must be equal to 1
+the only vector with these properties:
+[
+	sqrt(2)/2
+	-sqrt(2)/2
+]
+
+example:
+P = [
+	* 3/5
+	* -4/5
+]
+= vector:
+[
+	4/5
+	3/5
+]
+
+example:
+given that D = P^TAP where P is an orthogonal matrix, which of the following could be the second column of the matrix P?
+D = [
+	3  0
+	0 -2
+]
+finding second column of P, use λ = -2
+A = [
+	-1 2
+	 2 2
+] -(-2)[
+	1 0
+  0 1
+] = [
+	1 2
+	2 4
+]
+R2 := R2 + (-2)R1
+[
+	1 2 | 0
+	0 0 | 0
+]
+x1 = -2x2
+[
+	-2x2
+	x2
+] = [
+	-2
+	 1
+]
+||v2|| = sqrt(5) dividing by its norm.
+v2/||v2|| = 1/sqrt(5)[-2 | 1] = [
+	-2sqrt(5)/5
+	sqrt(5)/5
+]
+
+example:
+what is the first column of P?
+D = [
+	4  0
+	0 -2
+]
+A = [
+	 1 -3
+	-3  1
+] - 4[
+	1 0
+	0 1
+] = [
+	-3 -3
+	-3 -3
+]
+R2 := R2 + (-1)R1
+[
+	-3 -3 | 0
+ 	 0  0 | 0
+]
+x1 = -x2
+[
+	-1
+	1
+]
+||v1|| = sqrt(2) dividing by norm:
+v1/||v1|| = 1/sqrt(2)[-1 | 1] = [
+	-sqrt(2)/2
+	sqrt(2)/2
+]
+
+example:
+given: λ1 = 5, λ2 = 10
+find diagonal D and orthogonal P
+D = P^TAP
+D = [
+	5  0
+	0 10
+]
+A = [
+	9 2
+	2 6
+] - 5[
+	1 0
+	0 1
+] = [
+	4 2
+	2 1
+]
+x2 = -2x1
+4x1 = -2(-2x1)
+x1 = 1
+[
+	1
+	-2
+]
+(Answer didn't reduce nor came up with above):
+[
+	-1
+	 2
+]
+v1/||v1|| = 1/sqrt(5)[-1 | 2] = [
+	-1
+]
+A = [
+	9 2
+	2 6
+] - 10[
+	1 0
+	0 1
+] = [
+	-1  2
+	 2 -4
+]
+R2 := 1/2R2
+R2 := R2 + R1
+[
+	-1  2 | 0
+	 0  0 | 0
+]
+x1 = 2x2
+[
+	2
+	1
+]
+v2/||v2 = 1/sqrt(5)[2 | 1] = [
+	2/sqrt(5)
+	1/sqrt(5)
+]
+P = [
+	-1/sqrt(5) 2/sqrt(5)
+	2/sqrt(5) 1/sqrt(5)
+]
+
+example:
+given: λ1 = 4, λ2 = -2
+D = [
+	4  0
+	0 -2
+]
+A = [
+	1 3
+	3 1
+] - 4[
+	1 0
+	0 1
+] = [
+	-3  3
+	 3 -3
+]
+x2 = 1
+x1 = 1
+v1 = [1 | 1]
+v1/||v1|| = 1/sqrt(2)[1 | 1] = [
+	sqrt(2)/2
+	sqrt(2)/2
+]
+A = [
+	1 3
+	3 1
+] -(-2)[
+	1 0
+	0 1
+] = [
+	3 3
+	3 3
+]
+x2 = -x1
+x1 = -(-x1)
+x1 = 1
+I got [1 | -1]
+Answer is (not sure whos wrong):
+v2 = [-1 | 1]
+||v2|| = sqrt(2)
+v2/||v2|| = 1/sqrt(2)[-1 | 1] = [
+	-sqrt(2)/2
+	sqrt(2)/2
+]
+P = [
+	sqrt(2)/2 -sqrt(2)/2
+	sqrt(2)/2 sqrt(2)/2
+]
+
+
+
+
+
+
+
+
+
+
+
 
 
 
