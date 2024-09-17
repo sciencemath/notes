@@ -1,3 +1,8 @@
+NOTE: for vectors or matrices I sometimes use the pipe symbol "|" or "," to denote next row to simply save space.
+
+NOTE: In previous notebooks Ive used S to denote integrate, here ill use: ∫_0^2pi "_" the start of the ingtegral "^" represents end here 0 to 2pi. 
+
+Review:
 Calculating dot product:
 u = [
 	7
@@ -19,6 +24,564 @@ u⋅2v = 2(u⋅v)
 = 2(7+10+45-6)
 = 2⋅56
 = 112
+denominator:
+3v⋅v = 3(v⋅v)
+= 3⋅34
+= 102
+
+(u⋅2v)/(3v⋅v) = 112/102 = 56/51
+
+example:
+u = [
+   -1
+   -3
+   -2
+	1
+]
+v = [
+   -3
+   -1
+   -2
+	2
+]
+u⋅u = 15
+(u⋅(1/2u))/(u⋅(3/4v)) =
+numerator
+u⋅(1/2u) = 1/2(u⋅u)
+= 1/2 ⋅ 15
+= 15/2
+denominator
+u⋅(3/4v) = 3/4(u⋅v)
+3/4((-1)⋅(-3) + (-3)⋅(-1) + (-2)⋅(-2) + 1⋅2)
+3/4(3+3+4+2)
+3/4⋅12
+= 9
+
+example:
+u = [
+   -2
+	3
+	1
+	4
+]
+v = [
+	1
+   -2
+    2
+   -4
+]
+u⋅v = -22, then (u⋅(2v))/(u⋅(5u))
+-44/150
+-22/75
+
+apply properties of the dot product
+(5a + 3b)⋅c + (4b + 2c)⋅d
+c⋅a = 2, b⋅c = -1, b⋅d = 2, d⋅c = 3
+= (5a)⋅c + (3b)⋅c + (4b)⋅d + (2c)⋅d
+= 5(a⋅c) + 3(b⋅c) + 4(b⋅d) + 2(c⋅d)
+= 5(2) + 3(-1) + 4(2) + 2(3)
+= 21
+
+example:
+(3a + b)⋅c + (2b - 2c)⋅d
+c⋅a = 3, c⋅b = -2, b⋅d = -1, d⋅c = 2
+3(a⋅c) + (b⋅c) + 2(b⋅d) - 2(c⋅d)
+= 1
+
+example:
+(5a - 2b)⋅c + (3b)⋅d
+c⋅a = -1, c⋅b = -2, b⋅d = 3
+5(a⋅c) - 2(b⋅c) + 3(b⋅d)
+-5 + 4 + 9
+= 8
+
+==========================================
+
+Review:
+Vector space R^n paired with the dot product is called Euclidean space
+
+for vector x=[x1,x2,x3 ... xn] in R^n, the norm or length:
+||x|| = sqrt(x⋅x) = sqrt(x1^2 + x2^2 + ... + xn^2)
+
+example:
+vector x = [
+	-5
+	12
+]
+||x|| = sqrt((-5)^2 + (12)^2)
+= sqrt(25 + 144)
+= sqrt(169)
+= 13
+
+In Euclidean space, the distance between the vectors x and y is the norm of the difference x - y
+d(x,y) = ||x - y|| = sqrt((x1-y1)^2 + (x2-y2)^2)
+
+example: 
+vectors x = [1|4], y = [-5|1]
+sqrt((1-(-5))^2 + (4-1)^2)
+= sqrt(6^2 + 3^2)
+= sqrt(45)
+= 3sqrt(5)
+
+example:
+u = [
+	-4
+	0
+	1
+	7
+]
+v = [
+	-2
+	-3
+	1
+	3
+]
+sqrt(-2^2 + 3^2 4^2)
+= sqrt(29)
+
+We can factor out any constants out of the norm and take the absolute value for instance:
+vector x = [3|4] tp compute the norm of multiple of x say -2x, we can factor value |-2| out
+||-2x|| = |-2|⋅||x||
+= 2⋅sqrt(3^3 + 4^2)
+= 2⋅sqrt(25)
+= 2⋅5
+= 10
+we could have gotten the same result if we multiplied the -2 first before computing the norm:
+[
+  (-2)⋅3
+  (-2)⋅4
+] = [-6|-8]
+= sqrt((-6)^2 + (-8)^2)
+= sqrt(100)
+= 10
+
+example:
+x = [
+	-9
+	sqrt(11)
+	0
+	-5
+	2
+]
+find ||-3x||
+= |3|⋅||x||
+= 3 * sqrt(81 + 11 + 25 + 4)
+= 3 * sqrt(121)
+= 3 * 11
+= 33
+
+example:
+||3x|| = 4, find ||x/5||
+|3|⋅||x|| = 4
+||x|| = 4/3
+
+||x/5|| = 1/5⋅||x||
+= 1/5 ⋅ 4/3
+= 4/15
+
+A unit vector is a vector length is equal to 1. If we divide a non-zero vector x by its norm ||x|| we obtaiin a unit vector v = x/||x||
+||v|| = || x/||x|| || = 1/||x||⋅||x|| = 1
+
+The process of dividing a vector by its norm ||x|| is called normalizing the vector x, the unit vector v = x/||x|| is the same direction as x.
+
+example:
+normalize x = [2, -1, -2, 3]
+= sqrt(18)
+
+1/3sqrt(2)⋅[2, -1, -2, 3]
+= [
+	2/3sqrt(2),
+	-1/3sqrt(2),
+	-2/3sqrt(2)
+	3/3sqrt(2)
+] = [
+	sqrt(2)/3
+	-sqrt(2)/6
+	-sqrt(2)/3
+	sqrt(2)/2
+]
+
+example:
+x = [4, -2, -4]
+= sqrt(36)
+= 6⋅[4, -2, -4]
+= 1/6⋅[4, -2, -4]
+= [4/6, -2/6, -4/6]
+= [2/3, -1/3, -2/3]
+
+==========================================
+
+Identifying a set that is closed under addition and scalar multiplication is the first step determining whether a set can form a vector space
+
+Sets not closed under addition and scalar multiplication cannot be vector spaces
+
+properties of addition in R^2 two vectors and M_2(R) two matrices:
+communitive
+R^2 u + v = v + u, M_2(R) A + B = B + A
+associative
+R^2 (u+v)+w = u+(v+w), M_2(R) (A+B)+C = A+(B+C)
+unique zero element
+R^2 u+0 = u, M_2(R) A+0 - A
+unique opposite element:
+R^2 u + (-u) = 0, M_2(R) A + (-A) = 0
+
+properties of multiplication in R^2 two vectors and M_2(R) two matrices:
+invariance by 1
+R^2 1⋅u = u, M_2(R) 1⋅A = A
+R^2 a(bu) = (ab)u, M_2(R) a(bA) = (ab)A
+R^2 (a + b)u = au + bu, M_2(R) (a + b)A = aA + bA
+R^2 a(u + v) = au + av, M_2(R) a(A + B) = aA + aB
+
+theorem:
+Vector addition:
+For any two elements x,y ∈ V there is a unique element x + y that also lies in V. We say that V is closed under vector addition
+
+Scalar multiplication:
+For any element x ∈ V and any number α ∈ R, there is a unique element αx that also lies in V. We say that V is closed under scalar multiplication.
+
+completing the sentences:
+V is in the set of all polynomials of degree 3.
+V is not a vector space because the sum of two polynomials of degree 3 may not be a polynomial of degree 3
+
+W is in the set of all polynomials with coefficients of degree 5 or greater.
+W is not a vector space (with respect to polynomials addition and multiplication of a polynomial by a real number) because W does not contain the zero element
+
+C is in the set of function f: R->R such that f(x) >= 0.
+C is not a vector space (with respect to function addition and scalar multiplication of a function by a real number) because multiplication of f ∈ C by a scalar is not closed.
+example:
+α = -1 and f(x) = x^2 + 1, then αf(x) = -f(x) < 0
+
+Review:
+weighted dot product is a type of inner product
+<x,y> = 2x1y1 + x2y2 + 9x3y3
+x = [1,-2,1], y = [5,3,1]
+= 10 - 6 + 9 = 13
+
+example:
+<x,y> = 2x1y1 + 2x2y2 + 6x3y3
+x = [2,2,0], y = [1,5,1]
+= 24
+
+An inner product of polynomials in one variable:
+<x(t),y(t)> = x(1)y(1) + x(2)y(2) + x(3)y(3)
+x(t) = 1 - t + t^2, y(t) = t - t^2
+(1)(0) + (3)(-2) + (7)(-6)
+= -48
+
+example:
+<x(t), y(t)> = x(-1)y(-1) + x(0)y(0) + x(1)y(1)
+x(t) = 5 - 2t + t^2, y(t) = t - 1
+(8)(-2) + (5)(-1) + (4)(0)
+= -21
+
+calculating inner product of two vectors in a vector space of continuous functions
+V = C[0, 2pi] the vector space of all functions that are continuous on [0, 2pi]. Find <sin t, cos t> if the innter product on V is defined as:
+<x(t),y(t)> = ∫_0^2pi sint cost dt
+
+* INDENTITY:
+* sin(2t) = sin(t)cos(t) + cos(t)sin(t)
+* combine like terms
+* sin(2t) = 2sin(t)cos(t)
+* rearranging this we get:
+* sin(t)cos(t) = 1/2sin(2t)
+
+∫_0^2pi sin(t)cos(t) dt = 1/2 ∫_0^2pi sin(2t) dt
+= -1/4cos(2t) |0 to 2pi
+= -1/4(cos(4pi) - cos(0))
+= -1/4(1 - 1)
+= 0
+
+example:
+V = C[0,2] the vector space of all functions that are continuous on [0,2], find <t e^t> if inner product on V is defined as:
+<x(t),y(t)> = ∫_0^2 x(t)y(t)dt
+= <t,e^t> = ∫_0^2 te^t dt
+
+* INTEGRATION BY PARTS:
+* ∫u dv = uv - ∫v du
+
+* u = t  =>  u' = 1
+* v' = e^t  =>  v = ∫v'dt = ∫e^t dt = e^t
+
+* more simply: 
+* ∫te^t dt = te^t - ∫e^t
+* ∫te^t dt = te^t - e^t
+
+∫_0^2 te^t dt = uv |0to2 - ∫_0^2 vu'dt
+= (te^t) |0to2 - ∫_0^2 e^t dt
+= (2e^2 - 0e^0) - e^t |0to2
+= 2e^2 - (e^2 - 1)
+= e^2 + 1
+or:
+= (te^t - e^t) |0to2
+= upper limit t=2: (2e^2 - e^2) = e^2
+= lower limit t=0: (0*e^0 - e^0) = -1
+= upper-lower: e^2-(-1) = e^2 + 1
+
+example:
+V = C[-pi/2, pi/2] the vector space of all functions that are continuous on [-pi/2, pi/2]. Find <sin^2(t),cos(t)> if the inner product on V is defined as:
+<x(t),y(t)> = ∫_-p1/2^pi/2 x(t)y(t)dt
+
+<sin^2(t),cos(t)> = ∫_-p1/2^pi/2 sin^2(t)cos(t)dt
+∫_-p1/2^pi/2 sin^2(t)cos(t)dt = ∫_-1^1 u^2du
+= 1/3u^3 |-1to1
+= [1/3(1)^3] - [1/3(-1)^2]
+= 1/3 + 1/3
+= 2/3
+
+==========================================
+
+Two vectors u and v are orthogonal if their dot product equals zero:
+u ⋅ v = 0
+we denote this by u ⊥ v
+e1 = [1,0] e2 = [0,1]
+= 0
+The zero vector is orthogonal to any vector since 0⋅u = 0
+
+example:
+u = [1,4,-2,3] which are orthogonal to u?
+v = [2,-1,2,2] = 0
+w = [-2,-3,3,5] = -5
+x = [3,-2,1,2] = -1
+
+example:
+u = [-2,3,-7,1]
+v = [-4,-3,1,7] = -1
+w = [3,0,-1,-1] = 0
+x = [1,4,2,-4] = -8
+
+components in orthogonal vectors
+example a ⊥ b, find the value of k:
+a = [-3,k,2,-4]
+b = [-2,k,-1,k]
+k^2 - 4k + 4 = 0
+(k - 2)^2 = 0
+k = 2
+
+example:
+whats k?
+u = [-5,4,-5,-3]
+v = [1,k,5,6]
+-48 + 4k = 0
+k = 12
+
+calculating dot products with orthogonal vectors
+example (v⊥w):
+u = [4,-2,1,-3]
+v = [-4,3,5,4]
+w = [2,-5,7,-3]
+(u + 9v)⋅w + v⋅(u + 7w)
+(u⋅w) + 9(v⋅w) + (v⋅u) + 7(v⋅w)
+34 + -29
+= 5
+
+example:
+(u⊥v)
+u = [3,-2,1,-2]
+v = [2,4,0,-1]
+w = [-3,2,5,-2]
+(v + w)⋅u + v⋅(u + w)
+(ignoring 0's)
+w⋅u + v⋅w
+-4 + 4
+= 0
+
+determining components of a vector orthogonal to two given vectors
+example:
+(u⊥v) and (u⊥w)
+u = [-3,a,b,-4]
+v = [3,4,1,1]
+w = [1,1,-3,-4]
+{
+	u⋅v = 0
+	u⋅w = 0
+}
+calculating in terms of a and b
+{
+	4a + b = 13
+	a - 3b = -13
+} 3 * 1st {
+	12a + 3b = 39
+	a - 3b = -13
+} + 1st to 2nd {
+	12a + 3b = 39
+	13a = 26
+}
+a = 2
+first equation:
+4(2) + b = 13
+8 + b = 13
+b = 5
+a+b=7
+
+example:
+(u⊥v) and (u⊥w)
+what is value of a+b
+u = [a,3,b,-5]
+v = [2,-5,3,-4]
+w = [-4,-2,5,3]
+{
+	u⋅v = 0
+	u⋅w = 0
+}
+calculating in terms of a and b
+{
+	2a + 3b = -5
+	-4a + 5b = 21
+} 1st * 2 {
+	4a + 6b = -10
+	-4a + 5b = 21
+} 1st to 2nd {
+	11b = 11
+}
+b = 1
+substitution
+4a + 6(1) = -10
+4a = -16
+a = -4
+a+b = -3
+
+The Cauchy-Schwarz Inequality (sometimes called the Cauchy-Bunyakovsky-Schwarz Inequality) provides a connection between dot products and norms. For any two vectors u and v in R^n we have the inequality:
+|u ⋅ v| <= ||u||⋅||v||
+
+The absolute value of the dot product is no more than the product of the norms.
+example:
+u = [3,-4], v = [5,12]
+|-33| <= sqrt(3^2 + -4^2)sqrt(5^2 + 12^2)
+33 <= 65
+
+A trick to remember Cauchy-Schwarz inequality is to think of the formula for dot product:
+u⋅v = ||u||⋅||v||cosθ
+because |cosθ| <= 1:
+|u⋅v| <= |u||⋅||v||
+(this is only mnemonic trick)
+
+Determining a minimum possible value using the Cauchy-Schwarz Inequality:
+u = [sqrt(k), 1, 0, -1]
+u⋅v = -2
+||v|| = 1
+given ^
+||u|| = sqrt(2 + k)⋅(1)
+|u⋅v| <= |u||⋅||v||
+-2 <= sqrt(2 + k)
+-2^2 <= sqrt(2 + k)^2
+4 <= 2 + k
+2 <= k
+
+example:
+given: ||u|| = 4, u⋅v = -16
+find smallest possible value of ||2v||
+16 <= 4⋅||v||
+4 <= ||v||
+2⋅4 <= 2⋅||v||
+8 <= ||2v||
+minumum possible value of ||2v|| is 8
+
+Angle between two vectors
+Using the dot product, we can define the acute angle θ between two vectors u and v in R^n where n > 3
+cosθ will be equal to the ratio of the two sides of the Cauchy-Schwarz inequality:
+
+cosθ = (u⋅v)/(||u||⋅||v||)
+
+Analogous to the formula for the angle between two vectors in two-dimensional or three-dimensional space. It only works for non-zero vectos (otherwise we would be dividing by zero)
+
+Cauchy-Schwarz inequality guarantees |u⋅v| <= ||u||⋅||v||
+-1 <= (u⋅v)/(||u||⋅||v||) <= 1
+
+finding the acute angle between two vectors:
+v = [-1,2,-4,-2]
+w = [-2,2,-2,2]
+cosθ = (v⋅w)/(||v||⋅||w||)
+= 10/sqrt(25)⋅sqrt(16)
+= 10/5⋅4
+= 1/2
+θ = arcoss(1/2) = pi/3
+
+example:
+v = [3,-sqrt(5),7,1]
+w = [-1,1,5,sqrt(5)]
+cosθ = (v⋅w)/(||v||⋅||w||)
+= 32/sqrt(64)sqrt(32)
+= sqrt(32)/8
+= 4sqrt(2)/8
+= sqrt(2)/2
+θ = arcoss(sqrt(2)/2) = pi/4
+
+example:
+v = [-3,1,-1,5]
+w = [-2,2,-2,6]
+cosθ = (v⋅w)/(||v||⋅||w||)
+= 40/sqrt(36)sqrt(48)
+= 40/6⋅4sqrt(3)
+= 5/3sqrt(3)
+θ = arcoss(5/3sqrt(3)) = 15.79 degrees
+
+calculating cosine of an angle:
+A(1,-1,2,0), B(1,0,0,-1), C(0,1,1,0). Find the cosine of angle ∠BAC
+v = AB-> and w = AC->
+v = b - a = [
+	1
+	0
+	0
+	-1
+] - [
+	1
+	-1
+	2
+	0
+] = [
+	0
+	1
+	-2
+	-1
+]
+w = c - a = [
+	0
+	1
+	1
+	0
+] - [
+	1
+	-1
+	2
+	0
+] = [
+	-1
+	2
+	-1
+	0
+]
+= 4/sqrt(6)sqrt(6)
+= 4/6
+= 2/3
+
+example:
+A(-2,1,0,-3), B(1,-1,1,-4) Find the cosine of angle ∠AOB where O(0,0,0,0) is the origin
+OA-> [-2,1,0,-3]
+OB-> [1,-1,1,-4]
+= 9/sqrt(14)sqrt(19)
+= 9/sqrt(266)
+
+Proof of the Schwarz Inequality:
+|u ⋅ v| <= ||u||⋅||v||
+
+Let t be any number, consider the vector tu + v. Since ||tu + v|| >= 0:
+
+||tu + v||^2 >= 0
+(tu + v)⋅(tu + v) >= 0
+t^2(u⋅u) + t(u⋅v) + t(v⋅u) + (v⋅v) >= 0
+t^2||u||^2 + 2t(u⋅v) + ||v||^2 >= 0
+a = ||u||^2, b = 2(u⋅v), c = ||v||^2
+
+Since the quadratic is greater than or equal to zero, its discriminant must be less than or zero:
+
+D <= 0
+b^2 - 4ac <= 0
+(2(u⋅v))^2 - 4⋅||u||^2 ⋅ ||v||^2 <= 0
+4(u⋅v)^2 - 4||u||^2||v||^2 <= 0
+(u⋅v)^2 <= ||u||^2||v||^2
+sqrt((u⋅v)^2) <= sqrt(||u||^2||v||^2)
+|u ⋅ v| <= ||u||||v||
+
 
 
 
