@@ -1192,6 +1192,728 @@ y = proj_W x
 = proj_u1 x + proj_u2 x + ... + proj_up x
 = (x⋅u1/u1⋅u1)u1 + (x⋅u2/u2⋅u2)u2 + ... (x⋅up/up⋅up)up
 
+===================================================
+
+finding the orthogonal projection of a vector onto a subspace spanned by orthogonal vectors
+
+find the orthogonal projection of x onto the subspace S given that the set {a1, a2} is orthogonal
+example:
+subspace S = Span{a1,a2}
+a1 = [1,1,2], a2 = [1,1,-1], x = [3,1,6]
+
+proj_a1 x = 8/3[1,1,2] = [8/3, 8/3, 16/3]
+proj_a2 x = -2/3[1,1,-1] = [-2/3,-2/3,2/3]
+=[8/3, 8/3, 16/3] + [-2/3,-2/3,2/3] = [2,2,6]
+
+example:
+a1 = [-1,1,1,1], a2 = [3,1,1,1], a3 = [0,-2,1,1]
+x = [1,4,3,1]
+
+proj_a1 x = 7/4[-1,1,1,1] = [-7/4,7/4,7/4,7/4]
+proj_a2 x = 11/12[3,1,1,1] = [33/12,11/12,11/12,11/12]
+proj_a3 x = -2/3[0,-2,1,1] = [0,4/3,-2/3,2/3]
+[-7/4,7/4,7/4,7/4] + [33/12,11/12,11/12,11/12] + [0,4/3,-2/3,2/3]
+[-21/12 + 33/12, 21/12 + 11/12 + 16/12, 21/12 + 11/12 + -8/12]
+[1,4,2,2]
+
+Consider the vector x and the plane r = sv + tw where s, t ∈ R
+v = [-2,1,3], w = [2,-2,2], x = [10,6,14]
+find the orthogonal projection of x onto the plane given v⊥w
+proj_v x = 2[-2,1,3]
+proj_w x = 3[2,-2,2]
+= [-4,2,6] + [6,-6,6]
+= [2,-4,12]
+
+Consider the vector x and the plane r = sv + tw where s, t ∈ R
+v = [1,1,1], w = [2,-1,-1], x = [3,3,0]
+find the orthogonal projection of x onto the plane given v⊥w
+proj_v x = 2[1,1,1]
+proj_w x = 3/6[2,-1,-1]
+= [2,2,2] + [1, -3/6, -3/6]
+= [3, 3/2, 3/2]
+
+Now we can calculate the distance between a vector and a subspace spanned by orthogonal vectors.
+example:
+a1 = [1,0,-1], a2 = [1,1,1], x = [4,1,2]
+proj_a1 x = 1[1,0,-1] = [1,0,-1]
+proj_a2 x = 7/3[1,1,1] = [7/3,7/3,7/3]
+[1,0,-1] + [7/3,7/3,7/3] = [10/3, 7/3, 4/3]
+sqrt((4 - 10/3)^2 + (1 - 7/3)^2 + (2 - 4/3)^2)
+sqrt(4/9 + 16/9 + 4/9)
+sqrt(24/9)
+= sqrt((8 * 3/3 * 3))
+= sqrt((8 * 3/3^2))
+= sqrt(8 * 3)/3 = sqrt(24)/3 = sqrt(2 * 12)/3
+= sqrt(2 * 2 * 6)/3 = sqrt(2 * 2 * 2 * 3)/3
+= 2 * sqrt(2 * 3)/3
+= 2 * sqrt(6)/3
+
+example:
+find the distance between x and the subspace S given that the set {a1, a2} is orthogonal
+a1 = [1,-1,-1], a2 = [2,1,1], x = [2,1,3]
+2 -1 -3
+proj_a1 x = -2/3[1,-1,-1] = [-2/3, 2/3, 2/3]
+proj_a2 x = 4/3[2,1,1] = [8/3, 4/3, 4/3]
+[-2/3, 2/3, 2/3] + [8/3, 4/3, 4/3] = [2, 2, 2]
+sqrt((2 - 2)^2 + (1 - 2)^2 + (3 - 2)^2)
+sqrt(2)
+
+* !IMPORTANT!
+* when calculating cosine we can factor out a common fraction
+* BELOW we factor out a 1/9 from: 1/9[1, 11, -7]
+* we're not concerned in the magnitude but the direction
+* the cosine of an angle depends only on directions.
+
+Calculating the acute angle between a vector and a subspace spanned by orthogonal vectors.
+example:
+v = [1,1,1], w = [2,-1,-1], x = [3,3,0]
+find the acute angle between x and subspace S given that the set {v,w} is orthogonal.
+proj_v x = 2[1,1,1] = [2,2,2]
+proj_w x = 1/2[2,-1,-1] = [1,-1/2,-1/2]
+[2,2,2] + [1,-1/2,-1/2] = [2,3/2,3/2]
+x = [3,3,0]
+2/3proj_S x = [2, 1, 1]
+cosθ = (x⋅proj_S x)/||x||⋅||proj_S x||
+= (2)(3)+(1)(3)+(1)(0)/(sqrt(3^2 + 3^2 + 0^2)sqrt((2)^2 + (1)^2 + (1)^2))
+= 9/sqrt(18)sqrt(6)
+= 9/6sqrt(3)
+= sqrt(3)/2
+θ = arccos(sqrt(3)/2) = pi/6
+
+example:
+a1 = [0,1,-1], a2 = [1,2,2], x = [1,1,-1]
+find acute angle between x and the subspace S given the set {a1,a2} is orthogonal.
+proj_a1 x = 1[0,1,-1]
+proj_a2 x = 1/9[1,2,2] = [1/9, 2/9, 2/9]
+[0,1,-1] + [1/9, 2/9, 2/9] = 1/9[1, 11, -7]
+x = [1,1,-1] 9proj_S x = [1,11,-7]
+= 19/sqrt(3)sqrt(1^2 + 11^2 + (-7)^2)
+= 19/sqrt(3)sqrt(171)
+= 19/sqrt(3)⋅3sqrt(19)
+= sqrt(57)/9
+θ = arccos(sqrt(57)/9) = 32.98 degrees
+
+justification for the formula:
+
+Orthogonal projection of a vector x onto the subspaces Span{a1} and Span{a2} given that a1 ⊥ a2
+write x as a sum of two vectors:
+x = x_S + x_S⊥
+
+where x_S = proj_S x is in Span{a1,a2}, and x_S⊥ is in the orthogonal complement of Span{a1,a2}. That is, x_S = k1a1 + k2a2 ∈ S and x_S⊥ ∈ S^⊥
+
+x_S⊥ = x - x_S
+= x - (k1a1 + k2a2)
+= x - k1a1 - k2a2
+
+Using the fact that x_S⊥ is orthogonal to S, and that a1⋅a2 = 0
+{
+	x_S⊥ ⋅ a1 = 0
+	x_S⊥ ⋅ a2 = 0
+} = {
+	(x - k1a1 - k2a2)⋅a1 = 0
+	(x - k1a1 - k2a2)⋅a2 = 0
+} = {
+	x⋅a1 - k1(a1⋅a1) - k2(a2⋅a1) = 0
+	x⋅a2 - k1(a1⋅a2) - k2(a2⋅a2) = 0
+} = {
+	k1(a1⋅a1) = x⋅a1
+	k2(a2⋅a2) = x⋅a2
+} = {
+	k1 = (x⋅a1)/(a1⋅a1)
+	k2 = (x⋅a2)/(a2⋅a2)
+}
+proj_S x = k1a1 + k2a2
+= (x⋅a1)/(a1⋅a1)a1 + (x⋅a2)/(a2⋅a2)a2
+= proj_a1 x + proj_a2 x
+
+===================================================
+(careful a lot of calculations in this part)
+(its easy to make a mistake, I am not a machine yet)
+
+projection vectors onto subspaces in euclidean spaces (arbitrary bases)
+
+same formula for othogonal bases
+A^TAk = A^Tx  =>  k = (A^TA)^-1A^Tx 
+proj_S x = Ak
+= A(A^TA)^-1A^Tx
+
+These vectos are not orthogonal
+a1 = [1,2,1], a2 = [1,3,1], x = [2,4,0]
+proj_Sx = [
+	1 1
+	2 3
+	1 1
+]⋅(
+	[
+		1 2 1
+		1 3 1
+	]⋅[
+		1 1
+		1 3
+		1 1
+	]
+)^-1 ⋅ [
+	1 2 1
+	1 3 1
+]⋅[
+	2
+	4
+	0
+]
+= [
+	1 1
+	2 3
+	1 1
+]⋅([
+	6 8
+	8 11
+])^-1 ⋅ [
+	10
+	14
+]
+= [
+	1 1
+	2 3
+	1 1
+]⋅1/2[
+	11 -8
+	-8 6
+]⋅[
+	10
+	14
+]
+= [
+	1 1
+	2 3
+	1 1
+]⋅[
+	-1
+	2
+]
+= [1, 4, 1]
+
+Do the operations in the same order as above, we will save ourselves a lot of work.
+
+if {a1,a2,...,an} is a set of linearly independent vectors, then the orthogonal projection of a vector x onto the subspace S = span{a1,a2,...,an} is:
+proj_S x = A(A^TA)^-1A^Tx
+where A is the matrix whose columsn are the vectors a1,a2,...,an
+[
+	a1 a2 ... an
+]
+{a1,a2,...,an} must be linearly independent is important. If the vectors are linearly dependent, we need to ifnd the basis of the span before applying the formula.
+
+find the orthogonal projection of the vector x onto the plane r = sv + tw where s,t ∈ R
+v = [1,2,1], w = [2,1,-1], x = [6,3,6]
+poj_S x = [
+	1  2
+	2  1
+	1 -1
+]
+⋅
+(
+	[
+		1 2  1
+		2 1 -1
+	] ⋅ [
+		1  2
+		2  1
+		1 -1
+	]
+)^-1
+⋅
+[
+	1 2  1
+	2 1 -1
+]
+⋅ [6,3,6]
+=
+[
+	1  2
+	2  1
+	1 -1
+]
+⋅
+([
+	6 4 
+	3 6
+])^-1
+⋅
+[
+	18
+	9
+]
+=
+[
+	1  2
+	2  1
+	1 -1
+]
+⋅
+1/24[
+	6 -4
+	-3 6
+]
+⋅
+[
+	18
+	9
+]
+=
+[
+	1  2
+	2  1
+	1 -1
+] ⋅ [3, 0]
+[
+	3
+	6
+	3
+]
+
+find the orthogonal projection of the vector x onto the plane r = sv + tw where s,t ∈ R
+example:
+v = [1,1,1], w = [3,1,3], x = [3,4,5]
+poj_S x = [
+	1 3
+	1 1
+	1 3
+]
+⋅
+(
+	[
+		1 1 1
+		3 1 3
+	] ⋅ [
+		1 3
+		1 1
+		1 3
+	]
+)^-1
+⋅
+[
+	1 1 1
+	3 1 3
+]
+⋅ [3,4,5]
+=
+[
+	1 3
+	1 1
+	1 3
+]
+⋅
+[
+	3  6
+	7 19
+]^-1
+⋅
+[
+	12
+	28
+]
+=
+[
+	1 3
+	1 1
+	1 3
+]
+⋅
+1/15
+[
+	19 -6
+	-7  3
+]
+⋅
+[
+	12
+	28
+]
+=
+[
+	1 3
+	1 1
+	1 3
+]
+⋅
+[
+	4
+	0
+]
+=
+[
+	4
+	4
+	4
+]
+
+finding the orthogonal projection of a vector onto a subspace (same process as a plane)
+find the vector in the subspace spanned by {a1,a2} that is closest to the vector x
+a1 = [1,1,0], a2 = [2,2,-2], x = [8,-4,8]
+poj_S x = [
+	1  2
+	1  2
+	0 -2
+]
+⋅
+(
+	[
+		1 1  0
+		2 2 -2
+	] ⋅ [
+		1  2
+		1  2
+		0 -2
+	]
+)^-1
+⋅
+[
+	1 1  0
+	2 2 -2
+]
+⋅ [8,-4,8]
+=
+[
+	1  2
+	1  2
+	0 -2
+]
+⋅
+[
+	2 4
+	4 12
+]^-1
+⋅
+[
+	4
+	-8
+]
+=
+[
+	1  2
+	1  2
+	0 -2
+]
+⋅
+1/4
+[
+	6 -2
+	-2 1
+]
+⋅
+[
+	4
+	-8
+]
+=
+[
+	1  2
+	1  2
+	0 -2
+]
+⋅
+[
+	10
+	-4
+]
+=
+[
+	2
+	2
+	8
+]
+
+verify whether the vectors a1,a2,a3 are linearly independent, and find the orthogonal projection of x onto the subspace spanned by the vectors {a1,a2,a3}
+a1 = [2,-2,-2], a2 = [2,2,2], a3 = [4,0,0]
+x = [3,2,2]
+[
+	 2 2 4
+	-2 2 0
+	-2 2 0
+]
+R2 := R2 + R1
+R3 := R3 + R1
+[
+	 2 2 4
+	 0 4 0
+	 0 4 0
+]
+R3 := R3 + (-1)R2
+[
+	 2 2 4
+	 0 4 0
+	 0 0 0
+]
+we can confirm from REF that the vectors a1 and a2 are linearly independent and form the basis of our span so we carry on our normal calculations:
+poj_S x = [
+	 2 2
+	-2 2
+	-2 2
+]
+⋅
+(
+	[
+		2 -2 -2
+		2  2  2
+	]⋅[
+		 2 2
+		-2 2
+		-2 2
+	]
+)^-1
+⋅
+[
+	2 -2 -2
+	2  2  2
+]⋅[3,2,2]
+=
+[
+	 2 2
+	-2 2
+	-2 2
+]⋅[
+	12 -4
+	-4 12
+]^-1 
+⋅
+[
+	-2
+	14
+]
+=
+[
+	 2 2
+	-2 2
+	-2 2
+]
+⋅ 1/32 [
+	3 1
+	1 3
+]⋅[
+	-2
+	14
+]
+=
+[
+	 2 2
+	-2 2
+	-2 2
+]⋅1/4[
+	1
+	5
+]
+= [3,2,2]
+
+Notice: poj_S x = x. This means that x lies in the span.
+(x ∈ Span{a1,a2} = Span{a1,a2,a3})
+
+proj_a x = (a⋅x)/(a⋅a)a
+= [(a^Tx)/(a^Ta)]a
+= [(a^Ta)^-1a^Tx]a
+= a(a^Ta)^-1a^Tx
+
+lets compare this formula when we want to project onto an arbitrary subspace:
+proj_s x = A(A^TA)^-1A^Tx
+
+They are basically the same.
+
+===================================================
+
+Calculating the distance between a vector and a subspace
+Find the distance between the vector x and the subspace spanned by the linearly independent vectors {a1,a2}
+example:
+a1 = [2,0,1], a2 = [0,-1,1], x = [3,-3,0]
+proj_S x = [
+	2  0
+	0 -1
+	1  1
+]⋅(
+	[
+		2  0 1
+		0 -1 1
+	]⋅[
+		2  0
+		0 -1
+		1  1
+	]
+)^-1
+⋅
+[
+	2  0 1
+	0 -1 1
+]⋅[
+	 3
+	-3
+	 0
+]
+=
+[
+	2  0
+	0 -1
+	1  1
+]
+1/9[
+	 2 -1
+	-1  5
+]⋅[
+	6
+	3
+]
+=
+[
+	2  0
+	0 -1
+	1  1
+]⋅ [
+	1
+	1
+]
+=
+[
+	2
+	-1
+	2
+]
+||x - ^x|| <-- (x hat)
+sqrt((2 - 3)^2 + (-1 -(-3)^2 + (2 - 0)^2))
+= sqrt(1 + 4 + 4) = sqrt(9) = 3
+
+example:
+a1 = [1,1,1,1], a2 = [-1,1,1,1]
+x = [-6,3,0,3]
+proj_S x = [
+	1 -1
+	1  1
+	1  1
+	1  1
+]⋅(
+	[
+		 1 1 1 1
+		-1 1 1 1
+	]⋅[
+		1 -1
+		1  1
+		1  1
+		1  1
+	]
+)^-1
+⋅[
+	 1 1 1 1
+	-1 1 1 1
+]⋅[
+	-6
+	3
+	0
+	3
+]
+=
+[
+	1 -1
+	1  1
+	1  1
+	1  1
+]⋅ 1/12[
+	4 -2
+	-2 4
+]⋅ [
+	0
+	12
+]
+=
+[
+	1 -1
+	1  1
+	1  1
+	1  1
+]
+[
+	-2
+	4
+]
+=
+[
+	-6
+	2
+	2
+	2
+]
+||x - ^x|| <-- (x hat)
+sqrt((-6 -(-6))^2 + (3 - 2)^2 + (0 - 2)^2 + (3 - 2)^2)
+= sqrt(1 + 4 + 1) = sqrt(6)
+
+Calculating the acute angle between a vector and subspace
+example:
+subspace is spanned by the linearly independent vectors {a1,a2}
+a1 = [1,1,1], a2 = [1,1,-1], x = [2,-1,1]
+proj_S x = [
+	1  1
+	1  1
+	1 -1
+]⋅(
+	[
+		1 1  1
+		1 1 -1
+	]⋅[
+		1  1
+		1  1
+		1 -1
+	]
+)^-1 ⋅ [
+	1 1  1
+	1 1 -1
+]⋅[
+	 2
+	-1
+	 1
+]
+=
+[
+	1  1
+	1  1
+	1 -1
+]⋅ 1/8 [
+	3 -1
+	-1 3
+]⋅ [
+	2
+	0
+]
+=
+[
+	1  1
+	1  1
+	1 -1
+]⋅1/4[3, -1]
+= [
+	1
+	1
+	2
+]
+cosθ = 3/sqrt(6)sqrt(6)
+= 1/2
+θ = arccos(1/2) = pi/3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
