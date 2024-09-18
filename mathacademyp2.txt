@@ -2,6 +2,8 @@ NOTE: for vectors or matrices I sometimes use the pipe symbol "|" or "," to deno
 
 NOTE: In previous notebooks Ive used S to denote integrate, here ill use: ∫_0^2pi "_" the start of the ingtegral "^" represents end here 0 to 2pi. 
 
+NOTE: iff = if and only if
+
 Review:
 Calculating dot product:
 u = [
@@ -978,11 +980,217 @@ x/||x|| = [
 
 ===================================================
 
+It can be a lot of work checking a matrix Q that form an orthonormal set. We have this theorem for easier calculations
 
+Theorem:
+A matrix Q is orthogonal iff Q⋅Q^T = Q^T⋅Q = I
 
+Q^T is transpose of Q. The matrix we get when we interchange the rows and columns of Q
+To verify that a matrix is orthogonal, we only need to check QQ^T = I
 
+example:
+A A^T [
+	1/2 0  1
+	 0  1  0
+	 1  0 -1/2
+][
+	1/2 0  1
+	 0  1  0
+	 1  0 -1/2
+] = [
+	5/4 0 0
+	 0  1 0
+	 0  0 5/4
+]
+does not equal the identity matrix so this is not orthogonal.
 
+example:
+A⋅A^T [
+	-1 0
+	 0 1
+][
+	-1 0
+	 0 1
+] = [
+	1 0
+	0 1
+]
+This equals identity matrix (I) matrix is orthogonal
 
+Every orthogonal matrix Q is invertible
+The inverse of an orthogonal matrix Q is Q^T that is
+Q^-1 = Q^T
+
+Orthogonal matrices properties:
+det(Q) = +/- (determinant of an orthogonal matrix is either 1 or -1)
+If λ is an eigenvalue of an orthogonal matrix Q, then λ = +/- 1
+
+these properties are necessary but not sufficient
+Every orthogonal matrix has determinant equal to +/- 1, but not every matrix with dereminant +/- 1 is orthogonal
+Every orthogonal matric has eigenvalues 1 or -1 only, but not every matrix with eigenvalues 1 or -1 is orthogonal.
+
+computing the product (P^-1Q)⋅(P^-1Q)^T
+(P^-1Q)⋅(P^-1Q)^T = (P^TQ)⋅(P^TQ)^T
+= P^TQ⋅Q^T(P^T)^T
+= P^T(QQ^T)P
+= P^T(I)P
+= P^TP
+= I
+
+computing the product (PQ^T)⋅(PQ^T)^T
+(PQ^T)⋅(PQ^T)^T = PQ^T⋅(Q^T)^TP^T
+= PQ^TQP^T
+= P(Q^TQ)P^T
+= P(I)P^T
+= PP^T
+= I
+
+===================================================
+
+The orthogonal projection of a vector x onto a Span{a} is the vector in Span{a} that is "closest" to x.
+
+ka is called the orthogonal projection of x onto Span{a}
+We can write the vector x as the sum
+x = ka + z
+
+k ∈ R and z⊥a
+
+to compute the orthogonal projection ka, we can first multiply both sides of the equation above by a to get
+x⋅a = (ka + z)⋅a
+x⋅a = k(a⋅a) + z⋅a
+
+Since a⊥z, z⋅a = 0
+
+x⋅a = k(a⋅a)
+k = x⋅a/a⋅a
+
+consider these two vectors:
+x = [5,-1,0,1], a = [3,-6,0,6]
+
+k = (5⋅3 + (-1)⋅(-6) + 0⋅0 + 1⋅6)/(3^2 + (-6)^2 + 6^2)
+k = 1/3
+ka = 1/3[3,-6,0,6] = [1,-2,0,2]
+
+Instead of going through this process each time, we can compute the orthogonal projection of x onto Span{a} using the following formula:
+
+proj_a x = (a⋅x/a⋅a)a
+
+example:
+b = [2,4,-4,2], a = [6,2,-2,6]
+Find the orthogonal projection of b onto Span{a}
+proj_a b = (a⋅b/a⋅a)a
+= 12 + 8 + 8 + 12/80
+= 40/80
+= 1/2a
+= 1/2[6,2,-2,6]
+= [3,1,-1,3]
+
+example:
+a = [3,2,-3,3], b = [2,0,-2,2]
+proj_b a = (b⋅a/b⋅b)b
+= 6 + 0 + 6 + 6/12
+= 18/12 = 9/6 = 3/2
+3/2[2,0,-2,2]
+= [3,0,-3,3]
+
+The distance between the vector x and the vector space Span{a} to be:
+||x - proj_a x||
+
+We can also define the angle θ between the vector x and the subspace Span{a} to be acute angle between the vector x and its othogonal projection proj_a x.
+
+The vector x as a sum of two orthogonal vectors
+x = proj_a x + (x - proj_a x)
+      ^y              ^z
+where y ∈ Span{a} and z⊥Span{a}
+Thhe vector x - proj_a x whose norm ||x - proj_a x|| represents the distance from x to a is sometimes called the vector rejection of x from a
+
+example:
+x = [12,6,-6,12], a = [2,6,-6,2].
+x = y + z where y ∈ Span{a} and z⊥Span{a}
+whats z
+proj_a x = (a⋅x/a⋅a)a
+24 + 36 + 36 + 24
+120/80 = 3/2
+= 3/2[2,6,-6,2]
+= [3,9,-9,3]
+y = proj_a x = [3,9,-9,3]
+z = x - proj_a x = [12,6,-6,12] - [3,9,-9,3]
+= [9,-3,3,9]
+
+example:
+x = [4,4,-2,4], b = [1,2,-2,1]
+whats the distance between x and Span{b}
+proj_b x = (b⋅x/b⋅b)b
+4 + 8 + 4 + 4
+20/10
+2[1,2,-2,1]
+[4,4,-2,4] - [2,4,-4,2]
+= [2,0,2,2]
+= sqrt(4 + 4 + 4)
+= sqrt(12) = 2⋅6 -> 2⋅2⋅3
+= 2sqrt(3)
+
+Finding orthogonal projection of a vector onto the solution space of a system of equations
+find the projection of x onto the solution space of the system:
+x = [-10,-15,28]
+{
+	x1 - 2x2 = 0
+	2x1 + x2 - 3x3 = 0
+}
+[ 
+	1 -2  0 | 0
+	2  1 -3 | 0
+]
+R2 := R2 + (-2)R1
+[ 
+	1 -2  0 | 0
+	0  5 -3 | 0
+]
+x2 = 3/5x3
+x1 = 6/5x3
+[
+	6
+	3
+	5
+]
+35/70 = 1/2
+1/2[6,3,5]
+= [3,3/2,5/2]
+
+example:
+x = [11,3]
+{
+	x1 + x2 = 0
+	2x1 + 2x2 = 0
+}
+[
+	1 1 | 0
+	2 2 | 0
+]
+R2 := R2 + (-2)R1
+[
+	1 1 | 0
+	0 0 | 0
+]
+x1 = -x2
+[
+	-x2
+	x2
+] = [-1, 1]
+-11 + 3
+-8/2
+-4[-1, 1]
+= [4, -4]
+
+orthogonal decomposition theorem
+Let W be a subspace of R^n. Then each x ∈ R^n can be written uniquely in the form
+x = y + z
+where y ∈ W and z W^⊥
+
+Since y is the orthogonal projection of x onto the subspace W, if {u1 ..., up} is any orthogonal basis of W then
+y = proj_W x
+= proj_u1 x + proj_u2 x + ... + proj_up x
+= (x⋅u1/u1⋅u1)u1 + (x⋅u2/u2⋅u2)u2 + ... (x⋅up/up⋅up)up
 
 
 
