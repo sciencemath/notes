@@ -1951,7 +1951,7 @@ cosθ = x⋅proj_Sx/||x||⋅||proj_Sx||
 
 Finding the orthogonal projection of a vector onto the solution space of a linear system.
 Given the vector x and the system of linear equations, find the projection of x onto the solution space of the system.
-(Already calculated the inverse for these already to save space)
+(Already calculated the dot product of the inverse for these already to save space)
 x = [0,5,10],
 {
 	x1 - 3x3 = 0
@@ -2063,17 +2063,567 @@ proj_S x = [
 	3 -2
 	1  0
 	0  1
-]⋅(
-	[
-		 3 1 0
-		-2 0 1
-	]⋅[
-		 3 -2
-		 1 0
-		 0 1
-	]
-)^-1 ⋅
+]
+1/14
+[
+	5 6
+	6 10
+]⋅[
+	  3 1 0
+	 -2 0 1
+]⋅[
+	0
+	0
+	14
+]
+=
+[
+	3 -2
+	1  0
+	0  1
+]
+1/14
+[
+	5 6
+	6 10
+]⋅[
+	0
+	14
+]⋅[
+	6
+	10
+]
+=
+[
+ -2
+  6
+  10
+]
 
+===================================================
+
+Review:
+The Gram-Schmidt process is an algorithm that we can use to construct an orthogonal basis if we are given a non-orthogonal basis to start with
+
+Basis {a1,a2} for subspace V = Span{a1,a2}
+a1 = [1,-1], a2 = [4,6]
+
+Step 1: set v1 = a1
+Step 2: Find a vector v2 in V that's orthogonal to v1:
+v2 = a2 - proj_v1 a2
+= a2 - (a2⋅v1)/(v1⋅v1)v1
+v2 = -((4 * 1) + (6 * (-1))/(1^2 + (-1)^2))
+= [4,6] - (-1) ⋅ [1,-1]
+= [5,5]
+{v1,v2} = {[1,-1],[5,5]} is orthogonal basis for V
+
+subspace V and an orthogonal basis B of V. B is derived form V using Gram-Schmidt process, what is the value of a/c
+example:
+V = Span{[2,-3,1],[4,-2,0]}
+B = {[2,-3,1],[a,b,c]}
+2 * 4 + (-3)(-2) + (1)(0)/2^2 + (-3)^2 + 1^2
+= 14/14 = 1/1 = 1
+= [4,-2,0] - 1/1[2,-3,1]
+= [2,1,-1]
+a = 2, c = -1, a/c = -2
+
+example:
+V = Span{[1,5,1],[-2,-5,0]}
+B = {[1,5,1]}
+B is derived form V using Gram-Schmidt process
+what is the value of a/c
+-2 + -25 + 1/27 = -27/27 = -1/1
+[-2,-5,0] + [1,5,1]
+= [-1, 0, 1]
+a = -1, c = 1, a/c = -1
+
+example:
+Subspace Col(A) and an orthogonal basis B of Col(A), A and B are given above given that B is derived from Col(A) using the Gram-Schmidt process, what is the value of b/a
+A = [
+	 3 2
+	-1 1
+	 0 2
+]
+B = {[3,-1,0],[a,b,c]}
+5/10 = 1/2
+[2,1,2] - 1/2[3,-1,0]
+= [1/2, 3/2, 2]
+"clean up" (we can scale the factors by 2 since they will be on the same span anyways)
+= [2, 2, 4]
+
+example:
+what is the value of c/a
+A = [
+	4  5
+	4  5
+	2 -2
+]
+B = {[4,4,2],[a,b,c]}
+36/36 = 1/1 = 1
+[5,5,-2] - [4,4,2]
+= [1,1,-4]
+a = 1, c = -4, c/a = -4
+
+Using the Gram-Schmidt Process to find an orthonormal basis
+given a basis {a1,a2} for a subspace V, we can use the Gram-Schmidt process to find an orthonormal basis of the subspace.
+
+Calculate the Gram-Schmidt as before to obtain an orthogonal basis {v1,v2} then normalize each vector in this basis to get the orthonormal basis {u1,u2}
+u1 = v1/||v1||, u2 = v2/||v2||
+
+subspace V and on orthormal basis B of V. B is derived form V using the Gram-Schmidt process, what is the value of |a|+|b|+|c|
+V = Span{[1,1,-1],[1,2,-3]}
+B = {[sqrt(3)/3, sqrt(3)/3, -sqrt(3)/3],[a,b,c]}
+6/3 = 2
+[1,2,-3] - 2[1,1,-1]
+= [-1,0,-1]
+u1 = v1/||v1|| = 1/sqrt(1^2 + 1^1 + (-1)^2)
+= 1/sqrt(3)[1,1,-1] = [1/sqrt(3),1/sqrt(3),-1/sqrt(3)]
+u2 = v2/||v2|| = 1/sqrt((-1)^2 + 0^2 + (-2)^2)
+= 1/sqrt(2)[-1,0,-1] = [-sqrt(2)/2,0,-sqrt(2)/2]
+a = -sqrt(2)/2, b = 0, c = sqrt(2)/2
+|a|+|b|+|c| = |-sqrt(2)/2|+|0|+|sqrt(2)/2| = sqrt(2)
+
+example:
+subspace Col(A) and an orthonormal basis V of Col(A). B is derived from Col(A) using the Gram-Schmidt process whats |a|+|b|+|c|
+A = [
+	-1  3
+	-2  0
+	 2 -3
+]
+B = {u1,u2} = {[-1/3,-2/3,2/3]}
+-9/9 = -1/1 = -1
+[3,0,-3] + [-1,-2,2]
+= [2, -2, -1]
+
+u1 = v1/||v1|| = 1/sqrt(9) = 1/3[-1,-2,2]
+= [-1/3, -2/3, 2/3]
+u2 = v2/||v2|| = 1/sqrt(9) = 1/3[2,-2,-1]
+= [2/3,-2/3,-1/3]
+|a|+|b|+|c| = |2/3|+|-2/3|+|-1/3| = 5/3
+
+===================================================
+
+Review:
+(no commas inbetween entries as its a row vector)
+Linear form f(x) = ax where a = [0 -2 3]. Evaluate the function when x = [1, 3, 5]
+[0 -2 3]⋅[1, 3, 5]
+0⋅1 + (-2)⋅3 + 3⋅5 = 9
+
+example:
+a = [1 -3], x = [-1, 2]
+= -7
+
+Bilinear forms:
+B(x,y) = x^TAy
+example:
+A = [
+	1 2
+	3 4
+]
+x = [1, 2] (column vector)
+y = [-1, 1] (column vector)
+B(x,y) = x^TAy
+= [1 2][
+	1 2
+	3 4
+][-1,1]
+= [7 10][-1,1]
+= 3
+
+example:
+B(x,y) = x1y1 - 3x1y3 - x2y3 + x3y3
+x = [1,0,-4], y = [2,-1,1]
+= -5
+
+example:
+B(x,y) = x^TAy x = [2, -3], y = [1, 1]
+A = [
+	-2 4
+	 4 1
+]
+=
+[2 -3][
+	-2 4
+	 4 1
+]
+[-16 5][1, 1]
+= -11
+
+writing down a bilinear form from a matrix
+A = [
+	2 -1
+	3 -2
+]
+x^TAy components x = [x1,x2], y = [y1,y2]
+
+method1: each entry a_ij of A corresponds to the term a_ijx_iy_j in the expression of the bilinear form:
+x^TAy = 2x1y1 - x1y2 + 3x2y1 - 2x2y2
+
+method2: bilinear form in terms of vectors:
+x^TAy = [x1 x2][
+	2 -1
+	3 -2
+][y1,y2]
+= [x1 x2][
+	2y1 - y2
+	3y1 - 2y2
+]
+= x1(2y1 - y2) + x2(3y1 - 2y2)
+= 2x1y1 - x1y2 + 3x2y1 - 2x2y2
+
+B(x,y) = x^TAy, x,y ∈ R^n
+is linear in each argument separately. Thats the reason why we call them bilinear.
+
+For y fixed, all u, v ∈ R^n, and any real constant c, linearity in the first argument means the following:
+B(u + v,y) = B(u,y) + B(v,y)
+B(cu,y) = cB(u,y)
+
+For x fixed all w,z ∈ R^n, and any real constant c linearity in the second argument means the following:
+B(x,w + z) = B(x,w) + B(x,z)
+B(x, cw) = cB(x,w)
+
+In matrix notion a quadratic form can be given as
+Q(x) = x^TAx
+The matrix of a quadratic form must be symmetric
+Q(x) = B(x,x)
+
+Q(x1,x2) = [x1 x2][
+	1 2
+	2 1
+][x1, x2]
+= [x1 x2][
+	x1 + 2x2
+	2x1 + x2
+]
+= x1^2 + 4x1x2 + x2^2
+In quadratic form all terms must be degree two
+!IMPORTANT SYMMETRIC
+
+example:
+A = [
+	-2 4
+	 4 1 
+]
+x = [2,3]
+=
+[2 3][
+	-2 4
+	 4 1
+][2,3]
+= [8 11][2,3]
+
+example:
+express the quadratic form Q(x) = x1^2 - 3x1x2 + x2^2 in terms of the componets y
+[x1,x2] = [
+	1 -2
+	0  1
+][y1,y2]
+x1 = y1 - 2y2
+x2 = y2
+substitute
+= (y1 - 2y2)^2 - 3(y1 - 2y2)y2 + y2^2
+= y1^2 - 4y1y2 + 4y2^2 - 3y1y2 + 6y2^2 + y2^2
+= y1^2 - 7y1y2 + 11y2^2
+
+example:
+Q(x) = x1^2 + 4x1x2
+[x1,x2]=[
+	2 -1
+	1  1
+][y1,y2]
+x1 = 2y1 - y2
+x2 = y1 + y2
+= (2y1 - y2)^2 + 4(2y1 - y2)(y1 + y2)
+= 4y1^2 - 4y1y2 + y2^2 + 8y1^2 + 4y1y2 - 4y2^2
+= 12y1^2 - 3y2^2
+
+example:
+express Q(x) = x1^2 + 3x1x2 + x2^2 in terms of y
+[y1,y2]=[
+	1  2
+	0 -1
+][x1,x2]
+
+y1 = x1 + 2x2
+y2 = -x2
+
+solving the second equation x2 and substituting it into the first equation:
+x1 = y1 + 2y2(I got -2y2, filling in what the answer gave me)
+x2 = -y2
+
+(y1 + 2y2)^2 + 3(y1 + 2y2)(-y2) + (-y2)^2
+y1^2 + 4y1y2 + 4y^2 - 3y1y2 - 6y2^2 + y2^2
+= y1^2 + y1y2 - y2^2
+ 
+example
+express Q(x) = x1^2 + x1x2 - 2x2^2 in terms of y
+[y1,y2]=[
+	 0 1
+	-1 0
+][x1,x2]
+
+y1 = x2
+y2 = -x1
+solving for x1, x2:
+x1 = -y2
+x2 = y1
+
+(-y2)^2 + (-y2)(y1) - 2(y1)^2
+= y2^2 - y2y1 - 2y1^2
+= -2y1^2 - y2y1 + y2^2
+
+we are given a quadratic form:
+Q(x) = x^TAx
+
+and an invertible matrix P that defines the change of variable
+x = Py
+
+If this change of variable is applied to the quadratic form Q(x), what wil be the new matrix of Q
+
+By making the necessary substitutions
+Q(x) = x^TAx
+= (Py)^TA(Py)
+= y^TP^TAPy
+= y^T(P^TAP)y
+the new matrix of our quadratic form is:
+B = P^TAP
+
+Find the matrix of the quadratic form x^TAx in the basis that consists of the columns of P
+P^TAP
+A = [
+	-2 1 
+	 1 5
+]
+P = [
+	1 -1
+	1  2
+]
+=
+[
+	 1 1
+	-1 2
+]⋅[
+	-2 1
+	 1 5
+]⋅[
+	1 -1
+	1  2
+]
+=
+[
+  -1 6
+	4 9
+]⋅[
+	1 -1
+	1  2
+]
+=
+[
+	5  13
+	13 14
+]
+
+Find the matrix of the quadratic form x^TAx in the basis that consists of the columns of P
+P^TAP
+A = [
+	-1  2
+	 2 -1
+]
+P = [
+	2 -2
+	1  1
+]
+=
+[
+	 2 1
+	-2 1
+]⋅[
+	-1  2
+	 2 -1
+]⋅[
+	2 -2
+	1  1
+]
+=
+[
+	0 3
+	4 -5
+]⋅[
+	2 -2
+	1  1
+]
+=
+[
+	3 3
+	3 -13
+]
+
+Two quadradic forms Q1 and Q2 on R^n are said to be equivalent if they can be obtained from each other through a change of variable
+
+theorem:
+The two quadratic forms with matricies A and B are equivalent iff there exists a matrix P such that B = P^TAP
+
+Equivalent quadratic forms represent the same function from R^n to R
+
+===================================================
+
+Sometimes its important to know if a particular quadratic Q(x) is always postive or negative.
+
+Q(x) is positive-definite if Q(x) > 0 for all ∈ R^n
+for example: S(x) = 8x1^2 + 3x2^2 > 0
+
+Q(x) is negative-definite if Q(x) < 0 for all ∈ R^n
+example: T(x) = -x1^2 - 3x2^2 < 0
+
+A quadratic form Q(x) is indefinite if
+Q(x1) > 0 for some x1
+Q(x2) < 0 for some x2
+example: R(x) = x1^2 + 2x^2 - 6x1x2
+is indefinite, substituting x1 [1,0] we get
+= 1^2 + 2*0^2 - 6*1*0
+= 1 + 0 + 0
+R(x1) = 1 > 0
+substituting x2 [1,1]
+= 1^2 + 2*1^2 - 6*1*1
+= 1 + 2 - 6
+= -3 < 0
+
+example:
+x = [1,-2]
+determine which of these cannot be positive-definite
+R(x) = x1^2 + x2^2 + 5x1x2
+S(x) = x^T[
+	 1 -2
+	-2  9
+]x
+T(x) = x1^2 + x2^2 + x1x2
+substitute
+R(x) = 1^2 + (-2)^2 + 5*1*-2
+= -5 < 0
+S(x) = [1 -2][
+	 1 -2
+	-2  9
+][1,-2]
+= [5 -20][1,-2]
+= 45 > 0
+T(x) = 1^2 + (-2)^2 + 1*(-2)
+= 1 + 4 - 2
+= 3 > 0
+R(x) only
+
+A quadratic form Q(x) is positive semi-definite if Q(x) >= 0
+A(x) = x1^2 this is not positive definite since it gives 0 on the nonzero vector: [0,1]
+
+A quadratic form Q(x) is negative semi-definite if Q(x) <= 0
+B(x) = -x1^2 this gives 0 on the nonzero vector [0,1]
+
+any postive-definite quadratic form is positive semi-definite
+any negative-definite quadratic form is negative semi-definite
+
+Using eigenvalues to classify quadratic forms
+Q(x) = x^TAx we have the following theorem:
+Q is positive-definite iff all the eigenvalues of A are positive.
+Q is positive semi-definite iff all the eigenvalues of A are non-negative
+Q is negative-definite iff all the eigenvalues of A are negative
+Q is negative semi-definite iff all the eigenvalues of A are non-positive
+Q is indefinite iff A has both positive and negative eigenvalues
+
+
+example:
+find what theorem defines the characteristic
+A = [
+	9  4
+	4 -6
+]
+|9-λ  4|
+|4 -6-λ|
+(9 - λ)(-6 - λ) - (4)(4)
+-54 - 9λ + 6λ + 1λ^2 - 16
+λ^2 - 3λ - 70
+(λ - 10)(λ + 7)
+λ = 10, λ = -7
+(indefinite both positive and negative)
+
+The principal minors of an nxn matrix are the n determinants formed by the first r row and first r columns of A for r = 1,2,3,...n. The principal of A are denoted ∆_i
+
+The first principal minor ∆_1 equals a_11
+The nth principal minor ∆_n equals det(A)
+
+example of principal minors
+A = [
+	1 0  6
+	2 3 -4
+	6 9  8
+]
+A is 3x3 it has 3 principal minors
+The first principal minor is the determinant formed by the first row and first column of A:
+M_1 = |a_11| = |1| = 1
+The second principal minor is determinant formed by the first 2 rows and first 2 columns of A:
+M_2 = |1 0|
+		|2 3| = 3
+The third principal minor is the determinant formed by the first 3 rows and first 3 columns of A:
+M_3 = |1 0  6|
+      |2 3 -4| = 60
+      |6 9  8|
+60 comes from the det
+(det(A) = 1⋅(3⋅8−(−4)⋅9)−0⋅(2⋅8−(−4)⋅6)+6⋅(2⋅9−3⋅6))
+
+Let ∆_i for i = 1,2,...n denote principal minors fo an nxn matrix A
+According Sylvester's criterion the quadratic form x^TAx is
+positive-definite iff ∆_i > 0 for all i = 1,2,...n
+negative-definite iff for all i = 1,2,...,n we have ∆_i < 0 when i is odd, and ∆_i > 0 when i is even.
+
+If A is negative-definite, then the principal minors alternate in sign, with the first principal minor being negative.
+
+For example:
+A = [
+	2 1 0
+	1 1 0
+	0 0 5
+]
+principal minors:
+∆_1 = a11 = 2 > 0
+∆_2 = |2 1|
+      |1 1| = 1 > 0
+∆_3 = |A|
+ |2 1 0|
+=|1 1 0|
+ |0 0 5|
+5⋅|2 1|
+  |1 1|
+= 5 > 0
+all principal minors are positive. By Sylvester's criterion, the quadratic form x^TAx is positive-definite.
+
+example:
+Sylvester Criterions
+A = [
+	9 6
+	6 6
+]
+a11 = 9 and det(A) = 18
+which makes this positive-definite
+
+example:
+Sylvester Criterions
+A = [
+	-1  2  0
+	 2 -6  0
+	 0  0 -2
+]
+a11 = -1
+det(A) = -1(12) - 2(-4) + 0((2)(0)(-6)(0))
+-12 + 8 = -4
+
+∆_1 < 0
+∆_2 = |-1 2|
+      |2 -6| = 2 > 0
+∆_3 = |A| -4 < 0
+
+∆_1 (odd) < 0, ∆_2 (even) > 0, ∆_3 (odd) < 0
+therefore by Sylvester's criterion the form x^TAx
+and the matrix A are negative-definite
+
+===================================================
 
 
 
