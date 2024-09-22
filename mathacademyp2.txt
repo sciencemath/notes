@@ -2625,13 +2625,416 @@ and the matrix A are negative-definite
 
 ===================================================
 
+theorem:
+Let A be the matrix corresponding to our quadratic form Q(x)
+The maximum value of Q(x), when ||x|| = 1 is equal to the largest eigenvalue of A:
+max{Q(x)} | ||x|| = 1} = λ_max
+The max is attained on the corresponding unit eigenvector u_max
+The minimum value of Q(x) when ||x|| = 1 is equal to the smallest eigenvalue of A:
+min{Q(x) | ||x|| = 1} = λ_min
+The minimum is attained on the corresponding unit eigenvector u_min
 
+Suppose we are given the quadratic form:
+Q(x) = 4x1^2 - 2x1x2 + 4x2^2
+How can we find a unit vector u_max at which the maximum of Q(x) is attained?
+First we write down the matrix of our quadratic form
+A = [
+	 4 -1
+	-1  4
+]
+next calculate the eigenvalues:
+|A-λI| = 0
+|4-λ  1|
+| 1 4-λ| = 0
+(4 - λ)(4 - λ) - 1 = 0
+λ^2 - 8λ + 15 = 0
+(λ - 5)(λ - 3) = 0
+λ = 5,3
+therefore we have
+max{Q(x) | ||x|| = 1} = λ_max = 5
 
+To find u_max we need a unit eigenvector that corresponds to the eigenvalue λ_max = 5.
+A - 5I = [
+	 4 -1
+	-1  4
+] - 5[
+	1 0
+	0 1
+] = [
+	-1 -1
+	-1 -1
+]
+gives us the eigenvector v = [1,-1]
+divide v by its norm ||v|| = sqrt(2)
+u_max = v/||v|| = 1/sqrt(2)[1, -1]
 
+Find minimum value of Q(x) = x1^2 - 2x2^2 - 2x3^2 + 2x2x3
+given that ||x|| = 1
+A = [
+	1  0  0
+	0 -2  1
+	0  1 -2
+]
+|A-λI| = 0
+|1-λ  0   0|
+|0  -2-λ  1| = 0
+|0   1 -2-λ|
+(1-λ)|-2-λ  1|
+     | 1 -2-λ| = 0
+(1 - λ)((-2 - λ)(-2 - λ) - 1) = 0
+(1 - λ)(λ^2 + 4λ + 3) = 0
+(1 - λ)(λ + 3)(λ + 1) = 0
+λ = 1,-1,3
+min{Q(x) | ||x|| = 1} = -3
 
+example:
+find minimum value of
+Q(x) = 7x1^2 + 8x2^2 + 5x3^2 - 4x2x3 given ||x|| = 1
+A = [
+  7-λ  0  0
+  0   8-λ -2
+  0   -2  5-λ
+]
+(7-λ)|8-λ   2|
+     |-2  5-λ| = 0
+(7 - λ)((8 - λ)(5 - λ) - 4)
+(7 - λ)(λ^2 - 13λ + 36)
+(7 - λ)(λ - 9)(λ - 4)
+λ = 7, 9, 4
 
+Finding where the extrema of a quadratic form is attained on the unit circle
+example we are given
+Q(x) = x1^2 - 10x1x2 + x2^2
+when ||x|| = 1, lets find a unit vector u_max
+A = [
+	 1 -5
+	-5  1
+]
+Find the unit eigenvector that corresponds to the eigenvalue λ_max = 6
+A - 6I = [
+	 1 -5
+	-5  1
+] - 6[
+	1 0
+	0 1
+] = [
+	-5 -5
+	-5 -5
+]
+(A-5I)x = 0 gives the eigen vector v = [-1,1]
+dividing v by norm ||v|| = sqrt(2)
+u_max = v/||v|| = 1/sqrt(2)[-1,1]
+Now we can check this is the vector we are looking for
+Q(u_max) = (-1/sqrt(2)^2) -10(-1/sqrt(2))(1/sqrt(2)) + (1/sqrt(2))^2
+= 1/2 + 10/2 + 1/2
+= 6
 
+example:
+The max value of Q(x) = x1^2 - 4x1x2 + 4x2^2 when ||x|| = 1 is equal to 5. What is the vector when max is attained?
+A = [
+	 1 -2
+	-2  4
+]
+A - 5I = [
+	 1 -2
+	-2  4
+] - 5[
+	1 0
+	0 1
+] = [
+	-4 -2
+	-2 -1
+]
+(-4 - λ)(-1 - λ) - (-2)(-2)
+4 + 4λ + λ + λ^2 - 4
+λ^2 + 5λ
+λ(λ + 5)
+eigenvalues
+λ = 0, -5 
+eigenvector
+{
+	-4x1 - 2x2 = 0
+	-2x1 - x2 = 0
+}
+first equation we can express x1 in terms of x2
+-4x1 = 2x2  =>  x1 = -2/4x2  =>  x1 = -1/2x2
+x1 = -1/2t, x2 = t
+eigenvector λ = 0
+[-1/2, t] setting t = 2 we get
+[-1, 2]
+u_max = v/||v|| = 1/sqrt(5)[-1, 2]
 
+example:
+the min value Q(x) = 3x1^2 - 2x1x2 + 3x2^2 when ||x|| = 1, is equal to 2. find the vector x when min is attained
+A = [
+	 3 -1
+	-1  3
+]
+A-2I = [
+	 3 -1
+	-1  3
+] - 2[
+	1 0
+	0 1
+] = [
+	 1 -1
+	-1  1
+]
+(A - 2I)x = 0
+eigenvector v = [1, 1]
+||v|| = sqrt(2)
+u_min = v/||v|| = 1/sqrt(2)[1,1]
 
+Finding extrema of quadratic form is attained on unit SPHERE for a 3x3 matrix
+the max value of quadratic form Q(x) = -x1^2 + 2x2^2 + 6x3^2 + 4x1x2, when ||x|| = 1, is equal to 6. find vector x where max is attained.
+example:
+A = [
+	-1 2 0
+	 2 2 0
+	 0 0 6
+]
+A - 6I = [
+	-1 2 0
+	 2 2 0
+	 0 0 6
+] - 6[
+	1 0 0
+	0 1 0
+	0 0 1
+] = [
+	-7  2 0
+	 2 -4 0
+	 0  0 0
+]
+{
+	-7x1 + 2x2 = 0
+	2x1 - 4x2 = 0
+	0 = 0
+}
+2x2 = 7x1
+x1 = 7/2
+setting x1 to 0 to simplify
+x2 = 0
+x3 = 1
+(A - 6I)x = 0 eigenvector v = [0,0,1]
+since v is already normalized ||v|| = 1
+u_max = [0,0,1]
 
+example:
+the max value of the quadratic form Q(x) = -x1^2 + 2x2^2 + x3^2 + 4x1x2 when ||x|| = 1, is equal to 3. What is the max vector x?
+A = [
+	-1 2 0
+	 2 2 0
+	 0 0 1
+] 
+A - 3I = [
+	-1 2 0
+	 2 2 0
+	 0 0 1
+] - 3[
+	1 0 0
+	0 1 0
+	0 0 1
+] = [
+	-4  2  0
+	 2 -1  0
+	 0  0 -2
+]
+{
+	-4x1 + 2x2 = 0
+	2x1 - x2 = 0
+	-2x3 = 0
+}
+x1 = 1/2x2
+2(1/2x2) - x2
+x2 - x2 = 0
+x2 = x2
+x3 = 0
+setting x2 to 2 we get [1, 2, 0]
+u_max = v/||v|| = 1/sqrt(5)[1,2,0]
 
+example:
+min value Q(x) = -x1^2 - x2^2 + 2x3^2 + 2x1x2 ||x|| = 1, is equal to -2. What is the vector x at the minimum is attained?
+A = [
+	-1  1 0
+	 1 -1 0
+	 0  0 2
+]
+A - 2I = [
+	-1  1 0
+	 1 -1 0
+	 0  0 2
+] + 2 [
+	1 0 0
+	0 1 0
+	0 0 1
+] = [
+	1 1 0
+	1 1 0
+	0 0 4
+]
+{
+	x1 + x2 = 0
+	x1 + 3x2 = 0
+	4x3 = 0
+}
+x1 = -x2
+setting x2 to 1: [-1,1,0]
+u_min = v/||v|| = 1/sqrt(2)[-1,1,0]
+
+===================================================
+
+The general form of an ellipse centered at the origin is:
+x1^2/a^2 + x2^2/b^2 = 1
+where a and b are the lengths of the semi-major and semi-minor axes.
+
+---------------------------------------------------------
+Constrained Optimization of Quadratic Forms Over Ellipses
+---------------------------------------------------------
+START:
+
+Q(x) = x1^2 - 2x1x2 + x2^2
+over the ellipse 4x1^2 + x2^2 = 4 equals 5. How can we find a vector at which max is attained?
+
+By applying suitable change of variable. This change of variable should transform our problem into one where we need to maximize a related quadratic form Q' on the unit circle
+
+First, we write down the matrix of our quadratic form:
+A = [
+	 1 -1
+	-1  1
+]
+write the constraint equation:
+x1^2 + x2^2/2^2 = 1
+which represents an ellipse with semiaxes a = 1 (along the x1-axis) and b = 2 (along the x2-axis)
+if we introduce new variables:
+y1 = x1, y2 = x2/2
+the equation of the ellipse will transform into y1^2 + y2^2 = 1 or ||y|| = 1
+so, introducing a change-of-coordinate matrix
+P = [
+	1 0
+	0 2
+]
+we obtain that x = Py. substituting this into the expression of the quadratic form, we get
+Q(x) = x^TAx = (Py)^TA(Py) = y^T(P^TAP)y = Q'(y)
+since P^T = P the matrix of our quadratic form in the new coordinates is
+B = P^TAP
+= PAP
+= [
+	1 0
+	0 2
+][
+	 1 -1
+	-1  1
+][
+	1 0
+	0 2
+]
+= [
+	 1 -1
+	-2  2
+][
+	1 0
+	0 2
+]
+=
+[
+	 1 -2
+	-2  4
+]
+Now to maximize Q'(y) when ||y|| = 1
+since we are told the max value of of the quadratic form is 5:
+max{Q'(y) | ||y|| = 1} = λ_max = 5
+next we find the unit eigenvector that corresponds to the eigenvalue λ_max = 5
+B - 5I = [
+	 1 -2
+	-2  4
+] - 5[
+	1 0
+	0 1
+] = [
+	-4 -2
+	-2 -1
+]
+= eigenvector v = [-1, 2], dividing v by its norm ||v|| = sqrt(5)
+u_max = v/||v|| = 1/sqrt(5)[-1, 2]
+finally, we map this vector back to the initial coordinate system using the change-of-coordinates matrix:
+x_max = Pu_max
+= [
+	1 0
+	0 2
+]⋅ 1/sqrt(5)[-1, 2]
+= 1/sqrt(5)[-1, 4]
+
+FINISHED: (many steps)
+---------------------------------------------------------
+Finding Where the Extrema of Quadratic Form is Attained Over an Ellipse
+---------------------------------------------------------
+START: (also many steps)
+these steps are very similar to contrained optimization
+
+Find the min value of Q(x) = 16x1^2 + 16x1x2 + x2^2 given that 16x1^2 + x2^2 = 16 find the vector x at which the min is obtained.
+First the matrix of our quadratic form:
+A = [
+	16 8
+	 8 1
+]
+the contraint equation:
+x1^2/1^2 + x2^2/4^2 = 1
+This is an ellipse with semiaxes a = 1 (along the x1-axis) and b = 4 (along the x2-axis)
+if we introduce new variables:
+y1 = x1, and y2 = x2/4
+the equation of the ellipse will transform into y1^2 + y2^2 = 1, or ||y|| = 1
+change-of-coordinates matrix
+P = [
+	1 0
+	0 4
+]
+we obtain that x = Py. substituting this into the expression of the quadratic form
+Q(x) = x^TAx = (Py)^TA(Py) = y^T(P^TAP)y = Q'(y)
+since P^T = P the matrix of our quadratic form in new coordinates is
+B = P^TAP
+= PAP
+= [
+	1 0
+	0 4
+][
+	16 8
+	 8 1
+][
+	1 0
+	0 4
+]
+= [
+	16 32
+	32 16
+]
+now we maximize Q'(y) when ||y|| = 1. Calculating the eigenvalues B, we obtain the following:
+|B - λI| = 0
+|16-λ 32|
+|32 16-λ| = 0
+(16 - λ)(16 - λ) - 1024 = 0
+λ^2 - 32λ - 768 = 0
+(λ - 48)(λ + 16) = 0
+λ = 48, -16
+therefore we have
+min{Q'(y) | ||y|| = 1} = λ_min = -16
+unit eigenvector that corresponds to the eigenvalue λ_min = -16
+B-(-16I) = [
+	16 32
+	32 16
+] + 16[
+	1 0
+	0 1
+] = [
+	32 32
+	32 32
+]
+seeking a non-zero solution of (B-(-16I))y = 0 gives the eigenvector v = [1, 1] dividing v by its norm ||v|| = sqrt(2):
+u_min = v/||v|| = 1/sqrt(2)[1,1]
+finally map this vector back to the initial coordinate system using the change-of-coordinates matrix:
+x_min = Pu_min
+= [
+	1 0
+	0 4
+] ⋅ 1/sqrt(2)[1, 1]
+= 1/sqrt(2)[1, 4]
