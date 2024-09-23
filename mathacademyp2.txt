@@ -2884,9 +2884,69 @@ u_min = v/||v|| = 1/sqrt(2)[-1,1,0]
 
 ===================================================
 
+!IMPORTANT before moving onto the next two section we need to REVIEW some relivant information:
+Completing the square:
+
 The general form of an ellipse centered at the origin is:
 x1^2/a^2 + x2^2/b^2 = 1
 where a and b are the lengths of the semi-major and semi-minor axes.
+
+x1^2 + x1x2
+ax^2 + bx = a(x^2 + (b/a)x)
+a = 1 and b = x2
+
+1) take half the coefficient of x1
+	the coefficient of x1 is x2 so half of this is x2/2
+2) square it:
+	The square of x2/2 is (x2/2)^2 = x2^2/4
+3) Rewrite the expression
+	Now we can express x1^2 + x1x2 as:
+x1^2 + x2x1 = (x1 + x2/2)^2 - x2^2/4
+
+REVIEW:
+||x||^2 = x^Tx = (Py)^T(Py)...
+y^T(P^TP)y = y^TIy = y^Ty
+where P is orthogonal matrix or orthonormal transformation
+y^Ty = ||y||^2
+
+Change-of-coordinates optimizes quadratic forms because it simplifies the analysis, aids in identifying critical points, and enhances oru understanding of the underlying geometry. This process allows us to focus on the essential features of the quadratic form. Making it easier to find min/max.
+
+change-of-coordinates example:
+New coordinates of
+Q(x1,x2) = 3x1^2 - 4x1x2 + 2x2^2
+leads to the new coordinates: Q(y) = 4y1^2 + 1y2^2
+How is this so?
+1) matrix form: Q(x) = [x1 x2][3 -2, -2 2][x1, x2]
+2) eigenvalues come out to be 4 and 1, corresponding eigenvectors:
+	λ = 4, eigenvector: [-2, 1], λ = 1, eigenvector: [1, 1]
+3) [y1, y2] = P^-1[x1, x2] P is formed by the eigenvectors: [-2 1, 1 1]
+4) find Q(y1,y2) we express x1 and x2 in terms of y1 and y2
+	Calculate P^-1:
+	Determinant of P is det(P) = (-2)(1) - (1)(1) = -2 - 1 = -3
+	Inverse:
+	P^-1 = 1/det(P)[d -b, -c a] = -1/3[1 -1, -1 -2] = [-1/3 1/3, 1/3 2/3]
+	Substitute:
+	[x1, x2] = P[y1, y2]: [x1, x1] = [-2 1, 1 1][y1, y2] = [-2y1 + y2, y1 + y2]
+5) Subtitute into the original quadratic form: x1 = -2y1 + y2 and x2 = y1 + y2
+	Q(x1,x2) = 3(-2y1 + y2)^2 - 4(-2y1 + y2)(y1 + y2) + 2(y1 + y2)^2
+6) Expand the expression:
+	First term: 3(-2y1 + y2)^2 = 3(4y1^2 - 4y1y2 + y2^2) = 12y1^2 - 12y1y2 + 3y2^2
+	Second: -4(-2y1 + y2)(y1 + y2) = -4(-2y1^2 - 2y1y2 + y2^2) = 8y1^2 + 8y1y2 - 4y2^2
+	Third: 2(y1 + y2)^2 = 2(y1^2 + 2y1y2 + y2^2) = 2y1^2 + 4y1y2 + 2y2^2
+7) Combine all terms
+	Q(y1,y2) = (12y1^2 + 8y1^2 + 2y1^2) + (-12y1y2 + 8y1y2 + 4y1y2) + (3y2^2 - 4y2^2 + 2y2^2)
+	collect y1^2 gives us 22y1^2
+	collect the y1y2 terms gives us 0
+	collect the y2^2 terms gives us 1y2^2
+Final form:
+Q(y) = 4y1^2 + 1y2^2
+where we must have normilized by dividing the coefficients appropriately to reflect proper eigenvalues.
+
+useful video: https://www.youtube.com/watch?v=JabOq1XZi9c
+
+(a constraint equation can be expressed as 16x1^2 + 16x1x2 + x2^2 = c, c is often set to 1 for normilization)
+
+NOTE: I had to watch hours of videos and ask chatgpt a bunch to make sure I grasp everything.
 
 ---------------------------------------------------------
 Constrained Optimization of Quadratic Forms Over Ellipses
@@ -2898,14 +2958,16 @@ over the ellipse 4x1^2 + x2^2 = 4 equals 5. How can we find a vector at which ma
 
 By applying suitable change of variable. This change of variable should transform our problem into one where we need to maximize a related quadratic form Q' on the unit circle
 
-First, we write down the matrix of our quadratic form:
+Matrix of our quadratic form:
 A = [
 	 1 -1
 	-1  1
 ]
-write the constraint equation:
+
+the constraint equation:
 x1^2 + x2^2/2^2 = 1
 which represents an ellipse with semiaxes a = 1 (along the x1-axis) and b = 2 (along the x2-axis)
+
 if we introduce new variables:
 y1 = x1, y2 = x2/2
 the equation of the ellipse will transform into y1^2 + y2^2 = 1 or ||y|| = 1
@@ -2978,9 +3040,11 @@ A = [
 	16 8
 	 8 1
 ]
-the contraint equation:
+the constraint equation:
 x1^2/1^2 + x2^2/4^2 = 1
+
 This is an ellipse with semiaxes a = 1 (along the x1-axis) and b = 4 (along the x2-axis)
+
 if we introduce new variables:
 y1 = x1, and y2 = x2/4
 the equation of the ellipse will transform into y1^2 + y2^2 = 1, or ||y|| = 1
@@ -2991,6 +3055,7 @@ P = [
 ]
 we obtain that x = Py. substituting this into the expression of the quadratic form
 Q(x) = x^TAx = (Py)^TA(Py) = y^T(P^TAP)y = Q'(y)
+
 since P^T = P the matrix of our quadratic form in new coordinates is
 B = P^TAP
 = PAP
@@ -3040,3 +3105,166 @@ x_min = Pu_min
 = 1/sqrt(2)[1, 4]
 FINISHED: (many steps)
 ---------------------------------------------------------
+
+example:
+find the min value of Q(x) = 5x1^2 - 16x1x2 - 4x2^2 given that 25x1^2 + 4x2^2 = 100
+A = [
+	 5 -8
+	-8 -4
+]
+the constraint equation:
+x1^2/2^2 + x2^2/5^2 = 1
+
+This is an ellipse with semiaxes a = 2 (along the x1-axis) and b = 5 (along the x2-axis)
+
+y1 = x1/2, and y2 = x2/5
+the equation of the ellipse will transform into y1^2 + y2^2 = 1 or ||y|| = 1
+
+change-of-coordinates matrix
+P = [
+	2 0
+	0 5
+]
+since P^T = P matrix of our quadratic form in new coordinates is
+B = P^TAP
+= PAP
+= [
+	2 0
+	0 5
+][
+	 5 -8
+	-8 -4
+][
+	2 0
+	0 5
+]
+= [
+	 10 -16
+	-40 -20
+][
+	2 0
+	0 5
+]
+= [
+	 20  -80
+	-80 -100
+]
+maximize Q'(y) when ||y|| = 1
+|B - λI| = 0
+|20-λ   -80|
+|-80 -100-λ| = 0
+(20 - λ)(-100 - λ) - 6400 = 0
+λ^2 + 80λ - 8400 = 0
+(λ - 60)(λ + 140) = 0
+λ = 60, -140
+= min{Q'(y) | ||y|| = 1} = λ_min = -140
+
+example:
+max value of Q(x) = x1^2 - 4x1x2 + 4x2^2 when 9x1^2 + 4x2^2 = 36 is 40 what is the vector x which the max is attained?
+A = [
+	 1 -2
+	-2  4
+]
+x1^2/2^2 + x2^2/3^2 = 1
+
+change-of-coordinates matrix
+P = [
+	2 0
+	0 3
+][
+	 1 -2
+	-2  4
+][
+	2 0
+	0 3
+] = [
+	 2 -4
+	-6 12
+][
+	2 0
+	0 3
+]
+= [
+	 4 -12
+	-12 36
+]
+max{Q'(y) | ||y|| = 1} = λ_max = 40
+ 
+maximize Q'(y) when ||y|| = 1
+|B - λI| = 0
+|4-λ   -18|
+|-8   36-λ| = 0
+(4 - λ)(36 - λ) - 144
+λ^2 - 40λ
+λ(λ - 40)
+λ = 0, 40
+
+B - 40I = [
+	 4 -12
+	-12  36
+] - 40[
+	1 0
+	0 1
+] = [
+	-36 -12
+	-12 -4
+]
+{
+	-36x1 - 12x2 = 0
+	-12x1 - 4x2 = 0
+}
+from the first equation:
+-36x1 = 12x2  =>  3x1 = -x2  =>  x2 = -3x1
+v1 = [x1, -3x1] = x1[1, -3] let x1 = -1 we get [-1, 3]
+[1,-3], [-1,3] are two solutions
+norm ||v|| = sqrt(10)
+u_max = v/||v|| = 1/sqrt(10)[-1, 3]
+mapping back to initial coordinate system using the change-of-coordinates matrix:
+x_max = Pu_max
+= [
+	2 0
+	0 3
+]⋅ 1/sqrt(10)[-1, 3]
+= 1/sqrt(10)[-2, 9]
+
+theorem:
+the max value of a quadratic form Q(x) = x^TAx when ||x|| = 1, is equal to the largest eigenvalue of A: max{Q(x) | ||x|| = 1} = λ_max
+the max is attained on the corresponding unit eigenvector u_max
+
+Let A be a real nxn symmetric matrix corresponding to a quadratic form Q(x). As a result, thjere must be an orthonormal matrix P such that
+	D = P^-1AP = P^TAP where D is a diagonal matrix
+
+	the diagonal entries of D are the eigenvalues of A. Without loss of generality, we can assume that the eigenvalues are λ_1 >= λ_2 >= ... >= λ_n where λ_max = λ_1
+
+	The columns u1, u2, ... u_n of P form an orthonormal set of unit eigenvectors of A. So u_max = u1
+
+Take x = Py. Since, P is orthogonal, we have
+||x|| = ||Py|| = ||y||
+
+Q(x) = x^TAx = (Py)^TA(Py) = y^T(P^TAP)y = y^TDy
+
+||x|| = 1 <=> ||y|| = 1 for all y such that x = Py
+
+Restricted to the unit sphere of R^n, the images of the quadratic forms Q(x) and Q'(y) = y^TDy coincide:
+{x^TAx: ||x|| = 1} = {y^TDy: ||y|| = 1}
+
+Q(y) = Q'(y)
+= λ_1y1^2 + λ_2y2^2 + ... + λ_nyn^2
+<= λ_max y1^2 + λ_max y2^2 + ... + λ_max yn^2
+= λ_max(y1^2 + y2^2 + ... + yn^2)
+= λ_max ||y||^2
+= λ_max
+
+M = max{Q(x) | ||x|| = 1} = max{Q'(y) | ||y|| = 1} <= λ_max
+
+If we take e1 = [1 0 ... 0]^T then Q(e1) = Q'(e1) = λ_max, M = λ_max
+
+Since u1 = Pe1 we have that Q(u1) = e1^TDe1 = λ_max, the max value is attained at u_max
+
+
+
+
+
+
+
+
