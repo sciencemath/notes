@@ -4,6 +4,8 @@ NOTE: In previous notebooks Ive used S to denote integrate, here ill use: ∫_0^
 
 NOTE: iff = if and only if
 
+NOTE: a variable followed by `_` usually means sub (for instance v_i) means v sub i (where i usually means a numerical value 1,2,...)
+
 Review:
 Calculating dot product:
 u = [
@@ -3262,6 +3264,7 @@ If we take e1 = [1 0 ... 0]^T then Q(e1) = Q'(e1) = λ_max, M = λ_max
 Since u1 = Pe1 we have that Q(u1) = e1^TDe1 = λ_max, the max value is attained at u_max
 
 ===================================================
+Singular Value Calculations
 
 matrix A is given by
 A = [
@@ -3442,6 +3445,537 @@ singular values:
 σ1 = sqrt(λ1) = sqrt(25) = 5
 σ2 = sqrt(λ2) = sqrt(16) = 4
 σ3 = sqrt(λ3) = sqrt(0) = 0
+
+===================================================
+
+Singular Value Decomposition (or SVD) of an mxn matrix A is a factorization of the form
+A = UΣV^T
+
+Σ is a mxn matrix with the singular values of A (ordered from largest to smallest) on the main diagonal and zeros outside the main diagonal
+
+U is an orthogonal mxm matrix
+
+V is an orthogonal nxn matrix
+
+The columns of U are the left singular vectors of A, and the columns of V are the right singular vectors of A
+
+example:
+A = [
+	 1  3
+	-3 -1
+]
+has the following singular value decomposition:
+A [
+	 1  3
+	-3 -1
+] U [
+	 1/sqrt(2) 1/sqrt(2)
+	-1/sqrt(2) 1/sqrt(2)
+] Σ [
+	4 0
+	0 2
+] V^T [
+	1/sqrt(2) -1/sqrt(2)
+	1/sqrt(2) 1/sqrt(2)
+]
+
+Finding the second and third matrices of a singular value 
+
+A = UΣV^T
+is a singular value decomposition of A, lets see how we can find V and Σ
+
+if we compute A^TA we get
+A^TA = (UΣV^T)^T (UΣV^T)
+= (VΣ^TU^T)(UΣV^T)
+= VΣ^T(U^TU)ΣV^T
+= VΣ^T(I_n)ΣV^T
+= V(Σ^TΣ)V^T
+Note A^TA is always symmetric and Σ^TΣ is a diagonal matrix with the singlar values on the main diagonal.
+A^TA = V(Σ^TΣ)V^T
+is an orthogonal diagonlization of the symmetric matrix A^TA. To find the vector V in our SVD we need to orthogonally diagonlize A^TA
+
+Lets see how this works by computing the matrices Σ and V in the SVD of the matrix A.
+A = [
+	2 -3
+	0  2
+]
+A^TA = [
+	 2 0
+	-3 2
+][
+	2 -3
+	0  2
+]
+= [
+	 4 -6
+	-6 13
+]
+solving the characteristic equation |A^TA - I| = 0 we get the eigenvalues of A^TA
+λ1 = 16, λ2 = 1
+the singular values are
+σ1 = sqrt(λ1) = sqrt(16) = 4
+σ2 = sqrt(λ2) = sqrt(1) = 1
+Unit eugenvector basis of A^TA. These unit eigenvectors will be the columns of our matrix V in the orthogonal diagonalization of A^TA
+A^TA - 16I = [
+	 4 -6
+	-6 13
+] - 16 [
+	1 0
+	0 1
+] = [
+	-12 -6
+	 -6 -3
+]
+unit eigenvector
+[-1/sqrt(5), 2/sqrt(5)]
+second unit eigenvector
+A^TA - I = [
+	 4 -6
+	-6 13
+] - [
+	1 0
+	0 1
+] = [
+	 3 -6
+	-6 12
+]
+unit eigenvector
+[2/sqrt(5), 1/sqrt(5)]
+Σ = [
+	4 0
+	0 1
+]
+V = [
+	-1/sqrt(5) 2/sqrt(5)
+	2/sqrt(5) 1/sqrt(5)
+]
+
+example:
+finding the columns of the third matrix
+we are given:
+A^TA = [
+	 13 -12
+	-12  13
+]
+Σ = [
+	5 0
+	0 1
+]
+V = [
+	v11 v12
+	v21 v22
+]
+we can find the first column of V by using the singular value of the first column Σ (5 -> 25)
+A^TA - 25I = [
+	 13 -12
+	-12  13
+] - 25[
+	1 0
+	0 1
+] = [
+	-12 -12
+	-12 -12
+]
+{
+	-12x1 - 12x2 = 0
+}
+x1 = -x2
+unit egienvector
+[1/sqrt(2), -1/sqrt(2)]
+or
+-x2 = x1
+[-1/sqrt(2), 1/sqrt(2)]
+|v11|+|v21| = |-1/sqrt(2)| + |1/sqrt(2)| = sqrt(2)
+
+example:
+same as before but solving for the second column of V this time, we are given:
+A = [
+	 2 -2
+	-2 -1
+]
+(lets compute A^TA first)
+[
+	 2 -2
+	-2 -1
+][
+	 2 -2
+	-2 -1
+]
+A^TA = [
+	 8 -2
+	-2  5
+]
+Σ = [
+	3 0
+	0 2
+]
+V = [
+	v11 v12
+	v21 v22
+]
+what is the value of |v12|+|v22|
+A^TA - 4I = [
+	 8 -2
+	-2  5
+] - 4[
+	1 0
+	0 1
+] = [
+	 4 -2
+	-2 -1
+]
+x1 = 1/2x2
+[1, 2] = [1/sqrt(5), 2/sqrt(5)]
+|v12|+|v22| = 1/sqrt(5) + 2/sqrt(5) = 3/sqrt(5)
+
+Recall that V is orthogonal, meaning that V^TV = I, multiplying A = UΣV^T by V:
+A = UΣV^T
+AV = UΣ(V^TV)
+AV = UΣ
+expanded form:
+A[
+	v1 v2
+] = [
+	u1 u2
+][
+	σ1 0
+	0  σ2
+]
+=
+[
+	Av1 Av2
+] = [
+	σ1u1 σ2u2
+]
+Av_i = σ_iu_i
+or
+u_i = 1/σ_i Av_i
+
+example:
+Lets find matrix U given
+A = [
+	3 8
+	0 3
+]
+Σ = [
+	9 0
+	0 1
+]
+V = [
+	1/sqrt(10) -3/sqrt(10)
+	3/sqrt(10) 1/sqrt(10)
+]
+u_i = 1/σ_i Av_i
+where u_i and v_i are the ith columns of the matrices U and V
+u1 = 1/σ1 Av1
+= 1/9[
+	3 8
+	0 3
+][1/sqrt(10), 3/sqrt(10)]
+= 1/9[27/sqrt(10), 9/sqrt(10)]
+= [3/sqrt(10), 1/sqrt(10)]
+u2 = 1/σ2 Av2
+= 1/1[
+	3 8
+	0 3
+][-3/sqrt(10), 1/sqrt(10)]
+= [-1/sqrt(10), 3/sqrt(10)]
+matrix U in our singular decomposition of A
+[
+	3/sqrt(10) -1/sqrt(10)
+	1/sqrt(10) 3/sqrt(10)
+]
+
+example:
+What is the second column of U given
+A = [
+	4  8
+	7 -4
+]
+Σ = [
+	9 0
+	0 8
+]
+V = [
+	1/sqrt(17) -4/sqrt(17)
+	4/sqrt(17) 1/sqrt(17)
+]
+u2 = 1/σ2 Av2
+= 1/8[
+	4  8
+	7 -4
+][-4/sqrt(17), 1/sqrt(17)]
+= 1/8[-8/sqrt(17), -32/sqrt(17)]
+= [-1/sqrt(17), -4/sqrt(17)]
+
+example:
+What is the second column of U given
+A = [
+	1 -5
+	5 -1
+]
+Σ = [
+	6 0
+	0 4
+]
+V = [
+	-1/sqrt(2) 1/sqrt(2)
+	 1/sqrt(2) 1/sqrt(2)
+]
+u2 = 1/σ2 Av2
+1/4[
+	1 -5
+	5 -1
+][1/sqrt(2), 1/sqrt(2)]
+= 1/4[-4/sqrt(2), 4/sqrt(2)]
+= [-1/sqrt(2), 1/sqrt(2)]
+
+Algorithm for finding a singular value decomposition
+1) Compute A^TA
+2) find singular values which constructs Σ
+3) find right singular vectors of A (i.e. the unit eigenvectors of A^TA) this constucts V
+4) find the left singular vectors of A using singular values, right singular vectors
+
+u_i = 1/σ_iAv_i
+This allows us to compute U
+
+example:
+find matrices U and V given
+A = [
+	-3 8
+	 0 3
+]
+Σ = [
+	 9 0
+	 0 1
+]
+A^TA = [
+	-3 0
+	 8 3
+][
+	-3 8
+	 0 3
+] = [
+	 9 -24
+	-24 73
+]
+σ1 = 9 and σ2 = 1 (from Σ)
+A^TA - 81I = [
+	 9 -24
+	-24 73
+] - 81[
+	1 0
+	0 1
+] = [
+	-72 -24
+	-24  -8
+]
+v1 = [
+	-1/sqrt(10)
+	 3/sqrt(10)
+]
+A^TA - I = [
+	 9 -24
+	-24 73
+] - [
+	1 0
+	0 1
+] = [
+	 8 -24
+	-24 72
+]
+v2 = [
+	3/sqrt(10)
+	1/sqrt(10)
+]
+u1 = 1/σ1Av1
+1/9[
+	-3 8
+	 0	3
+][
+	-1/sqrt(10)
+	 3/sqrt(10)
+]
+= 1/9[27/sqrt(10), 9/sqrt(10)]
+= [3/sqrt(10), 1/sqrt(10)]
+u2 = 1/σ2Av2
+1/1[
+	-3 8
+	 0	3
+][3/sqrt(10), 1/sqrt(10)]
+= [-1/sqrt(10), 3/sqrt(10)]
+U = [
+	3/sqrt(10) -1/sqrt(10)
+	1/sqrt(10) 3/sqrt(10)
+]
+V = [
+	-1/sqrt(10) 3/sqrt(10)
+	 3/sqrt(10) 1/sqrt(10)
+]
+
+example:
+find U and V given
+A = [
+	0 6
+	6 5
+]
+Σ = [
+	9 0
+	0 4
+]
+first lets calculate A^TA
+[
+	0 6
+	6 5
+][
+	0 6
+	6 5
+] = [
+	36 30
+	30 61
+]
+A^TA - 81I = [
+	36 30
+	30 61
+] - 81[
+	1 0
+	0 1
+] = [
+	-45  30
+	 30 -20
+]
+-45x1 = -30x2
+x1 = 30/45x2
+x1 = 6/9x2 = 2/3x2
+v1 = [
+	2/sqrt(13)
+	3/sqrt(13)
+]
+A^TA - 16I = [
+	36 30
+	30 61
+] - 16[
+	1 0
+	0 1
+] = [
+	20 30
+	30 45
+]
+x1 = -30/20x2
+x1 = -3/2x2
+v2 = [
+	-3/sqrt(13)
+	2/sqrt(13)
+]
+u1 = 1/σ1Av1
+1/9[
+	0 6
+	6 5
+][
+	2/sqrt(13)
+	3/sqrt(13)
+] = 1/9[
+	18/sqrt(13)
+	27/sqrt(13)
+] = [2/sqrt(13), 3/sqrt(13)]
+u2 = 1/σ2Av2
+= 1/4[
+	0 6
+	6 5
+][-3/sqrt(13), 2/sqrt(13)]
+= 1/4[12/sqrt(13), -8/sqrt(13)]
+= [3/sqrt(13), -2/sqrt(13)]
+U = [
+	2/sqrt(13) 3/sqrt(13)
+	3/sqrt(13) -2/sqrt(13)
+]
+V = [
+	2/sqrt(13) -3/sqrt(13)
+	3/sqrt(13) 2/sqrt(13)
+]
+
+example:
+find U and V given A and Σ
+A = [
+	 1  3
+	-3 -1
+]
+Σ = [
+	4 0
+	0 2
+]
+(like before lets calculate A^TA)
+A^TA = [
+	1 -3
+	3 -1
+][
+	 1  3
+	-3 -1
+] = [
+	10 6
+	6 10
+]
+A^TA - 16I = [
+	10 6
+	6 10
+] - 16[
+	1 0
+	0 1
+] = [
+	-6  6
+	 6 -6
+]
+-6x1 = -6x2
+x1 = x2
+v1 = [1/sqrt(2), 1/sqrt(2)]
+A^TA - 4I = [
+	10 6
+	6 10
+] - 4[
+	1 0
+	0 1
+] = [
+	6 6
+	6 6
+]
+6x1 = -6x2
+x1 = -x2
+v2 = [-1/sqrt(2), 1/sqrt(2)]
+u1 = 1/σ1Av1
+1/4[
+	 1  3
+	-3 -1
+][1/sqrt(2), 1/sqrt(2)]
+= 1/4[4/sqrt(2), -4/sqrt(2)]
+= [1/sqrt(2), -1/sqrt(2)]
+u2 = 1/σ2Av2
+1/2[
+	1  3
+	-3 -1
+][-1/sqrt(2), 1/sqrt(2)]
+= 1/2[sqrt(2). sqrt(2)]
+= [1/sqrt(2), 1/sqrt(2)]
+U = [
+	1/sqrt(2) 1/sqrt(2)
+	-1/sqrt(2) 1/sqrt(2)
+]
+V = [
+	1/sqrt(2) -1/sqrt(2)
+	1/sqrt(2) 1/sqrt(2)
+]
+
+Geometrically single value decomposition:
+
+V^T is an orthogonal 2x2 matrix, it represents a transformation of the plane that preserves distances between vectors. This could be rotation, reflection or a combination, this is sometimes called a rotoreflection.
+
+Σ is a diagonal matix, it represents a scaling along the x and y axis by σ1 and σ2
+
+U is an orthogonal 2x2 matrix, represents a rotation, reflection, or a rotoreflection
+
+theorem:
+Any linear transformation on the plane can be decomposed into an orthogonal transformation (rotation, reflection, or a rotoreflection), a scaling, and another orthogonal transformation (rotation, reflection, or a rotoreflection)
+
+
 
 
 
