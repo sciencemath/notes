@@ -4318,6 +4318,620 @@ V = [
 	0 1
 ]
 
+===================================================
+
+Finding the third factor in the SVD of a rectangular matrix
+A = [
+	 3  1
+	-1 -3
+	-4  4
+]
+Σ = [
+	6 0
+	0 4
+	0 0
+]
+find 2x2 matrix V
+Σ is a 3x2 matrix with nonnegative elements on the main diagonal and zeros outside.
+U is an orthogonal 3x3 matrix
+V is an orthogonal 2x2 matrix
+A^TA = [
+	3 -1 -4
+	1 -3  4
+][
+	 3  1
+	-1 -3
+	-4  4
+] = [
+	26 -10
+	-10 26
+]
+σ1 = 6, σ2 = 4 from Σ
+A^TA - 36I = [
+	26 -10
+	-10 26
+] - 36[
+	1 0
+	0 1
+] = [
+	-10 -10
+	-10 -10
+]
+v1 = [-1/sqrt(2), 1/sqrt(2)]
+A^TA - 16I = [
+	26 -10
+	-10 26
+] - 16[
+	1 0
+	0 1
+] = [
+	10 -10
+	-10 10
+]
+v2 = [1/sqrt(2), 1/sqrt(2)]
+V = [
+	-1/sqrt(2) 1/sqrt(2)
+	 1/sqrt(2) 1/sqrt(2)
+]
+
+example:
+find V
+A = [
+	 0  0
+	 1 -1
+	-2  2
+]
+Σ = [
+	sqrt(10) 0
+		0     0
+		0     0
+]
+A^TA = [
+	0 1 -2
+	0 -1 2
+][
+	 0  0
+	 1 -1
+	-2  2
+] = [
+	5 -5
+	-5 5
+]
+σ1 = sqrt(10), σ2 = 0 from Σ
+A^TA - 10I = [
+	5 -5
+	-5 5
+] - 10[
+	1 0
+	0 1
+] = [
+	-5 -5
+	-5 -5
+]
+v1 = [-1/sqrt(2), 1/sqrt(2)]
+A^TA - 0I = [
+	5 -5
+	-5 5
+] - 0[
+	1 0
+	0 1
+] = [
+	5 -5
+	-5 5
+]
+v2 = [1/sqrt(2), 1/sqrt(2)]
+V = [
+  -1/sqrt(2) 1/sqrt(2)
+   1/sqrt(2) 1/sqrt(2)
+]
+
+example:
+find V
+A = [
+	 0  2
+	-2  0
+	-2 -1
+]
+Σ = [
+	3 0
+	0 2
+	0 0
+]
+A^TA = [
+	0 -2 -2
+	2  0 -1
+][
+	 0  2
+	-2  0
+	-2 -1
+] = [
+	8 2
+	2 5
+]
+σ1 = 3, σ2 = 2 from Σ
+A^TA - 9I = [
+	8 2
+	2 5
+] - 9[
+	1 0
+	0 1
+] = [
+	-1 2
+	 2 -4
+]
+x1 = 2x2
+[2, 1] = [2/sqrt(5), 1/sqrt(5)]
+A^TA - 4I = [
+	8 2
+	2 5
+] - 4[
+	1 0
+	0 1
+] = [
+	4 2
+	2 1
+]
+4x1 = -2x2
+x1 = -1/2x2
+[-1, 2] = [-1/sqrt(5), 2/sqrt(5)]
+V = [
+	2/sqrt(5) -1/sqrt(5)
+	1/sqrt(5) 2/sqrt(5)
+]
+
+example:
+find the third column of matrix U given A, Σ, V
+A = [
+	 1 -3
+	 4  4
+	-3  1
+]
+Σ = [
+	6 0
+	0 4
+	0 0
+]
+V = [
+	1/sqrt(2) -1/sqrt(2)
+	1/sqrt(2) 1/sqrt(2)
+]
+[
+	 1 -3
+	 4  4
+	-3  1
+][
+	1/sqrt(2)
+	1/sqrt(2)
+]
+u1 = 1/6[
+	-1/3sqrt(2)
+	4/3sqrt(2)
+	-1/3sqrt(2)
+]
+[
+	 1 -3
+	 4  4
+	-3  1
+][
+	-1/sqrt(2)
+	1/sqrt(2)
+]
+u2 = 1/4[
+	-1/sqrt(2)
+		0
+	1/sqrt(2)
+]
+{
+	-x1 + 4x2 - x3 = 0
+	-x1 + x3 = 0
+}
+x1 = x3
+4x2 = 4/3
+x2 = 4/3 * 1/4 = 4/12 = 1/3
+= [2/3, 1/3, 2/3]
+U = [
+	-1/3sqrt(2) -1/sqrt(2) 2/3
+	 4/3sqrt(2)     0      1/3
+	-1/3sqrt(2)  1/sqrt(2) 2/3
+]
+
+example:
+find the 3rd column of U given A, Σ, U
+A = [
+	0  0
+	2  2
+	1 -2
+]
+Σ = [
+	3 0
+	0 2
+	0 0
+]
+V = [
+	1/sqrt(5) -2/sqrt(5)
+	2/sqrt(5)  1/sqrt(5)
+]
+[
+	0  0
+	2  2
+	1 -2
+][
+	1/sqrt(5)
+	2/sqrt(5)
+]
+u1 = 1/3[
+	0
+	2/sqrt(5)
+	-1/sqrt(5)
+]
+[
+	0  0
+	2  2
+	1 -2
+][
+	-2/sqrt(5)
+	1/sqrt(5)
+]
+u2 = 1/2[
+	0
+	-1/sqrt(5)
+	-2/sqrt(5)
+]
+{
+	2x2 - x3 = 0
+	-x2 - 2x3 = 0
+}
+x3 = 2x2
+-x2 - 2(2x2) = 0
+-x2 - 4x2 = 0
+-5x2 = 0
+x2 = 0
+x3 = 2(0) = 0
+= [1, 0, 0]
+U = [
+	    0 			0 		 1
+	 2/sqrt(5) -1/sqrt(5) 0
+	-1/sqrt(5) -2/sqrt(5) 0
+]
+
+Advanced cases of SVD
+example:
+find matrix U
+A = [
+	0 0
+	1 1
+	3 3
+]
+Σ = [
+	2sqrt(5) 0
+		0     0
+		0     0
+]
+V = [
+	1/sqrt(2) -1/sqrt(2)
+	1/sqrt(2)  1/sqrt(2)
+]
+[
+	0 0
+	1 1
+	3 3
+][
+	1/sqrt(2)
+	1/sqrt(2)
+]
+u1 = 1/2sqrt(5)[
+	0
+	1/sqrt(10)
+	3/sqrt(10)
+]
+since σ2 = 0, and we don't have a third singular value. U must be orthogonal, we must find vectors
+{
+	x2 + 3x3 = 0
+}
+[
+	x1
+	-3x3
+	x3
+] = x1[
+	1
+	0
+	0
+] + x3[
+	0
+	-3
+	1
+]
+u2 = [1,0,0]
+u3 = [0,-3/sqrt(10),1/sqrt(10)]
+U = [
+	0 1 0
+	1/sqrt(10) 0 -3/sqrt(10)
+	3/sqrt(10) 0  1/sqrt(10)
+]
+
+example:
+find U given A, Σ, V
+A = [
+	4 0
+	3 0
+	0 0
+]
+Σ = [
+	5 0
+	0 0
+	0 0
+]
+V = [
+	1 0
+	0 1
+]
+[
+	4 0
+	3 0
+	0 0
+]
+[
+	1
+	0
+]
+u1 = 1/5[
+	4
+	3
+	0
+]
+{
+	4x1 + 3x2 = 0
+}
+x1 = [
+	4/5
+	3/5
+	0
+]
+[
+	-3/4x2
+	x2
+	x3
+] = x2[
+	-3/4
+	1
+	0
+] + x3[
+	0
+	0
+	1
+]
+magnitude from (x2):
+sqrt((-3/4)^2 + 1^2 + 0^2)
+= sqrt(9/16 + 1)
+= sqrt(9/16 + 16/16)
+= sqrt(25/16)
+= 5/4
+
+1/(5/4) =
+4/5[
+	-3/4
+	1
+	0
+] =
+u2 = [
+	-3/5
+	4/5
+	0
+]
+u3 = [
+	0
+	0
+	1
+]
+U = [
+	4/5 -3/5 0
+	3/5  4/5 0
+	  0    0 1
+]
+
+If the solution to u2 and u3 columns are not mutually orthogonal we will need to orthogonalize them using the Gram-Schmidt process when solving a SVD problem.
+example:
+find matrix U given A, Σ, V
+A = [
+	 2  2
+	-2 -2
+	 1  1
+]
+Σ = [
+	3sqrt(2) 0
+		0     0
+		0     0
+]
+V = [
+	1/sqrt(2) -1/sqrt(2)
+	1/sqrt(2)  1/sqrt(2)
+]
+[
+	 2  2
+	-2 -2
+	 1  1
+][
+	1/sqrt(2)
+	1/sqrt(2)
+]
+u1 = 3sqrt(2)[
+	2/3
+	-2/3
+	1/3
+]
+{
+	2x1 - 2x2 + x3 = 0
+}
+x3 = -2x1 + 2x2
+[
+	x1
+	x2
+	-2x1 + 2x2
+]
+= x1[
+	1
+	0
+	-2
+] + x2[
+	0
+	1
+	2
+]
+Gram-Schmidt process
+c1 = b1 = v1 = [
+	1
+	0
+	-2
+]
+||v1|| = sqrt(1^2 + 0^2 + (-2)^2)
+= sqrt(5)
+sqrt(5)[v1]
+= [
+	1/sqrt(5)
+		0
+	-2sqrt(5)
+]
+c2 = b2 = v2 - (b2⋅c1/c1⋅c1)c1
+= [
+	0
+	1
+	2
+]⋅[
+	1/sqrt(5)
+		0
+	-2sqrt(5)
+] = -4/sqrt(5)
+//////////////
+-4/sqrt(5)[
+	1/sqrt(5)
+		0
+	-2sqrt(5)
+] = [
+	-4/5
+	  0
+	-8/5
+]
+[
+	0
+	1
+	2
+] - [
+	-4/5
+	  0
+	-8/5
+] = [
+	4/5
+	1
+	2/5
+]
+normalize u3
+sqrt((4/5)^2 + 1^2 + (2/5)^2)
+= sqrt(16/25 + 1 + 4/25)
+= sqrt(16/25 + 25/25 + 4/25)
+= sqrt(45/25)
+= 3sqrt(5)/5
+1/||u3||u3 = 5/3sqrt(5)[4/5,1,2/5]
+= [4/3sqrt(5), 5/3sqrt(5), 2/3sqrt(5)]
+U = [
+	 2/3  1/sqrt(5)  4/3sqrt(5)
+	-2/3      0      5/3sqrt(5)
+	 1/3  -2/sqrt(5) 2/3sqrt(5)
+]
+
+find matrix U given A, Σ, V
+A = [
+	 1  1
+	-1 -1
+	-1 -1
+]
+Σ = [
+	sqrt(6)  0
+	   0     0
+	   0     0
+]
+V = [
+	1/sqrt(2) -1/sqrt(2)
+	1/sqrt(2)  1/sqrt(2)
+]
+[
+	 1  1
+	-1 -1
+	-1 -1
+][
+	1/sqrt(2)
+	1/sqrt(2)
+]
+u1 = sqrt(6)[
+	 1/sqrt(3)
+	-1/sqrt(3)
+	-1/sqrt(3)
+]
+{
+	x1 - x2 - x3 = 0
+}
+x1 = x2 + x3
+[
+	x2 + x3
+		x2
+		x3
+] = x2[
+	1
+	1
+	0
+]+x3[
+	1
+	0
+	1
+]
+b1 = x2 = [
+	1
+	1
+	0
+]
+b2 = x3 = [
+	1
+	0
+	1
+]
+b1⋅b1 = 1^2 + 1^2 + 0^2 = 2
+b2⋅b1 = 1*1 + 0*1 + 1*0 = 1
+proj = (b2⋅b1/b1⋅b1)b1 = 1/2[1,1,0]
+= [1/2, 1/2, 0]
+b2 - [1/2, 1/2, 0]
+[1,0,1] - [1/2, 1/2, 0] = [1/2,-1/2,1]
+normalize ||b1|| = sqrt(1^2 + 1^2 + 0^2)
+= sqrt(2)
+1/sqrt(2)[1,1,0] = [1/sqrt(2),1/sqrt(2),0]
+/////////////////
+normalize ||b2|| = sqrt((1/2)^2 + (-1/2)^2 + 1^2)
+= sqrt(1/4 + 1/4 + 1)
+= sqrt(2/4 + 1) = sqrt(6/4)
+= sqrt(6)/2
+2/sqrt(6)[1/2, -1/2, 1]
+= [1/sqrt(6), -1/sqrt(6), 2/sqrt(6)]
+U = [
+	 1/sqrt(3) 1/sqrt(2)  1/sqrt(6)
+	-1/sqrt(3) 1/sqrt(2) -1/sqrt(6)
+	-1/sqrt(3)		0      2/sqrt(6)
+]
+
+If we want to find an SVD for a 2x4 matrix
+A = [
+	1 0 1 0
+	0 0 0 0
+]
+Appplying the standard approach to A could be problematic because it requires finding the eigenvalues of the 4x4 matix A^TA
+
+Its usually more convenient to find an SVD of the transposed matrix A^T and then take the transpose of the resulting SVD, we would only have to find the eigenvalues of a 2x2 matrix
+
+A^T = UΣV^T
+is an SVD for A^T
+
+A = (A^T)^T = (UΣV^T)^T = VΣ^TU^T
+
+===================================================
+
+
 
 
 
