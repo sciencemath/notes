@@ -1,0 +1,973 @@
+Principal Component Analysis
+Linear Least-Squares Problems
+Linear Regression
+
+--------------------------------------------
+
+Principal Component Analysis (PCA) is a widely used statistical technique for dimensionality reduction.
+
+PCA is highly senstitive to data scaling. It is essential to standardize the data by removing any dimensional dependence. Simply z-score each element of our data.
+
+PCA assumes that the relationships between variables are linear. For that reason, PCA may not be suitable for handling non-linear data.
+
+data that is "standardized" (centralized and normalized) means we subtract the mean of the corresponding row and divide it by the sample standard deviation of the row.
+
+Our data's sample covariance matrix C has variances on its main diagonal and covariances outside the diagonal
+C = (1/n-1)XX^T = [
+	Var[x1] Cov[x1,x2] ... Cov[x1,xm]
+	Cov[x2,x1] Var[x2] ... Cov[x2,xm]
+		.		  .      .     .
+		.		  .       .    .
+		. 		  .        .   .
+	Cov[xm,x1] Cov[xm,x2] ... Var[xm]
+]
+
+Cov[xi, xj] = Cov[xj, xi]
+The covariance matrix is always symmetric
+
+Since there is usually a correlation between some xi's the covariance matrix is usually not diagonal
+
+any symmetric matrix can be diagonalized
+
+There exists an orthogonal mxm matric U such that U^TCU is diagonal.
+
+Substituting the expression for C into U^TCU
+U^TCU = U^T((1/n-1)XX^T)U
+= (1/n-1)(U^TX)⋅(XU^T)
+= (1/n-1)(U^TX)⋅(U^TX)^T
+= (1/n-1)YY^T <--- covariance of Y
+
+We have defined a new observartion matrix as Y = U^TX the above equation tells us that the covariance matrix of Y is diagonal
+
+theorem:
+We can find an orthogonal matrix U that defines the change-of-variables
+Y = U^TX
+The covariance matrix of the transformed observation matrix Y is diagonal (meaning that the new variables) y1,y2...ym are uncorrelated
+
+y1,y2...ym are arranged in order of decreasing variance
+
+The matrix U always exists, and its columns are the unit eigenvectors of the original covariance matrix C. These unit eigenvectors are called the principal components of the data
+
+λ_1 > λ_2 ... > λ_n
+are the eigenvalues of C written in descending order
+the 1st princpal component is the unit eigenvector u1 corresponding to the 1st eigenvalue. The 2nd princpal component is the unit eigenvector u2 corresponding to the 2nd eigenvalue...
+
+Statistical interpretation of the principal components
+
+The 1st principal component defines a direction along which the original data has the max variance.
+
+The 2nd principal component is perpendicular to the 1st component and defines a direstion along which the remaining data has the max variance.
+
+The 3rd component is perpendicular to both the 1st and 2nd components and defines a direction along which the remaining data has the max variance
+...
+
+example:
+the covariance matrix C of some particular observations
+find the first principal component given eigenvalues of C are 10 and 5
+C = [
+	9 2
+	2 6
+]
+C - 10I =[
+	9 2
+	2 6
+] - 10[
+	1 0
+	0 1
+] = [
+	-1  2
+	 2 -4
+]
+-x1 + 2x2 = 0
+x1 = 2x2
+eigenvector = [2, 1]
+||v1|| = sqrt(5)
+u1 = v1/||v1|| = 1/sqrt(5)[2,1]
+
+example:
+find second principal component, given eigenvalues C are 12, 2
+C = [
+	3 3
+	3 11
+]
+C - 2I =[
+	3 3
+	3 11
+] - 2[
+	1 0
+	0 1
+] = [
+	1 3
+	1 9
+]
+x1 = -3x2
+eigenvector v2 = [-3,1]
+||v2|| = sqrt(10)
+u2 = v2/||v2|| = 1/sqrt(10)[-3,1]
+
+example:
+find the first principal component given eigenvalues of C are 6, 3, and 0
+C = [
+	3 2 2
+	2 2 0
+	2 0 4
+]
+C - 6I =[
+	3 2 2
+	2 2 0
+	2 0 4
+] - 6[
+	1 0 0
+	0 1 0
+	0 0 1
+] = [
+	-3 2 2
+	2 -4 0
+	2 0 -2
+]
+-3(2) + 2 + 2x3 = 0
+2x1 = 4x3
+x1 = 2x3
+x1 = x3
+v1 = 1/3[
+	2
+	1
+	2
+]
+
+example:
+find the second principal component given eigenvalues of C are 10, 5, and 3
+C = [
+	3 0 0
+	0 9 2
+	0 2 6
+]
+C - 5I =[
+	3 0 0
+	0 9 2
+	0 2 6
+] - 5[
+	1 0 0
+	0 1 0
+	0 0 1
+] = [
+	-2 0 0
+	 0 4 2
+	 0 2 1
+]
+x2 = -x3
+-1
+2(-1) + x3
+x3 = 2
+[
+   0
+  -1
+   2
+]
+v2/||v2|| = 1/sqrt(5)[0,-1,2]
+
+Finding principal component given SVD of the observation matrix
+C = (1/n-1)XX^T
+= (1/n-1)(UΣV^T)(UΣV^T)^T
+= (1/n-1)UΣ(V^TV)Σ^TU^T
+= U((1/n-1)ΣΣ^T)U^T
+
+(1/n-1)ΣΣ^T is a diagonal pxp matrix, where the entries on the main diagonal are the eigenvalues (written in descending order) of the covariance matrix C
+
+U is a pxp matrix, columns are the corresponding unit eigenvectors of the covariance matrix C
+
+The columns of U are the principal components of the data. So the second principal is component u2
+
+Total variance of the observed data equals the sum of the entries on the leading diagonal of C_x
+C = (1/n-1)XX^T 
+Total Variance = Var[x1] + Var[x2] +...+ Var[x_m]
+
+How is the total variance of X related to its singular values?
+
+Using the singlar value decomposition UΣV^T of X, the covariance of matrix of X can be written as
+C_x = U((1/n-1)ΣΣ^T)U^T
+which is the diagonal form of C_x so the matrix
+(1/n-1)ΣΣ^T
+is a mxm diagonal matrix that contains eigenvalues λ_1, λ_2,...λ_m of C_x on the leading diagonal where
+λ_1 = σ1^2/n-1, λ_2 = σ2^2/n-1 ...
+σ1, σ2,...σm are singular values of X
+
+Change of variables Y = U^TX the covariance of Y
+C_y = (1/n-1)YY^T
+= (1/n-1)(U^TX)(U^TX)^T
+= (1/n-1)(U^TXX^TU)
+= U^T((1/n-1)XX^T)U
+
+C_y is a diagonal matrix that contains eigenvalues of C_x on the main diagonal
+
+Cy = [
+	λ1 ... 0
+	. .    .
+	.  .   .
+	.   .  .
+	0 ... λ2_m
+]
+= 1/n-1 ⋅ [
+	σ1^2 ... 0
+	 .  .    .
+	 .   .   .
+	 .    .  .
+	 0 ... σm^2
+]
+
+The orthogonal transformation Y = U^TX does not change the total variance of the data set.
+Total Variance = (Σ^m_i=1)λ_i = 1/n-1(Σ^m_i=1)σ^2_i
+
+The total variance is proportional to the sum of the squared singular values
+Total Variance ∝(Σ^m_i=1)σ^2_i
+
+This tells us how much variance is "lost" when we reduce the dimension of the original data set.
+
+example:
+A nutritionist measured 3 parameters among a group of clients:
+body mass(x1)
+height(x2)
+weight(x3)
+
+The collected data was stored in the standardized observation matrix X where each column contains measurements for a particular client. The nutritionist find that the singular values of X are
+σ1 = 12, σ2 = 5, σ3 = 4
+
+The nutritionist decides to reduce the dimensionality of the data set. To do this, they convert the original observation matrix X into a new matrix Y:
+Y = U1^TX
+
+U1 is the 3x1 matrix containing the first principal component of the data only. As a result, Y is a 1xn matrix that gives a single parameter associated with each client.
+
+What percentage of the original variance is preserved in the new transformed matrix Y compared to the initial observation matrix X?
+
+The total variance over all parameters is proportional to the sum of the squared singular values:
+Total ∝(Σ^3_i=1)σ^2_i
+= (12)^2 + (5)^2 + (4)^2
+= 185
+
+The nutritionist only used the first principal component, the remaining variance is
+Remaining ∝(Σ^1_i=1)σ^2_i
+= (12)^2 = 144
+
+Required percentage can be computed:
+Remaining/Total = 144/185 ~ 0.778 = 77.8%
+
+The nutritionist reduced the dimensionality of the data from 3 (initially each client had three parameters) to just 1 (only one parameter characterizes each client after the transformation)
+
+In doing so 77.8% of the variance is preserved in the transformed data.
+
+example:
+5 parameters, only used the first two principal components of data.
+Y = U2^TX where U2 is the 5x2 matrix.
+What percentage of the original variance is preserved in the new transformed matrix Y compared to the initial observation matrix X?
+σ1 = 5, σ2 = 2, σ3 = 1, σ4 = 0.5, σ5 = 0.1
+Total: 30.26 (singular values squared)
+Remaining: 29 (first two principal components)
+29/30.26 ~ 0.958 = 95.8%
+
+example:
+4 parameters, only used the first two principal components of data.
+σ1 = 11, σ2 = 7, σ3 = 5, σ4 = 2
+Total: 199
+Remaining: 121
+121/199 ~ 0.608 = 60.8%
+
+===================================================
+Least-Squares Solution of a linear system (without collinearity)
+Notice
+{
+	x1 + x2 = -2
+	-x1 - 4x2 = 4
+	2x1 - x2 = 2
+}
+has no solutions, but in the real world we might want to find an approximate solution to the system.
+
+First we write down the system in the form Ax = b
+A[
+	 1  1
+	-1 -4
+	 2 -1
+]x[
+	x1
+	x2
+] = b[
+	-2
+	 4
+	 2
+]
+
+We are interested in the vectors x such that Ax is very close to b. We wish to minimize the distance between Ax and b. The distance between Ax and b:
+||Ax - b|| the smaller the better approximation
+
+In vector subspaces we wish to find a vector Ax that lies in Col(A) and is closest to b. Ax must be the orthogonal projection of b onto the subspace spanned by the columns of A
+
+It can be shown that x is found by solving the corresponding normal equation
+A^TAx = A^Tb
+
+The columns of A are LINEARLY INDEPENDENT (this is important otherwise the calculations for this will be wrong) the matrix A^TA is invertible. (A^TA)^-1
+x = (A^TA)^-1A^Tb
+= ([
+	 1 -1  2
+	 1 -4 -1
+][
+	 1  1
+	-1 -4
+	 2 -1
+])^-1
+[
+	 1 -1  2
+	 1 -4 -1
+][
+	-2
+	 4
+	 2
+]
+= [
+	6  3
+	3 18
+]^-1[
+	 -2
+	-20
+]
+= 1/99[
+	18 -3
+	-3  6
+][
+	 -2
+	-20
+]
+= [
+	  8/33
+	-38/33
+]
+The vector x is called the least-squares solution
+
+example:
+find the least-squares solution of Ax = b
+A = ([
+	 1 1  2
+	-1 0 -1
+][
+	1 -1
+	1  0
+	2 -1
+])^-1
+[
+	 1 1  2
+	-1 0 -1
+][
+	1
+	2
+	1
+]
+=
+[
+	 6 -3
+	-3  2
+]^-1[
+	 5
+	-2
+]
+= 1/3[
+	2 3
+	3 6
+][
+	 5
+	-2
+] = [
+	4/3
+	1
+]
+
+example:
+find the least-squares solution of Ax = b
+A = ([
+	2  2 2  2
+	0 -2 0  2
+	4 -2 0 -2
+][
+	2  0  4
+	2 -2 -2
+	2  0  0
+	2  2 -2
+])^-1
+[
+	2  2 2  2
+	0 -2 0  2
+	4 -2 0 -2
+][
+	1
+	1
+	1
+	1
+]
+= [
+	16  0  0
+	 0  8  0
+	 0  0 24
+]^-1[
+	8
+	0
+	0
+]
+(take the reciprocal of non-zero diagonal elements)
+[
+	16  0  0
+	 0  8  0
+	 0  0 24
+]^-1[
+	8
+	0
+	0
+]
+[
+	1/16 0 0
+	0  1/8 0
+	0 0 1/24
+][
+	8
+	0
+	0
+]
+= [
+	1/2
+	0
+	0
+]
+
+example:
+find least-squares solution to the system of linear equations
+{
+	2x1 + x2 = 5
+	x1 - x2 = 2
+	-3x1 - 2x2 = 4
+}
+A = ([
+	2  1 -3
+	1 -1 -2
+][
+	 2  1
+	 1 -1
+	-3 -2
+])^-1
+[
+	2  1 -3
+	1 -1 -2
+][
+	5
+	2
+	4
+]
+=
+[
+	14 7
+	 7 6
+]^-1[
+	 0
+	-5
+]
+= 1/35[
+	 6 -7
+	-7 14
+][
+	 0
+	-5
+]
+= [
+	 1
+	-2
+]
+
+example:
+find the least-squares solution to the system of linear equations
+{
+	x1 + 2x2 + x3 = 18
+	x1 - 3x2 = 0
+	x1 + 2x2 - x3 = 18
+	x1 - x2 = 0
+}
+A^TA = ([
+	1  1  1  1
+	2 -3  2 -1
+	1  0 -1  0
+][
+	1  2  1
+	1 -3  0
+	1  2 -1
+	1 -1  0
+])^-1[
+	1  1  1  1
+	2 -3  2 -1
+	1  0 -1  0
+][
+	18
+	 0
+	18
+	 0
+]
+=
+[
+	4  0 0
+	0 18 0
+	0  0 2
+]^-1[
+	36
+	72
+	0
+]
+=
+[
+	1/4  0 0
+	0 1/18 0
+	0  0 1/2
+][
+	36
+	72
+	0
+]
+=
+[
+	9
+	4
+	0
+]
+
+example:
+given A and b find the min value of ||Ax - b||
+A^TA = ([
+	1  2 -1 0
+	1 -1  1 1
+][
+	 1  1
+	 2 -1
+	-1  1
+	 0  1
+])^-1[
+[
+	1  2 -1 0
+	1 -1  1 1
+][
+	-10
+	  5
+	  0
+	 -5
+]
+= [
+	6 -2
+	-2 4
+]^-1[
+	  0
+	-20
+]
+=
+1/20[
+	4 2
+	2 6
+][
+ 	  0
+	-20
+]
+= [
+	-2
+	-6
+]
+||Ax - b||
+[
+	 1  1
+	 2 -1
+	-1  1
+	 0  1
+][
+	-2
+	-6
+] - [
+	-10
+	  5
+	  0
+	 -5
+] = [
+	2
+	-3
+	-4
+	-1
+]
+sqrt((2)^2 + (-3)^2 + (-4)^2 + (-1)^2)
+= sqrt(30)
+
+example:
+given A and b find the min value of ||Ax - b||
+A^TA = ([
+	1  1 1 1 -1
+	2 -1 0 2 -3
+][
+	 1  2
+	 1 -1
+	 1  0
+	 1  2
+	-1 -3
+])^-1[
+	1  1 1 1 -1
+	2 -1 0 2 -3
+][
+	 2
+	-6
+	 1
+	 1
+	 2
+] = [
+	5 6
+	6 18
+]^-1[
+	-4
+	 6
+]
+=
+1/54[
+	18 -6
+	-6  5
+][
+	-4
+	 6
+] = [
+	-2
+	1
+]
+||Ax - b||
+[
+	 1  2
+	 1 -1
+	 1  0
+	 1  2
+	-1 -3
+][
+	-2
+	1
+] - [
+	 2
+	-6
+	 1
+	 1
+	 2
+] = [
+	-2
+	 3
+	-3
+	-1
+	-3
+]
+sqrt((-2)^2 + (3)^2 + (-3)^2 + (-1)^2 + (-3)^2)
+sqrt(32)
+4sqrt(2)
+
+(Ax - b)⊥Col(A)
+Ax - b is orthogonal to each column a_i of A. This the dot product of the columns of A and the vector Ax - b must be equal 0:
+{
+	a1^T(Ax - b) = 0
+	a2^T(Ax - b) = 0
+	  .
+	  .
+	  .
+	an^T(Ax - b) = 0
+}
+the system of equations can be written in terms of matrix products as
+A^T(Ax - b) = 0
+A^TAx - A^Tb = 0
+A^TAx = A^Tb
+
+===================================================
+
+Constructing normal equation
+
+Ax = b is given by
+A^TAx = A^Tb
+This is used because A^TA is not invertible (A^TA)^-1 because some columns may not be linearly independent but linearly dependent
+
+example:
+given A and b, and part of Ax = b whats a+b+c
+A = [
+	1 0
+	4 4
+	2 1
+	0 1
+]
+b = [
+	 4
+	 1
+	-1
+	 0
+]
+[
+	a 18
+	18 b
+][
+	x1
+	x2
+]=[
+	6
+	c
+]
+/////////////
+[
+	1 4 2 0
+	0 4 1 1
+][
+	1 0
+	4 4
+	2 1
+	0 1
+]=[
+	21 18
+	18 18
+]
+[
+	1 4 2 0
+	0 4 1 1
+][
+	 4
+	 1
+	-1
+	 0
+]=[
+ 	6
+ 	3
+]
+
+example:
+what is value of a+b+c from the system of linear equations
+{
+	7x1 + 2x2 + x3 = 5
+	14x1 + 4x2 + 2x3 = 0
+}
+[
+	245 70  a
+	 70 20 10
+	 c  10  5
+][
+	x1
+	x2
+	x3
+] = [
+	35
+	 b
+	 5
+]
+/////////////
+[
+	7 14
+	2  4
+	1  2
+
+][
+	 7 2 1
+	14 4 2
+] = [
+	245 70 35
+	 70 20 10
+	 35 10  5
+]
+[
+	7 14
+	2  4
+	1  2
+
+][
+	5
+	0
+]=[
+	35
+	10
+	 5
+]
+35+10+35
+
+example:
+finding least-squares solution of a linear system given in matrix form with collinearity, given A and b. What is the value of 6a + b/c
+A = [
+	 2  4
+	-1 -2
+	 1  2
+	-3 -6
+]
+b = [
+	 2
+	 0
+	 3
+	-1
+]
+[
+	a
+	0
+] + x2[
+	b
+	c
+]
+/////////////
+[
+	2 -1 1 -3
+	4 -2 2 -6
+][
+	 2  4
+	-1 -2
+	 1  2
+	-3 -6
+] = [
+	15 30
+	30 56
+]
+[
+	2 -1 1 -3
+	4 -2 2 -6
+][
+	 2
+	 0
+	 3
+	-1
+] = [
+	10
+	20
+]
+[
+	15 30 | 10
+	30 56 | 20
+]
+R2 := R2 + (-2)R1
+[
+	15 30 | 10
+	0  -4 |  0
+]
+x1 = 2/3 - 2x2
+[
+	2/3 - 2x2
+		0
+] = [
+	2/3
+	 0
+]
+x2[
+	-2
+	 1
+]
+4 + -2/1 = 2
+
+example:
+A = [
+	 1 -2  1
+	-1  2 -1
+	 2 -2  0
+]
+b = [
+	-2
+	 0
+	 1
+]
+if the general least-squares solution of Ax = b what is the value of a + 2b + c
+[
+	2
+	b
+	c
+] + x3[
+	a
+	1
+	1
+]
+/////////////
+[
+	 1 -1  2
+	-2  2 -2
+	 1 -1  0
+][
+	 1 -2  1
+	-1  2 -1
+	 2 -2  0
+] = [
+	 6 -8  2
+	-8 12 -4
+	 2 -4  2
+]
+[
+	 1 -1  2
+	-2  2 -2
+	 1 -1  0
+][
+	-2
+	 0
+	 1
+] = [
+	 0
+	 2
+	-2
+]
+
+[
+	 6 -8  2 | 0
+	-8 12 -4 | 2
+	 2 -4  2 | -2
+]
+R1 <-> R3
+[
+	 2 -4  2 | -2
+	-8 12 -4 | 2
+	 6 -8  2 | 0
+]
+R2 := R2 + 4R1
+[
+	 2 -4  2 | -2
+	 0 -4  4 | -6
+	 6 -8  2 | 0
+]
+R3 := R3 + (-3)R1
+[
+	 2 -4  2 | -2
+	 0 -4  4 | -6
+	 0  4 -4 | 6
+]
+R3 := R3 + (-1)R2
+[
+	 2 -4  2 | -2
+	 0 -4  4 | -6
+	 0  0  0 | 0
+]
+(x3 is free)
+x2 = 3/2 + x3
+substitute:
+2x1 - 4(3/2 + x3) + 2x3 = -2
+x1 = 2 + x3
+[
+	 2 + x3
+	3/2 + x3
+	   x3
+]
+= [
+	 2
+	3/2
+	 0
+]+x3[
+	1
+	1
+	1
+]
+1 + 2*3/2 + 0 = 4
+
+example:
+find the least-squares solution of the linear system
+{
+	x1 - x2 = 1
+	5x1 - 5x2 = 0
+	2x1 - 2x2 = 0
+}
+what is the value of 30a + b/c
+[
+	a
+	0
+] + x2[
+	b
+	c
+]
+
+
+
+
+
+
+
+
+
