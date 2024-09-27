@@ -1,0 +1,860 @@
+Quadric Surfaces and Cylinders
+Partial Derivatives
+Vector-Valued Function
+Differentiation
+Approximating Values with Riemann Sums
+Double Integrals
+
+--------------------------------------------
+
+A quadric surface is a surface in three-dimensional space, equation is a second degree polynomial in the variables x, y and z
+
+Most general quadric surface has the form:
+Ax^2 + By^2 + Cz^2 + Dxy + Exy + Fyz + Gx + Hy + Iz + J = 0
+where A,B,...J are all constants
+
+The simplest quadric surface is a sphere. A sphere of radius r > 0 centered at O has the equation
+x^2 + y^2 + z^2 = r^2
+
+the equation
+x^2 + y^2 + z^2 = 4
+represents the radius r = sqrt(4) = 2 centered at (0,0,0)
+
+The equation of a sphere of radius r > 0 centered at (x0,y0,z0) is given by
+(x - x0)^2 + (y - y0)^2 + (z - z0)^2 = r^2
+
+example whats the radius r and the coordinates of the center C for the sphere
+(x + 1)^2 + y^2 + z^2 + 8z = 20
+
+By completing the square for the variable z
+(x + 1)^2 + y^2 + z^2 + 8z = 16
+(x + 1)^2 + y^2 + (z^2 + 8z + 16) = 20 + 16
+(x + 1)^2 + y^2 + (z + 4)^2 = 36
+
+we can write our equation as
+(x - (-1))^2 + (y - 0)^2 + (z - (-4))^2 = 6^2
+center at the point C(-1, 0, -4), radius r = 6
+
+example:
+find radius r and center C for the sphere
+x^2 + (y + 3)^2 + (z - 1)^2 = 2
+rewrite the above as
+x^2 + (y - (-3))^2 + (z - 1)^2 = (sqrt(2))^2
+C(0,-3,1), r = sqrt(2)
+
+example:
+what is the radius of the sphere x^2 + y^2 + 6y + (z - 1)^2 = 16
+by completing the square for variable y
+x^2 + y^2 + 6y + (z - 1)^2 = 16
+x^2 + (y^2 + 6y + 9) + (z - 1)^2 = 16 + 9
+x^2 + (y + 3)^2 + (z - 1)^2 = 25
+we can rewrite as
+x^2 + (y + 3)^2 + (z - 1)^2 = 5^2
+radius = 5
+
+An ellipsoid is a quadric surface similar to a sphere but may be stretched or compressed in one or more directions.
+
+The ellipsoid centered at (x0,y0,z0) is given by
+(x - x0)^2/a^2 + (y - y0)^2/b^2 + (z - z0)^2/c^2 = 1
+where a, b, and c are the semi-axes of the ellipsoid parallel to the x,y, and z axes
+
+When a = b = c we get a sphere, a sphere is a special case of an ellipsoid.
+For example, the ellipsoid centered at O with the equation
+x^2 + y^2/4 + z^2 = 1
+
+We can find the intercepts of this ellipsoid with teh x, y, and z-axes as follows
+To find the x-intercepts, we set y = z = 0
+x^2 + 0^2/4 + 0^2 = 1  =>  x = +/-1
+x intercepts of the ellipsoid are (+/-1,0,0)
+To find the y-intercepts we set x = z = 0
+0^2 + y^2/4 + 0^2 = 1  =>  y = +/-2
+y intercepts of the ellipsoid are (0,+/-2,0)
+To find the z-intercepts, we set x = y = 0
+0^2 + 0^2/4 + z^2 = 1  =>  z = +/-1
+z intercepts of the ellipsoid are (0,0,+/-1)
+
+Calculating intercepts of spheres and ellipsoids
+example:
+the ellipsoid (x - 2)^2/2 + y^2 + (z + 1)^2/2 = 1
+find x-axis intercepts
+plug y = 0 and z = 0
+(x - 2)^2/2 + (0)^2 + (0 + 1)^2/2 = 1
+(x - 2)^2/2 + 1/2 = 1
+(x - 2)^2/2 = 1/2
+x - 2 = +/-1
+x = 2 +/-1
+x = 1, 3
+
+Calculating intercepts of spheres and ellipsoids
+example:
+(x - 2)^2/12 + (y + 1)^2/6 + (z - 1)^2/2 = 1
+find its intercepts with the x-axis
+(x - 2)^2/12 + 1/6 + 1/2 = 1
+(x - 2)^2/12 = 1/3
+(x - 2)^2 = 4
+x - 2 = +/-2
+x = 2 +/-2
+x = 0, and 4
+intercepts with the x-axis are (0,0,0) and (4,0,0)
+
+Calculating intercepts of spheres and ellipsoids
+example:
+(x + 1)^2/9 + (y + 2)^2 + (z - 2)^2/9 = 1
+find the intercepts with the y-axis
+1/9 + (y + 2)^2 + 4/9 = 1
+(y + 2)^2 = 4/9
+(y + 2) = +/-2/3
+y = -2 +/-2/3
+y = -4/3, and -8/3
+
+The domain of a sphere or ellipsoid
+given the ellipsoid x^2/4 + y^2/9 + z^2 = 1
+find the domain of z = z(x,y)
+we make z the subject
+z^2 = 1 - x^2/4 - y^2/9
+z = sqrt(1 - x^2/4 - y^2/9)
+since the square root is defined only for non-negative arguments
+1 - x^2/4 - y^2/9 >= 0
+x^2/4 + y^2/9 <= 1
+interior of the ellipse x^2/4 + y^2/9 = 1 and boundary
+the domain of z = z(x,y)
+{(x,y) : x^2/4 + y^2/9 <= 1}
+
+example:
+given the sphere x^2 + (y + 3)^2 + (z - 1)^2 = 2, what is the domain of z = z(x,y)
+(z - 1) = sqrt(2 - (x^2 + (y + 3)^2)
+z = 1 +/-sqrt(2 - (x^2 + (y + 3)^2)
+since the square root is defined only for non-negative arguments
+2 - (x^2 + (y + 3)^2 >= 0
+x^2 + (y + 3)^2 <= 2
+inequality describes the interior and boundary of the circle
+x^2 + (y + 3)^2 = 2
+which is a circle of radius sqrt(2) centered at (0,-3) in the xy-plane.
+
+example:
+given the ellipsoid:
+(x - 1)^2/16 + y^2/4 + (z + 2)^2 = 1
+find the domain of z = z(x,y)
+z + 2 = sqrt(1 - (x - 1)^2/16 - y^2/4)
+1 - (x - 1)^2/16 - y^2/4 >= 0
+(x - 1)^2/16 + y^2/4 <= 1
+interior of the ellipse (x - 1)^2/16 + y^2/4 = 1 and its boundary
+domain:
+{(x,y) : (x - 1)^2/16 + y^2/4 <= 1}
+
+The trace of a surface is the collection of points where the surface intersects a plane parallel to one of the coordinate planes
+x^2 + y^2/4 + z^2 = 1
+the trace of this surface in the zy-plane (when z = 0):
+x^2 + y^2/4 + (0)^2 = 1
+which is an ellipse centered at (0,0) in the xy-plane with semi-axes 1 and 2
+the trace in the xz-plane (when y = 0):
+x^2 + (0)^2/4 + z^2 = 1
+x^2 + z^2 = 1
+ellipse centered at (0,0) in the xz plane with radius 1
+the trace in the yz (when x = 0):
+(0)^2 + y^2/4 + z^2 = 1 which is an ellipse centered at (0,0 in the yz plane) with semi-axes 2 and 1
+traces are not always ellipses (trace is an empty set) or if they intersect at a single point.
+
+x^2 + y^2 + z^2 = 4
+is a sphere, lets find its intersection with the plane z = 1 and the projection of the intersection onto the xy-plane.
+
+To find the intersection we substitute z = 1 into the equation of the sphere
+x^2 + y^2 + (1)^2 = 4
+x^2 + y^2 = 3
+x^2 + y^2 = sqrt(3)^2
+This gives the circle of radius sqrt(3) centered at (0,0,1) in the plane z = 1
+
+example:
+find trace in xy-plane, substitute z = 0 into the equation of the sphere:
+x^2 + (y + 2)^2 + (0 - 3)^2 = 25
+x^2 + (y + 2)^2 + 9 = 25
+x^2 + (y + 2)^2 = 16
+radius 4 centered at (0,-2)
+
+example:
+What is the trace in the xz-plane of the sphere:
+(x - 2)^2 + y^2 + (z + 2)^2 = 16
+(x - 2)^2 + (0)^2 + (z + 2)^2 = 16
+(x - 2)^2 + (z + 2)^2 = 16
+
+example:
+What is the trace in the xz-plane of the ellipsoid:
+x^2/25 + y^2/16 + (z + 1)^2/4 = 1
+x^2/25 + (z + 1)^2/4 = 1
+x^2/5^2 + (z + 1)^2/2^2 = 1
+Ellipse with semi axis 5 and 2 centered at (0,-1) in the xz-plane
+
+example:
+what is the projection of the intersection between the sphere (x + 2)^2 + y^2 + z^2 = 9 and the plane z = 1 onto the xy-plane
+(x + 2)^2 + y^2 + (1)^2 = 9
+(x + 2)^2 + y^2 + 1 = 9
+(x + 2)^2 + y^2 = 8
+(x + 2)^2 + y^2 = (2sqrt(2))^2
+radius 2sqrt(2) centered at (-2,0)
+
+===================================================
+
+A hyperboloid of one sheet centered at (x0,y0,z0) is a quadric surface
+(x - x0)^2/a^2 + (y - y0)^2/b^2 - (z - z0)^2/c^2 = 1
+
+A hyperboloid of two sheets centered at (x0,y0,z0)
+(x - x0)^2/a^2 + (y - y0)^2/b^2 - (z - z0)^2/c^2 = -1
+(similar to the one above but -1 not +1)
+
+Indentifying the intercepts 
+example:
+hyperboloid of one sheet
+(x - 3)^2/9 + (y + 4)^2/16 - (z - 5)^2/25 = 1
+find its intercepts with the x-axis
+to find the x-intercepts plug in y = 0, z = 0
+(x - 3)^2/9 + (0 + 4)^2/16 - (0 - 5)^2/25 = 1
+(x - 3)^2/9 + 1 - 1 = 1
+(x - 3)^2/9 = 1
+(x - 3)^2 = 9
+x - 3 = +/-sqrt(9)
+x = 3 +/-3
+x = 0,6
+intercepts the x-axis are (0,0,0) and (6,0,0)
+
+example:
+given the hyperboloid of two sheets x^2 + y^2 - z^2 = -1 find its x-intercepts
+x^2 = -1
+this equation has no real solutions
+
+example:
+given the hyperboloid of two sheets x^2 + y^2 - z^2 = -1 find its z-intercepts
+-z^2 = -1
+z^2 = 1
+z = +/-1
+intercepts with the z-axis are (0,0,-1) and (0,0,1)
+
+example:
+given the hyperboloid of one sheet:
+(x - 2)^2/4 + y^2/16 - z^2/5 = 1
+find its x-intercepts
+(x - 2)^2/4 = 1
+(x - 2) = +/-sqrt(4)
+x = 2 +/-2
+intercepts the x-axis are (4,0,0) and (0,0,0)
+
+Indentifying the domain of a hyperboloid
+hyperboloid of two sheets:
+(x - 1)^2 + y^2 - z^2/4 = -1
+find the domain of z = z(x,y)
+(x - 1)^2 + y^2 + 1 = z^2/4
+z^2/4 = (x - 1)^2 + y^2 + 1
+z^2 = 4((x - 1)^2 + y^2 + 1)
+z = +/-2sqrt((x - 1)^2 + y^2 + 1)
+(x - 1)^2 + y^2 + 1 >= 0
+the domain of z(x,y) is R^2
+(non-negative)
+
+example:
+hyperboloid of two sheets:
+x^2 + y^2 - z^2 = -1
+find the domain z = z(x,y)
+x^2 + y^2 + 1 = z^2
+z^2 = 1 + x^2 + y^2
+z^2 = +/-sqrt(1 + x^2 + y^2)
+1 + x^2 + y^2 >= 1
+domain of z(x,y) is R^2
+
+example:
+hyperboloid of one sheet:
+(x - 2)^2 + y^2/4 - z^2/9 = 1
+find the domain of z(x,y)
+(x - 2)^2 + y^2/4 + 1 = z^2/9
+z^2 = 9((x - 2)^2 + y^2/4 - 1)
+z = +/-3sqrt((x - 2)^2 + y^2/4 - 1)
+(non-negative)
+(x - 2)^2 + y^2/4 - 1 >= 0
+(x - 2)^2 + y^2/4 >= 1
+gives the exterior of the ellipse (x - 2)^2 + y^2/4 = 1 includes the boundary
+domain is
+{(x,y) : (x - 2)^2 + y^2/4 >= 1}
+
+Alternative Orientations of the Axis of Symmetry
+the hyperboloids we've seen thus far have axes of symmetry are parallel to the z-azis. Now lets see hyperboloid is oriented along the x or y-axes
+
+A hyperboloid of one sheet centered at the origin.
+When the y term is negative the axis of symmetry is the y-axis:
+x^2/a^2 - y^2/b^2 + z^2/c^2 = 1
+When the x term is negative, the axis of symmetry is the z-axis
+-x^2/a^2 + y^2/b^2 + z^2/c^2 = 1
+
+Likewise for a hyperboloid of two sheets centered at the origin
+when the y term is negative the axis of symmetry is the y-axis:
+x^2/a^2 - y^2/b^2 + z^2/c^2 = -1
+when x term is negative axis of symmetry is the x-axis
+-x^2/a^2 + y^2/b^2 + z^2/c^2 = -1
+
+The traces of a hyperboloid of one sheet are either ellipses or hyperbolas
+Lets find the traces with the coordinate planes for the hyperboloid of one sheet
+x^2 + y^2 - z^2 = 1
+the trace of this surface in the xy-plane (z = 0)
+x^2 + y^2 - 0 = 1
+x^2 + y^2  1
+which is a circle centered at the origin of radius 1 in the xy-plane
+the trace of this surface in the xz-plane (y = 0)
+x^2 + 0^2 - z^2 = 1
+x^2 - z^2 = 1
+is a hyperbola in the xz-plane centered at the origin
+the trace yz-plane (x = 0)
+0^2 + y^2 - z^2 = 1
+y^2 - z^2 = 1
+is a hyperbola in the yz-plane centered at the origin
+
+The traces of the hyperboloid of two sheets are either ellipse, hyperbolas, single point, or the empty set.
+lets find traces with the coordinate plane
+x^2 + y^2 - z^2 = -1
+the trace of this surface in the xy-plane (z = 0) is the empty set since the surface does not intersect the xy-plane
+tace of xz-plane (y = 0)
+x^2 - z^2 = -1
+which is a hyperbola in the xz-plane centered at the origin
+the trace of yz-plane (x = 0)
+y^2 - z^2 = -1
+which is a hyperbola in the yz-plane centered at the origin
+Note:
+the trace of our surface with the plane z = 1 is a single point:
+x^2 + y^2 - 1^2 = -1  =>  (x,y,z) = (0,0,1)
+likewise the trace of our surface with the plane z = -1 is another point:
+x^2 + y^2 - (-1)^2 = -1  =>  (x,y,z) = (0,0,-1) 
+The trace of our surface with the horizontal plane z = k for |k| > 1 is a circle:
+x^2 + y^2 - k^2 = -1  =>  x^2 + y^2 = k^2 - 1
+
+Finding Traces of Hyperboloids:
+example:
+The projection of the intersection between the hyperboloid of two sheets:
+-(x - 5)^2/8 + y^2/50 + (z - 3)^2 = -1
+the plane z = 4 other the xy-plane is a hyperbola. What are the lengths of the semi-axes of the hyperbola?
+substitute z = 4 into the equation of the hyperboloid
+-(x - 5)^2/8 + y^2/50 + 1 = -1
+-(x - 5)^2/8 + y^2/50 = -2
+(x - 5)^2/8 - y^2/50 = 2
+(x - 5)^2/16 - y^2/100 = 1
+(x - 5)^2/4^2 - y^2/10^2 = 1
+this gives us the equation of the hyperbola with semi-axes of lengths 4 and 10
+
+example:
+what is the trace in the yz-plane of the hyperboloid of one sheet x^2/2 + y^2/5 - z^2/3 = 1
+y^2/5 - z^2/3 = 1
+
+example:
+The projection of the intersection between the hyperboloid of one sheet:
+x^2/8 + (y - 4)^2/18 - z^2/50 = 1
+and the plane x = 2 onto the yz-plane is a hyperbola. What are the lengths of the semi-axes of the hyperbola
+(y - 4)^2/18 - z^2/50 = 1/2
+(y - 4)^2/9 - z^2/25 = 1
+(y - 4)^2/3^2 - z^2/5^2 = 1
+A hyperbola with semi-axes of lengths 3 and 5
+
+===================================================
+
+Quadric surface with the equation
+z = x^2 + y^2
+is an elliptic paraboloid
+
+The vertex of this elliptic paraboloid is located at the origin and its azis of symmetry is the z-axis. The axis of symmetry is the vertical line that passes through the vertex
+
+The equation of an elliptic paraboloid whose vertex is at the point (x0,y0,z0)
+z - z0 = (x - x0)^2/a^2 + (y - y0)^2/b^2
+
+The surfaces are called the elliptic paraboloids because their traces in the xy-plane are ellipses while their traces in the yz and xz-planes are parabolas.
+
+example:
+Find the vertex and the axis of symmetry of the elliptic paraboloid z = 4x^2 + 8(y + 2)^2
+to find the vertex, we need to rewrite our equation:
+z - 0 = 4x^2 + 8(y + 2)^2
+z - 0 = x^2/(1/4) + (y + 2)^2/(1/8)
+z - 0 = (x - 0)^2/(1/4) + (y - (-2))^2/(1/8)
+gives us the equation of an elliptic paraboloid that has its vertex at (0,-2,0), we can conclude that its axis of symmetry is parallel to the z-axis
+The axis of symmetry should pass through the vertex of the paraboloid. The equation of the axis of symmetry can be written as an intersection of two planes:
+{
+	x = 0
+	y = -2
+}
+
+example:
+Find the vertex of the elliptic paraboloid:
+z - 2 = 3(x + 1)^2 + 4y^2
+z - 2 = (x + 1)^2/(1/3) + y^2/(1/4)
+z - 2 = (x - (-1)^2/(1/3) + y^2/(1/4))
+vertex is at (-1, 0, 2)
+
+example:
+given the elliptic paraboloid:
+z + 4 = x^2/4 + (y - 4)^2/4
+find its intercepts with the x-axis
+0 + 4 = x^2/4 + (0 - 4)^2/4
+4 = x^2/4 + 16/4
+4 = x^2/4 + 4
+x^2/4 = 0
+x = 0 the intercept with the x-axis is (0,0,0)
+
+example:
+elliptic paraboloid:
+z = (x + 1)^2/2 + (y - 2)^2/4
+z - 0 = (x - (-1))^2/2 + (y - 2)^2/4
+vertex at (-1, 2, 0) axis is parallel to the z-axis
+The axis of symmetry should pass through the vertex of the paraboloid. The axis of symmetry can be written as an intersection of two planes:
+{
+	x = -1
+	y = 2
+}
+
+The graph of the quadric surface
+z = x^2 - y^2
+This surface is an example of a hyperbolic paraboloid whose saddle point is at the origin.
+A hyperbolic paraboloid whose saddle point is at (x0,y0,z0) has the general equation
+z - z0 = (x - x0)^2/a^2 - (y - y0)^2/b^2
+
+These surfaces are called hyperbolic paraboloids because their traces in the xy-plane are hyperbolas while their traces in the yz- and xz-planes are parabolas.
+
+The hyperbolic paraboloid has rotational symmetry of order 2 about the z-axis. We can refer to the z-axis as the axis of symmetry of the hyperbolic paraboloid.
+
+example:
+find the saddle point of the hyperbolic paraboloid z + 1 = (x - 1)^2/4 - (y - 2)^2
+to find saddle point rewrite
+z + 1 = (x - 1)^2/4 - (y - 2)^2
+z - (-1) = (x - 1)^2/4 - (y - 2)^2
+saddle point is at (1,2,-1)
+
+example:
+find the saddle point of the hyperbolic paraboloid z + 1 = (x + 3)^2/2 - y^2/4
+z - (-1) = (x - (-3))^2/2 - (y - 0)^2/4
+saddle point at (-3, 0, -1)
+
+example:
+hyperbolic paraboloid:
+(x - 5)^2 - 8(y + 2)^2 = z + 4
+find intercepts with the x-axis
+(x - 5)^2 - 8(2)^2 = 4
+(x - 5)^2 - 32 = 4
+(x - 5)^2 = 36
+(x - 5) = +/-6
+x = 5 +/-6
+
+We've already seen elliptic paraboloids with axes of symmetry are parallel to the z-axis, lets now consider cases when an elliptic paraboloid is oriented along the x or y-axes.
+
+When the vertex is at the origin and the y term is linear, the axis of symmetry is the y-axis:
+y = x^2/a^2 + z^2/c^2
+
+When the vertex is at the origin and the x term is linear, the axis of symmetry is the x-axis:
+x = y^2/b^2 + z^2/c^2
+
+When the saddle point is at the origin and the y term is linear, the axis of symmetry is the y-axis. The two corresponding equations are:
+y = x^2/a^2 - z^2/c^2 
+y = z^2/c^2 - x^2/a^2
+
+When the saddle point is at the origin and the x term is linear, the axis of symmetry is the x-axis. The two corresponding equations are:
+x = z^2/c^2 - y^2/b^2 
+x = y^2/b^2 - z^2/c^2
+
+The traces of an elliptic paraboloid are either ellipses, parabolas, a single point, or the empty set
+lets find traces with the coordinate planes for the hyperboloid of two sheets
+z = x^2 + y^2
+The trace of this surface in the xy-plane (z = 0)
+x^2 + y^2 = 0
+which corresponds to the origin (0,0,0)
+The trace of this surface in the xz-plane (y = 0)
+x^2 = z (vertex at origin)
+The trace of this surface in the yz-plane (x = 0)
+y^2 = z (vertex at origin)
+The trace of our surface with the plane z = -k for k > 0 is the empty set, becasue z >= 0 everywhere on the elliptic paraboloid
+The trace of our surface with the plane z = k for k > 0 is an ellipse:
+x^2 + y^2 = k
+
+The trace3s of a hyperbolic paraboloid are hyperbolas, parabolas, or intersecting lines.
+lets find the traces with the coordinate planes of the hyperboloid of two sheets given by
+z = x^2 - y^2
+The trace of this surface in the xy-plane (z = 0):
+x^2 - y^2 = 0
+y^2 = x^2
+y = +/-x
+which corresponds to two intersecting lines in the xy-plane
+The trace of this surface in the xz-plane (y = 0):
+x^2 - 0^2 = z
+z = x^2
+corresponds to the parabola in the xz-pane that has its vertex at the origin.
+The trace of this surface in the yz-plane (x = 0)
+0^2 - y^2 = z
+z = -y^2
+corresponds to the parabola in the yz-plane vertex is at origin.
+In this case the saddle point is at the origin, min point for the trace xz-plane but max point for the trace in the yz-plane
+
+The projection of the intersection between the hyperbolic paraboloid
+x^2/4 - (y + 5)^2/3 = z - 1
+and the plane x = 2 onto the yz-plane is a parabola, find the vertex of the parabola.
+substitute:
+2^2/4 - (y + 5)^2/3 = z - 1
+1 - (y + 5)^2/3 = z - 1
+z = -1/3(y + 5)^2 + 2
+projecting this onto the yz-plane, vertex at (-5,2)
+
+example:
+What is the trace in the yz-plane of the hyperbolic paraboloid:
+z - 3 = (x - 5)^2/5 - y^2/4
+z - 3 = (0 - 5)^2/5 - y^2/4
+z - 3 = 25/5 - y^2/4
+z - 3 = 5 - y^2/4
+z - 8 = -y^2/4
+y^2 = -4(z - 8)
+
+example:
+The projection of the intersection between the elliptic paraboloid:
+4(x - 1)^2 + 25(y + 1)^2 = 100(z - 2) and the plane z = 7 onto the xy-plane is an ellipse, what are the lengths of the semi-axes of the ellipse?
+4(x - 1)^2 + 25(y + 1)^2 = 500
+(x - 1)^2/125 + (y + 1)^2/20 = 1
+(x - 1)^2/(5sqrt(5))^2 + (y + 1)^2/(2sqrt(5))^2 = 1
+semi-axes of lengths 5sqrt(5) and 2sqrt(5)
+
+quadric surface
+z^2 = x^2 + y^2
+Elliptic cone, vertex at origin and z-axis is the axis of symmetry of the cone
+The equation of an elliptic cone vertex (x0,y0,z0)
+(z - z0)^2 = (x - x0)^2/a^2 + (y - y0)^2/b^2
+
+example:
+elliptic cone
+(x - 2)^2/4 + (y - 2)^2/2 = (z + 1)^2/3
+find its intercepts with the z-axis
+we plug in x = 0 and y = 0 into the equation and solve for z:
+((0) - 2)^2/4 + ((0) - 2)^2/2 = (z + 1)^2/3
+4/4 + 4/2 = (z + 1)^2/3
+1 + 2 = (z + 1)^2/3
+3 = (z + 1)^2/3
+9 = (z + 1)^2
+z + 1 = +/-3
+z = -1 +/-3
+z = -4,2
+z-axis intercepts (0,0,-4) and (0,0,2)
+
+example:
+elliptic cone:
+(x - 2)^2/2 + (y + 2)^2/4 = (z + 3)^2
+find its intercepts with the x-axis
+(x - 2)^2/2 + (0 + 2)^2/4 = (0 + 3)^2
+(x - 2)^2 = 16
+(x - 2) = +/-4
+x = 2+/-4
+x = -2,6
+
+example:
+find the center of the elliptic cone:
+2(x + 2)^2 + 3(y - 1)^2 = z^2
+(-2,1,0)
+
+The traces of an elliptic conse are either intersecting lines, ellipses, hyperbolas, or points.
+The traces with the coordinate planes for the elliptic cone
+z^2 = x^2 + y^2
+The trace of this surface in the xy-plane (z = 0) is given by the equation
+x^2 + y^2 = 0, origin (0,0,0)
+trace of this surface in the xz-plane (y = 0)
+x^2 + 0^2 = z^2
+x^2 = z^2
+x = +/-z
+corresponds to two lines in the xz-plane
+the trace of this surface in the yz-plane (x = 0)
+y^2 = z^2
+y = +/-z
+corresponds to two lines in the yz-plane
+trace of our surface with the plane z = k for k != 0 is an ellipse
+x^2 + y^2 = k^2
+the traces of our surface with the plane x = k or y = k for k != 0 are hyperbolas:
+z^2 - y^2 = k^2 or z^2 - x^2 = k^2
+
+Lets consider the cases when a cone is oriented along the x or y-axes, for an elliptic cone centered at the origin, the other two cases are
+When the y^2 term is isolated on one side, the axis of symmetry is the y-axis
+y^2 = x^2/a^2 + z^2/c^2
+When the x^2 term is isolated on one side, the axis of symmetry is the x-axis
+x^2 = y^2/b^2 + z^2/c^2
+
+finding traces of elliptic cones
+What is the trace in the xz-plane of the elliptic cone 
+3x^2 + 4y^2 = 12(z + 3)^2
+substitute y = 0
+3x^2 = 12(z + 3)^2
+x^2 = 4(z + 3)^2
++/-x = 2(z + 3)
++/-x/2 = z + 3
+z = +/- x/2 - 3
+this gives us two lines in the xz-plane z = +/- x/2 - 3
+
+example:
+What is the trace in the yz-plane of the elliptic cone:
+x^2/8 + y^2/4 = (z - 4)^2
++/-y/2 = z - 4
+z = +/-y/2 + 4
+(not sure how the y/4 became a y/2, answer might be wrong, I got z = +/-y/4 + 4)
+
+example:
+the intersection of the elliptic cone 3(x + 4)^2 + 8y^2 = 12z^2 and the plane z = -2 is an ellipse, what is the length of its major axis?
+3(x + 4)^2 + 8y^2 = 12(-2)^2
+3(x + 4)^2 + 8y^2 = 48
+(x + 4)^2/16 + y^2/6 = 1
+(x + 4)^2/4^2 + y^2/(sqrt(6))^2 = 1
+semi-major axis of length a = 4
+major axis has length 2a = 8
+
+===================================================
+
+A cylinder is a surface made by the set of lines that pass through a plane curve C in the xy-plane and are perpendicular to this plane, curve C is called the base curve.
+
+Two-dimensional conic sections (circles, ellipses, parabolas, and hyperbolas) can be used to describe cylinders
+
+An elliptic cylinder is a cylinder whose base curve C is an ellipse, if the ellipse lies in thexy-plane and is centered at (x0,y0,0), then the equation of our elliptic cylinder is
+(x - x0)^2/a^2 + (y - y0)^2/b^2 = 1
+if a = b we get a circular cylinder.
+
+This may look like an equation of a regular ellipse, but since we're now describing a surface in three-dimensional space, we assume the z-coordinate is arbitrary. If we want z to feature in our equations explicity we would write
+(x - x0)^2/a^2 + (y - y0)^2/b^2 = 1, z = k
+
+The graph of an elliptic cylinder
+x^2/4 + y^2 = 1
+The center of the base ellipse C is at the origin, and the axis of the elliptic cylinder is the z-axis 
+
+The trace of this surface in the xy-plane (z=0)
+x^2/4 + y^2 = 1
+which is the base ellipse C cnetered at the origin (0,0,0) wth semi-major and semi-minor axes of lengths 2 and 1
+the trace in xy-plane (y=0)
+x^2/4 + 0^2 = 1
+x^2 = 4
+x = +/-2
+corresponds to two lines in the xz-plane
+trace in the yz-plane (x=0)
+0^2/4 + y^2 = 1
+y^2 = 1
+y = +/-1
+corresponds to two lines in the yz-plane
+
+A parabolic cylinder has a base curve C that is a parabola.
+If the parabola C opens upward or downward when viewed from the xy-plane and its vertex is at (x0,y0,0) then the equation of the parabolic cylinder becomes
+(x - x0)^2 = 4p(y - y0)
+
+the graph of the parabolic cylinder
+x^2 = y
+its base curve is an upward-opening parabola in the xy-plane with its vertex at the origin. The axis of the cylinder is the z-axis
+
+The trace of this parabolic cylinder can be a parabola or a set of lines.
+the trace of this in the xy-plane (z=0)
+x^2 = y
+corresponds to the base parabola C with its vertex at the origin (0,0,0)
+trace in xy-plane (y=0)
+x^2 = 0
+x = 0
+corresponds to a line in the xz-plane
+trace of this surface in the yz-plane (x=0)
+0^2 = y
+y = 0
+corresponds to a line in the yz-plane
+
+If the base parabola C is left-opening or right-opening when viewed from the xy-plane and its vertex is at (x0,y0,0), then the equation of the parabolic cylinder is
+(y - y0)^2 = 4p(x - x0)
+
+A hyperbolic cylinder is a cylinder whose base curve C is a hyperbola
+
+if the hyperbola C is horizontal in the xy-plane and is centered at (x0,y0,0) the equation is given by:
+(x - x0)^2/a^2 - (y - y0)^2/b^2 = 1 
+
+A graph of the hyperbola cylinder
+x^2 - y^2 = 1
+its base curve is a horizontal hyperbola in the xy-plane centered at the origin. The axis of the cylinder is the z-axis
+
+The trace of this surface can be a hyperbola, a set of lines, or the empty set
+the trace of this surface in the xy-plane (z=0)
+x^2 - y^2 = 1
+which is the base hyperbola C centered at the origin (0,0,0)
+trace of xy-plane (y=0)
+x^2 - 0^2 = 1
+x^2 = 1
+x = +/- 1
+corresponds to a pair of lines in the xz-plane
+trace of yz-plane (x=0) is the empty set
+
+If the base hyperbola C is vertical when viewed from the xy-plane and is centered at (x0,y0,0) the equation of the hyperbolic cylinder:
+(y - y0)^2/b^2 - (x - x0)^2/a^2 = 1 
+
+The domain of a cylinder
+What is the domain in the xy-plane of the elliptic cylinder
+x^2/9 + (y + 1)^2 = 1
+the domain of any cylinder in the xy-plane is its base curve
+{(x,y) : x^2/9 + (y + 1)^2 = 1}
+can be written as
+{(x,y) : x^2/3^2 + (y + 1)^2/1^2 = 1}
+This is an ellipse centered at (0,-1) with semi-axes of lengths 3 and 1
+
+example:
+What is the domain in the xy-plane of the hyperbolic cylinder
+(x + 1)^2/4 - (y - 4)^2/2 = 1
+This is a hyperbola centered at (-1,4)
+
+example:
+What is the domain in the xy-plane of the elliptic cylinder
+(x - 1)^2/16 + (y + 2)^2/8 = 1
+this domain is
+{(x,y) : (x - 1)^2/16 + (y + 2)^2/8 = 1}
+which can be written as
+{(x,y) : (x - 1)^2/4^2 + (y + 2)^2/(2sqrt(2))^2 = 1}
+this is an ellipse centered at (1,-2) with semi-axes of lengths 4 and 2sqrt(2)
+
+We can also define cylinders whose axes are parallel to the x or y-axes. To do this, we simply need to describe a base curve in either the yz-plane or the xz-plane
+
+For an elliptic cylinder whose base ellipse C is centered at the origin the other two cases
+(sideways)
+Elliptic cylinder C whose base curve lies in the xz-plane
+x^2/a^2 + z^2/c^2 = 1
+The axis of the elliptic cylinder is the y-axis
+
+The elliptic cylinder C whose base curve lies in the yz-plane
+y^2/b^2 + z^2/c^2 = 1
+the axis of the elliptic cylinder is the x-axis.
+
+For a parabolic cylinder whose base parabola C has its vertex at the origin the other four cases:
+When C is in the xz-plane and p = 1 the axis is the y-axis x^2 = z, z^2 = x
+if p = -1 we get a reflection in the xy-plane or yz-plane of the parabolic cylinders.
+When C is in the yz-plane and p = 1, the axis is the x-axis y^2 = z, z^2 = y
+
+For a hyperbolic cylinder whose base hyperbola C has its vertex at the origin, the other four cases are as follows
+When C is in the xz-plane, the axis of the hyperbolic cylinder is the y-axis
+z^2/c^2 - x^2/a^2 = 1
+x^2/a^2 - z^2/c^2 = 1
+When C is in the yz-plane, the axis of the hyperbolic cylinder is the x-axis
+z^2/c^2 - y^2/b^2 = 1
+y^2/b^2 - z^2/c^2 = 1
+
+example:
+what is the trace in the yz-plane of the elliptic cylinder
+x^2/2 + (y - 2)^2/4 = 1
+to find the trace in the yz-plane we substitute x = 0 into the equation
+0^2/2 + (y - 2)^2/4 = 1
+(y - 2)^2 = 4
+y - 2 = +/- 2
+y = 2 +/- 2
+y = 0, 4
+the equation of two lines y = 0 and y = 4 yz-plane
+
+example:
+what is the trace in the xz-plane of the hyperbolic cylinder:
+(x - 1)^2/8 - y^2/4 = 1
+(x - 1)^2/8 = 1
+(x - 1)^2 = 8
+x - 1 = +/-2sqrt(2)
+x = 1 +/-2sqrt(2)
+this gives us two lines in the xz-plane
+
+example:
+The projection of the intersection between the elliptic cylinder 9x^2 + 2(y - 1)^2 = 18 and the plane z = 1 onto the xy-plane is an ellipse. What are the lengths of the semi-axis of the ellipse?
+Since the equation has no explicit z term:
+9x^2 + 2(y - 1)^2 = 18
+x^2/2 + (y - 1)^2/9 = 1
+x^2/(sqrt(2))^2 + (y - 1)^2/3^2 = 1
+an ellipse with semi-axes of lengths sqrt(2) and 3
+
+===================================================
+
+We can generate paraboloids, hyperboloids, and cones with alternative orientation axes by permuting the variables in the corresponding equation.
+For example, the equation of an elliptic cone with its vertex at O and axis of symmetry along the y-axis is given by
+y^2/b^2 = x^2/a^2 + z^2/c^2
+
+We can shift the center/vertex/saddle point of a quadric surface to (x0,y0,z0) using the usual coordinate transformation:
+(x,y,z) -> (x - x0, y - y0, z - z0)
+
+There is a simple way to distinguish between hyperboloids with one and two sheets by simply looking at the equations
+one minus sign are hyperboloids of one sheet:
+x^2/a^2 + y^2/b^2 - z^2/c^2 = 1
+two minus signs indicate hyperboloids of two sheets:
+x^2/a^2 + y^2/b^2 - z^2/c^2 = -1
+
+We can generate cylinders with alternative orientation axes by describing a base curve in the xz-plane or yz-planes
+The equation of an elliptic cylinder with its axis of symmetry along the y-axis
+x^2/a^2 + z^2/c^2 = 1
+We can shift the center or vertex of the base curve the usual way.
+
+Identify the surface:
+z - 1 = (x - 3)^2/4 - (y + 2)^2/4
+The equation of a hyperboloic paraboloid centered at O
+z = x^2/a^2 - y^2/b^2
+a hyperbolic paraboloid centered at (x0,y0,z0)
+z - z0 = (x - x0)^2/a^2 - (y - y0)^2/b^2
+Our equation is a hyperbolic paraboloid
+(x0,y0,z0) = (3,-2,1), a = b = 2
+
+example:
+identify the surface
+x^2 + y^2 - z^2 = -1
+Equation of a hyperboloid of two sheets centered at O is given by
+x^2/a^2 + y^2/b^2 - z^2/c^2 = -1
+a = b = c = 1
+
+example:
+identify the surface:
+(z - 1)^2 = x^2 + (y - 2)^2/4
+(notice all the variables are squared hint)
+The equation of an elliptic cone centered at O is given by
+z^2/c^2 = x^2/a^2 + y^2/b^2
+and an elliptic cone is centered at (x0,y0,z0)
+(z - z0)^2/c^2 = (x - x0)^2/a^2 + (y - y0)^2/b^2
+(x0,y0,z0) = (1,0,2), a = c = 1, b = 2
+
+Identifying Quadric surfaces and cylinders with alternative orientations
+identify the surface:
+x = y^2/4 - 4z^2
+the equation of the hyperbolic paraboloid centered at O whose axis of symmetry is the z-axis
+z = x^2/a^2 - y^2/b^2
+A hyperbolic paraboloid centered at O the axis of x-axis symmetry
+x = y^2/b^2 - z^2/c^2
+Our equation is a hyperbolic paraboloid with axis of symmetry is the x-axis, and b = 2, c = 1/2
+
+example:
+identify the surface
+z^2 + y^2 - x^2 = 1
+The equation of a hyperboloid of one sheet centered at O has axis of symmetry is the z-axis
+x^2/a^2 + y^2/b^2 - z^2/c^2 = -1
+A hyerboloid of one sheet centered at O has axis of symmetry is the x-axis is given by
+-x^2/a^2 + y^2/b^2 + z^2/c^2 = -1
+a = b = c = 1
+
+example:
+identify the surface
+z^2 = 8x
+The equation of a parabolic cylinder whose axis is the z-axis is given by
+x^2 = 4py
+A parabolic cylinder whose axis is the y-axis is given by
+z^2 = 4px
+axis is the y-axis and p = 2
+
+identify quadric surfaces by completing the square
+-x^2 + z^2 + 2x + y = 0
+first we complete the square in the x term
+-(x^2 - 2x) + z^2 + y = 0
+-(x - 1)^2 + 1 + z^2 + y = 0
+rearrange
+-(x - 1)^2 + z^2 = -y - 1
+(x - 1)^2 - z^2 = y + 1
+This is the equation of a hyperbolic paraboloid centered at (1,-1,0) the axis of symmetry here is the y-axis
+
+example:
+identify the surface
+4x^2 + 8y^2 + 2z^2 - 8x + 8z + 4 = 0
+first complete the square for x and z
+4(x^2 - 2x) + 8y^2 + 2(z^2 + 4z) + 4 = 0
+4[(x - 1)^2 - 1] + 8y^2 + 2[(z + 2)^2 - 4] + 4 = 0
+4(x - 1)^2 - 4 + 8y^2 + 2(z + 2)^2 - 8 + 4 = 0
+4(x - 1)^2 + 8y^2 + 2(z + 2)^2 - 8 = 0
+rearrange:
+4(x - 1)^2 + 8y^2 + 2(z + 2)^2 = 8
+4(x - 1)^2/8 + 8y^2/8 + 2(z + 2)^2/8 = 1
+(x - 1)^2/2 + y^2 + (z + 2)^2/4 = 1
+this is the equation of an ellipsoid centered at (1,0,-2)
+
+example:
+identify the surface
+2x^2 - 4z^2 - 4x - y - 16z - 12 = 0
+first complete the square for x and z
+2(x^2 - 2x) - 4(z^2 - 4z) - y - 12 = 0
+2[(x - 1)^2 - 1] - 4[(z + 2)^2 - 4] - y - 12 = 0
+2(x - 1)^2 - 2 - 4(z + 2)^2 + 16 - y - 12 = 0
+2(x - 1)^2 - 4(z + 2)^2 - y + 2 = 0
+rearrange:
+2(x - 1)^2 - 4(z + 2)^2 = y - 2
+This is the equation of a hyperbolic paraboloid centered at (1,2,-2) where the axis of symmetry is the y-axis

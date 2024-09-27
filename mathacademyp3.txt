@@ -962,6 +962,361 @@ what is the value of 30a + b/c
 	b
 	c
 ]
+////////////
+[
+	 1  5  2
+	-1 -5 -2
+][
+	1 -1
+	5 -5
+	2 -2
+]=[
+	 30 -30
+	 -30 30
+]
+[
+	 1  5  2
+	-1 -5 -2
+]
+[
+	 1
+	 0
+	 0
+] = [
+	1
+   -1
+]
+[
+	30 -30 | 1
+	-30 30 | -1
+]
+R2 := R2 + R1
+[
+	30 -30 | 1
+	 0   0 | 0
+]
+x1 = 1/30 + x2
+[
+	1/30 + x2
+		x2
+] = [
+	1/30
+	  0
+]+ x2[
+	1
+	1
+]
+30a + b/c = 30 * 1/30 + 1/1 = 2
+
+example:
+find least squares solution by the linear system of equations
+{
+	-x1 + 4x2 = 2
+	x1 - 4x2 = 2
+	2x1 - 8x2 = 4
+}
+what is the value of 3a + b/c
+[
+	-1  1  2
+	 4 -4 -8
+][
+	-1  4
+	 1 -4
+	 2 -8
+] = [
+	 6 -24
+	-24 96
+]
+
+[
+	-1  1  2
+	 4 -4 -8
+][
+	2
+	2
+	4
+] = [
+	 8
+	-32
+]
+
+[
+	 6 -24 | 8
+	-24 96 | -32
+]
+R2 := R2 + 4R1
+[
+	 6 -24 | 8
+	 0  0  | 0
+]
+x1 = 4/3 + 4x2
+[
+	4/3 + 4x2
+	  x2
+] = [
+	4/3
+	0
+] + x2[
+	4
+	1
+]
+3a + b/c = 3 * 4/3 + 4/1 = 8
+
+===================================================
+
+Linear Regression
+y = β0 + β1x
+
+data points
+x   y
+100 12
+110 11
+120 12
+130 15
+
+lets write our problem in matrix notion:
+β0 + 100β1 = 12
+β0 + 110β1 = 11
+β0 + 120β1 = 12
+β0 + 130β1 = 15
+
+X[
+	1 100
+	1 110
+	1 120
+	1 130
+]β[
+	β0
+	β1
+] = y[
+	12
+	11
+	12
+	15
+]
+
+matrix X is called the design matrix, and y is the observation vector.
+
+This won't lie on a straight line so we need an approximation
+||y - Xβ||
+as small as possible
+
+(similiar to the least-squares problem for the system Xβ = y) the coefficients of the line that best fits the data can be found as the solution to the corresponding least-square problem.
+
+Pre-multiplying the equation Xβ = y by X^T
+X^TXβ = X^Ty
+
+Columns are linearly independent X^TX is invertible
+β = (X^TX)^-1X^Ty
+
+Substituting X and y into the formula above and simplifying
+β = [1, 0.1]
+
+regression line is y = 1 + 0.1x
+
+example:
+find the line of the form y = β0 + β1x
+given
+(X^TX)^-1 = 1/10[
+	2 0
+	0 1
+]
+X^Ty = [
+	-10
+	20
+]=[	-2
+	 2
+]
+y = -2 + 2x
+
+example:
+find the line of the form y = β0 + β1x
+given
+(X^TX)^-1 = 1/10[
+	 6 -2
+	-2  1
+]
+X^Ty = [
+	13
+	9
+] = [
+	6
+  -1.7
+]
+y = 6 - 1.7x
+
+We can predict data points by plugging in x to get corresponding y, but the result may be unreliable.
+
+example:
+find the line of the form y = β0 + β1x, what will be the tree's height after 8 years if the trend continues
+given
+(X^TX)^-1 = 1/10[
+	15 -5
+	-5 2
+]
+X^Ty = [
+	11.8
+	35
+]
+y = 0.2 + 1.1x
+y = 0.2 + 1.1(8) = 9
+
+example:
+find the line of the form y = β0 + β1x, what will be the profit in the 6 month if the trend continues
+given
+(X^TX)^-1 = 1/10[
+	11 -3
+	-3 1
+]
+X^Ty = [
+	44.5
+	141.5
+]
+y = 6.5 + 0.8x
+y = 6.5 + 0.8(6) = 11.3
+
+Given a dataset of paired numerical observations (x,y) and the corresponding linear regression model y = f(x), the residual for a particular observation (x, y) is defined as 
+Residual = Actual - Estimated
+= y - f(x)
+= y - ŷ
+
+Ths sum of the squared residuals
+(E_i=1)r^2 = ||y - Xβ||^2
+
+The consition that the sum of the squared residuals is minimized is equivalent to minimizing ||y - Xβ||^2 equivalent to minimizing ||y - Xβ||
+
+Minimizing the squared residuals is equivalent to solving the least squares problem for Xβ = y
+
+Polynomial Regression
+
+data points
+x   y
+1  16
+2  11
+3  15
+4  18
+
+y = β0 + β1x + β2x^2
+
+substituting the values of x into the regression equation and equating the results to the corresponding observed values y
+{
+	β0 + 1β1 + 1^2β2 = 16
+	β0 + 2β1 + 2^2β2 = 11
+	β0 + 3β1 + 3^2β2 = 15
+	β0 + 4β1 + 4^2β2 = 18
+}
+matrix notation
+X[
+	1 1 1^2
+	1 2 2^2
+	1 3 3^2
+	1 4 4^2
+]β[
+	β0
+	β1
+	β2
+] = [
+	16
+	11
+	15
+	18
+]
+
+Our points do not lie on a quadratic curve, there will be no parameters β0, β1, β2 such that this equation is true. Instead we seek parameters β0, β1, β2 that best approximates
+||y - Xβ||
+as small as possible
+
+This is exactly the least-squares problem for the system Xβ = y pre-multiplying the equation Xβ = y by X^T
+X^TXβ = X^Ty
+
+X^TX is invertible
+β = (X^TX)^-1X^Ty
+
+substituting and simplying into the formula above:
+β = [
+	22.5
+	-9
+	2
+]
+The quadratic curve of best fit:
+y = 22.5 - 9x + 2x^2
+
+if the data point passes through zero (if x and y are 0) the equation becomes
+y = β0 + β2x^2 + β3x^3
+(notice β1x is missing)
+
+Multiple Linear Regression
+
+data points:
+y  x1  x2
+6   1   2
+15  2   3
+18  3   4
+24  4   6
+
+A plane form that best fits the data
+y = β0 + β1x1 + β2x2
+
+we get the following system
+{
+	β0 + β1 + 2β2 = 6
+	β0 + 2β1 + 3β2 = 15
+	β0 + 3β1 + 4β2 = 18
+	β0 + 4β1 + 6β2 = 24
+}
+matrix notation
+X[
+	1 1 2
+	1 2 3
+	1 3 4
+	1 4 6
+]β[
+	β0
+	β1
+	β2
+] = [
+	6
+	15
+	18
+	24
+]
+
+we seek to find
+||y - Xβ||
+to be as small as possible
+
+Same as the least-squars problem for the system Xβ = y. Pre-multiplying the equation Xβ = y by X^T:
+X^TXβ = X^Ty
+
+X^TX is invertible:
+β = (X^TX)^-1X^Ty
+
+Substituting X and y and simplifying:
+β = [
+	2
+	7
+	-1
+]
+best fit regression plane:
+y = 2 + 7x1 - x2
+
+The same technique can be used involving more variables, if we haev 4 then we can find a hyperplane:
+y = β0 + β1x1 + β2x2 + β3x3
+that best fits a set of (x1i,x2i,x3i,y). The coefficients of this hyperplane are found by solving the corresponding least-sqaures problem.
+
+if we want a multiple linear regression plane that passes through the origin we leave out the left 1's from the design matrix:
+y = β1x1 + β2x2 ...
+(notice we left out the β0)
+
+
+
+
+
+
+
+
+
+
 
 
 
