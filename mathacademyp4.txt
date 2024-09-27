@@ -5,6 +5,9 @@ Differentiation
 Approximating Values with Riemann Sums
 Double Integrals
 
+A lot of this is review, taking notes and
+remembering some things along the way will become a longer lasting memory.
+
 --------------------------------------------
 
 A quadric surface is a surface in three-dimensional space, equation is a second degree polynomial in the variables x, y and z
@@ -858,3 +861,437 @@ first complete the square for x and z
 rearrange:
 2(x - 1)^2 - 4(z + 2)^2 = y - 2
 This is the equation of a hyperbolic paraboloid centered at (1,2,-2) where the axis of symmetry is the y-axis
+
+===================================================
+
+A function f(x,y) of two variables is a rule that maps each pair of numbers (x,y) to a unique real number, this is the domain of f
+
+For instance consider the following two-variable function:
+f(x,y) = sin(xy)/sqrt(x - 1)
+Lets evaluate f(x,y) at the point (2,pi) substitute x = 2 and y = pi into the function expression:
+f(2,pi) = sin(xy)/sqrt(x - 1)
+= sin(2 * pi)/sqrt(2 - 1)
+= 0/1
+= 0
+Since f(2,pi) returned a unique real number this means that (2,pi) belongs to the domain of f.
+
+Evaluate f(x,y) at (0,pi) substitute x = 0 and y = pi into the function expression:
+f(0,pi) = sin(xy)/sqrt(x - 1)
+= sin(0 * pi)/sqrt(0 - 1)
+= 0/sqrt(-1)
+which is undefined
+since f(0,pi) did not return a unique real number the means that (0,pi) is not in the domain.
+
+The function f(x,y) is defined as
+f(x,y) = y^2 - log_3(x - 7)
+evaluate at (10,3)
+= 3^2 - log_3(10 - 7)
+= 9 - log_3(3)
+= 9 - 1
+= 8
+
+example:
+evaluate
+z = x^2 + xy - 5 at (1,2)
+z = -2
+
+example:
+f(x,y) = cos(xy)/y+1 at the point (pi,-1)
+= cos(pi * 1)/-1 + 1
+= -1/0
+= undefined
+
+The domain of a multivariable function is the set of points where the function is defined.
+z = f(x,y) = sqrt(1 - x^2 - y^2)
+the function is well-defined at all points (x,y) for which the expression under the square root is non-negative, the points in the domain must satisify the inequality
+1 - x^2 - y^2 >= 0  =>  x^2 + y^2 <= 1
+domain is
+D = {(x,y) : x^2 + y^2 <= 1}
+
+Natural domain is the largest set of values for which the function is defined
+
+Find the domain of a function involving reciprocals and radicals
+z = (sqrt(y + 1)/x + y)
+the function is well defined for all points if the denominator is not zero and under the square root is non-negative
+{
+	y + 1 >= 0  =>  y >= -1
+	x + y != 0  =>  y != -x
+}
+{
+	(x,y) : y >= -1, y != -x
+}
+
+example:
+domain of f(x,y) = xy/x^2 + y^2
+{(x,y) : x^2 + y^2 != 0}
+
+example:
+domain of z = sqrt(9 - x^2 - y^2)/x + y
+{(x,y) : x^2 + y^2, x + y != 0}
+
+example:
+domain of z = ln(2x + y)/sqrt(x)
+the expression under the logarithm is postive
+(and all other rules apply)
+{(x,y) : 2x + y > 0, x > 0}
+
+example:
+domain of f(x,y) = e(^x^2 - y^2)
+this is defined for the entire xy plane
+
+example:
+domain of z = ln(x + y)/y
+{(x,y) : x + y > 0, y != 0}
+
+example:
+domain of f(x,y) = arccos(x - y)
+{(x,y) : -1 <= x - y <= 1}
+The argument of the arccosine has values between -1 and 1
+
+===================================================
+
+If we want to find the intersection of a surface say f(x,y) = x^2 + y^2 with the plane z = 4
+we need to set both equations equal to each other
+x^2 + y^2 = 4, graphing this gives us a circle C center at (0,0) radius 2. C is called level curve
+x^2 + y^2 = c. The level curves are sometimes called contours.
+
+A level curve L_c(f) of a real valued function of two variables f(x,y) is any set of the form:
+L_c(f) = {(x,y) : f(x,y) = c}
+
+Find the equation of the level curve that passes through the point G(sqrt(5),1) for f(x,y) = 12y/(x^2 - y^2)
+12(1)/(sqrt(5)^2 - 1^2) = 3
+the level curve that passes through G(sqrt(5),1) is the 3-level curve.
+12y/(x^2 - y^2) = 3
+4y = x^2 - y^2
+x^2 - y^2 - 4y - 4 = -4
+x^2 - (y^2 + 4y + 4) = -4
+x^2 - (y - 2)^2 = -4
+the level curve that passes through G(sqrt(5),1) is the hyperbola x^2 - (y - 2)^2 = -4
+
+example:
+find the equation of the level curve that passes through the point P(1,2) for f(x,y) = 1/(y - x^2)
+1/(2 - 1^2) = 1
+P(1,2) is the 1-level curve
+1 = y - x^2
+1 = y - x^2
+y = x^2 + 1
+the level curve that passes through P(1,2) is the parabola y = x^2 + 1
+
+example:
+find the equation of the level curve that passes through the point P(0,1) for f(x,y) = 1 - 4x^2 - y^2
+4x^2 + y^2 = 1
+the level curve that passes through P(0,1) is the ellipse 4x^2 + y^2 = 1
+
+Determining the shape of a level curve
+f(x,y) = (x^2 + 2y^2 - 2)/x^2, f(x,y) = c
+(x^2 + 2y^2 - 2)/x^2 = c
+x^2 + 2y^2 - 2 = cx^2
+(1 - c)x^2 + 2y^2 = 2
+c = 1 level curve is y^2 = 1 (two lines)
+c = 0 level curve is x^2 + 2y^2 = 2 (ellipse)
+c = 2 level curve is 2y^2 - x^2 = 2 (hyperbola)
+
+example:
+level curves of f(x,y) = x^3y - y^2x are given by f(x,y) = c
+x^3y - y^2x = c
+xy(x^2 - y) = c
+c = +/-1 level curves are xy(x^2 - y) = +/-1 (not lines)
+c = 0 level curves are xy(x^2 - y) = 0 consist of the axes x = 0 and y = 0 and the parabola y = x^2
+
+example:
+level curves of f(x,y) = (2x^2 + 1)/(x^2 + y^2)
+(2x^2 + 1)/(x^2 + y^2) = c
+(2x^2 + 1) = c(x^2 + y^2)
+(c - 2)x^2 + cy^2 = 1
+c = 1 level curve is y^2 - x^2 = 1 (hyperbola)
+c = 2 level curve is y = +/-sqrt(2)/2 (two lines)
+c = 3 level curve is x^2 + 3y^2 = 1 (ellipse)
+
+Level curves for f(x,y) = e(^x^2 - y^2)
+e(^x^2 - y^2) = c
+we must have c > 0, since e^x > 0 for all x
+e(^x^2 - y^2) = c
+ln(e(^x^2 - y^2)) = ln(c)
+x^2 - y^2 = ln(c)
+we can split this into three cases, depending on the sign of ln(c)
+Case 1: ln(c) > 0 we have the family of hyperbolas x^2 - y^2 = ln(c)
+Case 2: ln(c) = 0 we have the lines y = +/-x
+Case 3: ln(c) < 0 we have family of hyperbolas y^2 - x^2 = -ln(c)
+
+example:
+which of the following represents the level curves of f(x,y) = sqrt(x^2 + y^2)
+(picked the image with circles looks like a dart board)
+the range of f(x,y) is [0,infinity) so only considering c >= 0
+f(x,y) = c
+sqrt(x^2 + y^2) = c
+x^2 + y^2 = c^2
+gives us a familty of circles centered at the origin
+
+example:
+level curves of f(x,y) = ln(y - 2x^2)
+(picked the only parabola which is U shape, which y > 0)
+the range of f(x,y) is (-infinity, inifinity).
+f(x,y) = c
+ln(y - 2x^2) = c
+y - 2x^2 = e^c
+y = 2x^2 + e^c
+this equation gives us a family of parabolas w/ vertex at (0,e^c).
+
+===================================================
+
+f(x,y) is continuous at (a,b) if
+lim_x->(a,b) f(x,y) = f(a,b)
+If a function is continuous at (a,b), then the limit can be evaluated by simply plugging (x,y) = (a,b) into the function
+
+lim_x->(2,1) xy/(x^2 + y^2)
+This function is continous for all (x,y) with the exception of (0,0) where the denominator vanishes. The point (2,1) does not cause the demoninator to vanish we can calc the lim by subsituting (x,y) = (2,1) into the function
+lim_x->(2,1) xy/(x^2 + y^2) = (2*1)/(2^2 + 1^2) = 2/5
+
+find lim_x->(-1,2) xy^3/x+y
+this is continous except when the deminator is zero. We can calc the lim by substitution
+lim_x->(-1,2) = (-1)*2^3/(-1)+2
+= -8/1
+= -8
+
+example:
+lim_x->(-2,3) (2x^2 + xy^2)/(x^2 + 2xy)
+(2(-2)^2 + (-2)(3)^2)/((-2)^2 + 2(-2)(3))
+(8 - 18)/4 - 12
+-10/-8 = 5/4
+
+example:
+lim_x->(1,1) (x^2y^2)/(x^3 + y^3)
+(1^21^2)/(1^3 + 1^3)
+= 1/2
+
+Sometimes we may need to simplify a limit before evaluating it
+lim_x->(2,-1) (x^2 + 2xy)/(xy + 2y^2)
+((2)^2 + 2(2)(-1))/((2)(-1) + 2(-1)^2) = 0/0
+we can simplify the limit by factoring the numerator and denominator and then canceling a common factor
+lim_x->(2,-1) (x^2 + 2xy)/(xy + 2y^2)
+= lim_x->(2,-1) x(x + 2y)/y(x + 2y)
+= lim_x->(2,-1) x/y
+evaluate
+lim_x->(2,-1) x/y = 2/-1 = -2
+
+example:
+find lim_x->(-1,1) (x^2y + xy^2)/(x^2 - y^2)
+direct substitution leads to the indeterminate form 0/0
+= ((-1)^2(1) + (-1)(1)^2)/((-1)^2 - (1)^2) = 0/0
+we can simplify by canceling common factors in the numerator and denominator
+lim_x->(-1,1) xy(x + y)/(x + y)(x - y)
+= lim_x->(-1,1) xy/(x - y)
+simplify
+lim_x->(-1,1) xy/(x - y) = (-1)(1)/(-1 - 1)
+= -1/-2 = 1/2
+
+example:
+lim_x->(2,2,-1) (xyz - zy^2)/(y^2 - x^2)
+= yz(x - y)/-(x - y)(x + y)
+= yz/-x - y
+= lim_x->(2,2,-1) (2)(-1)/-2-2
+= -2/-4 = 1/2
+
+example:
+lim_x->(-1,2,2) (z^2 - y^2)/(z^3 - y^2z)
+(z^2 - y^2)/z(z^2 - y^2)
+= lim_x->(-1,2,2) 1/z
+= 1/2
+
+Limits of Multivariable functions using conjugate multiplication
+find lim_x->(2,1) (x^2 - 4y)/(x - 2sqrt(y))
+direct substitution leads to indeterminate form 0/0
+we can simplify the limit by multiplying the numerator and denominator by the conjugate of the denominator lim_x->(2,1):
+(x^2 - 4y)(x + 2sqrt(y))/(x - 2sqrt(y))(x + 2sqrt(y))
+= (x^2 - 4y)(x + 2sqrt(y))/(x^2 - (2sqrt(y))^2)
+= (x^2 - 4y)(x + 2sqrt(y))/(x^2 - 4y)
+= (x + 2sqrt(y))
+evaluate:
+lim_x->(2,1) (x + 2sqrt(y)) = 2 + 2sqrt(1)
+= 2 + 2 = 4
+
+example:
+lim_x->(0,1) (x^2 - x)/(sqrt(1 + xy) - 1)
+(x^2 - x)(sqrt(1 + xy) + 1)/(sqrt(1 + xy) - 1)(sqrt(1 + xy) + 1)
+= x(x - 1)(sqrt(1 + xy) + 1)/(sqrt(1 + xy)^2 - 1^2)
+= x(x - 1)(sqrt(1 + xy) + 1)/xy
+= (x - 1)(sqrt(1 + xy) + 1)/y
+evaluate
+(x - 1)(sqrt(1 + xy) + 1)/y
+= (0 - 1)(sqrt(1 + 0*1) + 1)/1
+= -2/1 = -2
+
+example:
+lim_x->(4,4) (x - y)/(sqrt(x) - sqrt(y))
+(x - y)(sqrt(x) + sqrt(y))/(sqrt(x) - sqrt(y))(sqrt(x) + sqrt(y))
+= (x - y)(sqrt(x) + sqrt(y))/(sqrt(x)^2 - sqrt(y)^2)
+= (x - y)(sqrt(x) + sqrt(y))/(x - y)
+= sqrt(x) + sqrt(y)
+evaluate
+sqrt(4) + sqrt(4) = 2 + 2 = 4
+
+Its easy to show that a limit does not exist for a multivariable function, all we have to do is find two paths on which the limit evaluates to different results.
+lim_x->(0,0) y/x+y
+direct substitution leads to 0/0, lets compute the limit along the paths y = x and y = x^2, we will see the limit evaluates to different results on these two paths.
+taking x -> (0,0) along the path y = x
+lim_x->(0,0) y/x+y = lim_x->0 x/x+x
+= lim_x->0 x/2x
+= lim_x->0 1/2
+= 1/2
+now along the path y = x^2
+lim_x->(0,0) y/x+y = lim_x->0 x^2/(x + x^2)
+= x/1 + x
+= 0/1+0
+= 0
+The limit evaluates to different results on these two paths, we can conclude that the limit does not exist (DNE)
+lim_x->(0,0) y/x+y = DNE
+
+example:
+find lim_x->(0,0) x(x + 2y)/y^2
+lets evaluate the limit approaching (0,0) from different paths
+along the path y = x
+x(x + 2x)/x^2
+= 3x^2/x^2
+= 3
+along the path y = -x
+x(x + 2(-x))/(-x)^2
+= -x^2/x^2
+= -1
+the limit evaluates to different reuslts on these two paths, we can conclude that the limit does not exist
+lim_x->(0,0) x(x + 2y)/y^2 = DNE
+
+example:
+find lim_x->(0,0) (2y^2x + yx^2)/(x^3 + xy^2)
+along the path y = x
+= (2x^3 + x^3)/(x^3 + x^3)
+= 3x^3/2x^3
+= 3/2
+along the path y = -x
+(2x^3 - x^3)/(x^3 + x^3)
+= x^3/2x^3
+= 1/2
+because this evaluates to different results on two different paths we can conclude the limit does not exists
+(2y^2x + yx^2)/(x^3 + xy^2) = DNE
+
+example:
+find lim_x->(0,0) (xy - xy^2)/(x^2 + 2xy)
+along the path y = x
+(x^2 - x^3)/3x^2
+= (1 - x)/3
+= (1 - 0)/3
+= 1/3
+along the path y = -x
+(x(-x) - x(-x)^2)/(x^2 + 2x(-x))
+= -x^2 - x^3/-x^2
+= lim(1 + x)
+= 1 + 0 = 1
+
+===================================================
+
+Partial derivative f with respect to x is computed by taking the derivative of f with respect to x, while treating y as a constant
+∂f/∂x
+partial derivative is defined as the limit
+∂f/∂x = lim_h->0 ((f(x + h, y)) - f(x,y)/h)
+derivative of a single variable:
+df/dx = lim_h->0 ((f(x + h) - f(x))/h)
+partial derivative with respect to y
+∂f/∂y = lim_h->0 ((f(x, y + h)) - f(x,y)/h)
+notation:
+f_x = ∂f/∂x, f_y = ∂f/∂y
+
+example:
+f(x,y) = y^2ln(x) express ∂f/∂x as the limit of a difference quotient
+the partial derivative of f with respect to x is given by the limit:
+∂f/∂x = lim_h->0 ((f(x + h, y)) - f(x,y)/h)
+since f(x) = y^2ln(x)
+f(x + h, y) = y^2ln(x + h)
+∂f/∂x = lim_h->0 ((y^2ln(x + h)) - (y^2ln(x))/h)
+
+example:
+f(x,y) = 3x^2y then ∂f/∂x
+= lim_h->0 (3(x + h)^2y - 3x^2y)/h
+
+example:
+f(x,y) = xsqrt(y) then ∂f/∂y
+lim_h->0 (xsqrt(y + h) - xsqrt(y))/h
+
+Computing partial derivatives
+consider f(x,y) = xy^2 + e^y
+to compute the partial derivative of f with respect to x, (y remains a constant)
+∂f/∂x = ∂/∂x(xy^2 + e^y)
+= y^2 * ∂/∂x(x) + ∂/∂x(e^y)
+= y^2 * 1 + 0
+= y^2
+e^y vanished, e^y is a function of y only, since we're treating y as a constant, this entire term is treated as a constant and differentiates to zero.
+We can do the reverse now take the partial derivative of f with respect to y
+∂f/∂y = ∂/∂y(xy^2 + e^y)
+= x * ∂/∂y(y^2) + ∂/∂y(e^y)
+= x * (2y) + (e^y)
+= 2xy + e^y
+
+when we want to evaluate a partial derivative at a point (x0,y0) we can use the follow notation
+∂f(x0,y0)/∂x = ∂f/dx|_(x0,y0) = f_x(x0,y0)
+
+example:
+find ∂f/∂y given f(x,y) = 3xln(y) + 2ye^x
+= ∂/∂y(3xln(y)) + ∂/∂y(2ye^x)
+= 3x * ∂/∂y(ln(y)) + 2e^x * ∂/∂y(y)
+= 3x * 1/y + 2e^x * 1
+= 3x/y + 2e^x
+
+example:
+find ∂f/∂x given f(x,y) = x^2sin(y) + xy
+= ∂/∂x(x^2sin(y)) + ∂/∂x(xy)
+= sin(y) * ∂/∂x(x^2) + y * ∂/∂x(x)
+= sin(y) * 2x + y * 1
+= 2xsin(y) + y
+
+example:
+find f_y(x,y) for f(x,y) = xy^2 + x^2cos(y)
+= f_y(xy^2) + f_y(x^2cos(y))
+= x * f_y(y^2) + x^2 * f_y(cos(y))
+= x * 2y + x^2 * -sin(y)
+= 2xy - x^2sin(y)
+
+Evaluating a partial derivative at a point
+f(x,y) = x^2y^2 + sin(x)cos(y), evaluate ∂f/∂x at (pi,2pi)
+∂f/∂x = ∂/∂x(x^2y^2 + sin(x)cos(y))
+= ∂/∂x(x^2y^2) + ∂/∂x(sin(x)cos(y))
+= y^2 * ∂/∂x(x^2) + cos(y) * ∂/∂x(sin(x))
+= y^2 * 2x + cos(y) * cos(x)
+= 2xy^2 + cos(x)cos(y)
+next evaluate at point (pi,2pi)
+∂f/∂x|_(pi,2pi) = 2 * pi * (2pi)^2 + cos(pi)*cos(2pi)
+= 2pi * 4pi^2 + (-1)*1
+= 8pi^3 - 1
+
+example:
+f(x,y) = y^2tan(x) + y/x evaluate ∂f/∂x at (pi,2)
+∂f/∂x = ∂/∂x(y^2tan(x) + y/x)
+= ∂/∂x(y^2tan(x) + x^-1y)
+= ∂/∂x(y^2tan(x)) + ∂/∂x(x^-1y)
+= y^2 * ∂/∂x(tan(x)) + y * ∂/∂x(x^-1)
+= y^2 * sec^2(x) + y * -x^-2
+= y^2sec^2(x) - yx^-2
+evaluate at (pi,2)
+∂f/∂x|_(pi,2) = 2^2sec^2pi - 2(pi)^-2
+= 4 - 2/pi^2
+
+example:
+f(x,y) = 2^xtan(y) + y/pix^2 evaluate f_x(1,pi/4)
+= f_x(2^xtan(y) + (y/pix^2))
+= f_x(2^xtan(y) + (y/pi)*(x^-2))
+= f_x(2^xtan(y)) + f_x((y/pi)*(x^-2))
+= tan(y) * f_x(2^x) + y/pi * f_x(x^-2)
+= tan(y) * (2^xln(2)) + y/pi * (-2x^-3)
+= tan(y)2^xln2 - 2y/pix^3
+evaluate at (1,pi/4)
+tan(pi/4)2^1ln2 - (2 * pi/4)/pi * 1^3
+= 2ln2 - 1/2
+
+===================================================
+
+
+
+
+
