@@ -1557,6 +1557,7 @@ The tagent line to the curve C at P(0,1,1) is given by the intersection of the f
 }
 To find a tangent vector we can find a normal vector to each plane and compute their cross product.
 For the plane y = 1 we write 0x + 1y + 0z = 1 and fine the normal vector n1 = <0,1,0>
+(review)
 For the plane z = (pi/4)x we write -pi/4x + 0y + 1z = 1 and find the normal vector n2 = <-pi/4,0,1>
 cross product:
 n1 x n2 = <0,1,0> x <-pi/4,0,1>
@@ -1778,4 +1779,266 @@ lim_(x,y)->(0,0) f(x,y) = lim_y->0 (x * x)/(x^2 + x^2)
 = 1/2
 != 0
 our f(x,y) is not continuous at point (0,0) even though both of its partial derivatives exist.
+
+===================================================
+
+Computing second derivatives of multivariable functions
+two variable function
+f(x,y) = xy^2 + e^(xy)
+first order partial derivatives:
+f_x(x,y) = y^2 + ye^(xy)
+f_y(x,y) = 2xy + xe^(xy)
+f_x(x,y), and f_y(x,y) are themselves that are differentiable, we can compute the second-order partial derivatives as well
+f_x_x(x,y) = ∂f/∂x(f_x(x,y)) = y^2e^(xy)
+f_x_y(x,y) = ∂f/∂y(f_x(x,y)) = 2x + xye^(xy)
+f_y_x(x,y) = ∂f/∂x(f_y(x,y)) = 2y + xye^(xy)
+f_y_y(x,y) = ∂f/∂y(f_y(x,y)) = 2x + x^2e^(xy)
+f_x_y and f_y_x are called mixed partial derivatives because they involve taking the partial derivatives with respect to different variables, x and y
+alternative notions
+∂^2/∂x^2(f) = ∂^2f/∂x^2(f) = f_x_x
+∂^2/∂y∂x(f) = ∂^2f/∂y∂x = f_x_y
+∂^2/∂y^2(f) = ∂^2f/y^2 = f_y_y
+∂^2/∂x∂y(f) = ∂^2f/∂x∂y = f_y_x
+in our example
+f_x_y(x,y) = 2y + xye^(xy) = f_y_x(x,y)
+almost always f_x_y = f_y_x
+
+example:
+find ∂^2f/∂x∂y given that ∂f/∂y = 2y/(x + y^2)
+∂^2f/∂x∂y = ∂/∂x(∂f/∂y)
+= ∂/∂x(2y/(x + y^2))
+= 2y * ∂/∂x((x + y^2)^-1)
+= -2y(x + y^2)^-2 * 1
+= -2y/(x + y^2)^2
+
+example:
+f(x,y) calculate ∂^2f/∂y∂x
+∂f/∂x = y/(x + y)
+∂f/∂y(y/(x + y))
+= (1 * (x + y) - y * 1)/(x + y)^2
+= x + y - y/(x + y)^2
+= x/(x + y)^2
+
+example:
+f(x,y) calculate ∂^2f/∂y∂x
+∂f/∂y = 2x^2ye^x
+∂/∂x(2x^2ye^x)
+= 2y * ∂/∂x(x^2e^2)
+= 2y(2xe^x + x^2e^x)
+= 2xye^x(2 + x)
+
+Computing expressions involving second-order partial derivatives
+f_x_y(x,y) + f_y_x(x,y) given that f_x(x,y) = ycos(xy) and f_y(x,y) = xcos(xy)
+f_x_y(x,y) = ∂/∂y(f_x(x,y))
+= ∂/∂y(ycos(xy))
+= 1 * cos(xy) + y(-sin(xy) * x)
+= cos(xy) - xysin(xy)
+f_y_x(x,y) = ∂/∂x(f_y(xy))
+= ∂/∂x(xcos(xy))
+= 1 * cos(xy) + x(-sin(xy) * y)
+= cos(xy) - xysin(xy)
+f_x_y(x,y) + f_y_x(x,y) = cos(xy) - xysin(xy) + cos(xy) - xysin(xy)
+= 2(cos(xy) - xysin(xy))
+
+example:
+find g_x_y(x,y) + g_x_x(xy) given
+g_x(x,y) = 1/(x - 3y)
+= ∂/∂y(1/(x - 3y))
+= 1 * ((x - 3y)^-1)
+= -1 * ∂/∂y((x - 3y)^-2)
+= 3/(x - 3y)^2
+∂/∂x(1/(x - 3y))
+= -1/(x - 3y)^2
+g_x_y(x,y) + g_x_x(xy) = 3/(x - 3y)^2 + (-1/(x - 3y)^2)
+= 2/(x - 3y)^2
+
+example:
+find f_x_y(x,y) + f_y_x(xy) given
+f_x(x,y) = 2xsin(y) and f_y(x,y) = x^2cos(y)
+∂/∂y(2xsin(y))
+= 2xcos(y)
+∂/∂x(x^2cos(y))
+2xcos(y)
+2xcos(y) + 2xcos(y) = 4xcos(y)
+
+We can define other higher order partial derivatives such as f_xxy f_xxyy f_xyxy etc
+(review)
+f(x,y,z) = zcos(xy) has the first-order partial derivative
+f_y(x,y,z) = -xzsin(xy)
+and the second-order partial derivative
+f_yx(x,y,z) = -xyzcos(xy) - zsin(xy)
+third-order partial derivative f_yxx
+= ∂/∂x(f_yx(x,y))
+= ∂/∂x(-xyzcos(xy) - zsin(xy))
+= -yzcos(xy) - xyz(-sin(xy) * y) - zcos(xy) * y
+= xy^2zsin(xy) - 2yzcos(xy)
+
+example:
+g_xyz(x,y,z) at (1,2,3) if g_x(x,y,z) = 2xyz + y^3
+∂/∂y(2xyz + y^3)
+= 2xz + 3y^2
+g_xyz = ∂/∂z(2xz + 3y^2)
+= 2x
+g_xyz(1,2,3) = 2(1)
+= 2
+
+example:
+(review)
+f_xyz(1,1,1) for f(x,y,z) = yz/(x - 2z)
+∂/∂x(yz/(x - 2z))
+= -yz/(x - 2z)^2
+∂/∂y(-yz/(x - 2z)^2)
+= -z/(x - 2z)^2
+∂/∂z(-z/(x - 2z)^2)
+= -(1 * (x - 2z)^2 - z * 2(x - 2z) * (-2))/(x - 2z)^4
+= -((x - 2z)^2 + 4z(x - 2z))/(x - 2z)^4
+= -(x - 2z + 4z)/(x - 2z)^3
+= -(x + 2z)/(x - 2z)^3
+f_xyz(1,1,1) = -(1 + 2 * 1)/(1 - 2 * 1)^3 = 3
+
+example:
+f_xyx(x,y) given f(x,y) = x^2y + y^2ln(y)
+∂/∂x(x^2y + y^2ln(y))
+= 2xy
+∂/∂y(2xy)
+= 2x
+∂/∂x(2x)
+= 2
+
+===================================================
+
+f(x,y) = xy^2 - x^3y first order derivatives
+∂f/∂x(x,y) = y^2 - 3x^y & ∂f/∂y(x,y) = 2xy - x^3
+second order mixed partial derivatives
+∂^2f/∂y∂x = 2y - 3x^2 & ∂^2f/∂x∂y = 2y - 3x^2
+they are equal 
+∂^2f/∂y∂x = ∂^2f/∂x∂y
+if f(x,y) has continuous first-order partial derivatives on an open set U and the second-order mixed partial derivatives exist and are continuous on U, then the mixed partial derivatives are equal everywhere on U
+
+example:
+f(x,y) all of its first and second order partial derivatives are continuous on an open set U. Find the values of a and b
+f_x(x,y) = 6xy + axy^3 - 5
+f_y(x,y) = 3x^2 + bx^2y^2
+f_y(2,-1) = -24
+∂f/∂y(6xy + axy^3 - 5)
+= 6x + 3axy^2 - 0
+= 6x + 3axy^2
+∂f/∂x(3x^2 + bx^2y^2)
+= 6x + 2bxy^2
+Since the function and its first and second order partial derivatives are continuous on an open set U the mixed partial derivatives must be equal.
+f_xy(x,y) = f_yx(x,y)
+6x + 3axy^2 = 6x + 2bxy^2
+the coefficients of xy^2: 3a = 2b
+since f_y(2,-1) = -24
+f_y(2,-1) = -24
+(plugging into our original equation)
+3(2)^2 + b(2)^2(-1)^2 = -24
+12 + 4b = -24
+4b = -36
+b = -9
+3a = 2b
+3a = 2(-9)
+3a = -18
+a = -6 and b = -9
+
+example:
+f(x,y) all of its first and second-order partial derivatives are continuous on an open set U find the values of a and b
+f_x(x,y) = ax^2y - 4y^2 + 3
+f_y(x,y) = 2x^3 + bxy - 8
+∂f/∂y(ax^2y - 4y^2 + 3)
+= ax^2 - 8y
+∂f/∂x(2x^3 + bxy - 8)
+= 6x^2 + by
+since the function and its first and second-order partial derivatives are continuous on an open set U the mixed partial derivatives must be equal (indentity)
+ax^2 - 8y = 6x^2 + by
+equating the coefficients of x^2 and y a = 6 and b = -8
+
+example:
+f(x,y) all of its first and second-order partial derivatives are continuous on an open set U find the values of a and b
+f_x(x,y) = x + ay^2 - 1
+f_y(x,y) = bxy - 5y + 3
+f_x(1,1) = 2
+∂f/∂y(x + ay^2 - 1)
+= 2ay
+∂f/∂x(by - 5y + 3)
+= bx
+2ay = by
+equating the coefficients of y we get
+b = 2a
+f_x(1,1) = 2
+(plugging into our original equation)
+1 + a * (1)^2 - 1 = 2
+a = 2
+b = 2a = 2(2) = 4
+
+example:
+f_x(x,y) = x + 4y and f_y(x,y) = 3x - y
+f_x(x,y) = 2x and f_y(x,y) = 0
+f_x(x,y) = 2x + cos(x)cos(y) and f_y(x,y) = e^y - sin(x)sin(y)
+∂f/∂y(x + 4y)
+= 4
+∂f/∂x(3x - y)
+= 3
+4 != 3
+∂f/∂y(2x)
+= 0
+∂f/∂x(0)
+= 0
+∂f/∂y(2x + cos(x)cos(y))
+= -cos(x)sin(y)
+∂f/∂x(e^y - sin(x)sin(y))
+= -cos(x)sin(y)
+2 out of the three equations above are continuous
+
+example:
+f_x(x,y) = x^3y - x and f_y(x,y) = xy^3 - y
+f_x(x,y) = e^(x+y) - 2y and f_y(x,y) = e^(x+y) - 2x
+f_x(x,y) = sqrt(x - 1) and f_y(x,y) = -3
+∂f/∂y(x^3y - x)
+x^3
+∂f/∂x(xy^3 - y)
+y^3
+∂f/∂y(e^(x+y) - 2y)
+e^(x+y) - 2
+∂f/∂x(e^(x+y) - 2x)
+e^(x+y) - 2
+∂f/∂y(sqrt(x - 1))
+= 0
+∂f/∂x(-3)
+= 0
+only 2 out of three f_xy = f_yx are continuous
+
+∂^2f/∂x∂y = ∂^2f/∂y∂x
+this result extends to higher-order partial derivatives. If the third-order partial derivatives of f(x,y) are also continuous everywhere on U, then the third-order mixed partial derivatives are independent of the order in which the differentiation is performed.
+
+∂^3f/∂x∂x∂y = ∂^3f/∂y∂x∂x
+this is a distinct permutation of the symbols ∂x, ∂x, and ∂y any permutation of these symbols gives the same result
+∂^3f/∂x∂x∂y = ∂^3f/∂x∂y∂x
+
+this does not mean all third partial derivatives are equal
+∂^3f/∂x∂x∂y != ∂^3f/∂x∂y∂y
+These are not equal as the right denominator is not a permutation of left denomenator ∂x∂x∂y
+
+example:
+f(x,y,z) and all of its higher-order partial derivatives are continuous on an open set U
+∂^2f/∂x^2 = (xy^2 + 2y)e^(xy) + 2z^3
+∂^2f/∂x∂z = 6xz^2
+evaluate at point (1,0,1)
+∂^3f/∂x∂y∂x + ∂^3f/∂z∂x∂z
+∂f/∂y((xy^2 + 2y)e^(xy) + 2z^3)
+= (xy^2 + 2y)xe^(xy) + (2xy + 2)e^(xy)
+= (x^2y^2 + 4xy + 2)e^(xy)
+∂f/∂z(6xz^2)
+= 12xz
+(2) + 12 = 14
+
+example:
+f(x,y,z) and all of its higher-order partial derivatives are continuous on an open set U, evaluate f_xyx(pi,1) if f_xx(x,y) = y^2e^ysin(xy)
+∂f/∂y(y^2e^ysin(xy)
+= 2y * e^ysin(xy) + e^y * y^2sin(xy) + xcos(xy) * y^2e^y
+= ye^y(2sin(xy) + ysin(xy) + xycos(xy))
+evaulate at (pi,1)
+= 1*e^1(2sin(1 * pi) + 1*sin(1*pi) + 1 * picos(1*pi)) = -pie
+(pi to the e not "pie" :))
+
 
