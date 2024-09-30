@@ -11,7 +11,7 @@ remembering some things along the way will become a longer lasting memory.
 Some fundamentals that I keep forgetting:
 derivative of arctan(x): (1/(1 + x^2))
 arcsin(x) is only defined for -1 <= x <= 1
-
+2sin(t)cos(t) = sin(2t) (identity)
 
 --------------------------------------------
 
@@ -2040,5 +2040,515 @@ f(x,y,z) and all of its higher-order partial derivatives are continuous on an op
 evaulate at (pi,1)
 = 1*e^1(2sin(1 * pi) + 1*sin(1*pi) + 1 * picos(1*pi)) = -pie
 (pi to the e not "pie" :))
+
+===================================================
+
+Similar to tangent lines for single variable functions, we can think of the tangent plane to a surface at a point as the plane that touches the surface at that point.
+
+The equation of the tangent plane to a surface z = f(x,y) at the point (x0,y0,z0) where z0 = f(x0,y0) can be found using
+z - z0 = (x - x0)∂f/∂x(x0,y0) + (y - y0)∂f/∂y(x0,y0)
+
+consider the surface
+z = 4 - x^2 - y^2
+The equation of the tangent plane to the surface at point (0,sqrt(2),2)
+first partial derivatives
+∂f/∂x = ∂/∂x(4 - x^2 - y^2) = -2x
+∂f/∂y = ∂/∂y(4 - x^2 - y^2) = -2y
+evaluate the partial derivatives at (x,y) = (0,sqrt(2))
+∂f/∂x(0,sqrt(2)) = -2(0) = 0
+∂f/∂y(0,sqrt(2)) = -2(sqrt(2)) = -2sqrt(2)
+equation of the tagent plane:
+z - 2 = (x - 0)∂f/∂x(0,sqrt(2)) + (y,-sqrt(2))∂f/∂y(0,sqrt(2))
+z - 2 = 0(x - 0) - 2sqrt(2)(y - sqrt(2))
+z - 2 = -2sqrt(2)y + 4
+2sqrt(2)y + z - 6 = 0
+^ cartesian equation of the tangent plane.
+
+A surface z = f(x,y) is differentiable at a point P iff it has a unique tangent plane at P. This means in the proximity of P, the surface z = f(x,y) can be approximated as a plane.
+This is analogous to the case of one variable functions. y = f(x) is differentiable at a point P if it has a unique tangent line at P. This is the same as saying that, in the proximity of P, the curve y = f(x) can be approximated as a striaght line
+
+Calculating the equation of a tangent plane
+Find the equation of the tangent plane to the surface
+z = x^2 + xy at (1,2,3)
+the cartesian equation of the tangent plane to the surface z = f(x,y) at the point (x0,y0,z0) on the surface:
+z - z0 = (x - x0)∂f/∂x(x0,y0) + (y - y0)∂f/∂y(x0,y0)
+find partial derivatives
+∂f/∂x = ∂/∂x(x^2 + xy)
+= 2x + y
+∂f/∂y = ∂/∂y(x^2 + xy)
+= x
+evaluate the partial derivatives at (1,2)
+∂/∂x(1,2) = 2(1) + 2 = 4
+∂/∂y(1,2) = 1
+tangent plane:
+z - 3 = (x - 1)∂f/∂x(1,2) + (y - 2)∂f/∂y(1,2)
+z - 3 = 4(x - 1) + 1(y - 2)
+z - 3 = 4x + y - 6
+-4x - y + z + 3 = 0
+4x + y - z - 3 = 0
+
+example:
+find the equation of the tangent plane to the surface
+z = sqrt(x^2 + 2y^3) - y at (3,2,3)
+∂f/∂x = ∂/∂x(sqrt(x^2 + 2y^3) - y)
+= x/sqrt(x^2 + 2y^3)
+∂f/∂x = ∂/∂y(sqrt(x^2 + 2y^3) - y)
+3y^2/x^2 + 2y^3 - 1
+partials at (3,2)
+∂f/∂x = (3)/sqrt((3)^2 + 2(2)^3) = 3/5
+∂f/∂y = 3(2)^2/sqrt((3)^2 + 2(2)^3) - 1 = 12/5 - 1 = 7/5
+z - z0 = (x - x0)∂f/∂x(x0,y0) + (y - y0)∂f/∂y(x0,y0)
+z - 3 = 3/5(x - 1) + 7/5(y - 2)
+5z - 15 = 3(x - 3) + 7(y - 2)
+5z - 15 = 3x - 9 + 7y - 14
+-3x - 7y + 5z + 8 = 0
+3x + 7y - 5z - 8 = 0
+
+example:
+find the equation of the tangent plane to the surface z = y^2e^(2x) - 1 at (0,2,3)
+∂f/∂x = ∂/∂x(y^2e^(2x) - 1)
+= 2y^2e^(2x)
+∂f/∂y = ∂/∂y(y^2e^(2x) - 1)
+= 2ye^(2x)
+substitute
+∂/∂x = 2y^2e^(2x) = 2(2)^2e^(2(0)) = 8
+∂f/∂y = 2ye^(2x) = 2(2)e^(2(0)) = 4
+z - 3 = 8(x - 0) + 4(y - 2)
+z - 3 = 8x + 4y - 8
+-z + 3 + 8x + 4y - 8 = 0
+-z - 5 + 8x + 4y = 0
+8x + 4y - z - 5 = 0
+
+A function of three variables w = f(x,y,z) is differentiable at (x0,y0,z0) if admits a unique tangent hyperplane at (x0,y0,z0,w0)
+w - w0 = (x - x0)∂f/∂x(x0,y0,z0) + (y, y0)∂f/∂y(x0,y0,z0) + )z - z0)∂f/∂z(x0,y0,z0)
+(hyperplane in four dimensional space, that can be considered an analog to a plane in three dimentional space)
+
+example:
+find the equation of the tangent hyperplane to the hypersurface w = x^2 + y^2 + z^2 - 2xyz at (1,-1,1,5)
+same process as before, first partial derivatives
+∂f/∂x(x^2 + y^2 + z^2 - 2xyz) = 2x - 2yz
+∂f/∂y(x^2 + y^2 + z^2 - 2xyz) = 2y - 2xz
+∂f/∂z(x^2 + y^2 + z^2 - 2xyz) = 2z - 2xy
+substitute
+∂f/∂x(1,-1,1) = 2(1) - 2(-1)(1) = 4
+∂f/∂y(1,-1,1) = 2(-1) - 2(1)(1) = -4
+∂f/∂z(1,-1,1) = 2(1) - 2(1)(-1) = 4
+tangent of a hyperplane
+w - 5 = (x - 1)∂f/∂x(1,-1,1) + (y + 1)∂f/∂y(1,-1,1) + (z - 1)∂f/∂z(1,-1,1)
+w - 5 = 4(x - 1) - 4(y + 1) + 4(z - 1)
+w - 5 = 4x - 4y + 4z - 12
+-4x + 4y - 4z + w + 7 = 0
+4x - 4y + 4z - w - 7 = 0
+
+example:
+find equation of the tangent hyperplane to the hypersurface w = e^x + e^y - e^z at (1,1,1,e)
+∂f/∂x(e^x + e^y - e^z) = e^x = e^(1) = e
+∂f/∂y(e^x + e^y - e^z) = e^y = e^(1) = e
+∂f/∂z(e^x + e^y - e^z) = -e^z = -e^(1) = -e
+tangent of a hyperplane
+w - e = ex - e + ey - e - ez + e
+-ex - ey + ez + w = 0
+ex + ey - ez - w = 0
+
+example:
+find the equation of the tangent hyperplane to the hypersurface w = x^2 - y^2 + xyz at (1,1,1,1)
+∂f/∂x(x^2 - y^2 + xyz) = 2x + yz
+∂f/∂y(x^2 - y^2 + xyz) = -2y + xz
+∂f/∂z(x^2 - y^2 + xyz) = xy
+∂f/∂x = 2(1) + (1)(1) = 3
+∂f/∂y = -2(1) + (1)(1) = -1
+∂f/∂z = (1)(1) = 1
+tangent of a hyperplane
+w - 1 = 3(x - 1) - 1(y - 1) + 1(z - 1)
+w - 1 = 3x - 3 - y + 1 + z - 1
+-3x + y - z + w + 2 = 0
+3x - y + z - w - 2 = 0
+
+Finding a normal vector to a surface
+We now know the equation of a tangent plane relative to the surface z = f(x,y) at (x0,y0,z0)
+z - z0 = (x - x0)∂f/∂x(x0,y0) + (y - y0)∂f/∂y(x0,y0)
+slightly rewriting this
+∂f/∂x(x0,y0)*(x - x0) + ∂f/∂y(x0,y0)*(y - y0) + (-1)*(z - z0) = 0
+this gives us a normal vector to the tangent plane:
+<∂f/∂x(x0,y0), ∂f/∂y(x0,y0), -1>
+A normal vector to the tangent plane to the surface is called a normal vector to the surface
+
+Finding points at which tangent planes have particular properties
+which points on the surface z = y^2 + xy is the tangent plane horizonal? Iff the normal vector to the tangent plane is vertical.
+the cartesian equation of the tangent plane to the surface z = f(x,y) at (x0,y0,z0) on the surface:
+z - z0 = (x - x0)∂f/∂x(x0,y0) + (y - y0)∂f/∂y(x0,y0)
+where <∂f/∂x(x0,y0), ∂f/∂y(x0,y0), -1> normal vector to the plane
+first partial derivatives
+∂f/∂x(y^2 + xy) = y
+∂f/∂y(y^2 + xy) = 2y + x
+normal vector to the tangent plane:
+<y, 2y + x, -1>
+now we want to find where this normal vector is vertical, which means that the x and y-components of the vector must be 0
+{
+	∂f/∂x = 0  =>  { y = 0 }
+	∂f/∂y = 0  =>  { 2y + x = 0 }
+}
+from the first equation we get y = 0, substituting this into the second equation:
+2(0) + x = 0  =>  x = 0
+substituting x = 0 and y = 0
+z = 0^2 + (0)(0) = 0
+the point where the tangent plane is horizontal is (0,0,0)
+
+example:
+Which points on the surface z = 3xy - ln(y) is the tangent plane perpendicular to the vector v = <3,5,-1>
+∂f/∂x(3xy - ln(y)) = 3y
+∂f/∂y(3xy - ln(y)) = 3x - 1/y 
+c * <3y, 3x - 1/y, -1> = <3,5,-1>
+{
+	3cy = 3
+	3cx - c/y = 5
+	-c = -1
+}
+from third equation we get c = 1 substituting into first:
+3(1)y = 3  =>  y = 1
+substituting c = 1 and y = 1 into the second equation
+3(1)x - 1/1 = 5  =>  x = 2
+substituting x = 2 and y = 1 into the function
+z = 3(2)(1) - ln(1)
+= 6
+tangent plane is perpendicular to the vector v at (2,1,6)
+
+example:
+at which points on the surface z = ln(1 + x^2 + y^2) is the tangent plane horizontal?
+∂f/∂x(ln(1 + x^2 + y^2)) = 2x/(1 + x^2 + y^2)
+∂f/∂y(ln(1 + x^2 + y^2)) = 2y/(1 + x^2 + y^2)
+<2x/(1 + x^2 + y^2), 2y/(1 + x^2 + y^2), -1>
+tangent plane is horizontal iff the normal vector is vertical. This means the x and y-components of the vector must be 0
+{
+	∂f/∂x = 0  =>  2x/(1 + x^2 + y^2) = 0
+	∂f/∂y = 0  =>  2y/(1 + x^2 + y^2) = 0
+}
+first equation x = 0, second y = 0
+substituting into our function:
+z = ln(1 + 0^2 + 0^2) = 0
+tangent plane is horizontal is (0,0,0)
+
+Differentiability of single variable functions in terms of tangent lines
+A function f(x) is differentiable at x = x0 with derivative f'(x0) iff the limit exists:
+f'(x0) = lim_x->x0 (f(x) - f(x0))/(x - x0)
+rewrite the limit:
+lim_x->x0 (f(x) - f(x0) - (x - x0)f'(x0))/(x - x0) = 0
+for the limit to hold true, the numerator must approach zero
+f(x) - f(x0) - (x - x0)f'(x0) ~= 0
+can be rewritten as
+f(x) - f(x0) ~= (x - x0)f'(x0)
+corresponds to the equation of the tangent line at x0
+y - y0 = (x - x0)∂f/∂x(x0)
+We can say that a function f(x) is differentiable at x0 if the function has a unique tangent line at x0
+
+The differentiability of multivariable functions in terms of tangent planes
+assume that f(x,y) is a differentiable function of two variables. Since f(x,y) is differentiable at (x0,y0) then there exists a vector ∇f = <f1,f2> 
+lim_(x,y)->(x0,y0)
+(f(x,y) - f(x0,y0) - <x - x0,y - y0> * <f1, f2>)/(||<x - x0,y - y0>||) = 0
+
+For the above limit to hold, the numerator must approach zero.
+Near (x0,y0)
+f(x,y) - f(x0,y0) - <x - x0, y - y0> * <f1,f2> ~= 0
+can be rewritten
+f(x,y) - f(x0,y0) ~= <x - x0, y - y0> * <f1,f2>
+exanding the dot product
+f(x,y) ~= f(x0,y0) + (x - x0)*f1 + (y - y0) * f2
+
+we need to show that f1 and f2 are the partial derivatives
+let y = y0 in the first equation
+lim_x->x0 (f(x,y0) - f(x0,y0) - (x - x0)f1)/(x1 - x0) = 0
+which is the definition of partial derivative respect to x
+f1 = ∂f/∂x(x0,y0)
+let x = x0 gives f2 = ∂f/∂y(x0,y0)
+
+the function f(x,y) can be linearized as
+f(x,y) ~= f(x0,y0) + (x - x0)∂f/∂x(x0,y0) + (y - y0)∂f/∂y(x0,y0) 
+by setting z = f(x,y) and z0 = f(x0,y0) we get equation of the tangent plane:
+z - z0 = (x - x0)∂f/∂x(x0, y0) + (y - y0)∂f/∂y(x0, y0)
+
+f(x,y) is differentiable at (x0,y0) if the function has a unique tangent plane at (x0, y0)
+
+∇f = <∂f/∂x, ∂f/∂y>
+the vector ∇f is known as the gradient vector
+
+===================================================
+
+The chain rule for a single variable functions f = f(x) and x = x(t) states
+df/dt = df/dx * dx/dt
+f = f(x,y) where x = x(t) and y = y(t) are single-variable functions. How do we find df/dt?
+
+The functions x(t) and y(t) are known as intermediate variabels. They are independent variables for the function f(x,y) but are themselves dependent on the variable t
+
+One way to consider how f(x,y) depends on t is to draw a tree diagram. Starting with f(x,y) we draw a branch for each intermediate variable. Then, we draw a abranch for both x = x(t) and y = y(t) which are both dependent on the variable t
+        
+         ___x(t)--->t
+        /
+f(x,y)--
+        \___y(t)--->t
+
+The label on each branch will be the derivative describing how the function changes due to a change in the variable.
+          
+          ___x(t)--dx/dt-->t
+    ∂f/∂x/
+        /
+f(x,y)--
+        \
+    ∂f/∂y\___y(t)--dy/dt-->t
+
+traversing each branch, we compute the product of the derivatives along each branch and place the reult at the end of the branch.
+
+          ___x(t)--dx/dt-->∂f/∂x * dx/dt
+    ∂f/∂x/
+        /
+f(x,y)--
+        \
+    ∂f/∂y\___y(t)--dy/dt-->∂f/∂y * dy/dt
+
+
+Finally to find df/dt we sum the results for each branch:
+df/dt = ∂f/∂x * dx/dt + ∂f/∂y * dy/dt
+This is called the multivariable chain rule.
+
+Calculating the derivative of a multivariable function with one independent variable
+f(x,y) = cos(xy), x = t, and y = e^t, compute df/dt
+first partial derivatives
+∂f/∂x = -ysin(xy)
+∂f/∂y = -xsin(xy)
+in terms of t
+∂f/∂x = -e^tsin(te^t)
+∂f/∂y = -tsin(te^t)
+the derivatives of x and y with respect to t
+dx/dt = 1, dy/dt = e^t
+substituting all derivatives into the multivariable chain rule:
+df/dt = ∂f/∂x * dx/dt + ∂f/∂y * dy/dt
+[-e^tsin(te^t)] * 1 + [-tsin(te^t)] * e^t
+= -e^tsin(te^t) - te^tsin(te^t)
+= -(1 + t)e^tsin(te^t)
+
+example:
+f(x,y) = ln(xy^2), x = cos(t) and y = sin(t)
+compute df/dt for 0 < t < pi/2
+first partial derivatives
+∂f/∂x = 1/x
+∂f/∂y = 2/y
+in terms of t
+∂f/∂x = 1/cos(t)
+∂f/∂y = 2/sin(t)
+the derivatives of x and y with respect to t
+dx/dt = -sin(t), dy/dt = cos(t)
+substituting
+df/dt = ∂f/∂x * dx/dt + ∂f/∂y * dy/dt
+[1/cos(t)] * -sin(t) + [2/sin(t)] * cos(t)
+= -sin(t)/cos(t) + 2 * cos(t)/sin(t)
+= 2cot(t) - tan(t)
+
+example:
+f(x,y) = xe^(xy), x = t^2, and y = t compute df/dt
+first partial derivatives
+∂f/∂x = e^(xy) + xye^(xy)
+∂f/∂y = x^2e^(xy)
+in terms of t
+∂f/∂x = e^((t^2)(t)) + (t^2)(t)e^((t^2)(t))
+(early simplify)
+= e^t^3 + t^3e^t^3
+= (1 + t^3)e^t^3
+∂f/∂y = (t^2)^2e^((t^2)(t))
+= t^4e^t^3
+the derivatives of x and y with respect to t
+dx/dt = 2t, dy/dt = 1
+substituting
+df/dt = ∂f/∂x * dx/dt + ∂f/∂y * dy/dt
+[(1 + t^3)e^t^3] * 2t + [t^4e^t^3] * 1
+= (2t + 2t^4)e^t^3 + t^4e^t^3
+= (2t + 3t^4)e^t^3
+
+Special case of the multivariable chain rule
+there is a special case of the multivariable chain rule when f = f(x,y) and y = g(x)
+x is an independent variable, the chain rule becomes
+df/dx = ∂f/∂x * dx/dx + ∂f/∂y * dy/dx
+dx/dx is just 1
+= ∂f/∂x + ∂f/∂y * dy/dx
+
+Derivative of a multivariable function with one independent variable in the special case
+f(x,y) = 2sqrt(x + y) and y = cos(x) compute df/dx
+in the case where y = y(x) can be expressed as
+df/dx = ∂f/∂x + ∂f/∂y * dy/dx
+partial derivative of f with respect to x and y
+∂f/∂x = 1/sqrt(x + y), ∂f/∂y = 1/sqrt(x + y)
+in terms of x
+∂f/∂x = ∂f/∂y = 1/sqrt(x + cos(x))
+take the derivative y with respect to x
+dy/dx = -sin(x)
+all derivatives into multivariable chain rule
+df/dx = 1/sqrt(x + cos(x)) + 1/sqrt(x + cos(x)) * (-sin(x))
+= 1/sqrt(x + cos(x)) - sin(x)/sqrt(x + cos(x))
+= 1 - sin(x)/sqrt(x + cos(x))
+
+example:
+f(x,y) = xln(x + y) and y = x^2 compute df/dx
+∂f/∂x = ln(x + y) + x/(x + y)
+∂f/∂y = x/(x + y)
+dy/dx = 2x
+df/dx = ln(x + x^2) + x/(x + x^2) + x/(x + x^2) * 2x
+= ln(x + x^2) + x + 2x^2/(x + x^2)
+= ln(x + x^2) + x(1 + 2x)/x(1 + x)
+= ln(x + x^2) + (1 + 2x)/(1 + x)
+
+example:
+f(x,y) = sin(x^2 + y) and y = x^2 compute df/dx
+∂f/∂x = 2xcos(x^2 + x^2) = 2xcos(2x^2)
+∂f/∂y = cos(x^2 + x^2) = cos(2x^2)
+dy/dx = 2x
+df/dx = 2xcos(2x^2) + cos(2x^2) * 2x
+= 2xcos(2x^2) + 2xcos(2x^2)
+= 4xcos(2x^2)
+
+Applying the multivariable chain rule if the intermediate variables are also dependent on two variables?
+f = f(x,y), x = g(s,t), y = h(s,t)
+how do we compute ∂f/∂s
+					      /----s ∂f/∂x * ∂x/∂s
+                    ∂x/∂s/
+          ___x(s,t)----- \
+    ∂f/∂x/           ∂x/∂t\----t ∂f/∂x * ∂x/∂t
+        /
+f(x,y)--
+        \           ∂y/∂s/----s ∂f/∂y * ∂y/∂s
+    ∂f/∂y\___y(s,t)-----/
+                   ∂y/∂t\
+                         \----t ∂f/∂y * ∂y/∂t
+∂f/∂s is all the paths with s as the leaf node from the root.
+
+If we keep t fixed and differentiate f with respect to s, according to the chain rule for two intermediate variables and one independent variable.
+∂f/∂s = ∂f/∂x * ∂x/∂s + ∂f/∂y * ∂y/∂s
+
+The same process would also go for ∂f/∂t (start with root node and follow all paths to t)
+∂f/∂t = ∂f/∂x * ∂x/∂t + ∂f/∂y * ∂y/∂t
+
+calculating the derivative of a multivariable function with two independent variables
+f(x,y) = x^2 + y^2, x = scos(t) and y = tsin(s) calculate ∂f/∂t
+two independent variables s and t where x = x(s,t) and y = y(s,t)
+∂f/∂t = ∂f/∂x * ∂x/∂t + ∂f/∂y * ∂y/∂t
+∂f/∂x = 2x
+∂f/∂y = 2y
+in terms of s and t
+∂f/∂x = 2scos(t)
+∂f/∂y = 2tsin(s)
+derivatives of x and y with resepct to t
+∂x/∂t = -ssin(t)
+∂y/∂t = sin(s)
+substituting
+∂f/∂t = ∂f/∂x * ∂x/∂t + ∂f/∂y * ∂y/∂t
+= (2scos(t))(-ssin(t)) + (2tsin(s))(sin(s))
+= -2s^2sin(t)cos(t) + 2tsin^2(s)
+= 2tsin^2(s) - 2s^2sin(t)cos(t)
+= 2tsin^2(s) - s^2sin(2t)
+
+example:
+f(x,y) = 2x + xy, x = se^s, y = te^s calculate ∂f/∂t
+∂f/∂x = 2 + y
+∂f/∂y = x
+in terms of s and t
+∂f/∂x = 2 + te^s
+∂f/∂y = se^s
+derivatives of x and y with resepct to t
+∂x/∂t = 0
+∂y/∂t = e^s
+substituting
+∂f/∂t = ∂f/∂x * ∂x/∂t + ∂f/∂y * ∂y/∂t
+= (2 + te^s)(0) + (se^s)(e^s)
+= se^(2s)
+
+example:
+f(x,y) = x^2 - 4y, x = 2st, y = s^2t calculate ∂f/∂s
+∂f/∂x = 2x
+∂f/∂y = -4
+in terms of s and t
+∂f/∂x = 2(2st) = 4st
+∂f/∂y = -4
+derivatives of x and y with resepct to s
+∂x/∂s = 2t
+∂y/∂s = 2st
+substituting
+∂f/∂t = ∂f/∂x * ∂x/∂s + ∂f/∂y * ∂y/∂s
+= (4st)(2t) + (-4)(2st)
+= 8st^2 - 8st
+= 8st(t - 1)
+
+Gernalized multivariable chain rule
+f = f(x1,x2,...,xm)
+with m independent variables for each i {1,...,n} the variable
+xi = gi(t1,t2,...,tn)
+is a differentiable function of n independent variables then
+∂f/∂tj = ∂f/∂x1 * ∂x1/∂tj + ∂f/∂x2 * ∂x2/∂tj + ... + ∂f/∂x_m * x_m/∂tj
+for j {1,2,...,n}
+
+Derivative of a function of three indermediate variables and two independent variables
+f(x,y,z) = e^(xy + z), x = s + t, y = s - t, z = -s^2
+calculate ∂f/∂t (imagine the tree above with 2 more leaf nodes with a third main branch from the root, this is a well balanced tree)
+f(x,y,z) with two independent variables s and t
+x = x(s,t), y = y(s,t), z = z(s,t)
+∂f/∂t = ∂f/∂x * ∂x/∂t + ∂f/∂y * ∂y/∂t + ∂f/∂z * ∂z/∂t
+partial derivatives
+∂f/∂x = ye^(xy + z)
+∂f/∂y = xe^(xy + z)
+∂f/∂z = e^(xy + z)
+in terms of s and t
+∂f/∂x = (s - t)e^((s+t)(s-t)-s^2 = (s - t)e^(-t^2)
+∂f/∂y = (s + t)e^((s+t)(s-t)-s^2 = (s + t)e^(-t^2)
+∂f/∂z = e^((s+t)(s-t)-s^2 = e^(-t^2)
+derivatives of x,y, and z with respect to t
+∂x/∂t = 1
+∂y/∂t = -1
+∂z/∂t = 0
+substituting all derivatives into the mutlivariable chain rule
+∂f/∂t = (s - t)e^(-t^2) * 1 + (s + t)e^(-t^2) * (-1) + e^(-t^2) * 0
+= (s - t - s - t)e^(-t^2)
+= -2te^(-t^2)
+
+example:
+f(x,y,z) = x^2 + 2xy - 3z^2, x = st, y = s + 3t, z = 2s - t
+given: ∂f/∂t = 2(s^2t + s^2 + c1st + c2s + c3t)
+find the value of: c1 + c2 + c3
+partial derivatives
+∂f/∂x = 2x + 2y
+∂f/∂y = 2x
+∂f/∂z = -6z
+in terms of s and t
+∂f/∂x = 2st + 2(s + 3t) = 2st + 2s + 6t
+∂f/∂y = 2st
+∂f/∂z = -6(2s - t) = 6t - 12s
+derivatives of x,y, and z with respect to t
+∂x/∂t = s
+∂y/∂t = 3
+∂z/∂t = -1
+substituting all derivatives into the mutlivariable chain rule
+∂f/∂t = (2st + 2s + 6t) * s + (2st) * 3 + (6t - 12s) * (-1)
+= 2s^2t + 2s^2 + 6st + 6st - 6t + 12s
+= 2s^2t + 2s^2 + 12st + 12s - 6t
+= 2(s^2t + s^2 + 6st + 6s - 3t)
+c1 = c2 = 6, c3 = -3
+c1 + c2 + c3 = 6 + 6 - 3 = 9
+
+example:
+f(x,y,z) = 4x + 3y - 2z, x = 2s^2 - t, y = s + 3t^2, z = 4s^2 + t^2 calculate ∂f/∂s
+partial derivatives
+∂f/∂x = 4
+∂f/∂y = 3
+∂f/∂z = -2
+in terms of s and t
+∂f/∂x = 4
+∂f/∂y = 3
+∂f/∂z = -2
+derivatives of x, y, and z with respect to s
+∂x/∂s = 4s
+∂y/∂s = 1
+∂z/∂s = 8s
+substituting all derivatives into the mutlivariable chain rule
+∂f/∂s = (4)(4s) + (3)(1) + (-2)(8s)
+= 16s + 3 - 16s
+= 3
+
+
+
 
 
