@@ -2837,6 +2837,214 @@ r(2) = <2(2)^2, e^2, 2e^2>
 = <8, e^2, 2e^2>
 r(t) and r'(t) are parallel at (0,1,2) and (8,e^2,2e^2)
 
+===================================================
+
+The gradient of a multivariable function is analogous to the derivative of a single-variable function.
+
+For a function f(x,y) whose partial derivatives exist and are continuous at a point (x,y) the gradient vector is denoted ∇f(x,y) can be found by computing the vector of partial derivatives.
+∇f(x,y) = ∂f/∂xi + ∂f/∂yj
+
+Calculating the gradient of a function of two variables
+find ∇f(x,y) at (1,pi) given that f(x,y) = (x - y)cos(y)
+first partial derivatives
+f_x(x,y) = ∂/∂x((x - y)cos(y))
+= cos(y)
+f_y(x,y) = ∂/∂y((x - y)cos(y))
+= -cos(y) - (x - y)sin(y)
+∇f(x,y) = f_x(x,y)i + f_y(x,y)j
+= cos(y)i - (cos(y) + (x - y)sin(y))j
+to find the gradient at the specified point, we substitute (x,y) = (1,pi)
+∇f(1,pi) = f_x(1,pi)i + f_y(1,pi)j
+= cos(pi)i - (cos(pi) + (1 - pi)sin(pi))j
+= -i + j
+
+example:
+∇h(x,y) at (2,3) if h(x,y) = 4x^2 - 3xy + 2y^2 + y
+first partial derivatives
+h_x(x,y) = ∂/∂x(4x^2 - 3xy + 2y^2 + y)
+= 8x - 3y
+h_y(x,y) = ∂/∂y(4x^2 - 3xy + 2y^2 + y)
+= -3x + 4y + 1
+∇h(2,3) = (8(2) - 3(3))i + (-3(2) + 4(3) + 1)j
+= (16 - 9)i + (-6 + 12 + 1)j
+= 7i + 7j
+
+example:
+f(x,y) = (3x + 2y)/(x - y) find ∇f(x,y)
+partial derivatives
+f_x(x,y) = ∂/∂x((3x + 2y)/(x - y))
+= 3 * (x - y) - (3x + 2y) * 1
+= -5y/(x - y)^2
+f_y(x,y) = ∂/∂y((3x + 2y)/(x - y))
+= 2(x - y) - (3x + 2y) * -1
+= 2x - 2y + 3x + 2y
+= 5x/(x - y)^2
+∇f(x,y) = f_x(x,y)i + f_y(x,y)j
+= (-5y/(x - y)^2)i + (5x/(x - y)^2)j
+= -5/(x - y)^2(yi - xj)
+
+The gradient of a function of more than two variables
+For a function of three variables f(x,y,z), the gradient of f is given by the vector:
+∇f(x,y,z) = f_x(x,y,z)i + f_y(x,y,z)j + f_z(x,y,z)k
+For a function f(x1,x2,...,xn) of n variables, its gradient is usually given a column vector:
+∇f(x1,x2,...,xn) = [
+	fx1
+	fx2
+	 .
+	 .
+	 .
+	fxn
+]
+
+Calculating the gradient of a function of three variables
+∇g(x,y,z) at (2,-1,3) if g(x,y,z) = x^2 + xyz
+first derivatives!
+g_x(x,y,z) = ∂/∂x(x^2 + xyz)
+= 2x + yz
+g_y(x,y,z) = ∂/∂y(x^2 + xyz)
+= xz
+g_z(x,y,z) = ∂/∂z(x^2 + xyz)
+= xy
+∇g(x,y,z) = g_x(x,y,z)i + g_y(x,y,z)j + g_z(x,y,z)k
+= (2x + yz)i + (xz)j + (xy)k
+∇g(2,-1,3) = (2(2) + (-1)(3))i + 2(3)j + 2(-1)k
+= i + 6j - 2k
+
+example:
+f(x,y,z) = sqrt(xyz) find ∇f(x,y,z)
+derivatives
+f_x(x,y,z) = ∂/∂x(sqrt(xyz))
+= sqrt(xyz)/2x
+f_y(x,y,z) = ∂/∂y(sqrt(xyz))
+= sqrt(xyz)/2y
+f_z(x,y,z) = ∂/∂z(sqrt(xyz))
+= sqrt(xyz)/2z
+∇f(x,y,z) = (sqrt(xyz)/2x)i + (sqrt(xyz)/2y)j + (sqrt(xyz)/2z)k
+= sqrt(xyz)/2((1/x)i + (1/y)j + (1/z)k)
+
+example:
+∇g(x,y,z) given g(x,y,z) = sqrt(x + 2) + ln(sqrt(yz))
+g_x(x,y,z) = ∂/∂x(sqrt(x + 2) + ln(sqrt(yz)))
+= 1/2sqrt(x + 2)
+g_y(x,y,z) = ∂/∂y(sqrt(x + 2) + ln(sqrt(yz)))
+= 1/2y
+g_z(x,y,z) = ∂/∂z(sqrt(x + 2) + ln(sqrt(yz)))
+= 1/2z
+∇g(x,y,z) = (1/2sqrt(x + 2))i + (1/2y)j + (1/2z)k
+
+finding points where a gradient vanishes
+f(x,y) = (y - 4)ln(x - 2) find points (x,y) where ∇f(x,y) = 0
+∂f/∂x = ∂/∂x((y - 4)ln(x - 2))
+= (y - 4)/(x - 2)
+∂f/∂y = ∂/∂y((y - 4)ln(x - 2))
+= ln(x - 2)
+∇f(x,y) = (y - 4)/(x - 2)i + ln(x - 2)j
+solve ∇f(x,y) = 0
+(y - 4)/(x - 2)i + ln(x - 2)j = 0i + 0j
+by equating the coefficients of i and j we obtain
+{
+	(y - 4)/(x - 2) = 0
+	ln(x - 2) = 0
+}
+from first equation, we get y - 4 = 0 which means y = 4 from the second equation means that x = 3
+∇f(x,y) = 0 at (3,4)
+
+example:
+h(x,y,z) = xy + xy^2 + z^3, find points (x,y,z) where ∇h(x,y,z) = 0
+∂h/∂x = ∂/∂x(xy + xy^2 + z^3)
+= y + y^2 = y(1 + y)
+∂h/∂y = ∂/∂y(xy + xy^2 + z^3)
+= x + 2yx
+∂h/∂z = ∂/∂z(xy + xy^2 + z^3)
+= 3z^2
+∇h(x,y,z) = y(1 + y)i + (x + 2yx)j + (3z^2)k
+{
+	y(1 + y) = 0
+	x + 2yx = 0
+	3z^2 = 0
+}
+from first equation y = -1 or 0 substituting
+x + 2(-1)x = 0
+x = 0
+x + 2(0)x = 0
+x = 0
+third the only way to get 0 is if z is 0
+∇h(x,y,z) = 0 at two points: (0,0,0) and (0,-1,0)
+
+example:
+f(x,y) = 3x^2 + y^2 - x, find the points (x,y) where ∇f(x,y) = 0
+∂f/∂x = ∂/∂x(3x^2 + y^2 - x)
+= 6x - 1
+∂f/∂y = ∂/∂y(3x^2 + y^2 - x)
+= 2y
+∇f(x,y) = (6x - 1)i + (2y)j
+{
+	6x - 1 = 0
+	2y = 0
+}
+from first equation x = 1/6, second can only be y = 0
+∇f(x,y) = 0 at (1/6, 0)
+
+The gradient of a function is made up of partial derivatives, we can expect it to have properties that are similar to partial derivatives.
+
+f and g are function whose first-order partial derivatives exist and are continuous on some open domain, and that a, b, and x are real constants.
+The gradient has the following properties:
+Constant rule: ∇c = 0
+Linearity: ∇(af + bg) = a∇f + b∇g
+product rule: ∇(fg) = g∇f + f∇g
+quotient rule: ∇(f/g) = (g∇f - f∇g)/g^2
+
+Calculating the gradient using the properties of the gradient
+find the gradient of the product f(x,y)g(x,y) given
+f(x,y) = xy,       ∇f(x,y) = yi + xj
+g(x,y) = sqrt(xy), ∇g(x,y) = (sqrt(xy)/2x)i + (sqrt(xy)/2y)j
+The gradient of the product of two function f(x,y) and g(x,y)
+∇[fg] = g∇f + f∇g
+using the product rule
+∇[f(x,y)g(x,y)] = g(x,y)∇f(x,y) + f(x,y)∇g(x,y)
+= sqrt(xy)(yi + xj) + xy((sqrt(xy)/2x)i + (sqrt(xy)/2y)j)
+= sqrt(xy)(yi + xj) + sqrt(xy)/2(yi + xj)
+sqrt(xy) + sqrt(xy)/2 = 2sqrt(xy)/2 + sqrt(xy)/2 = 3sqrt(xy)/2
+= 3sqrt(xy)/2(yi + xj)
+
+example:
+what is the gradient of the product f(x,y)g(x,y)
+f(x,y) = ln(x)ln(y), g(x,y) = x^2y^2
+∂f/∂x = ∂/∂x(ln(x)ln(y))
+= ln(y)/x
+∂f/∂y = ∂/∂y(ln(x)ln(y))
+= ln(x)/y
+∂g/∂x = ∂/∂x(x^2y^2)
+= 2xy^2
+∂g/∂y = ∂/∂y(x^2y^2)
+= 2x^2y
+∇f(x,y) = (ln(y)/x)i + (ln(x)/y)j
+∇g(x,y) = (2xy^2)i + (2x^2y)j
+∇[f(x,y)g(x,y)] = g(x,y)∇f(x,y) + f(x,y)∇g(x,y)
+= (x^2y^2)((ln(y)/x)i + (ln(x)/y)j) + (ln(x)ln(y))((2xy^2)i + (2yx^2)j)
+= (2xy^2ln(x)ln(y))i + (2yx^2ln(x)ln(y))j + (xy^2ln(y))i + (x^2yln(x))j
+= (2xy^2ln(x)ln(y) + xy^2ln(y))i + (2yx^2ln(x)ln(y) + x^2yln(x))j
+= xy^2ln(y)(2ln(x) + 1)i + x^2yln(x)(2ln(y) + 1)j
+
+example:
+find the gradient of the product g(x,y)h(x,y) given:
+g(x,y) = 3x^2 - 4y, ∇g(x,y) = (6x)i - (4)j
+h(x,y) = 2x^2y^2,   ∇h(x,y) = (4xy^2)i + (4x^2y)j
+∇[g(x,y)h(x,y)] h(x,y)∇g(x,y) + g(x,y)∇h(x,y)
+(2x^2y^2)(6x)i - (4)j) + (3x^2 - 4y)((4xy^2)i + (4x^2y)j)
+(2x^2y^2 * 6xi - 2x^2y^2 * 4j)
+= 12x^3y^2i - 8x^2y^2j
+(3x^2 - 4y) * 4xy^2i + (3x^2 - 4y) * 4x^2y
+= (12x^3y^2 - 16xy^3)i + (12x^4y - 16x^2y^2)j
+(12x^3y^2 + 12x^3y^2 - 16xy^3)i + (-8x^2y^2 + 12x^4y - 16x^2y^2)j
+= (24x^3y^2 - 16xy^3)i + (12x^4y - 24x^2y^2)j
+
+For a multivariable function, existence of the gradient implies continuity. More precisely, given a function f(x,y) and a point a, if ∇f(a) exists, then f is continuous at x = a
+
+The gradient ∇f(a) only exits if the partial derivatives ∂f/∂x and ∂f/∂y both exist and are continuous at x = a
+if ∂f/∂x and ∂f/∂y both exist and are continuous at x = a then f is continuous at x = a
+The continuity of the partial derivatives is absolutely crucial in order to imply continuity. The existence of the partial derivatives alone is not enough to imply that the function is continuous at a point.
+
 
 
 
