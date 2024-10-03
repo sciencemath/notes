@@ -3796,3 +3796,199 @@ T^-1 : [x, y] -> [2xy, y/x]
 = 4v
 ∂(x,y)/∂(u,v) = (∂(x,y)/∂(u,v))^-1
 = 1/4v
+
+===================================================
+
+Similar to transformations in the plane we can also consider transformations of three-dimensional regions
+[x, y, z] = T([u, v, w]) = [
+	usin(v)cos(w)
+	usin(v)sin(w)
+	  ucos(v)
+]
+maps a rectangualr prism in cartesian uvw-space onto one-eighth of a sphere in cartesian xyz-space
+if a transforation
+T([u, v, w]) = [x(u, v, w), y(u, v, w), z(u, v, w)]
+is a C1 transformation meaning that it and its first derivatives are continuous then the jacobian determinant of T is
+∂(x,y,z)/∂(u,v,w) = |∂x/∂u ∂x/∂v ∂x/∂w|
+					|∂y/∂u ∂y/∂v ∂y/∂w|
+					|∂z/∂u ∂z/∂v ∂z/∂w|
+To compute the jacobian determinant of our transformation we first calculate the required partial derivatives
+∂x/∂u = sin(v)cos(w), ∂x/∂v = ucos(v)cos(w), ∂x/∂w = -usin(v)sin(w)
+∂y/∂u = sin(v)sin(w), ∂y/∂v = ucos(v)sin(w), ∂y/∂w = usin(v)cos(w)
+∂z/∂u = cos(v), ∂z/∂v = -usin(v), ∂z/∂w = 0
+∂(x,y,z)/∂(u,v,w) = |sin(v)cos(w) ucos(v)cos(w) -usin(v)sin(w)|
+					|sin(v)sin(w) ucos(v)sin(w)  usin(v)cos(w)|
+					|      cos(v)      -usin(v)              0|
+cos(v)|ucos(v)cos(w) -usin(v)sin(w)|
+      |ucos(v)sin(w)  usin(v)cos(w)|
+      		|sin(v)cos(w) -usin(v)sin(w)|
++ -usin(v)	|sin(v)sin(w)  usin(v)cos(w)|
+cos(v) * u^2cos(v)sin(v) * (cos^2(w) + sin^2(w)) + usin(v) * usin^2(v) * (cos^2(w) + sin^2(w))
+= u^2cos^2(v)sin(v) + u^2sin^2(v)sin(v)
+= u^2sin(v) * (cos^2(v) + sin^2(v))
+= u^2sin(v)
+
+The jacobian determinant of T evaluated at (u0,v0,w0) describes the following key features between our tiny rectangular prism
+The volume scale factor of T
+suppose the length, width, and height of our rectangular prism are δu, δv, and δw so its volume is
+δV = δuδvδw
+the approximate parallelpiped in xyz-space has a volume equal to
+|J(u0,v0,w0)| ⋅ δV
+J(u0,v0,w0) > 0 the transformation is locally orientation-preserving
+J(u0,v0,w0) < 0 the transformation is locally orientation-reversing
+J(u0,v0,w0) != 0 the transformation is locally invertible
+J(u0,v0,w0) = 0 the transformation is locally non-invertible, geometrically this means the transformation maps our tiny rectangular prism (three-dimensional region) onto a two-dimensional region (a parallelogram), a one dimensional region (a line segment) or a zero-dimensional region (a point)
+
+Find the Jacobian determinant of the transformation T that maps the cartesian uvw-space onto the cartesian xyz-space by the equations:
+x = 2u - v, y = u + 3v + w, z = u + 2v - w
+∂x/∂u = 2, ∂x/∂v = -1, ∂x/∂w = 0
+∂y/∂u = 1, ∂y/∂v = 3, ∂y/∂w = 1
+∂z/∂u = 1, ∂z/∂v = 2, ∂z/∂w = -1
+2|3  1| - (-1)|1  1|
+ |2 -1|       |1 -1|
+2(-3 - 2) + (-1 - 1)
+= -10 - 2
+= -12
+
+example:
+find the jacobian determinant of the transformation T
+T : [u, v, w] -> [4v, 3u^2 + 2cos(vw), vw]
+∂x/∂u = 0, ∂x/∂v = 4, ∂x/∂w = 0
+∂y/∂u = 6u, ∂y/∂v = -2wsin(vw), ∂y/∂w = -2vsin(vw)
+∂z/∂u = 0, ∂z/∂v = w, ∂z/∂w = v
+4|6u -2vsin(vw)|
+ |0     v     |
+4(-1)(6u * v) - 4(-2vsin(vw) * 0)
+= -24uv
+
+example:
+find jacobian determinant of the transformation T that maps the uvw-space into the xyz-space by means of equations:
+x = ucosθ + vsin(θ), y = vcos(θ) - usin(θ), z = w
+θ is a fixed constant
+∂x/∂u = cos(θ), ∂x/∂v = sin(θ), ∂x/∂w = 0
+∂y/∂u = -sin(θ), ∂y/∂v = cos(θ), ∂y/∂w = 0
+∂z/∂u = 0, ∂z/∂v = 0, ∂z/∂w = 1
+cos(θ)|cos(θ) 0|         |-sin(θ) 0|
+	  |0 	  1| - sin(θ)|0       1|
+= cos(θ)cos(θ) - sin(θ)(-sin(θ))
+= cos^2(θ) + sin^2(θ)
+= 1
+(answer takes the determinant at ∂z/∂w = 1, which is what I should've done but this gives same results)
+
+The critical points of a transformation
+∂(x,y,z)/∂(u,v,w) = 0
+the transformation T is locally non-invertible at the critical points, provided that T is invertivle the connection between the jacobians of T and T^-1 is:
+∂(u,v,w)/∂(x,y,z) = (∂(x,y,z)/∂(u,v,w))^-1
+
+example:
+find the locations of all the critical points of the transformation T where T is defined as
+T : [u, v, w] -> [w - u^3, 2uv, u^2 + v]
+x(u,v,w) = w - u^3, y(u,v,w) = 2uv, z(u,v,w) = u^2 + v
+∂x/∂u = -3u^2, ∂x/∂v = 0, ∂x/∂w = 1
+∂y/∂u = 2v, ∂y/∂v = 2u, ∂y/∂w = 0
+∂z/∂u = 2u, ∂z/∂v = 1, ∂z/∂w = 0
+∂(x,y,z)/∂(u,v,w) = |-3u^2 0 1|
+					|2v  2u  0|
+					|2u   1  0|
+= -3u^2|2u 0|    |2v 2u|
+	   |1  0| + 1|2u  1|
+= -3u^2(0 - 0) + 1(2v - 4u^2)
+= 2(v - 2u^2)
+∂(x,y,z)/∂(u,v,w) = 0
+2(v - 2u^2) = 0
+v - 2u^2 = 0
+defines the parabolic cylinder v = 2u^2
+
+example:
+find all critical points
+T : [u, v, w] -> [u^2 - v, u^2 + v, e^w]
+∂x/∂u = 2u, ∂x/∂v = -1, ∂x/∂w = 0
+∂y/∂u = 2u, ∂y/∂v = 1, ∂y/∂w = 0
+∂z/∂u = 0, ∂z/∂v = 0, ∂z/∂w = e^w
+e^w|2u -1|
+   |2u  1|
+= e^w(2u * 1) - e^w(-1 * 2u)
+= 2ue^w + 2ue^w
+= 4ue^w
+4ue^w = 0
+u = 0
+defines the plane u = 0 (the critical points lie on the vw-plane)
+
+example:
+find all critical points
+T : [u, v, w] -> [u^2 - w^2, we^u, u - v]
+∂x/∂u = 2u, ∂x/∂v = 0, ∂x/∂w = -2w
+∂y/∂u = we^u, ∂y/∂v = 0, ∂y/∂w = e^u
+∂z/∂u = 1, ∂z/∂v = -1, ∂z/∂w = 0
+2u(0 * 0) - 2u(e^u * -1)  - 2w(we^u * -1)
+2ue^u + 2w^2e^u
+= 2e^u(u + w^2)
+u + w^2 = 0
+u = -w^2
+defines the parabolic cylinder u = -w^2
+
+finding the jacobian of an inverse transformation
+T : (u,v) -> (x(u,v,w), y(u,v,w), z(u,v,w)) the inverse transformation T^-1(x,y,z) -> (u(x,y,z), v(x,y,z), w(x,y,z))
+T^-1 : [x, y, z] -> [x^2, xy, yz]
+assume that x > 0, y != 0
+we're only given T^-1 so we compute the jacobian determinant of T as follows:
+first we compute ∂(u,v,w)/∂(x,y,z), jacobian determinant of T^-1
+then compujte the jacobian determinant T:
+∂(x,y,z)/∂(u,v,w) = (∂(u,v,w)/∂(x,y,z))^-1
+u(x,y,z) = x^2, v(x,y,z) = xy, w(x,y,z) = yz
+∂u/∂x = 2x, ∂u/∂y = 0, ∂u/∂z = 0
+∂v/∂x = y, ∂v/∂y = x, ∂v/∂z = 0
+∂w/∂x = 0, ∂w/∂y = z, ∂w/∂z = y
+= |2x 0 0|
+  |y  x 0|
+  |0  z y|
+= 2x|x 0|
+    |z y|
+= 2x(xy - 0)
+= 2x^2y
+in terms of u,v, and w
+2x^2y = 2 * x * (xy)
+= 2 * sqrt(u) * v
+= 2vsqrt(u)
+∂(x,y,z)/∂(u,v,w) = (∂(u,v,w)/∂(x,y,z))^-1
+= 1/2vsqrt(u)
+
+example:
+find the jacobian determinant of the transformation
+T : (u,v,w) -> (x(u,v,w), y(u,v,w), z(u,v,w)) given:
+u = 2x + y, v = -x + 3y - 2z, w = 3y + 4z
+∂u/∂x = 2, ∂u/∂y = 1, ∂u/∂z = 0
+∂v/∂x = -1, ∂v/∂y = 3, ∂v/∂z = -2
+∂w/∂x = 0, ∂w/∂y = 3, ∂w/∂z = 4
+2|3 -2|    |-1 -2|
+ |3  4| - 1| 0  4|
+2(12 + 6) - 1(-4 - 0)
+= 40
+reciprocal
+= 1/40
+
+example:
+T : (u,v,w) -> (x(u,v,w), y(u,v,w), z(u,v,w))
+the inverse transformation 
+T^-1 : (x,y,z) -> (u(x,y,z), v(x,y,z), w(x,y,z))
+T^-1 : [x, y, z] -> [1/x, sqrt(y) + z, y^2]
+find the jacobian determinant of T
+assume that x != 0 and y > 0
+∂u/∂x = -1/x^2, ∂u/∂y = 0, ∂u/∂z = 0
+∂v/∂x = 0, ∂v/∂y = 1/2sqrt(y), ∂v/∂z = 1
+∂w/∂x = 0, ∂w/∂y = 2y, ∂w/∂z = 0
+-1/x^2|1/2sqrt(y) 0|
+	  |2y         0|
+= 2y/x^2
+in terms of u, v, and w
+2y/x^2 = (1/x)^2 * 2sqrt(y^2)
+(
+NOTE:
+  w = y^2, y = sqrt(w), 
+  u = (1/x) = (1/x)^2 = 1/u^2 
+  2sqrt(w)/1/u^2 = 2 * u^2 * sqrt(w) = 2u^2sqrt(w)
+)
+= u^2 * 2sqrt(w)
+= 2u^2sqrt(w)
+take the reciprocal:
+= 1/2u^2sqrt(w)
