@@ -3684,3 +3684,115 @@ v < 1/2(u)
 v = 1/2(u)
 defines a straight line, and the coordinates of (1, -1) satisfy the inequality.
 (selected the graph with a linear passing through the origin shaded area underneath)
+
+===================================================
+
+inverse function theorem for single-variable functions:
+If f : U -> R is continuously differentiable on an open set U ⊆ R, f(a) = b and f'(a) != 0 for a ∈ U
+f is invertible in some neighborhood of a
+f^-1 the inverse of f is continuously differentiable in a neighborhood of b
+the derivative of f^-1 is given:
+(f^-1)'(b) = 1/f'(a) = 1/f'(f^-1(b))
+
+Critical Points of Transformations
+T : [u, v] -> [x(u, v), y(u, v)]
+the points in the (u,v) plane where T is locally non-invertible are known as critical points.
+T is locally non-invertiable when the Jacobian determinant is zero, the critical points of T are the solutions to the equation
+∂(x,y)/∂(u,v) = 0
+lets compute the critical points of the following transformation
+T : [u, v] -> [2u^2 - 3v^2, v - u]
+fist partial derivatives
+∂x/∂u = 4u, ∂x/∂v = -6v
+∂y/∂u = -1, ∂y/∂v = 1
+Jacobian determinant is
+|4u -6v|
+|-1   1|
+= 4u * 1 - (-6u) * (-1)
+= 4u - 6v
+cirtical points when Jacobian equals zero.
+4u - 6v = 0
+2u - 3v = 0
+
+example:
+find the locations of all the critical points of the transformation T:
+T : [u, v] -> [u^2 - v^2, u + v]
+∂x/∂u = 2u, ∂x/∂v = -2v
+∂y/∂u = 1, ∂y/∂v = 1
+= |2u -2v|
+  |1    1|
+= 2u * 1 - (-2v) * 1
+= 2(u + v)
+∂(x,y)/∂(u,v) = 0
+2(u + v) = 0
+u = -v
+the critical points T consist of those points that lie on the line u = -v in the uv-plane
+
+example:
+find the locations of all critical points of the transformation T
+T : [u, v] -> [u^2 + v^2, uv]
+∂x/∂u = 2u, ∂x/∂v = 2v
+∂y/∂u = v, ∂y/∂v = u
+2u * u - 2v * v
+2u^2 - 2v^2 = 0
+v^2 = u^2
+defines a pair of intersecting lines v = u and v = -u in the uv-plane
+
+example:
+find the locations of all the critical points of T
+T : [u, v] -> [uv, u + v]
+∂x/∂u = v, ∂x/∂v = u
+∂y/∂u = 1, ∂y/∂v = 1
+v - u = 0
+v = u
+defines a line in the uv-plane
+
+The Inverse function theorem for transformations
+theorem:
+Let T : U -> R^2 be a C1 transformation on an open set U ⊆ R^2 where
+T : [u, v] -> [x(u, v), y(u, v)], T([u0, v0]) = [x0, y0]
+Suppose that (u0, v0) is not a critical point of T then
+T is locally invertible at (u0, v0)
+T^-1 the inverse of T is a C1 function in a neighborhood of (x0,y0)
+The Jacobian determinant of T^-1 denoted ∂(x,y)/∂(u,v) is given byL
+∂(x,y)/∂(u,v) = (∂(x,y)/∂(u,v))^-1
+
+Jacobian determinants of inverse transformations
+All non-critical points of the transformation
+T : (u, v) -> (x(u, v), y(u, v)). The inverse transformation T^-1(x,y) -> (u(x,y), v(x,y)) is given by:
+T^-1 : [x, y] -> [e^(x+y), e^(x-y)]
+find the jacobian determinant of T in terms of u and v
+first partial derivatives
+∂x/∂u = e^(x+y), ∂x/∂v = e^(x+y)
+∂y/∂u = e^(x-y), ∂y/∂v = -e^(x-y)
+|e^(x+y)  e^(x+y)|
+|e^(x-y) -e^(x-y)|
+e^(x+y) * (-e^(x-y)) - e^(x+y) * e^(x-y)
+= -e^(x+y) * e^(x-y) - e^(x+y) * e^(x-y)
+= -2 * e^(x+y) * e^(x-y)
+= -2uv
+∂(x,y)/∂(u,v) = (∂(x,y)/∂(u,v))^-1
+= -1/2uv
+
+example:
+T : (u, v) -> (x(u,v), y(u,v)) the inverse transformation T^-1(x,y) -> (u(x,y), v(x,y)) is given by
+T^-1 : [x, y] -> [2x + 3y, 2x + y]
+∂u/∂x = 2, ∂u/∂y = 3
+∂v/∂x = 2, ∂v/∂y = 1
+2 * 1 - 3 * 2
+2 - 6 = -4
+∂(x,y)/∂(u,v) = (∂(x,y)/∂(u,v))^-1
+= -1/4
+
+example:
+T : (u, v) -> (x(u,v), y(u,v)) the inverse transformation
+T^-1(x,y) -> (u(x,y), v(x,y)) is given by
+T^-1 : [x, y] -> [2xy, y/x]
+∂u/∂x = 2y, ∂u/∂y = 2x
+∂v/∂x = -y/x^2, ∂v/∂y = 1/x
+2y * 1/x - 2x * (-y/x^2)
+= 2y/x + 2y/x
+= 4y/x
+= 4 * y/x
+= 4v
+∂(x,y)/∂(u,v) = (∂(x,y)/∂(u,v))^-1
+= 1/4v
