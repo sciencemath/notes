@@ -3992,3 +3992,245 @@ NOTE:
 = 2u^2sqrt(w)
 take the reciprocal:
 = 1/2u^2sqrt(w)
+
+===================================================
+
+f : R -> R is differentiable at x = a if there exists a number f'(a) the derivative of f at x = a such that
+f'(a) = lim_x->a (f(x) - f(a))/x - a
+we can re-write this definition using the algebra of limits
+Since the left-hand side is a constant, by the constant rule for limits
+lim_x->a f'(a) = lim_x->a (f(x) - f(a))/x - a
+by the product rule for limits
+lim_x->a f'(a)(x - a) = lim_x->a f(x) - f(a)
+final equation
+f(x) - f(a) -> f'(a) * (x - a)
+= Δf -> f'(a) * Δx
+as x -> a
+In a neighborhood of x = a the change in the value of function Δf is approximately proportional to the change in the value of the argument Δx. The coefficient of the proportionality is the derivative f'(a)
+
+Defining the total derivative
+suppose that a transformation (or function) f : R^n -> R^m is defined by
+f : [x1,x2...,xn] -> [f1(x1,x2...,xn),f2(x1,x2...,xn)...fm(x1,x2...,xn)]
+where f1,f2,...fm are scalar function of n variables
+We say that f is differentiable at x = a if there exists an mxn matrix f'(x) called the total derivative of f at x = a such that
+f(x) - f(a) -> f'(a) * (x - a)
+as x -> a
+if f is differentiable at x then the total derivative of f is given by the matrix
+f'(x) = [
+	∂f1/∂x1 ∂f1/∂x2 ... ∂f1/∂xn
+	∂f2/∂x1 ∂f2/∂x2 ... ∂f2/∂xn
+	   .       .     .     .
+	   .       .     .     .
+	   .       .     .     .
+	∂fm/∂x1 ∂fm/∂x2 ... ∂fm/∂xn
+]
+We refer f'(x) simply as the derivative of f(x)
+For scalar-valued functions of the form f : R^n -> R the total derivative is the transpose of the gradient vector:
+f'(a) = (∇f)^T(a)
+For vector-valued functions f : R -> R^n of a single parameter t, the total derivative at t = a is the column vector containing the partial derivatives of the components of f
+f'(a) = [
+	∂f1/∂t
+	∂f2/∂t
+	   .
+	   .
+	   .
+	∂fn/∂t
+]_(t = a)
+functions of the form f : R^2 -> R^2 the determinant of this matrix is the corresponding Jacobian det(f'(a)) = ∂(f1,f2)/∂(x1,x2)
+same with functions of the form f : R^3 -> R^3
+det(f'(a)) = ∂(f1,f2,f3)/∂(x1,x2,x3)
+
+example:
+finding the derivative of a scalar function
+f(x) = x^2y, x = [x, y]
+calculate f' at a = [1, -1]
+in our case: f'(x) = [∂f/∂x, ∂f/∂y]
+first partial derivatives:
+∂f/∂x = ∂/∂x(x^2y) = 2xy, ∂f/∂y = ∂/∂y(x^2y) = x^2
+f'(x) = [2xy x^2]
+f' at a = [1, -1]
+f'(a) = [2(1)(-1) 1^2] = [-2 1]
+
+example:
+f(x) = x^2 + y^2, x = [x, y]
+calculate f'(x)
+f'(x) = [∂f/∂x ∂f/∂y]
+∂f/∂x = ∂/∂x(x^2 + y^2) = 2x, ∂f/∂y = ∂/∂y(x^2 + y^2) = 2y
+f'(x) = [2x 2y]
+
+example:
+f(x) = x^2 + 2y, x = [x, y]
+f' at a = [0, 1]
+∂f/∂x = ∂/∂x(x^2 - 2y) = 2x, ∂f/∂y = ∂/∂y(x^2 - 2y) = 2
+f'(x) = [2x  -2]
+= [2(0) -2] = [0 -2]
+
+finding the derivative of a vector function
+f(x) = [xy, y^2, yln(x)]
+x = [x, y]
+the total derivative f' is given by
+f'(x) = [
+	[ ]  x
+	[ ]  2y
+	y/x  [ ]
+]
+what are the missing entries?
+in our case: f'(x) = [
+	∂f1/∂x ∂f1/∂y
+	∂f2/∂x ∂f2/∂y
+	∂f3/∂x ∂f3/∂y
+]
+first derivatives
+∂f1/∂x = ∂/∂x(xy) = y, ∂f1/∂y = ∂/∂y(xy) = x
+∂f2/∂x = ∂/∂x(y^2) = 0, ∂f2/∂y = ∂/∂y(y^2) = 2y
+∂f3/∂x = ∂/∂x(yln(x)) = y/x, ∂f3/∂y = ∂/∂y(yln(x)) = ln(x)
+f'(x) = [
+	y    x
+	0    2y
+   y/x  ln(x)
+]
+missing entries are y, 0, and ln(x)
+
+example:
+f(x) = [2xy, e^(xy)], x = [x, y]
+calculate f'(x)
+f'(x) = [
+	∂f1/∂x ∂f1/∂y
+	∂f2/∂x ∂f2/∂y
+]
+∂f1/∂x = ∂/∂x(2xy) = 2y, ∂f1/∂y = ∂/∂y(2xy) = 2x
+∂f2/∂x = ∂/∂x(e^(xy)) = ye^(xy), ∂f2/∂y = ∂/∂y(e^(xy)) = xe^(xy)
+f'(x) = [
+	   2y     2x
+	ye^(xy) xe^(xy)
+]
+
+example:
+transformation f : R^3 -> R^2 defined as
+f(x) = [ln(xyz), x^2yz], x = [x, y, z]
+total derivative f' is given by
+f'(x) = [
+	1/x  [ ] 1/z
+	[ ] x^2z [ ]
+]
+∂f1/∂x(ln(xyz)) = 1/x, ∂f1/∂y(ln(xyz)) = 1/y, ∂f1/∂z(ln(xyz)) = 1/z
+∂f2/∂x(x^2yz) = 2xyz, ∂f2/∂y(x^2yz) = x^2z, ∂f2/∂z(x^2yz) = x^2y
+f'(x) = [
+	 1/x  1/y  1/z
+	2xyz x^2z x^2y
+]
+missing values: 1/y, 2xyz, x^2y
+
+The tangent plane to the graph of a scalar function
+The equation of the tangent plane to a surface z = f(x,y) at (z0,y0,z0) where z0 = f(x0, y0) is given by:
+z - z0 = (x - x0) * ∂f/∂x(x0,y0) + (y - y0) * ∂f/∂y(x0,y0)
+lets express this equation in terms of the total derivative
+f'(x) = [∂f/∂x ∂f/∂y]
+let a = [x0, y0] we can re-write the equation of the tangent plane as a matrix equation:
+z - z0 = [∂f/∂x(x0,y0) ∂f/∂y(x0,y0)] * [x - x0, y - y0]
+z - f(x0,y0) = [∂f/∂x(x0,y0) ∂f/∂y(x0,y0)] * ([x, y] - [x0, y0])
+z - f(a) = [∂f/∂x(a) ∂f/∂y(a)] * (x - a)
+z - f(a) = f'(a)(x - a)
+The tangent plane of f : R^2 -> R at x = a in matrix form
+z - f(a) = f'(a)(x - a)
+
+finding the tangent plane to the graph of a scalar function in matrix form
+f(x) = x^3 + e^y, x = [x, y]
+if the tangent to f at a = [1,2] is given by:
+z - * = [*  *]([x, y] - [1, 2])
+find missing values *
+f'(x) = [∂f/∂x ∂f/∂y]
+∂/∂x(x^3 + e^y) = 3x^2, ∂/∂y(x^3 + e^y) = e^y
+f'(x) = [3x^2 e^y]
+x = a = [1, 2]
+f(a) = 1 + e^2, f'(a) = [3 e^2]
+the tangent to f at x = a
+z - f(a) = f'(a)(x - a)
+substituting
+z - (1 + e^2) = [3 e^2]([x, y] - [1, 2])
+
+example:
+f(x) = x^2 + y, x = [x, y]
+if the tangent to f at a = [1, -1] is given by
+z - * = [*  *]([x, y] - [1, -1])
+find the missing values, what is the sum?
+∂/∂x(x^2 + y) = 2x, ∂/∂y(x^2 + y) = 1
+f'(x) = [2x 1]
+x = a = [1, -1]
+f(a) = 1 + -1 = 0, f'(a) = [2, 1]
+z - f(a) = f'(a)(x - a)
+substituting
+z - (0) = [2, 1]([x, y] - [1, 2])
+sum = 3
+
+example:
+f(x) = e^x + y, x = [x, y]
+if tangent to f at a = [0, 1] is given by:
+z - * = [*  *]([x, y] - [0, 1])
+find the missing values, what is the sum?
+∂/∂x(e^x + y) = e^x, ∂/∂y(x^2 + y) = 1
+f'(x) = [e^x 1]
+x = a = [0, 1]
+f(a) = e^0 + 1 = 2, f'(a) = [e^0 1]
+z - f(a) = f'(a)(x - a)
+z - (2) = [1, 1]([x, y] - [1, 2])
+sum = 4
+
+Affine approximations of vector functions
+if f : R -> R is differentiable at x = a then for points close to x = a we have a linear approximation
+f(x) ~= f(a) + f'(a)(x - a)
+this approximation for f is affine, if a function is differentiable at a point x = a it is locally affine in a neighborhood of x = a
+
+finding an affine approximation of a vector function
+(this might be confusing "x2" is literally x sub 2, not x and 2, same goes for x1)
+f(x) = [x2sin(x1), sin(x2)], x = [x1, x2]
+f at a [pi, 0] is given by:
+f(x) ~= [*, 0] + [* 0, 0 *](x - [pi, 0])
+what are the missing values?
+f'(x) = [
+	∂f1/∂x1 ∂f1/∂x2
+	∂f2/∂x1 ∂f2/∂x2
+]
+∂f1/∂x1(x2sin(x1)) = x2cos(x1), ∂f1/∂x2(x2sin(x1)) = sin(x1)
+∂f2/∂x1(sin(x2)) = 0, ∂f2/∂x2(sin(x2)) = cos(x2)
+f'(x) = [
+	x2cos(x1) sin(x1)
+		0     cos(x2)
+]
+x = a = [pi, 0]
+f(a) = [0, 0], f'(a) = [0 0, 0 1] 
+
+example:
+f(x) = [2x1x2, e^(x1x2)], x = [x1, x2]
+f at a = [1, ln(2)] is given by:
+f(x) ~= [*, 2] + [2ln(2) *, * ln(2)](x - [1, ln(2)])
+∂f1/∂x1(2x1x2) = 2x2, ∂f1/∂x2(2x1x2) = 2x1
+∂f2/∂x1(e^(x1x2)) = x2e^(x1x2), ∂f2/∂x2(e^(x1x2)) = x1e^(x1x2)
+f'(x) = [
+	   2x2        2x1
+	x2e^(x1x2) x1e^(x1x2)
+]
+x = a = [1, ln(2)]
+f(a) = [2ln(2), 2] f'(a) = [2ln(2) 2, 2ln(2) ln(2)]
+f(x) ~= [2ln(2), 2] + [2ln(2) 2, 2ln(2) ln(2)](x - [1, ln(2)])
+sum of the missing values:
+2ln2 + 2ln2 + 2 = 4ln2 + 2
+
+example:
+f(x) = [sin(x1 - x2), 6x1 - 7x2], x = [x1, x2]
+linear approximation of f at a = [3, 2] is given by:
+f(x) ~= [sin1, *] + [*  *, 6 -7](x - [3, 2])
+what are the missing values and their sum
+∂f1/∂x1(sin(x1 - x2)) = cos(x1 - x2), ∂f1/∂x2(sin(x1 - x2)) = -cos(x1 - x2)
+∂f2/∂x1(6x1 - 7x2) = 6, ∂f2/∂x2(6x1 - 7x2) = -7
+f'(x) = [
+	cos(x1 - x2) -cos(x1 - x2)
+		6 				-7
+]
+x = a = [3, 2]
+f(a) = [sin(1), 6(3) - 7(2)] = [sin(1), 4]
+f(x) ~= [sin(1), 4] + [
+	cos(1) 	-cos(1)
+		6 	  -7
+](x - [3, 2])
+4 + cos(1) + (-cos(1)) = 4
