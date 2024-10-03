@@ -3461,3 +3461,226 @@ t = 1
 cos(2sqrt(1) - 4(1))(1/sqrt(1) - 4)
 (note cos(-x) = cos(x))
 = -3cos(2)
+
+===================================================
+
+The Jacobian
+nonlinear transformations of plane regions
+T : U -> R^2 be a transformation on an open set U ⊆ R^2
+T : [u, v] -> [x(u,v), y(u,v)]
+u = [u, v] vectors belonging to the input space (i.e. uv-plane)
+x = [x, y] vectors belonging to the output space (i.e. xy-plane)
+for example:
+[x, y] = T([u, v]) = [ucos(v), usin(v)]
+geometrically this transformation maps a rectangular region in the uv-plane to a circular sector in the xy-plane
+T takes points (or vectors) from the uv-plane as input and maps them to points (vectors) in teh xy-plane
+rectangular regions in the uv-plane are mapped to regions in the xy-plane that are not necessarliy parallelograms
+
+The Jocabian Determinant
+T : [u, v] -> [x(u,v), y(u,v)]
+T is a C1 transformation, means that x and y have continuous first-order partial derivatives on an open set U contained in R^2
+the jacobian determinant of T denoted ∂(x,y)/∂(u,v)
+∂(x,y)/∂(u,v) = |∂x/∂u ∂x/∂v|
+ 				|∂y/∂u ∂y/∂v| = ∂x/∂u * ∂y/∂v - ∂x/∂v * ∂y/∂u
+Jacobian determinant is sometimes simply known as the Jacobian
+[x, y] = T([u, v]) = [ucos(v), usin(v)]
+first partial derivatives
+∂x/∂u = cos(v), ∂x/∂v = -usin(v)
+∂y/∂u = sin(v), ∂y/∂v = ucos(v)
+Jacobian determinant is
+∂(x,y)/∂(u,v) = |cos(v) -usin(v)|
+				|sin(v)  ucos(v)|
+= cos(v) * (ucos(v)) - (-usin(v)) * sin(v)
+= ucos^2(v) + usin^2(v)
+= u(cos^2(v) + sin^2(v))
+= u
+
+example:
+find the jacbian determinant of the transformation T
+T : [u, v] -> [(u + v)^3, (u - v)^2]
+partial derivatives
+∂x/∂u = 3(u + v)^2, ∂x/∂v = 3(u + v)^2
+∂y/∂u = 2(u - v),   ∂y/∂v = -2(u - v)
+= |3(u + v)^2 3(u + v)^2|
+  |2(u - v)    -2(u - v)|
+= 3(u + v)^2 * (-2(u - v)) - 3(u + v)^2 * 2(u - v)
+= -6(u + v)^2(u - v) - 6(u + v)^2(u - v)
+= -12(u + v)^2(u - v)
+
+example:
+T : [u, v] -> [2ucos(v), 3usin(v)]
+∂x/∂u = 2cos(v), ∂x/∂v = -2usin(v)
+∂y/∂u = 3sin(v), ∂y/∂v = 3ucos(v)
+= 2cos(v) * 3ucos(v) - (-2usin(v)) * 3sin(v)
+= 6ucos^2(v) + 6usin^2(v)
+= 6u(cos^2(v) + sin^2(v))
+= 6u(1)
+= 6u
+
+example: 
+T : [u, v] -> [ln(2u + v), uv]
+∂x/∂u = 2/(2u + v), ∂x/∂v = 1/(2u + v)
+∂y/∂u = v, ∂y/∂v = u
+= 2/(2u + v) * u - 1/(2u + v) * v
+= 2u - v/(2u + v)
+
+Evaluating a Jacobian Determinant
+T : [u, v] -> [2vcos(u), vsin(u)]
+at point [u, v] = [0, -1]
+∂x/∂u = -2vsin(u), ∂x/∂v = 2cos(u)
+∂y/∂u = vcos(u), ∂y/∂v = sin(u)
+-2vsin(u) * sin(u) - 2cos(u) * vcos(u)
+= -2v(sin^2(u) + cos^2(u))
+= -2v
+[u, v] = [0, -1]
+∂(x,y)/∂(u,v)|_(0,-1) = -2(-1) = 2
+
+example:
+T : [u, v] -> [2ucos(v), 3usin(v)]
+at point [u, v] = [1, 2]
+∂x/∂u = 2cos(v), ∂x/∂v = -2usin(v)
+∂y/∂u = 3sin(v), ∂y/∂v = 3ucos(v)
+2cos(v) * 3ucos(v) - (-2usin(v)) * 3sin(v)
+= 6ucos^2(v) + 6usin^2(v)
+= 6u(cos^2(v) + sin^2(v))
+= 6u
+[u, v] = [1, 2]
+∂(x,y)/∂(u,v)|_(1,2) = 6(1) = 6
+
+example:
+T : [u, v] -> [e^(u+v), e^(u-v)]
+at point [u, v] = [0, -5]
+∂x/∂u = e^(u+v), ∂x/∂v = e^(u+v)
+∂y/∂u = e^(u-v), ∂y/∂v = -e^(u-v)
+e^(u+v) * -e^(u-v) - e^(u+v) * e^(u-v)
+= -e^(2u) - e^(2u)
+= -2e^(2u)
+[u, v] = [0, -5]
+∂(x,y)/∂(u,v)|_(0,5) = -2e^(2(0)) = -2
+
+To understand what the Jacobian describes, lets go back to affine transformations.
+Consider affine transformation T : R^2 -> R^2 defined by the matrix equation
+x = Tu + b
+u,b, and x are vectors from R^2 and T is a 2x2 matrix
+For affine transformation the determinant of T gives us:
+The area scale factor of the transformation:
+If a rectangle in the uv-plane has area A, its image in the xy-plane is a parallelogram of area |det(T)| ⋅ A
+(imagine a square transforming to a parallelogram)
+Whether the transformation is orientation-perserving or orientation-reversing
+if det(T) > 0 the transformation is orientation-perserving
+if det(T) < 0 the transformation is orientation-reversing
+Whether the transformation is invertible or non-invertible
+if det(T) != 0 the transformation is invertible (T^-1)
+if det(T) = 0, the transformation is non-invertible. For example a rectangle in the uv-plane collapses to either a line seegment or point in the xy-plane
+
+Affine transformation are special because these properties are global. They apply everywhere in the plane. If det(T) = 2 the image of every rectangle in the uv-plane is a parallelogram with double the area of its preimage
+
+The Jacobian determinant gives information about nonlinear transformations similar to that described by the detereminant properties of affine transformations.
+The critical difference is the jacobian describes local effects, not global ones.
+Suppose that T : U -> R^2 is a transformation where
+T : [u, v] = [x(u, v), y(u, v)]
+we assume x(u,v) and y(u,v) have continuous first-order partial derivatives on U.
+let J(u0,v0) denote the Jacobian determinant of T evaluated at (u0, v0)
+J(u0,v0) = ∂(x,y)/∂(u,v)|_(u0,v0)
+T's effect on a tiny rectangle in the uv-plane whose bottom-left corner is the point (u0,v0)
+The Jacobian determinant of T evaluated at (u0,v0) describes key features in our tiny rectangle and its approximate image
+The local area scale factor of T
+Suppose the length and width of our rectangle are δu and δv, so its area is δA = δuδv then it can be shown that the parallelogram in the xy-plane has an area equal to |J(u0,v0)| ⋅ δA
+similar to the formula of affine transformations replaced det(T) with the jacobian
+
+Whether the transformation is locally orientation-perserving or orientation-reversing
+if J(u0,v0) > 0, the transformation is (locally) orientation-perserving
+if J(u0,v0) < 0, the transformation is (locally) orientation-reversing
+if J(u0,v0) != 0, the transformation is (locally) invertible
+if J(u0,v0) = 0, the transformation is (locally) non-invertible
+Points (u0, v0) such that J(u0,v0) = 0 are called critical points
+for Jacobian it describes local properties if a transformation is orientation-preserving at one point, it does not mean its orientation-perserving everywhere.
+
+Identifying the local area scale factor of a transformation
+Consider a small rectangle Δ whose bottom-left corner is located at the point (-1,2) with sides parallel to the coordinate axes in the uv-plane and whose area is δA. Find an approximation for the area of the image of this rectangle under the action of the transformation T
+T : [u, v] -> [uv^3, u^2 + v^2]
+The absolute value of the jacobian determinant gives the local area scale factor of the transformation at that point:
+Area(T(Δ)) ~= |∂(x,y)/∂(u,v)| ⋅ Area(Δ) (or δA notation)
+∂(x,y)/∂(u,v) = |∂x/∂u ∂x/∂v|
+				|∂y/∂u ∂y/∂v|
+= |v^3 3uv^2|
+  |2u     2v|
+= v^3 * 2v - 3uv^2 * 2u
+= 2v^4 - 6u^2v^2
+∂(x,y)/∂(u,v)|_(-1,2) = (2v^4 - 6u^2v^2)|_u=-1,v=2
+= 2(2)^4 - 6(-1)^2(2)^2
+= 32 - 24
+= 8
+Area(T(Δ)) ~= |8| ⋅ δA
+= 8δA
+
+example:
+Small rectangle Δ whose bottom-left corner is located at the point (1,2) with sides parallel to the coordinate axes in the uv-plane and area is δA. Whats the best approximation for the area of the image of this rectangle under the action of the transformation T is given by:
+T : [u, v] -> [u^2 + v, 2u - v^3]
+= |2u    1|
+  |2 -3v^2|
+= 2u * (-3v^2) - 1 * 2
+= -6uv^2 - 2
+∂(x,y)/∂(u,v)|_(1,2) = (-6uv^2 - 2)|_u=1,v=2
+= (-6(2)^2 - 2) = -26
+Area(T(Δ)) ~= |-26| ⋅ δA
+= 26δA
+
+example:
+Small rectangle Δ whose bottom-left corner is located at the point (1,5) with sides parallel to the coordinate axes in the uv-plane and area is δA. Whats the best approximation for the area of the image of this rectangle under the action of the transformation T is given by:
+T : [u, v] -> [ln(uv), uv^2]
+= |1/u 1/v|
+  |v^2 2uv|
+= 1/u * 2uv - 1/v * v^2
+= 2v - v
+= v
+∂(x,y)/∂(u,v)|_(1,5) = v|_u=1,v=5
+= 5
+Area(T(Δ)) ~= |5| ⋅ δA
+= 5δA
+
+finding regions where a transformation is orientation-preserving or reversing
+Sketch the region in the uv-plane where the transformation T given by:
+T : [u, v] -> [ue^v, u^2 - v^2]
+transformation is locally orientation-reversing at the points where the jacobian determinant is negative:
+∂(x,y)/∂(u,v) < 0
+= |e^v ue^v|
+  |2u   -2v|
+= e^v * -2v - ue^v * 2u
+= -2e^v(u^2 + v)
+to find the required regions, we solve the inequality
+2e^v(u^2 + v) < 0
+u^2 + v > 0
+v > -u^2
+equation v = -u^2 defines a downward-opening parabola, and the coordinates of (1, 1) satisfy the inequality.
+
+example:
+T : [u, v] -> [u^2 - v, 4u - v^2]
+(locally) orientation-perserving
+∂(x,y)/∂(u,v) > 0
+= |2u -1|
+  |4 -2v|
+= 2u * -2v - (-1) * 4
+= -4uv + 4
+-4uv + 4 > 0
+-4uv > -4
+uv < 1
+gives the solution v < 1/u for u > 0 and v > 1/u for u < 0
+v = 1/u
+defines a hyperbola, and the coordinates of (1, -1) satisfy the inequality
+
+example:
+T : [u, v] -> [u^2 - 2v^2, u - v]
+locally orientation-reversing
+∂(x,y)/∂(u,v) < 0
+= |2u -4v|
+  |1   -1|
+2u * -1 - (-4v) * 1
+-2u + 4v < 0
+4v < 2u
+2v < u
+v < u/2
+v < 1/2(u)
+v = 1/2(u)
+defines a straight line, and the coordinates of (1, -1) satisfy the inequality.
+(selected the graph with a linear passing through the origin shaded area underneath)
