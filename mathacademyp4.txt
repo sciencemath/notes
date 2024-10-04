@@ -4975,3 +4975,91 @@ calculate
 (Σ^m_i=1)(xi + xi-1)Δxi
 = 2^2 - 0^2 = 4
 2(Σ^m_i=1)(xi + xi-1)Δxi ⋅ (Σ^n_j=1)Δyj = 1 * 4 * 2 = 8
+
+===================================================
+
+(NOTE: this section had a lot of graphs with visuals with simple arithmetic)
+to calculate the lower Riemann sum L with respect to the given partition, we compute the sum of the volumes of x amount of rectangular solids, one for each Rij
+the volume of thje rectangular solid corresponding to each subregion Rij is given by mij * Area(Rji)
+where mij denotes the min value of f on the dubregion Rij we pick the min value of f because we are finding the lower sum
+L = m11 * Area(R11) + m21 * Area(R21) + ... + mij * Area(Rij)
+
+Sometimes we write L(f, P) because the answer we get for the lower bound L depends on the function f and the partition P that we choose.
+
+Calculating a lower riemann sum for a strictly decreasing function
+Let R = [1,3] x [0,2] be a region in the xy-plane and let f(x,y) = 20 - x^2 - y^2 be a partition of R where
+(image a rectangle on cartesian plane going from x 1-3, y 0-2, split into 4 subregions)
+P1 = {1,2,3},  P2 = {0,1,2},  P = P1 x P2
+calculate the lower riemann sum L(f, P)
+L(f, P) = m11 * Area(R11) + m21 * Area(R21) + m12 * Area(R12) + m22 * Area(R22)
+where mij is the minimum value of f in each subregion Rij. We pick the minmum value of f because we're finding the lower sum.
+Area(Rij) = 1 for all 4 subregions, the formula for L(f,P)
+L(f,P) = m11 + m21 + m12 + m22
+f(x,y) = 20 - x^2 - y^2 decreases as x increases
+f(x,y) = 20 - x^2 - y^2 decreases as y increases
+The minimum value of f in each subregion is attained when we have the largest possible x and the largest possible y. This is the value at the top right corner of each subregion.
+calculating the value of f at each top right corner
+m11 = f(2, 1) = 15
+m21 = f(3, 1) = 10
+m12 = f(2, 2) = 12
+m22 = f(3, 2) = 7
+substituting the above values in our expression for L we get
+L(f, P) = 15 + 10 + 12 + 7 = 44
+
+example:
+R = [0,2] x [0,2] be a region in the xy-plane, and let f(x,y) = 5 - x - y, let P be a partition of R
+P1 = {0,1,2},  P2 = {0,1,2},  P = P1 x P2
+calculate the lower riemann sum L(f, P)
+m11 = f(1, 1) = 3
+m21 = f(1, 2) = 2
+m12 = f(2, 1) = 2
+m22 = f(2, 2) = 1
+L(f, P) = 3 + 2 + 2 + 1 = 8
+
+example:
+R = [0,3] x [0,2] be a region in the xy-plane, and let f(x,y) = 6 - x - y, let P be a partition of R
+P1 = {0,1,2,3},  P2 = {0,2},  P = P1 x P2
+calculate the lower riemann sum L(f, P)
+Area(Rij) = 2 for all 3 subregion, the formula for L(f,P) reduces to
+L(f,P) = 2m11 + 2m21 + 2m31
+f(1, 2) = 3
+f(2, 2) = 2
+f(3, 2) = 1
+L(f, P) = 2 * 3 + 2 * 2 + 2 * 1 = 12
+
+Calculating a lower riemann sum for a strictly increasing function
+R = [0,2] x [1,3] be a region in the xy-plane and let f(x,y) = x + 2y let P be a partition of R
+P1 = {0,1,2},  P2 = {1,2,3}
+Area(Rij) = 1 for all 4 subregions
+L(f, P) = m11  + m21 + m12 + m22
+f(x,y) = x + 2y increases as x increases
+f(x,y) = x + 2y increases as y increases
+the minimum value of f in each subregion is attained when we have the smallest possible x and the smallest possible y. This is the value at the bottom left corner of each subregion
+(NOTE: these x, y values are from bottom left corner of the region we start at 0 now, and don't go up to 3)
+m11 = f(0, 1) = 2
+m21 = f(1, 1) = 3
+m12 = f(0, 2) = 4
+m22 = f(1, 2) = 5
+L(f, P) = 2 + 3 + 4 + 5 = 14
+
+example:
+R = [1,3] x [1,3] be a region in the xy-plane and let f(x,y) = x + y + 1 let P be a partition of R
+P1 = {1,2,3},  P2 = {1,2,3},  P = P1 x P2
+calculating the lower riemann sum L(f, P)
+m11 = f(1, 1) = 3
+m21 = f(2, 1) = 4
+m12 = f(1, 2) = 4
+m22 = f(2, 2) = 5
+L(f, P) = 3 + 4 + 4 + 5 = 16
+
+example:
+R = [0,4] x [0,2] be a region in the xy-plane and let f(x,y) = 2x + 3y + 1 let P be a partition of R
+P1 = {0,2,4},  P2 = {0,1,2},  P = P1 x P2
+lower riemann sum
+m11 = f(0, 0) = 1
+m12 = f(0, 1) = 4
+m21 = f(2, 0) = 5
+m22 = f(2, 1) = 8
+Area(Rij) = 2 for all 4 subregions
+L(f,P) = 2m11 + 2m12 + 2m21 + 2m22
+L(f,P) = 2*1 + 2*5 + 2*4 + 2*8 = 36
