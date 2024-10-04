@@ -5063,3 +5063,97 @@ m22 = f(2, 1) = 8
 Area(Rij) = 2 for all 4 subregions
 L(f,P) = 2m11 + 2m12 + 2m21 + 2m22
 L(f,P) = 2*1 + 2*5 + 2*4 + 2*8 = 36
+
+===================================================
+
+Upper riemann sums
+this has the same formula as lower bound this time we use U instead of L
+R = [1,4] x [1,3]
+the partition of the x-interval [1,4] can be expressed as P1 = {1,2,3,4}
+the partition of the y-interval [1,3] can be expressed as P2 = {1,3}
+we can write the partition as P = P1 x P2
+U(f,P) for the upper Riemann sum of the funtion f with respect to P
+
+Calculating an upper riemann sum in the case of a strictly decreasing function
+R = [1,5] x [2,6] be a region in the xy-plane and f(x,y) = 65 - x^2 - y^2 let P be a partition of R
+P1 = {1,3,5},  P2 = {2,4,6},  P = P1 x P2
+U(f,P) = M11 * Area(R11) + M21 * Area(R21) + M12 * Area(R12) + M22 * Area(R22)
+where Mij is the maximum value of f in each subregion Rij. We pick maximum value of f because we're finding the upper sum
+Area(Rij) = 4 for all 4 regions
+U(f,P) = 4 * M11 + 4 * M21 + 4 * M12 + 4 * M22
+= 4(M11 + M21 + M12 + M22)
+f(x,y) = 65 - x^2 - y^2 decreases as x increases
+f(x,y) = 65 - x^2 - y^2 decreases as y increases
+The maximum value of f in each subregion is attained when we have the smallest possible x and the smallest possible y. Thhis is the value at the bottom left corner of each subregion.
+f at each bottom left corner
+M11 = f(1, 2) = 60
+M21 = f(3, 2) = 52
+M12 = f(1, 4) = 48
+M22 = f(3, 4) = 40
+U(f, P) = 4(60 + 52 + 48 + 40) = 800
+
+example:
+R = [-1,1] x [-1, 1] be a region in the xy-plane f(x,y) = 5 - 3x - y let P be a partition of R
+P1 = {-1,0,1},  P2 = {-1,0,1},  P = P1 x P2
+calculate upper riemann sum U(f,P)
+M11 = f(-1, -1) = 9
+M21 = f(0, -1) = 6
+M12 = f(-1, 0) = 8
+M22 = f(0, 0) = 5
+U(f,P) = 9 + 6 + 8 + 5 = 28
+
+example:
+R = [-2,2] x [-2,2] be a region in the xy-plane f(x,y) = 6 - 2x - y P is a partition of R
+P1 = {-2,0,2},  P2 = {-2,0,2},  P = P1 x P2
+calculate upper riemann sum U(f,P)
+f(-2, -2) = 12
+f(0, -2) = 8
+f(-2, 0) = 10
+f(0, 0) = 6
+(Area is 4 2x2 region)
+U(f,P) = 4(12 + 8 + 10 + 6) = 144
+
+calculating an upper riemann sum in the case of a strictly increasing function
+R = [0,2] x [1,3] be a region in the xy-plane f(x,y) = x + 2y P a partition of R
+P1 = {0,1,2},  P2 = {1,2,3},  P = P1 x P2
+calculate upper riemann sum U(f,P)
+U(f,P) = M11 * Area(R11) + M21 * Area(R21) + M12 * Area(R12) + M22 * Area(R22)
+where Mij is the max value of f in each subregion Rij. We pick the max value of f because we're finding the upper sum
+Area(Rij) = 1 for all 4 subregions
+U(f,P) = M11 + M21 + M12 + M22
+f(x,y) = x + 2y increases as x increases
+f(x,y) = x + 2y increases as y increases
+The max value of f in each subregion is attained when we have the largest possible x and the largest possible y. This is the value at the top right corner of each subregion.
+calculating the value of f at each top right corner
+M11 = f(1, 2) = 5
+M21 = f(2, 2) = 6
+M12 = f(1, 3) = 7
+M22 = f(2, 3) = 8
+U(f, P) = 5 + 6 + 7 + 8 = 26
+
+example:
+R = [2,4] x [2,4] be a region in the xy-plane f(x,y) = x^2 + y^2 P is a partition of R
+P1 = {2,3,4},  P2 = {2,3,4},  P = P1 x P2
+M11 = f(3, 3) = 18
+M21 = f(4, 3) = 25
+M12 = f(3, 4) = 25
+M22 = f(4, 4) = 32
+U(f, P) = 18 + 25 + 25 + 32 = 100
+
+example:
+R = [2,10] x [3,7] be a region in the xy-plane f(x,y) = x + y P is a partition of R
+P1 = {2,6,10},  P2 = {3,5,7},  P = P1 x P2
+M11 = f(6, 5) = 11
+M21 = f(10, 5) = 15
+M12 = f(6, 7) = 13
+M22 = f(10, 7) = 17
+(area 4x2 8)
+U(f, P) = 8(11 + 15 + 13 + 17) = 448
+
+REMEMBER KEY DIFFERENCES
+lower +'s in f(x,y) increases as x,y increases, min bottom left corner
+lower -'s in f(x,y) decreases as x,y increases, min upper right corner
+upper +'s in f(x,y) increases as x,y increases, max upper right corner
+upper -'s in f(x,y) decreases as x,y increases, max bottom left corner
+L(f, P) lower bound
+U(f, P) upper bound
