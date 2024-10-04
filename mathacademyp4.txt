@@ -4386,3 +4386,416 @@ f''(x, y) = [
 	1 0
 ]
 (0) - (1*1) = -1
+
+===================================================
+
+Second-Degree Taylor Polynomials of multivariable functions
+the quadratic Taylor polynomial of a function f(x) at the point x = a is given by
+f(x) ~= f(a) + f'(a)(x - a) + 1/2f''(a)(x - a)^2
+We can extend the concept of Taylor polynomials to multivariable functions
+Given a twice-differentiable function f(x,y), the quadratic Taylor polynomial of f about the point (a,b) is given by
+f(x,y) ~= f(a,b) + f_x(a,b) * (x - a) + f_y(a,b) * (y - b) (linear approx)
++ 1/2(f_xx(a,b) * (a,b) * (x - a)^2 + 2f_xy(a,b) * (x - a)(y - b) + f_yy(a,b) * (y - b)^2) (quadratic part)
+The quadratic Talor polynomial of f(x,y) about the origin O is
+f(x,y) ~= f(0,0) + f_x(0,0) + f_y(0,0) * y + 1/2(f_xx(0,0) * x^2 + f_xy(0,0) * xy + f_yy(0,0) * y^2)
+
+Finding a quadratic taylor polynomial
+determine the quadratic taylor polynomial for the function of two variables f(x,y) = cos(x + y) at (0,0)
+if the function f(x,y) is twice differentiable at (x,y) = (0,0) then the quadratic taylor polynomial of f about (0,0)
+f(x,y) ~= f(0,0) + f_x(0,0) * x + f_y(0,0) * y (linear approx)
++ 1/2(f_xx(0,0) * x^2 + 2f_xy(0,0) * xy + f_yy(0,0) * y^2) (quad part)
+calculate the value of the function
+f(0,0) = 1
+first derivatives
+f_x(x,y) -sin(x + y), f_y(x,y) = -sin(x + y)
+f_x(0,0) = 0, f_y(0,0) = 0
+second derivatives
+f_xx(x,y) = -cos(x + y), f_xy(x,y) = -cos(x + y), f_yy(x,y) = -cos(x + y)
+f_xx(0,0) = -1, f_xy(0,0) = -1, f_yy(0,0) = -1
+(-1 comes from substitution for -cos((0) + (0)))
+second-degree taylor polynomial
+f(x,y) ~= 1 + 0 * x + 0 * y + 1/2((-1) * x^2 + 2(-1) * xy + (-1) * y^2)
+= 1 - 1/2(x^2) - xy - 1/2(y^2)
+
+example:
+f(x,y) = e^(x - 2y) the quadratic taylor polynomial of f about (0,0) is given by
+f(x, y) = 1 + x + ay + 1/2(x^2) + bxy + cy^2
+find a, b, and c, then sum them
+first derivatives
+f_x(x,y) = e^(x - 2y) f_y(x,y) = -2e^(x - 2y)
+f_x(0,0) = 1, f_y(0,0) = -2
+second derivatives
+f_xx(x,y) = e^(x - 2y), f_xy(x,y) = -2e^(x - 2y), f_yy = 4e^(x - 2y)
+f_xx(0,0) = 1, f_xy(0,0) = -2, f_yy(0,0) = 4
+f(x,y) ~= 1 + 1 * x + (-2) * y + 1/2(1 * x^2 + 2(-2) * xy + 4 * y^2)
+= 1 + x + (-2)y + 1/2x^2 + (-2)xy + 2y^2
+a = -2, b = -2, c = 2
+a + b + c = -2
+
+example:
+f(x,y) = cos(x - 2y) the quadratic taylor polynomial of f about (0,0) is given by
+f(x,y) = 1 + ax^2 + bxy + cy^2
+find the value of a + b + c
+f_x(x,y) = -sin(x - 2y) f_y(x,y) = 2sin(x - 2y)
+f_x(0,0) = 0, f_y(0,0) = 0
+second derivatives
+f_xx(x,y) = -cos(x - 2y), f_xy(x,y) = 2cos(x - 2y), f_yy(x,y) = -4cos(x - 2y)
+f_xx(0,0) = -1, f_xy(0,0) = 2, f_yy(0,0) = -4
+f(x,y) ~= 1 + 0 * x + (0) * y + 1/2(-1 * x^2 + 2(2) * xy + -4 * y^2)
+= 1 - 1/2(x^2) + 2xy - 2y^2
+a + b + c = (-1/2) + 2 + (-2) = -1/2
+
+Its possible to derive Taylor polynomials for functions of more than two variables. Increasing the number of variables significantly increases the number of terms in the taylor polynomial.
+ideally we would like a compact expression for the quadratic taylor polynomial that works for all twice differentiable functions. This can be achieved using matrix notation.
+if we denote x = [x, y] a = [a, b] then the total derivative of f(x,y) = f(x) at (a, b) = a is given by:
+f'(a) = [f_x(a,b), f_y(a,b)]
+linear approximation = f(a,b) + f_x(a,b) * (x - a) + f_y(a,b) * (y - b)
+= f(a) + [f_x(a,b) f_y(a,b)] * [x - a, y - b]
+= f(a) + [f_x(a,b) f_y(a,b)] * ([x, y] - [a, b])
+= f(a) + f'(a)(x - a)
+second derivative of f at x = a
+f''(a) = [
+	f_xx(a) f_xy(a)
+	f_yx(a) f_yy(a)
+]
+using the face that f_xy = f_yx we can rewrite the quadratic part of the approximation using matrix multiplication (quad part)
+1/2(f_xx(a,b)⋅(x - a)^2 + 2f_xy(a,b)⋅(x - a)(y - b) + f_yy(a,b)⋅(y - b)^2)
+= 1/2[x - a y - b] ⋅ [
+	f_xx(a) f_xy(a)
+	f_yx(a) f_yy(a)
+]⋅[
+	x - a
+	y - b
+]
+= 1/2([x y] - [a b]) ⋅ [
+	f_xx(a) f_xy(a)
+	f_yx(a) f_yy(a)
+]⋅([x,y] - [a,b])
+= 1/2(x - a)^Tf''(a)(x - a)
+Quadratic taylor polynomial can be written as
+f(x) ~= f(a) + f'(a)(x - a) + 1/2(x - a)^Tf''(a)(x - a)
+this formula is more compact and has clear similarity with the corresponding formula functions with one variable
+f(x) ~= f(a) + f'(a)(x - a) + 1/2f''(a)(x - a)^2
+
+finding a quadratic taylor polynomial in matrix form
+f(x,y) = x^2y - xy^3
+determine the quadratic taylor polynomial of f about a = [1,1] answer should be in matrix form
+f'(x) = [∂f/∂x ∂f/∂y]
+f''(x) = [
+	∂2f/∂x^2 ∂2f/∂x∂y
+	∂2f/∂y∂x ∂2f/∂y^2
+]
+f(1,1) = 0
+first derivatives
+f'(x) = [2xy - y^3 x^2 - 3xy^2]
+f'(1,1) = [1 -2]
+second derivative
+f''(x) = [
+	  2y     2x - 3y^2
+   2x - 3y^2   -6xy
+]
+f''(1,1) = [
+	 2 -1
+	-1 -6
+]
+second-degree taylor polynomial in matrix form
+f(x) ~= + [1 -2][
+	x - 1
+	y - 1
+] + 1/2[
+	x - 1
+	y - 1
+]^T[
+	2 -1
+	-1 -6
+][
+	x - 1
+	y - 1
+]
+
+example:
+f(x,y) = x^3y + xy^3 + y^2
+a = [1, 0]
+f(x,y) ~= f(a) + f'(a)(x - a) + 1/2[*, y]^T[0 *,3 2][*, y]
+find the missing values and sum them
+first derivative
+f'(x) = [3x^2y + y^3  x^3 + 3xy^2 + 2y]
+f'(1, 0) = [0 1]
+second derivative
+f''(x) = [
+	    6xy     3x^2 + 3y^2
+	3x^2 + 3y^2   6xy + 2
+]
+f''(1,0) = [
+	0  3
+	3  2
+]
+f(x) ~= f(a) + f'(a)(x - a) + 1/2[
+	x - 1
+	  y
+]^T[
+	0 3
+	3 2
+][
+	x - 1
+	  y
+]
+
+example:
+f(x,y) = e^(x + 2y), a = [0, 0]
+f(x) ~= * + [1 *][
+	*
+	y
+] + 1/2[
+	*
+	y
+]^T[
+	1 *
+	2 4
+][
+	*
+	y
+]
+find the sum of the six missing expressions
+first derivative
+f'(x) = [e^(x + 2y) 2e^(x + 2y)]
+f'(0, 0) = [1 2]
+f''(x) = [
+	 e^(x + 2y) 2e^(x + 2y)
+	2e^(x + 2y) 4e^(x + 2y)
+]
+f(x) ~= (1) + [1 (2)][
+	  x
+	  y
+] + 1/2[
+	  x
+	  y
+][
+	1 2
+	2 4
+][
+    x
+	y
+]
+1 + 2 + x + x + 2 + x
+= 3x + 5
+(here we have just [x, y] matices instead of [x - 1, y - 1] because here we just have f(0,0), a = [0,0])
+
+Approximating a multivariable function at a point using quadratic taylor polynomial
+for the twice-differentiable function, we have the following data:
+f(1,0,0) = -1,  f'(1,0,0) = [1 0 1]
+f''(1,0,0) = [
+	 3 0 -1
+	 0 1  0
+	-1 0  2
+]
+use the quadratic taylor polynomial of f a = [1,0,0] to approximate the value of f(1,1,1)
+f(a) = -1, f'(a) = [1 0 1]
+f''(a) = [
+	 3 0 -1
+	 0 1  0
+	-1 0  2
+]
+f(x) ~= -1 + [1 0 1][
+	x - 1
+	  y
+	  z
+] + 1/2[
+	x - 1
+	  y
+	  z
+]^T[
+	 3 0 -1
+	 0 1  0
+	-1 0  2
+][
+	x - 1
+	  y
+	  z
+]
+evaluating the polynomal at x = [1, 1, 1]
+f(1,1,1) ~= -1 + [1 0 1][
+	1 - 1
+	  1
+	  1
+] + 1/2[
+	1 - 1
+	  1
+	  1
+]^T[
+	 3 0 -1
+	 0 1  0
+	-1 0  2
+][
+	1 - 1
+	  1
+	  1
+]
+= -1 + [1 0 1][
+	0
+	1
+	1
+] + 1/2[
+	0
+	1
+	1
+]^T[
+	 3 0 -1
+	 0 1  0
+	-1 0  2
+][
+	0
+	1
+	1
+]
+= -1 + 1 + 1/2[0 1 1][
+	-1
+	 1
+	 2
+]
+= 1/2(3)
+= 3/2
+
+example:
+for the twice-differentiable function, we have the following data:
+f(1, 0) = 3,  f'(1, 0) = [1 -1]
+f''(1, 0) = [
+	2 1
+	1 1
+]
+use the quadratic taylor polynomial of f about a = [1, 0] to approximate the value of f(1, 2)
+f(x) ~= 3 + [1 -1][
+	x - 1
+	  y
+] + 1/2[
+	x - 1
+	  y
+]^T[
+	2 1
+	1 1
+][
+	x - 1
+	  y
+]
+evaluating the polynomal at x = [1, 2]
+f(1, 2) ~= 3 + [1 -1][
+	  0
+	  2
+]+ 1/2[
+	  0
+	  2
+]^T[
+	2 1
+	1 1
+][
+	  0
+	  2
+]
+= 3 + -2 + 1/2[0 2][
+	2
+	2
+]
+= 1 + 1/2[0 2][
+	2
+	2
+]
+= 1 + 1/2(4)
+= 3
+
+example:
+twice-differentiable function, we have the following data:
+f(1,0,1) = 2,  f'(1,0,1) = [2 0 1]
+f''(1,0,1) = [
+	 2 1 -1
+	 1 0  0
+	-1 0  1
+]
+quadratic taylor polynomial about a = [1,0,1] to approx the value f(0,1,1)
+f(x) ~= 2 + [2 0 1][
+	x - 1
+	  y
+	z - 1
+] + 1/2[
+	x - 1
+	  y
+	z - 1
+]^T[
+	 2 1 -1
+	 1 0  0
+	-1 0  1
+][
+	x - 1
+	  y
+	z - 1
+]
+f(0,1,1) ~= 2 + [2 0 1][
+	 -1
+	  1
+	  0
+] + 1/2[
+	 -1
+	  1
+	  0
+]^T[
+	 2 1 -1
+	 1 0  0
+	-1 0  1
+][
+	 -1
+	 -1
+	  1
+]
+= 2 + (-2) + 1/2[-1 1 0][
+	 -1
+	 -1
+	  1
+]
+= 1/2(0) = 0
+
+By restricting x to a line through a we can consider f as a function of on evariable. Then we can use thje second-degree taylor polynomial of a single-variable function to derive the formula
+
+Let x0 be a constant vector in R^n, then the line through a and x0 is given by
+x(t) = a + t(x0 - a),   t(-infinity, infinity)
+where x(0) = a and x(1) = x0
+we define a function by restricting the domain of f to this line
+F(t) = f(x(t))
+The second-degree Taylor polynomial of this single-variable function about t = 0 is given by
+F(t) ~= F(0) + F'(0)t + 1/2F''(0)t^2
+We can find the first derivative of F using the chain rule:
+dF/dt = df/dx ⋅ dx/dt
+= df/dx ⋅ d/dt(a + t(x0 - a))
+= df/dx ⋅ (x0 - a)
+since df/dx is a row vector and (x0 - a) is a column vector, this is a scalar quantity and equal to its transpose
+dF/dt = df/dx ⋅ (x0 - a)
+= (df/dx ⋅ (x0 - a))^T
+= (x0 - a)^T(df/dx)^T
+we can find the second derivative of F
+d^2F/dt^2 = d/dt(dF/dt)
+= d/dt((x0 - a)^T(d/dt)(df/dx)
+= (x0 - a)^T(d/dt)(df/dx)^T
+= (x0 - a)^T(d/dx)(df/dx)^T ⋅ dx/dt
+= (x0 - a)^T(d^2f/dx^2)(x0 - a)
+the first and second derivatives are given by
+{
+	F'(t) = f'(x(t))(x0 - a)
+	F''(t) = (x0 - a)^Tf''(x(t))(x0 - a)
+}
+evaluating the function and its derivatives at t = 0 and using the fact that x(0) = a
+{
+	F(0) = f(x(0))
+	F'(0) = f'(x(0))(x0 - a)
+	F''(0) = (x0 - a)^Tf''(x(0))(x0 - a)
+}
+= {
+	F(0) = f(a)
+	F'(0) = f'(a)(x0 - a)
+	F''(0) = (x0 - a)^Tf''(a)(x0 - a)
+}
+putting these values into the second-degree taylor polynomial of a single-variable function about t = 0
+F(t) ~= F(0) + F'(0)t + 1/2F''(0)t^2
+~= f(a) + f'(a)(x0 - a)t + 1/2(x0 - a)^Tf''(a)(x0 - a)t^2
+using this polynomial to approximate the value of F(1) and the fact that F(1) = f(x(1)) = f(x0)
+F(1) ~= f(a) + f'(a)(x0 - a) * 1 + 1/2(x0 - a)^Tf''(a)(x0 - a) * 1^2
+f(x0) ~= f(a) + f'(a)(x0 - a) + 1/2(x0 - a)^Tf''(a)(x0 - a)
+x0 is a constant we can relax the assumption that x0 is fixed and replace it with a general point x near a to obtain the formula for the second-degree taylor polynomial of a multivariable function vector form:
+f(x) ~= f(a) + f'(a)(x - a) + 1/2(x - a)^Tf''(a)(x - a)
