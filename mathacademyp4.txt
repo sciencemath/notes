@@ -26,6 +26,10 @@ say were taking it with respect to x we can then use the exponent rule:
 x^(3/2) = (x^(3/2 + 1))/(3/2 + 1) = (x^(5/2))/(5/2) = 2/5(x^(5/2))
 everything together =  2/5y^(1/2)(x^(5/2))
 
+integration by parts:
+∫udv - uv - ∫vdu
+example: ∫xe^x = xe^x - e^x
+
 NOTE:
 ∫^1_0 I use this notation for integrals which mean 1 is upper bound and 0 is lower bound, there might be a better way to do this but this is the fastest way I can type this out.
 Also starting to integrate [x]|_1-0 means taking ∫^1_0 and integrating with respect to upperbound 1 and lowerbound 0
@@ -5686,3 +5690,286 @@ limits for y are from 0 to 1
 ∫∫_D x/(y^2 + 1) dA = ∫^1_0 [∫^sqrt(2)_1 x/(y^2 + 1)dx]dy
 swap
 ∫∫_D x/(y^2 + 1) dA = ∫^sqrt(2)_1 [∫^1_0 x/(y^2 + 1)dy]dx
+
+===================================================
+
+(a lot of examples here are visual with non-uniform shapes on graphs, anything that I see that stands out as something to remember I will take note.)
+
+Double integrals over non-rectangular domains
+Region D enclosed by the circle x^2 + y^2 = 1 in the first quadrant
+we will define following double integral over this non-rectangular region
+∫∫_D (3 - x^2 - y^2)dA
+to do this we will use the following trick, we enclose the region D by a rectangle R with sides parallel to the coordinates axes
+we extend our function to R setting a new function f(x,y) thats equal to 0 outside D and equals 3 - x^2 - y^2 on D
+f(x,y) = {
+	3 - x^2 - y^2, (x,y) ∈ R ∩ D
+	0,             (x,y) ∈ R \ D
+}
+f(x,y) might not be continuous at the boundary of D, the double integral of f(x,y) over the rectangular domain R will exist.
+we define our double integral of 3 - x^2 - y^2 over D
+∫∫_D (3 - x^2 - y^2)dA = ∫∫_R f(x,y) dA
+geometrically the value of the double integral will give us the volume of the solid bounded by the surface z = 3 - x^2 - y^2 over the quater-circlar domain D
+
+determining a valid region to a define a double integral over a non-rectangular domain
+example:
+D is a finite region enclosed by the curve x^2 + y^2/4 = 1
+f(x,y) = {
+	xy, (x,y) ∈ R ∩ D
+	0,  (x,y) ∈ R \ D
+}
+∫∫_D xy dA = ∫∫_R f(x,y) dA
+which of the following could be the definition of the rectangular domain R?
+1) R = [-2,2] x [-1,1]
+2) R = [-1,1] x [-2,2]
+3) R = [-2,2] x [-2,2]
+(oval y spanning between -2,2 and x -1,1)
+the rectangle that covers the whole region is 2 and 3
+
+example:
+D is a finite region enclosed by the curve x^2 + y^2 = 9
+(circle with x and y axes from 3,-3)
+f(x,y) = {
+	cos(x - y), (x,y) ∈ R ∩ D
+	0,			(x,y) ∈ R \ D
+}
+1) ∫∫_R cos(x - y)dA = ∫∫_D f(x,y)dA where R = [-4,4] x [-4,4]
+2) ∫∫_D cos(x - y)dA = ∫∫_R f(x,y)dA where R = [-2,2] x [-2,2]
+3) ∫∫_D cos(x - y)dA = ∫∫_R f(x,y)dA where R = [-3,3] x [-3,3]
+if R covers D completely we obtain
+∫∫_D cos(x - y)dA = ∫∫_R f(x,y)dA
+1 is false the integrals have not been stated correctly with respect to the domains R and D they have been swapped
+2 is false, the rectangle R does not cover the region D
+3 is true
+
+example:
+D is a finite region enclosed between the curves y = x^2 - 6 and y = 2 - x^2
+(graph this on desmos, and focus on the enclosed region)
+f(x,y) = {
+	x^2 + y^2, (x,y) ∈ R ∩ D
+	0,         (x,y) ∈ R \ D
+}
+1) ∫∫_D (x^2 + y^2)dA = ∫∫_R f(x,y)dA where R = [-2,2] x [-6,6]
+2) ∫∫_R (x^2 + y^2)dA = ∫∫_D f(x,y)dA where R = [-1,1] x [-6,6]
+3) ∫∫_D (x^2 + y^2)dA = ∫∫_R f(x,y)dA where R = [-2,2] x [-2,2]
+if R covers D completely
+∫∫_D (x^2 + y^2)dA = ∫∫_R f(x,y)dA
+1 is true
+2 is false D and R are swapped
+3 doesn't cover the region completely
+
+example:
+D is a finite region enclosed by the curve y = 1 - x^2 and the x-axis. If R = [-2,2] x [-1,1]
+∫∫_D (xy + y^2)dA = ∫∫_R f(x,y)dA
+what is the definition of f(x,y)
+1) {
+	xy + y^2, (x,y) ∈ D
+	0,        (x,y) ∉ D
+}
+2) {
+	xy + y^2, (x,y) ∈ R
+	0,        (x,y) ∉ R
+}
+3) {
+	xy + y^2, (x,y) ∈ D
+	0,        (x,y) ∈ R \ D
+}
+1 and 3 xy + y^2 on D and equal 0 outside D
+2 is not identically zero for all points in R\D, for example (x,y) = (1,1) ∈ R \ D but the function is nonzero at this point.
+1 and 3 are the only ones that pass
+
+===================================================
+
+Properties of double integrals
+Linearity of Double Integrals, f(x,y) and g(x,y) are continuous functions on a domain D and the α,β are constants
+∫∫_D [αf(x,y) + βg(x,y)]dA = α∫∫_D f(x,y)dA + β∫∫_D g(x,y)dA
+The double integral of unity. The integral of f(x,y) = 1 over a domain D is the area of D
+∫∫_D dA = ∫∫_D 1 * dA = Area(D)
+Multiplicative property of double integrals. If f(x) is continuous on [a,b] and g(y) is continuous on [c,d] then
+∫∫_R f(x)g(y)dA = (∫^b_a f(x)dx)(∫^d_c g(y)dy)
+where R = [a,b] x [c,d]
+
+double integral using the multiplicative property
+∫∫_R xye^(x+y) dA over the rectangle R = [0,1] x [1,2]
+∫∫_R xye^(x+y) dA = ∫∫_R (xe^x)(ye^y) dA
+= (∫^1_0 xe^x dx)(∫^2_1 ye^y dy)
+= [xe^x - e^x]|_0-1 * [ye^y - e^y]|_1-2
+= (e^1 - e^1 - (0 - e^0)) * (2e^2 - e^2 - (e^1 - e^1))
+= 1 * e^2
+= e^2
+
+example:
+evaluate ∫∫_R sin(x)e^y dA over the rectangle R = [0,pi] x [0,1]
+∫∫_R sin(x)e^y dA = ∫∫_R (sin(x))(e^y) dA
+= (∫^pi_0 sin(x) dx)(∫^0_1 e^y dy)
+= [-cos(x)]|_0-pi * [e^y]|_0-1
+= [-cos(pi) - (-cos(0))] * [e^1 - e^0]
+= (1 - (-1)) * (e^1 - 1)
+= 2(e - 1)
+
+example:
+What is the setup for the double integral ∫∫_R ysqrt(xy) dA over the rectangle R = [1,4] x [0,1]
+the correct setup for this for the mutliplicative property:
+(∫^4_1 sqrt(x) dx)(∫^1_0 ysqrt(y) dy)
+
+Applying the multiplicative property when the integrand contains only one variable
+we can also apply the multiplicative property when the integrand contains only one of the variables
+suppose that R = [a,b] x [c,d]
+∫∫_R f(x) dA = ∫∫_R (f(x)dx)(1) dA
+= (∫^b_a f(x) dx)(∫^d_c 1 dx)
+= (∫^b_a f(x) dx)(d - c)
+= (d - c) ∫^b_a f(x) dx
+also
+∫∫_R g(y) dA = (b - a) ∫^d_c g(y) dy
+
+double integral when the integrand contains only one variable
+calculate ∫∫_R (x^2 - y^2 + 3) dA where R = [-1,3] x [2,4]
+using the linearity property of double integrals
+∫∫_R (x^2 - y^2 + 3) dA
+= ∫∫_R x^2 dA - ∫∫_R y^2 dA + ∫∫_R 3 dA
+evaluate each of the three integrals separately
+function of the first integral is independent of y
+∫∫_R x^2 dA = (4 - 2) ∫^2_-1 x^2 dx
+= 2 * [x^3/3]|_-1-3
+= 2(27/3 + 1/3)
+= 56/3
+function of the second integral is independent of x
+∫∫_R y^2 dA = (3 - (-1)) ∫^4_2 y^2 dy
+= 4 ∫^4_2 y^2 dy
+= 4 * [y^3/3]|_2-4
+= 4/3(4^3) - 4/3(2^3)
+= 224/3
+function of the third integral is a constant
+∫∫_R 3 dA = 3Area(R) = 3 * (2 * 4) = 24
+∫∫_R (x^2 - y^2 + 3) dA = 56/3 - 224/3 + 24 = -32
+
+example:
+evaluate the double integral
+∫∫_R (1 - 3xy^2)/x dA, where R = [1,e] x [2,3]
+= ∫∫_R (1 - 3xy^2)/x dA = ∫∫_R (1/x - 3y^2) dA
+= ∫∫_R 1/x dA - ∫∫_R 3y^2 dA
+evaluating the first integral independent of y
+∫∫_R 1/x dA = (3 - 2) ∫^e_1 1/x dx
+= [ln|x|]|_1-e
+= ln(e) - ln(1)
+= 1
+second integral is independent of x
+= ∫∫_R 3y^2 dA = (e - 1) ∫^3_2 3y^2 dy
+= (e - 1)[y^3]|_2-3
+= (e - 1)(3^3 - 2^3)
+= 19(e - 1)
+∫∫_R (1 - 3xy^2)/x dA = 1 - 19(e - 1)
+= 20 - 19e 
+
+example:
+calculate ∫∫_R (1 - 3x^2 + 2y) where R = [-1,1] x [0,1]
+= ∫∫_R 1 dA - ∫∫_R 3x^2 dA + ∫∫_R 2y dA
+lets get the constant out of the way:
+∫∫_R 1 dA = 1Area(R) = 1 * (2 * 1) = 2
+evaluating x independent of y
+∫∫_R 3x^2 dA = (1 - 0) ∫^1_-1 3x^2 dx
+= [x^3]|_-1-1 = (1 - (-1))
+= 2
+evaluating y independent of x
+∫∫_R 2y dA = (1 - (-1)) ∫^1_0 2y dy
+= (2) [y^2]|_0-1
+= (2)(1 - 0)
+= 2
+∫∫_R (1 - 3x^2 + 2y) = 2 - 2 + 2 = 2
+
+The integral of a single-variable function can be split up over adjace3nt subintervals
+∫^c_a f(x)dx = ∫^b_a f(x)dx + ∫^c_b f(x)dx
+in the same way the integral of two-variable function can be split up over adjacent sub-domains
+domain D is the union of two adjacent sub-domains D1 and D2 (D1 and D2 are non-overlapping regions that could share a border)
+∫∫_D f(x,y) dA = ∫∫_D1 f(x,y) dA + ∫∫_D2 f(x,y) dA
+this property can be generalized if D is split into a finite number n of sub-domains (n > 2)
+∫∫_D f(x,y) dA = ∫∫_D1 f(x,y) dA + ∫∫_D2 f(x,y) dA + ... + ∫∫_Dn f(x,y) dA
+
+using additivity of double integrals
+A and B are finite, non-overlapping regions
+∫∫_A f(x,y) dA = 8, ∫∫_B f(x,y) dA = -5
+find the value of
+∫∫_A∪B 3f(x,y) dA
+next use linearity and additivity of double integrals
+∫∫_A∪B 3f(x,y) dA = 3∫∫_A∪B f(x,y) dA
+= 3(∫∫_A f(x,y)dA + ∫∫_B f(x,y)dA)
+= 3(8 + (-5))
+= 3*3 = 9
+
+example:
+A circular object on the cartesian plane sectioned into 3 unequal sections labeled A B C. (imagine a small lake not perfectly round)
+f(x,y) can be defined as
+f(x,y) = {
+	x,  (x,y) ∈ A
+	0,  (x,y) ∈ B
+	x^y (x,y) ∈ C
+}
+∫∫_D f(x,y) dA = ∫∫_A x dA + ∫∫_C x^2y dA
+D = A ∪ B ∪ C
+(B is 0 we can exclude it)
+
+example:
+A and B are finite non-overlapping regions
+∫∫_A f(x,y) dA = 7, ∫∫_B f(x,y) dA = 1
+find the value of
+∫∫_A∪B 5f(x,y) dA
+first move constant out
+5∫∫_A∪B f(x,y) dA
+= 5(∫∫_A f(x,y) dA + ∫∫_B f(x,y) dA = 1)
+= 5(7 + 1)
+= 40
+
+the integral of a single-variable function f(x) over a region R is not affected by whether the region R is open or closed
+f(x) = 1, R = [0,1], R' = (0,1) integrating f(x) over R and R' gives the same result
+∫_R f(x) dx = ∫_R' f(x) dx = ∫^1_0 dx = 1
+this is true because the rectangles formed by f(x) [0,1] x [0,1] and (0,1) x (0,1) have the same area.
+Same applies for double integrals, we can include or exclude the boundaries of the integration regions without affecting the result
+the double integral of f(x,y) = x^2 + y^2 over both R = [0,1] x [0,1] and over R' = (0,1) x (0,1) will give the same result
+∫∫_R (x^2 + y^2)dA = ∫∫_R' (x^2 + y^2)dA = ∫^1_0 ∫^1_0 (x^2 + y^2) dA
+the volumes of the shapes formed by f(x,y) over the regions R and R' are the same.
+we get the same result if we were to integrate f(x,y) over any of the regions:
+(0,1] x [0,1], [0,1) x [0,1], (0,1) x [0,1], ...
+applies to double integrals over non-rectangular boundaries as well.
+
+Double integral using the additivity over a rectangular domain
+∫∫_R f(x,y) dA
+f(x,y) = {
+	2,                 if 0 < x < 2, -1 < y < 0
+	1/(xy + x + y + 1) if 0 < x < 2, 0 < y < 1
+}
+R is the domain of f
+R = R1 ∪ R2 where R1 = (0,2) x (-1,0)
+R2 = (0,2) x (0,1)
+∫∫_R f(x,y) dA = ∫∫_R1 2 dA + ∫∫_R2 1/(xy + x + y + 1) dA
+= 2∫∫_R1 dA + ∫∫_R2 1/(x + 1)(y + 1) dA
+= 2(2 - 0)(0 - (-1)) + (∫^2_0 1/(x + 1) dx)(∫^1_0 1/(y + 1) dy)
+= 4 + [ln(x + 1)]|_0-2 * [ln(y + 1)]|_0-1
+= 4 + ln(3)ln(2)
+
+example:
+∫∫_R f(x,y) dA
+f(x,y) = {
+	6x,     if 0 < x < 1, -1 < y < 0
+	e^(x+y) if 0 < x < 1, 0 < y < 1
+}
+R is the domain of f
+R = R1 ∪ R2 where R1 = (0,1) x (-1,0)
+R2 = (0,1) x (0,1)
+∫∫_R f(x,y) dA = ∫∫_R1 6x dA + ∫∫_R2 e^(x+y) dA
+= ∫∫_R1 6x dA + ∫∫_R2 (e^x)(e^y) dA
+= (0 - (-1)) ∫^1_0 6x dx + (∫^1_0 e^x dx)(∫^1_0 e^y dy)
+= [3x^2]|_0-1 + [e^x]|_0-1 * [e^y]|_0-1
+= 3 + (e - 1)^2
+= e^2 - 2e + 4
+
+example:
+function f(x,y) be defined as
+f(x,y) = {
+	x + y,     if 0 < x < 2, -1 < y < 0
+	sin(x + y) if 0 < x < 2, 0 < y < 1
+}
+∫∫_(0,2)x(-1,1) f(x,y) dA
+R can be represented as a union of two smaller rectangles:
+R = (0,2) x ((-1,0) ∪ (0,1))
+= ((0, 2) x (-1, 0)) ∪ ((0, 2), (0, 1))
+∫∫_R f(x,y) dA = ∫∫_(0,2)x(-1,0) f(x,y) dA + ∫∫_(0,2)x(0,1) f(x,y) dA
+= ∫∫_(0,2)x(-1,0) (x + y)dA + ∫∫_(0,2)x(0,1) sin(x + y) dA
