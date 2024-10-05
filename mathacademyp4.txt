@@ -5157,3 +5157,351 @@ upper +'s in f(x,y) increases as x,y increases, max upper right corner
 upper -'s in f(x,y) decreases as x,y increases, max bottom left corner
 L(f, P) lower bound
 U(f, P) upper bound
+
+===================================================
+
+R = [0,1] x [0,1] be a region in the xy-plane, f(x,y) = x^2 + y^2
+let P be an arbitrary partition of R
+P1 = {x0, x1, ..., xm},  P2 = {y0, y1, ..., yn},  P = P1 x P2
+Our goal is to find an expression for L(f, P), the lower Riemann sum of f with respect to this partition (identically to the case where P was fixed)
+Arbitrary subregion Rij of the partition, this subregion lies between xi - 1 and xi over the x-axes and yj-1 and yj over the y axes
+(xi-1,yj)----------(xi,yj)
+    |                  |
+    |	 			   |
+    |       Rij 	   |
+    |    			   |
+    |				   |
+    |				   |
+(xi-1,yj-1)--------(xi,yj-1)
+since we're computing the lower sum, we're interested in the min value of f in this subregion
+f(x,y) = x^2 + y^2 increases as x,y increases on [0,1]
+The min value of f in the subregion is attained when we have the smallest possible x and the smallest possible y. This is the value of f at the bottom left corner of the subregion
+if mij denotes the min value of f in each subregion
+mij = f(xi-1, yj-1) = x^2i-1 + y^2j-1
+for all 1 <= i <= m and 1 <= j <= n
+since the area of Rij is ΔxiΔyj the volume of the rectangular solid with base Rij and height mij
+mijΔxiΔyj = (x^2i-1 + y^2j-1)ΔxiΔyj
+Summing up all of our rectangular solids over the entire partition P, the lower Riemann sum is
+L(f, P) = (Σ^m_i=1)(Σ^n_j=1)(x^2i-1 + y^2j-1)ΔxiΔyj
+
+Lower Riemann sum for a strictly increasing function
+R = [0,2] x [1,3] be a region in the xy-plane, f(x,y) = x + 2y, let P be a partition of R
+P1 = {x0, x1, ..., xm},  P2 = {y0, y1, ..., yn},  P = P1 x P2
+L(f, P) = (Σ^m_i=1)(Σ^n_j=1)mijΔxiΔyj
+where mij is the minimum value of f in each subregion Rij
+Consider an arbitrary subregion Rij of the partition. This subregion lies between xi-1 and xi over the x-axes and yi-1 and yi over the y-axes
+f(x,y) = x + 2y increases as x,y increases
+min value of f in each subregion is attained when we have the smallest possible x and the smallest possible y. This is the value at the bottom left corner of each subregion.
+mij = f(xi-1, yj-1) = xi-1 + 2yj-1
+for all 1 <= i <= m and 1 <= j <= n
+L(f, P) = (Σ^m_i=1)(Σ^n_j=1)(xi-1 + 2yj-1)ΔxiΔyj
+
+example:
+R = [1,3] x [2,4] be a region in the xy-plane, f(x,y) = 2x + 3y, P is a partition of R
+P1 = {x0, x1, ..., xm},  P2 = {y0, y1, ..., yn},  P = P1 x P2
+the lower riemann sum of f with respect to P
+L(f, P) = (Σ^m_i=1)(Σ^n_j=1)[      ]ΔxiΔyj
+Δxi = xi - xi-1 and Δyj = yj - yj-1 what is the missing expression in the double summation:
+2xi-1 + 3yj-1
+
+example:
+R = [1,2] x [2,3] be a region in the xy-plane, f(x,y) = 4x^2 + y^2 P is a partition of R
+P1 = {x0, x1, ..., xm},  P2 = {y0, y1, ..., yn},  P = P1 x P2
+L(f, P) = (Σ^m_i=1)(Σ^n_j=1)[      ]ΔxiΔyj
+Δxi = xi - xi-1 and Δyj = yj - yj-1 what is the missing expression in the double summation:
+4x^2i-1 + y^2j-1
+
+Lower riemann sum for a strictly decreasing function
+R = [0,1] x [2,3] be a region in the xy-plane, f(x,y) = 10 - x^2 - y^2, let P be a partition of R
+P1 = {x0, x1, ..., xm},  P2 = {y0, y1, ..., yn},  P = P1 x P2
+f(x,y) = 10 - x^2 - y^2 decreases as x increases on [0,1]
+f(x,y) = 10 - x^2 - y^2 decreases as y increases on [2,3]
+the min value of f in each subregion is attained when we have the largest possible x and the largest possible y. This is the value at the top right corner of each subregion.
+mij = f(xi,yj) = 10 - x^2i - y^2j
+for all 1 <= i <= m and 1 <= j <= n
+L(f, P) = (Σ^m_i=1)(Σ^n_j=1)(10 - x^2i - y^2j)ΔxiΔyj 
+
+example:
+R = [-1,1] x [-1,1] be a region in the xy-plane, f(x,y) = 8 - x - y let P be a partition of R
+P1 = {x0, x1, ..., xm},  P2 = {y0, y1, ..., yn},  P = P1 x P2
+L(f, P) = (Σ^m_i=1)(Σ^n_j=1)[      ]ΔxiΔyj
+Δxi = xi - xi-1 and Δyj = yj - yj-1 what is the missing expression in the double summation:
+8 - xi - yj
+
+example:
+R = [-1,1] x [-1,1] be a region in the xy-plane, f(x,y) = 100 - x^2 - y^2
+L(f, P) = (Σ^m_i=1)(Σ^n_j=1)[      ]ΔxiΔyj
+Δxi = xi - xi-1 and Δyj = yj - yj-1 what is the missing expression in the double summation:
+100 - x^2i - y^2j
+
+Lower riemann sum for a function thats neither strictly increasing nor decreasing
+R = [2,3] x [1,2] be a region in the xy-plane, f(x,y) = x - y + 3, let P be a partition of R
+P1 = {x0, x1, ..., xm},  P2 = {y0, y1, ..., yn},  P = P1 x P2
+f(x,y) = x - y + 3 increases as x,y increases
+as a result the min value of f in each subregion is attained when we have the smallest possible x and the largest possible y this is the value at the top left corner of each subregion
+mij = f(xi-1, yj) = xi-1 - yj + 3
+for all 1 <= i <= m and 1 <= j <= n
+L(f, P) = (Σ^m_i=1)(Σ^n_j=1)(xi-1 - yj + 3)
+
+example:
+R = [0,1] x [0,1] be a region in the xy-plane, f(x,y) = 2x - 9y + 11, let P be a partition of R
+P1 = {x0, x1, ..., xm},  P2 = {y0, y1, ..., yn},  P = P1 x P2
+L(f, P) = (Σ^m_i=1)(Σ^n_j=1)[      ]ΔxiΔyj
+missing value:
+2xi-1 - 9yj + 11
+(where finding the min value since x is positve and y in negative we want the min of x xi-1 and the max y yj)
+
+example:
+R = [0,1] x [0,1] be a region in the xy-plane, f(x,y) = 5y - x + 3 let P be a partition of R
+L(f, P) = (Σ^m_i=1)(Σ^n_j=1)[      ]ΔxiΔyj
+missing value:
+5yj-1 - xi + 3
+(y is positive so smallest value of y is yj-1 x = xi this will make the min bottom right)
+
+===================================================
+
+(Using the square diagram above)
+Upper riemann sums over general partitions
+R = [0,1] x [0,1] be a region in the xy-plane, f(x,y) = x^2 + y^2
+P is an arbitrary partition of R
+P1 = {x0, x1, ..., xm},  P2 = {y0, y1, ..., yn},  P = P1 x P2
+Find an expression for U(f,P) the upper riemann sum of f with respect to this partition.
+regions lie between xi-1 and xi over the x-axes and yj-1 and yj over the y-axis.
+Since we're computing teh upper sum, we're interested in max value of f in this subregion
+f(x,y) = x^2 + y^2 increases as x,y increases [0,1]
+max value of f in subregion is attained when we have the largest possible x and the largest possible y. This is the value of f at the top right corner of the subregion.
+So, if Mij denotes max value of f in each subregion we have
+Mij = f(xi,yi) = x^2i + y^2j
+for all 1 <= i <= m and 1 <= j <= n
+Area of Rij is ΔxiΔyj the volume of the rectangular solid with base Rij and height Mij
+MijΔxiΔyj = (x^2i + y^2j)xiΔyj
+summing up all rectangular solids over the entire partition P we find theaat the upper riemann sum
+U(f,P) = (Σ^m_i=1)(Σ^n_j=1)(x^2i + y^2j)xiΔyj
+
+Upper riemann sum for a strictly increasing function
+R = [0,2] x [1,3] be a region in xy-plane, f(x,y) = x + 2y
+f(x,y) = x + 2y increases as x,y increases
+the max value of f in each subregion is attained when we have the largest possible x and y. This will be at the top right corner of each subregion
+Mij = (xi, yj) = xi + 2yj
+U(f,P) = (Σ^m_i=1)(Σ^n_j=1)(xi + 2yj)xiΔyj
+
+example:
+R = [2,4] x [2,4] be a region in xy-plane, f(x,y) = 2x + y + 1
+upper riemann sum of f with respect to P
+U(f, P) = (Σ^m_i=1)(Σ^n_j=1)[     ]ΔxiΔyj
+what is missing in the expression:
+2xi + yj + 1
+
+example:
+R = [0,4] x [1,5] be a region in xy-plane, f(x,y) = x^2 + 2y^2
+upper riemann sum of f with respect to P
+U(f, P) = (Σ^m_i=1)(Σ^n_j=1)[     ]ΔxiΔyj
+what is missing in the expression:
+x^2i + 2y^2j
+
+Upper riemann sum for a strictly decreasing function
+R = [0,1] x [0,2] be a region in xy-plane, f(x,y) = 90 - x^2 - y
+f(x,y) = 90 - x^2 - y decreases as x increases on [0,1]
+f(x,y) = 90 - x^2 - y decreases as y increases on [0,2]
+the max value of f in each subregion is attained when we have the smallest possible x and y. This is the value at the bottom left corner of each subregion
+Mij = f(xi-1, yj-1) = 90 - x^2i-1 - y^2j-1
+upper riemann sum is
+U(f, P) = (Σ^m_i=1)(Σ^n_j=1)(90 - x^2i-1 - y^2j-1)ΔxiΔyj
+
+example:
+R = [1,3] x [1,3] be a region in xy-plane, f(x,y) = 10 - 2x - y
+upper riemann sum of f with respect to P
+U(f, P) = (Σ^m_i=1)(Σ^n_j=1)[     ]ΔxiΔyj
+what is missing in the expression:
+10 - 2xi-1 - yj-1
+
+example:
+R = [2,5] x [0,2] be a region in xy-plane, f(x,y) = 30 - x^2 - y^2
+upper riemann sum of f with respect to P
+U(f, P) = (Σ^m_i=1)(Σ^n_j=1)[     ]ΔxiΔyj
+what is missing in the expression:
+30 - x^2i-1 - y^2j-1
+
+Upper riemann sum for a function thats neither increasing or decreasing
+R = [2,4] x [0,1] be a region in xy-plane, f(x,y) = 2x - y
+f(x,y) = 2x - y increases as x increases
+f(x,y) = 2x - y decreases as y increases
+max value of f in each subregion is attained when we have the largest possible x and smallest possible y. This is value at the bottom right corner of each subregion
+Mij = f(xi, yj-1) = 2xi - yj-1
+U(f, P) = (Σ^m_i=1)(Σ^n_j=1)(2xi - yj-1)ΔxiΔyj
+
+example:
+R = [15,20] x [3,5] be a region in the xy-plane, f(x,y) = x - 3y
+upper riemann sum of f with respect to P
+U(f, P) = (Σ^m_i=1)(Σ^n_j=1)[     ]ΔxiΔyj
+what is missing in the expression:
+xi - 3yj-1
+
+example:
+R = [-3,2] x [4,7] be a region in the xy-plane, f(x,y) = y - 3x + 2
+upper riemann sum of f with respect to P
+U(f, P) = (Σ^m_i=1)(Σ^n_j=1)[     ]ΔxiΔyj
+what is missing in the expression:
+yj - 3xi-1 + 2
+
+===================================================
+
+Double integrals using the lower and upper riemann sums
+f(x,y) is a positive continuous function defined on a closed and bounded rectangle R, P = P1 x P2 be a partition of R we know that the volume V bounded by the surface z = f(x,y) and the region R in the xy-plane satisfies
+L(f, P) <= V <= U(f, P)
+are lower and upper Riemann sums of f with respect to P
+if we keep refining P by adding more and more points to P1 and P2 we find that the values of the lower and upper riemann sums approach the volume V:
+L(f,P) -> V from below
+U(f,P) -> V from above
+we define the double integral of f(x,y) over R as the unique number I that satisfy the inequality
+L(f,P) <= I <= U(f, P)
+for all partitions P of R
+I = ∫∫_R f(x,y)dA
+the double integral gives the exact volume bounded between the surface z = f(x,y) and R
+
+Double integral in terms of lower and upper riemann sums
+R = [0,1] x [1,2] be a region in the xy-plane, f(x,y) = 12 - x - y
+let I = ∫∫_R f(x,y)dA
+be the unique number such that over all rectangular partitions P of R we have L(f, P) <= I <= U(f, P) where L(f,P) and U(f,P) are the corresponding lower and upper riemann sums.
+For a function f(x,y) the double integral of f over a rectangular region R is the unique number I if it exists such that
+L(f, P) <= I <= U(f, P)
+over all partitions P of R where the lower and upper sums are
+L(f, P) = (Σ^m_i=1)(Σ^n_j=1)mijΔxiΔyj
+U(f, P) = (Σ^m_i=1)(Σ^n_j=1)MijΔxiΔyj
+mij and Mij are the min and max values of f in each subregion Rij
+we need to compute U(f,P)
+notice that for all subregions Rij
+f(x,y) = 12 - x - y decreases as x increases
+f(x,y) = 12 - x - y decreases as y increases
+the max value of in each subregion is attained when we have the smallest possible x and smallest possible y. This is the value at the bottom left corner of each subregion
+Mij = f(xi-1, yj-1) = 12 - xi-1 - yj-1
+upper riemann sum
+U(f, P) = (Σ^m_i=1)(Σ^n_j=1)(12 - xi-1 - yj-1)ΔxiΔyj
+
+example:
+R = [0,2] x [1,3] be a region in the xy-plane, f(x,y) = x + 2y
+I = ∫∫_R f(x,y)dA
+be the unique number such that over all rectangular partitions P of R we have L(f, P) <= I <= U(f, P) where L(f,P) and U(f,P) are the corresponding lower and upper riemann sums.
+U(f, P) = (Σ^m_i=1)(Σ^n_j=1)[   ]ΔxiΔyj
+what is missing in the expression:
+xi + 2yj
+
+example:
+R = [0,1] x [0,1] be a region in the xy-plane, f(x,y) = x - y + 2
+I = ∫∫_R f(x,y)dA
+be the unique number such that over all rectangular partitions P of R we have L(f, P) <= I <= U(f, P) where L(f,P) and U(f,P) are the corresponding lower and upper riemann sums.
+L(f, P) = (Σ^m_i=1)(Σ^n_j=1)[   ]ΔxiΔyj
+what is missing in the expression:
+xi-1 - yj + 2
+(decrease x and increase y to minimize f())
+
+Calculating a double integral using lower and upper riemann sums
+R = [-1,4] x [1,2] be a region in the xy-plane, let P be a partition of R
+P1 = {x0, x1, ..., xm},  P2 = {y0, y1, ..., yn},  P = P1 x P2
+calculate the double integral
+∫∫_R f(x,y)dA
+f is a function such that mij = Mij = 3 for all partitions P of R, and mij, Mij are min and max values of f in each subregion Rij
+for a function f(x,y) the double integral of f over a rectangular region R is the unique number I if it exists such that 
+L(f, P) <= I <= U(f, P)
+over all partitions P of R where the lower and upper sums are given:
+L(f, P) = (Σ^m_i=1)(Σ^n_j=1)mijΔxiΔyj
+U(f, P) = (Σ^m_i=1)(Σ^n_j=1)MijΔxiΔyj
+mij, and Mij are the min and max values of f in each subregion Rij
+since mij = Mij = 3
+L(f, P) = U(f, P) = (Σ^m_i=1)(Σ^n_j=1)3ΔxiΔyj
+= 3(Σ^m_i=1 Δxi)(Σ^n_j=1 Δyj)
+= 3(4 - (-1))(2 - 1)
+= 3 * 5 * 1
+= 15
+L(f, P) = 15 <= ∫∫_R f(x,y)dA <= 15 = U(f, P)
+∫∫_R f(x,y)dA = 15
+
+example:
+R = [2,4] x [1,5] be a region in the xy-plane and let P be a partition of R
+P1 = {x0, x1, ..., xm},  P2 = {y0, y1, ..., yn},  P = P1 x P2
+calculate the double integral
+∫∫_R f(x,y)dA
+where f is a function such that mij = Mij = 5 for all partitions P of R and mij and Mij are the min and max values of f respectively in each subregion Rij
+= 5(Σ^m_i=1 Δxi)(Σ^n_j=1 Δyj)
+= 5(4 - 2)(5 - 1)
+= 5 * 2 * 4
+= 40 
+L(f, P) = 40 <= ∫∫_R f(x,y)dA <= 40 = U(f, P)
+∫∫_R f(x,y)dA = 40
+
+example:
+R = [-5,-2] x [-6,-1] be a region in the xy-plane and let P be a partition of R
+calculate the double integral
+∫∫_R f(x,y)dA
+where f is a function such that mij = Mij = 3 for all partitions P of R and mij and Mij are the min and max values of f respectively in each subregion Rij
+= 3(Σ^m_i=1 Δxi)(Σ^n_j=1 Δyj)
+= 3(-2 - (-5))(-1 - (-6))
+= 3 * 3 * 5
+= 45
+L(f, P) = 45 <= ∫∫_R f(x,y)dA <= 45 = U(f, P)
+∫∫_R f(x,y)dA = 45
+
+Calculating a double integral using the mean value of X and Y
+R = [0,2] x [1,3] be a region in the xy-plane, let f(x,y) be a function defined over R. The lower and upper Riemann sums corresponding to an arbitrary partition P of R
+L(f, P) = (Σ^m_i=1)(Σ^n_j=1)(xi-1 + 2yj-1)ΔxiΔyj
+U(f, P) = (Σ^m_i=1)(Σ^n_j=1)(xi + 2yj)ΔxiΔyj
+using the definition of the double integral in terms of L(f,P) and U(f,P) compute 
+∫∫_R f(x,y)dA
+Hint:
+(Σ^m_i=1)(Σ^n_j=1)ΔxiΔyj = (xm^2 - x0^2)(yn - y0)
+for a function f(x,y) the double integral of f over a rectangular region R is the unique number I if it exists
+L(f, P) <= I <= U(f, P)
+over all partitions P of R
+xi = 1/2(xi-1 + xi) will always lie between xi-1 and xi and similarly yj = 1/2(yj-1 + yj) will always lie between yj-1 and yj
+xi-1 + 2yj-1 <= 1/2(xi-1 + xi) + 2 * 1/2(yj-1 + yj) <= xi + 2yj
+simplify
+xi-1 + 2yj-1 <= 1/2(xi-1 + xi) + (yj-1 + yj) <= xi + 2yj
+multiplying this by ΔxiΔyj and applying the double summation gives
+L(f, P) <= (Σ^m_i=1)(Σ^n_j=1)[1/2(xi-1 + xi) + (yj-1 + yj)]ΔxiΔyj <= U(f, P)
+separating our the sums using the addition and constant multiple rules
+L(f, P) <= 1/2(Σ^m_i=1)(Σ^n_j=1)(xi-1 + xi)ΔxiΔyj + (Σ^m_i=1)(Σ^n_j=1)(yj-1 + yj)ΔxiΔyj <= U(f, P)
+using the hint we get
+1/2(Σ^m_i=1)(Σ^n_j=1)(xi-1 + xi)ΔxiΔyj = 1/2(2^2 - 0^2)(3 - 1) = 4
+(Σ^m_i=1)(Σ^n_j=1)(yj-1 + yj)ΔxiΔyj = (3^2 - 1^2)(2 - 0) = 16
+L(f, P) <= 20 <= U(f, P)
+∫∫_R f(x,y)dA = 20
+
+example:
+R = [0,4] x [0,2] be a region in the xy-plane, let f(x,y) be a function defined over R. The lower and upper Riemann sums corresponding to an arbitrary partition P of R are given by
+L(f, P) = (Σ^m_i=1)(Σ^n_j=1)(4xi-1 + 2yj-1)ΔxiΔyj
+U(f, P) = (Σ^m_i=1)(Σ^n_j=1)(4xi + 2yj)ΔxiΔyj
+using the definition of the double integral ijn terms of L(f, P) and U(f, P) compute ∫∫_R f(x,y)dA
+hint: I may wish to make use of the following result
+4 * xi-1 + 2 * yj-1 <= 4 * 1/2(xi-1 + xi) + 2 * 1/2(yj-1 + yj) <= 4 * xi + 2 * yj
+simplifies to:
+4xi-1 + 2yj-1 <= 2(xi-1 + xi) + (yj-1 + yj) <= 4xi + 2yj
+2(Σ^m_i=1)(Σ^n_j=1)(xi-1 + xi)ΔxiΔyj = 2(4^2 - 0^2)(2 - 0) = 64
+(Σ^m_i=1)(Σ^n_j=1)(yj-1 + yj)ΔxiΔyj = (2^2 - 0^2)(4 - 0) = 16
+L(f, P) <= 80 <= U(f, P)
+∫∫_R f(x,y)dA = 80
+
+example:
+R = [2,5] x [-2,2] be a region in the xy-plane, let f(x,y) be a function defined over R. The lower and upper Riemann sums corresponding to an arbitrary partition P of R are given by
+L(f, P) = (Σ^m_i=1)(Σ^n_j=1)(2yj-1 - 2xi + 1)ΔxiΔyj
+U(f, P) = (Σ^m_i=1)(Σ^n_j=1)(2yj - 2xi-1 + 1)ΔxiΔyj
+using the definition of the double integral ijn terms of L(f, P) and U(f, P) compute ∫∫_R f(x,y)dA
+Hint: you may wish to make use of the following results
+(Σ^m_i=1)(Σ^n_j=1)(xi-1 + xi)ΔxiΔyj = (xm^2 - x0^2)(yn - y0)
+(Σ^m_i=1)(Σ^n_j=1)ΔxiΔyj = (xm - x0)(yn - y0)
+2yj-1 - 2xi + 1 <= 2 * 1/2(yj-1 + yj) - 2 * 1/2(xi-1 + xi) + 1 <= 2yj - 2xi-1 + 1
+simplifies:
+2yj-1 - 2xi + 1 <= (yj-1 + yj) - (xi-1 + xi) + 1 <= 2yj - 2xi-1 + 1
+L(f,P) <= (Σ^m_i=1)(Σ^n_j=1)[(yj-1 + yj) - (xi-1 + xi) + 1]ΔxiΔyj <= U(f, P)
+L(f,P) <= (Σ^m_i=1)(Σ^n_j=1)(yj-1 + yj)ΔxiΔyj - (Σ^m_i=1)(Σ^n_j=1)(xi-1 + xi)ΔxiΔyj + Σ^m_i=1)(Σ^n_j=1)ΔxiΔyj <= U(f, P)
+using the limit:
+(Σ^m_i=1)(Σ^n_j=1)(xi-1 + xi)ΔxiΔyj = (5^2 - 2^2)(2 - (-2)) = 84
+(Σ^m_i=1)(Σ^n_j=1)(yj-1 + yj)ΔxiΔyj = (2^2 - (-2)^2)(5 - 2) = 0
+(Σ^m_i=1)(Σ^n_j=1)ΔxiΔyj = (5 - 2)(2 - (-2)) = 12
+L(f,P) <= 0 - 84 + 12 <= U(f,P)
+= L(f,P) <= -72 <= U(f,P)
+∫∫_R f(x,y)dA = -72
+
+As long as f(x,y) is continuous and R is closed and bounded I will always exist
+positive continuous function, double integral gives the exact volume bounded between the surface z = f(x,y) and R
+the double integral gives a signed volme. If f is negative everywhere on R then the double integral of f over R is negative. if f is both positive and negative on R then the double integral gives the difference between the positive and negative unsigned volumes.
+its possible to use this definition with functions that are not continuous if a function f is defined over R we say that f is Riemann integrable over R if a unique number I can be found that satisfies the above inequality.
