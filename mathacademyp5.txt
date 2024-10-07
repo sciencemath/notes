@@ -1,0 +1,177 @@
+Probability
+Random Variables
+Transformations of random variables
+Expectation
+Discrete Probility Distributions
+Continuous Probability Distributions
+
+NOTE: Some of these problems are easy so showing steps would just take up space and time, the answer should be intutive on how to get there.
+
+--------------------------------------------
+
+The law of total probability
+three events B1, B2, and B3 exist within a sample space S
+B1, B2, and B3 are mutually exculsive and the events cover the entire sample space.
+When these two conditions are satisfied, S is the disjoint union of B1, B2, and B3 we write
+S = B1 ⊔ B2 ⊔ B3
+
+This is shown below:
+|-------------------|S
+|       /    \      |
+|  B4  /  B2  \ B3  |
+|     /        \    |
+|    /          \   |
+|-------------------|
+
+We now wish to compute the probability of an event A that lies within S, and its intersections with B1, B2, B3
+(the inner box is A, outer is S)
+
+|-------------------|S
+| ______/____\______| 
+| |A∩B1/ A∩B2 \A∩B3|| 
+| |__ /________\___||
+|    /          \   |
+|-------------------|
+
+The law of total probability can be deduced from this diagram, it states that
+P(A) = P(A ∩ B1) + P(A ∩ B2) + P(A ∩ B3)
+the law of total probability can be extended to arbitrary number of events
+P(A) = P(A ∩ B1) + P(A ∩ B2) + ...
+= Σ_i P(A ∩ Bi)
+where S = B1 ⊔ B2 ⊔ ... is disjoint union of S
+
+A worked example
+suppose that a particular garden is divided into three small plots. 10 tulips in the first plot 5 are yellow, 12 tulips in the second plot 6 are yellow and 14 tulips in the third plot 4 are yellow.
+Let A be the event that a chosen tulip is yellow
+B1 the event that the selected tulip comes from the first plot
+B2 " " second plot
+B3 " " third plot
+disjoint union
+B1 ⊔ B2 ⊔ B3
+covers the entire sample space, and that there a total of 10+12+14 = 36
+to calculate P(A ∩ B1) we take the number of yellow tulips in the first plot (5) and divide by total (36)
+P(A ∩ B1) = 5/36
+P(A ∩ B2) = 6/36
+P(A ∩ B3) = 4/36
+the probability that a randomly chosen tulip is yellow
+5/36 + 6/36 + 4/36 = 15/36
+= 5/12
+there is an easier way to solve this problem sum total of yellow tulips (5+6+4=15) and divide by the total number of tulips (10+12+14=36) we have to do it the way that we did to get used to the law of probability because they sometimes aren't intuitive and understanding law of probability will help when things get trickier.
+
+Applying the law of total probability
+A store has 40 employees of which 21 are male. The store is divided into three departments A,B, and C, there are 7 male workers in department A, 8 in C what is the probability that a randomly selected store worker is a male that works in department B?
+Let M be the event that the chosen worker is a male
+A be the event that the selected worker works in department A
+B " " department B
+C " " department C
+the disjoint union covers the entire sample space
+A ⊔ B ⊔ C
+law of total probability states:
+P(F) = P(F ∩ A) + P(F ∩ B) + P(F ∩ C)
+we want to find P(F ∩ B)
+P(F ∩ A) 7 male workers in dep A by total 7/40
+P(F ∩ C) 8/40
+we are given P(F) = 21/40
+substituting the above info into the law of total probability and solving for P(F ∩ B)
+P(F) = P(F ∩ A) + P(F ∩ B) + P(F ∩ C)
+21/40 = 7/40 + P(F ∩ B) + 8/40
+P(F ∩ B) = 21/40 - 7/40 - 8/40
+P(F ∩ B) = 6/40
+P(F ∩ B) = 3/20
+
+example:
+Melissa has three email accounts, the first account received 16 emails, of which 5 spam. Second account received 10 emails, and 2 were spam. Third account 14 emails 3 were spam. What is the probability that a randomly selected email across all her accounts is spam?
+10/40 = 1/4
+
+example:
+Mathias has three ranches A,B, and C. There are 100 goats in total across all three ranches. Ranch A has 14 ice cream goats, in ranch B there are 9 ice cream goats. If 35% of all goats are ice cream goats, what is the probability that a randomly selected goat is a ice cream goat from ranch C.
+(35% are ice cream goats from the 100 total)
+Ranch A 14/100
+Ranch B 9/100
+Ranch C 12/100
+12% is the probability that I would select an ice cream goat from ranch C
+
+Its more helpful to express the law of total probability using conditional probabilities. From the multiplication law for conditional probability:
+P(A ∩ B1) = P(A|B1)P(B1)
+P(A ∩ B2) = P(A|B2)P(B2)
+P(A ∩ B3) = P(A|B3)P(B3)
+substituting the above form into the law of total probability
+P(A) = P(A|B1)P(B1) + P(A|B2)P(B2) + P(A|B3)P(B3)
+
+example:
+Applying the law of total probability in terms of conditional probability
+Three factories produce the same spare part for a particular car model. Factory A produces 32% of the overall parts, 1.5% are defective. Factory B produces 33% parts, 2% are defective, factory C produces 35% parts, 1.4% are defective. If one part is selected randomly, what is the probability that is defective?
+D be the event that a randomly selected part is defective
+A be the event that the selected part was produced by Factory A
+B " " Factory B
+C " " Factory C
+the disjoint union covers the whole sample space
+A ⊔ B ⊔ C
+The probability that a randomly selected part is defective, we can use the law of total probability
+P(D) = P(D ∩ A) + P(D ∩ B) + P(D ∩ C)
+= P(D|A)P(A) + P(D|B)P(B) + P(D|C)P(C)
+Factory A produces 32% of the parts, factory B 33%, factory C 35%
+P(A) = 0.32, P(B) = 0.33, P(C) = 0.35
+1.5% parts from factory A, 2% parts from factory B, 1.4% parts from factory C are defective
+P(D|A) = 0.015, P(D|B) = 0.02, P(D|C) = 0.014
+subtituting
+P(D) = P(D|A)P(A) + P(D|B)P(B) + P(D|C)P(C)
+= (0.015)(0.32) + (0.02)(0.33) + (0.014)(0.35)
+= 0.0048 + 0.0066 + 0.0049
+= 0.0163
+this is the probability of randomly selecting part is defective
+
+example:
+Apple manufactures iphones. of the iphones manufactured, 45% are produced by the first machine, 25% are produced by second machine, third machine produces the remaining. If 8% of the iphones produced by the first machine, 4% by second, 5% by third are defective what is the probability that a randomly selected iphone is defective? 
+(0.08)(0.45) + (0.04)(0.25) + (0.05)(0.30)
+0.036 + 0.01 + 0.015 = 0.061
+
+example:
+We have three backpacks containing bananas. The probability of picking a bruised banana from backpack A is 1/6, backpack B is 1/5, backpack C 1/3. A backpack is selected at random and a banana is randomly selected from the backpack. What is the probability that the selected banana is bruised?
+backpack is random (3 total)
+let N equal the bruised banana event
+P(A) = P(B) = P(C) = 1/3
+P(N|A) = 1/6, P(N|B) = 1/5, P(N|C) = 1/3
+P(N) = P(N|A)P(A) + P(N|B)P(B) + P(N|C)P(C)
+= (1/6)(1/3) + (1/5)(1/3) + (1/3)(1/3)
+= 1/18 + 1/15 + 1/9
+= 21/90
+= 7/30
+
+finding a conditional probability using the law of total probability
+Three bags A,B, and C contains pears. It is known that 2/5 pears in bag A and 1/4 pears in bag B are green. A bag is selected at random, and a pear is randomly chosen from the bag. If the probability that the selected pear is green is 1/3 what proportion of pears from bag C are green?
+Let G be the event that the selected pear is green
+Let A be the event that the selected pear is from bag A
+Let B " " bag B
+Let C " " bag C
+A ⊔ B ⊔ C
+P(A) = P(B) = P(C) = 1/3
+2/5 of the pears in bag A and 1/4 of pears in bag B are green
+P(G|A) = 2/5, P(G|B) = 1/4
+the probability of picking a green pear from any of the three bags is 1/3
+P(G) = 1/3
+1/3 = (2/5)(1/3) + (1/4)(1/3) + P(G|C)(1/3)
+1/3 = 2/15 + 1/12 + 1/3 * P(G|C)
+1/3 * P(G|C) = 1/3 - 2/15 - 1/12
+1/3 * P(G|C) = 7/60
+P(G|C) = 7/20
+7/20 of pears from bag C are green
+
+example:
+A science teacher splits her chemistry class into three groups. 35% of all students are in Group A, 35% are in group B, and 30% are in group C. If 20% of the students in Group A obtained the top grade 10% in group B obtained top grade, and the probility that a randomly selected student from any group obtained the top grade is 0.255, what is the probability that a randomly selected student from Group C obtained top grade?
+P(A) = 0.35, P(B) = 0.35, P(C) = 0.30
+P(T|A) = 0.20, P(T|B) = 0.10
+P(G) = 0.255
+0.255 = (0.20)(0.35) + (0.10)(0.35) + P(T|C)(0.30)
+0.255 = 0.07 + 0.035 + 0.30P(T|C)
+0.30P(T|C) = 0.15
+P(T|C) = 0.5
+
+At a grocery store 40% of the customers by store brand toilet paper, 45% buy charmen toilet paper and 15% buy quiltern. It is known that 65% of the customers who purchase store brand toilet paper and 50% of customers who buy charmen pay with credit card. If the probability that a randomly selected customer pays with a credit card is 57.5% what percentage of quiltern toilet paper customer pay using a credit card?
+.575 = (0.40)(0.65) + (0.45)(0.50) + P(Q|C)(0.15)
+.575 = 0.26 + 0.225 + 0.15P(Q|C)
+.575 = 0.485 + 0.15P(Q|C)
+.575 - 0.485 = 0.15P(Q|C)
+0.09 = 0.15P(Q|C)
+P(Q|C) = 0.6 = 60%
+60% of quilten toilet paper customers pay with credit card
