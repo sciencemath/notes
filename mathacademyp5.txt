@@ -7,6 +7,8 @@ Continuous Probability Distributions
 
 NOTE: Some of these problems are easy so showing steps would just take up space and time, the answer should be intutive on how to get there.
 
+"Rationality is not about knowing facts, it’s about recognizing which facts are relevant."
+
 --------------------------------------------
 
 The law of total probability
@@ -175,3 +177,163 @@ At a grocery store 40% of the customers by store brand toilet paper, 45% buy cha
 0.09 = 0.15P(Q|C)
 P(Q|C) = 0.6 = 60%
 60% of quilten toilet paper customers pay with credit card
+
+===================================================
+https://www.youtube.com/watch?v=HZGCoVF3YvM
+
+For two events A and B, Bayes' theorem states that
+P(A|B) = P(B|A)P(A)/P(B)
+Deriving Bayes' theorem, recall that the multiplication law states that
+P(A|B) = P(A ∩ B)/P(B) (*)
+Swapping A and B in the multiplication law and noting that P(B ∩ A) = P(A ∩ B)
+P(B|A) = P(A ∩ B)/P(A)
+which can be written as 
+P(A ∩ B) = P(B|A)P(A)
+substituting the above expression for P(A ∩ B) into (*) gives Bayes' theorem
+
+Computing a conditional probability using bayes' theorem
+given that P(K|L) = 0.15, P(K) = 0.6 and P(L) = 0.4 compute P(L|K)
+P(L|K) = P(K|L)P(L)/P(K)
+= (0.15)(0.4)/0.6
+= 0.06/0.6
+= 0.1
+
+example:
+given P(B|A) = 0.2, P(A) = 0.3 and P(B) = 0.4 compute P(A|B)
+P(A|B) = (0.2)(0.3)/(0.4) = 0.15
+
+example:
+given P(C|A) = 0.6, P(A) = 0.4 and P(C) = 0.3 compute P(A|C)
+P(A|C) = (0.6)(0.4)/(0.3) = 0.8
+
+Bayes' theorem
+P(A|B) = P(B|A)P(A)/P(B)
+("|" given that)
+we can rewrite Bayes' theorem in a slightly different way
+P(A|B) = P(A) * P(B|A)/P)B
+Bayes' theorem is significant because it allows us to update our belief that a particular hypothesis is true when new evidence comes to light.
+Suppose a doctor wishes to asses the probability that a certain patient is infected with a particular disease. It is known that those aged 65 or older have a higher change of carrying a disease.
+A = the event that a randomly selected patient has the disease
+B = the event that a randomly selected patient is 65 years old or more
+P(has disease | patient 65+) = P(has disease) * P(patient 65+ | has disease)/P(patient 65+)
+P(has diesease) is called prior. It tells us the probability that a randomly selected patient has disease without considering other factors
+P(has diesease | patient 65+) is the likelihood. It tells us the proportion of infected people that are 65 or older. This quantity could be established by taking a random sample from the population of infected people and computing the ratio of those that are 65 or older
+Bayes' theorem allows us to update the hypothesis (the paitent has the disease) taking into account information about the patient (they are 65 or older) making use of existing available evidence (an estimate of the proportion of infected people that are 65 or older)
+if more evidence is introduced we will further improve the accuracy of the posterior.
+
+Applying Bayes' theorem
+Ireland citizens showed that 17% of all males smoke. Overall 27.3% of the population smoke, 51% of the population are male. If a smoker from this population is selected at random, what is the probability of them being male?
+Let S be the event that a randomly selected person smokes and let M be the event that they are male, we require P(M|S) we can compute using Bayes' theorem
+P(M|S) = P(S|M)P(M)/P(S)
+P(S|M) = 0.17, 17% of males smoke
+P(M) = 0.51 since 51% of the population are male
+P(S) = 0.273 since 27% of population smoke
+= (0.17)(0.51)/0.273
+= 32% (rounded)
+
+example:
+On a particular road, 80% of all vehicles are cars. It its known that 5% of all cars are white and 10% of all vehicles are white. If a white vehicle is selected at random, what is the probability that it is a car?
+P(C|W) = P(W|C)P(C)/P(W)
+P(W|C) = 0.05, 5% of all cars are white
+P(C) = 0.8, since 80% of all vehicles are cars
+P(W) = 0.1, 10% of all vehicles are white
+= (0.05)(0.8)/0.1
+
+example:
+A country showed 90% of all people with a degree speak 2 languages. Overall 63% of the population speaks 2 languages, and 31% of population has a degree. A person who speaks 2 languages is selected at random, what is the probability of them having a degree?
+P(D|L) = P(L|D)P(D)/P(L)
+= (0.90)(0.31)/0.63
+P(L|D) 0.9, 90% of people have a degree speak 2 languages
+P(D) 0.31, 31% has degree
+P(L) 0.63, 63% speak two languages
+
+Expressing Bayes' theorem in an alternative form using the law of total probability
+Bayes' theorem
+P(A|B) = P(B|A)P(A)/P(B)
+the law of total probability tells us
+P(B) = P(B|A)P(A) + P(B|A')P(A')
+substituting into bayes' theorem
+P(A|B) = P(B|A)P(A)/(P(B|A)P(A) + P(B|A')P(A'))
+
+Applying Bayes' Theorem with the law of total probability
+A bag contains 2 black pretzels and 4 green pretzels, a second bag has 2 black pretzels and 2 green pretzels, a bag is chosen at random and a pretzel is selected from the chosen bag also at random. Given that the selected pretzel is green what is the probability that it came from the second bag?
+Let G be the event that the selected pretzel is green and let S be the event that the second bag is chosen, then we requre P(S|G) which we can compute using Bayes' theorem
+P(S|G) = P(G|S)P(S)/P(G) = P(G|S)P(S)/P(G|S)P(S) + P(G|S')P(S')
+first bag contains 4 green pretzels and 2 black
+P(G|S') = 4/4+2 = 2/3
+second bag 2 green, 2 black pretzels
+P(G|S) = 2/2+2 = 1/2
+bags are selected at random
+P(S) = P(S') = 1/2
+using Bayes' Theorem:
+P(G|S)P(S)/P(G|S)P(S) + P(G|S')P(S')
+= ((1/2)(1/2))/((1/2)(1/2) + (2/3)(1/2))
+= (1/4)/(7/12)
+= 6/14
+= 3/7
+
+example:
+Two identical backpacks contains books. First backpack has 1 math book and 1 science book, the second backpack has 3 math books and 2 science books. A backpack is selected at random, and one book is chosen from the selected backpack also at random. If the selected book is a science book what is the probability that is is from second backpack?
+first backpack 1 science and 1 math book
+P(S|B') = 1/2
+second backpack 3 math, 2 science books
+P(S|B) 2/3+2 = 2/5
+backback selected at random
+P(B) = P(B') = 1/2
+P(B|S) = P(S|B)P(B)/P(S|B)P(B) + P(S|B')P(B')
+= ((2/5)(1/2))/((2/5)(1/2) + (1/2)(1/2))
+= (2/10)/(2/10) + (1/4)
+= (2/10)/(4/20) + (5/20)
+= (2/10)/(9/20)
+= 40/90
+= 4/9
+
+example:
+At a college 10% of males and 15% of females play baseball. If 40% of students in the college are male what is the probability that a randomly chosen baseball player is male? round to 4 decimals
+P(B|M) = (randomly chosen a baseball player, hypothesis are they male)
+P(M|B)P(M) = (males that play baseball)(total males)
+P(M|B')P(B') = (females that play baseball)(total females)
+= P(B|M) = P(M|B)P(M)/P(M|B)P(M) + P(M|B')P(B')
+= (0.10)(0.40)/(0.10)(0.40) + (0.15)(0.60)
+0.04/0.13
+~= 0.3077
+
+Accuracy of medical tests
+A lab test for a particular disease is conducted on a few patients. 94% patients are infected and 2% are not infected tested positive for disease. 5% of the entire population is infected with the disease. What is the probablity that a randomly chosen patient that tested postive is not infected. round to percent.
+D = the event that a randomly chosen patient is infected with the disease
+T = the event they tested positive
+P(D'|T) = P(T|D')P(D')/P(T) = P(T|D')P(D')/P(T|D)P(D) + P(T|D')P(D')
+An infected person tests positive is 94%, probability that a non-infected person tests positive is 2%
+P(T|D) = 0.94, P(T|D') = 0.02
+only 5% of the population has the disease
+P(D) = 0.05, P(D') = 1 - 0.05 = 0.95
+P(T|D')P(D')/P(T|D)P(D) + P(T|D')P(D')
+= (0.02)(0.95)/(0.94)(0.05) + (0.02)(0.95)
+~= 0.287
+~= 29%
+when a non-infected patient tests positive for a disease, it is a false postive
+when an infected patient tests negative for a disease, it is a false negative.
+
+example:
+(the wording messed me up here)
+a lab tests for a specific disease, 97% of patients are infected, 1% of those are not infected tested positive for the disease. Only 1% of the entire population is infected with the disease. What is the probability that a randomly chosen patient that tested positive is infected? round to 2 decimals
+D chosen patient is infected with disease
+T tested postive
+P(D|T) = P(T|D)P(D)/P(T) = P(T|D)P(D)/P(T|D)P(D) + P(T|D')P(D')
+infected person testing positive is 97%, not infected testing positve is 1%
+P(T|D) = 0.97, P(T|D') = 0.01
+only 1% of population has the disease
+P(D) = 0.01, P(D') = 1 - 0.01 = 0.99
+= (0.97)(0.01)/(0.97)(0.01) + (0.01)(0.99)
+~= 0.49
+
+example:
+(same question worded differently)
+95% infected, and 2% of those positive for disease. 20% of entire population is infected with the diesease. What is the probability a random chosen patient tested negative is infected
+Infected person testing positive: 95%, non-infected 2%
+P(T'|D) = 1 - 0.95 = 0.05,  P(T'|D') = 1 - 0.02 = 0.98
+only 20% of population has disease
+P(D) = 0.20, P(D') = 0.80
+P(D|T') = P('T|D)P(D)/P('T|D)P(D) + P(T'|D')P(D')
+(0.05)(0.2)/(0.05)(0.2) + (0.98)(0.8)
+~= 0.0126
