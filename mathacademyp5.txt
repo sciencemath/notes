@@ -9,6 +9,12 @@ NOTE: Some of these problems are easy so showing steps would just take up space 
 
 "Rationality is not about knowing facts, it’s about recognizing which facts are relevant."
 
+NOTE: 
+Probability Distrubtion functions (PDF) is f(x) tells you the shape of the graph (expontential, normal, or uniform distribution).
+Cumulative Probability Distribution functions (CDF), gives you the area under the curve up to a point. (usually to the left) P(X <= x)
+dF(x)/dx = f(x) from CDF -> PDF
+∫^x_-∞ f(x)dx = F(x) PDF -> CDF
+
 --------------------------------------------
 
 The law of total probability
@@ -935,3 +941,310 @@ P(X > 8) = P(8 < X < ∞)
 = [-3/x]|_8-∞
 = -(-3/8)
 = 3/8
+
+===================================================
+
+The cumulative distribution function (CDF) of a continuous random variable is defined the same way as for a discrete random variable
+given a continuous random variable X, the CDF is the function F(x)
+F(x) = P(X <= x)
+if our random variable has the probability density function (PDF) f(x)
+F(x) = P(X <= x) = ∫^x_-∞ f(t) dt
+for example, consider the random variable X with the following PDF:
+f(x) = {
+	2/pi(1 + x^2), x ∈ [0, ∞)
+	0,			   otherwise
+}
+to compute the CDF we integrate f(x):
+F(x) = ∫^x_-∞ f(t) dt
+∫^x_0 2/pi(1 + t^2) dt
+= 2/pi arctan(t)|_0-x
+= 2/pi arctan(x) - 2/pi(0)
+= 2/pi arctan(x)
+expressing our CDF as a function defined over the entire real line
+F(x) = {
+	0, 			    x < 0
+	2/pi arctan(x), x >= 0
+}
+
+finding a CDF given a PDF with a lower bound
+given that the random variable X has the probability density function
+f(x) = {
+	e^-x, x >= 0
+	0,    x < 0
+}
+find the cumulative distribution function F(x)
+Since our random variable X has a probability distribution function f(x) that is strictly positive only for x >= 0, the cumulative distribution function takes the following form:
+F(x) = P(X <= x) = {
+	0,    		    x < 0
+	∫^x_0 f(t) dt,  x >= 0
+}
+for the given probability density function
+∫^x_0 f(t) dt = ∫^x_0 e^-t td
+= -e^-t|_0-x
+= -e^-x + 1
+= 1 - e^(-x)
+so the cumulative distribution function is given by
+F(x) = {
+	0, 			x < 0
+	1 - e^(-x), x >= 0
+}
+
+example:
+given that the random variable X has the probability density function
+f(x) = {
+	1/x^2, x >= 1
+	0,     x < 1
+}
+the cumulative distribution function is
+F(x) = {
+	0,   x < 1
+	h(x) x >= 1
+}
+find the function h(x)
+random variable X has a probability distribution function f(x) that is strictly positive only for x >= 1, the cumulative distribution function takes the following form:
+F(x) = P(X <= x) = {
+	0,             x < 1
+	∫^x_1 f(t) dt  x >= 1
+}
+the given probability density function
+∫^x_1 f(t) dt = ∫^x_1 1/t^2 dt
+= -1/t|_1-x
+= -1/x - (-1/1)
+= -1/x + 1
+= 1 - 1/x
+so the cumulative function is given by
+F(x) = {
+	0,       x < 1
+	1 - 1/x, x>= 1
+}
+
+example:
+given that the random variable X has the probability density function
+f(x) = {
+	6e^(-6x), x >= 0
+	0,        x < 0
+}
+its cumulative distribution function is
+F(x) = {
+	0,    x < 0
+	h(x), x >= 0
+}
+∫^x_0 [6e^(-6x)] dx
+= [-e^(-6x)]|_0-x
+= -e^(-6x) + 1
+= 1 - e^(-6x)
+h(x) = 1 - e^(-6x) 
+
+computing a CDF given a PDF thats nonzero over all real numbers
+given that the random variable X has the probability density function
+f(x) = e^-|2x|, x ∈ (-∞, ∞)
+find the cumulative distribution function F(x)
+Since our random variable X has a probability distribution function f(x) that involves an absolute value, the cumulative distribution function takes the following form:
+F(x) = P(X <= x) = {
+	∫^x_-∞ e^(2t) dt, 					 x < 0
+	∫^0_-∞ e^(2t) dt + ∫^x_0 e^(-2t) dt, x >= 0
+}
+computing the integrals
+if x <= 0
+∫^x_-∞ e^(2t) dt
+= [e(2t)/2]|_-∞-x
+= e(2x)/2
+therefore
+∫^0_-∞ e^(2t) dt
+= e^(2x)/2|_x=0
+= 1/2
+if x > 0
+∫^x_0 e^(-2t) dt
+= [-e^(-2t)/2]|_0-x
+= -e^(-2x)/2 + 1/2
+as a result
+∫^0_-∞ e^(2t) dt + ∫^x_0 e^(-2t) dt
+= 1/2 + (-e^(-2x)/2 + 1/2)
+= 1 - e^(-2x)/2
+the cumulative distribution
+F(x) = {
+	e^2x/2,        x < 0
+	1 - e^(-2x)/2, x >= 0
+}
+
+example:
+given that the random variable X has the probability density function
+f(x) = e^(-|x/2|)/4, x ∈ (-∞, ∞)
+the cumulative distribution function is
+F(x) = {
+	e^(x/2)/2,  x < 0
+	h(x),       x >= 0
+}
+F(x) = P(X <= x) = {
+	∫^x_-∞ e^(t/2)/4 dt, x < 0
+	∫^0_-∞ e^(t/2)/4 dt + ∫^x_0 e^(-t/2)/4, x >= 0
+}
+if x <= 0
+∫^x_-∞ e^(t/2)/4 dt
+= [e^(t/2)/2]|_-∞-x
+= e^(x/2)/2
+therefore x = 0
+∫^0_-∞ e^(t/2)/4 dt
+= [e^(t/2)/2]|_x=0
+= 1/2
+if x > 0
+∫^x_0 e^(-t/2)/4 dt
+= [-e^(-t/2)/2]|_0-x
+= -e^(-x/2)/2 + 1/2
+∫^0_-∞ e^(t/2)/4 dt + ∫^x_0 e^(-t/2)/4
+= 1/2 + (-e^(-x/2)/2 + 1/2)
+= 1 - e^(-x/2)/2
+cumulative distribution
+F(x) {
+	e^(-x/2)/2,     x < 0
+	1 - e^(-x/2)/2, x >= 0
+}
+
+example:
+given that the random variable X has the probability density function
+f(x) = e^x/(1 + e^x)^2 x ∈ (-∞, ∞)
+cumulative distribution function of a continuous random variable X
+F(x) = P(X <= x) = ∫^x_-∞ f(t) dt
+for the given probability density function
+F(x) = ∫^x_-∞ f(t) dt
+= ∫^x_-∞ e^t/(1 + e^t)^2
+= [-1/1+e^t]|_-∞-x
+= -1/1+e^x + 1
+= 1 - 1/1 + e^x
+= e^x/1 + e^x
+
+finding a CDF given a PDF with lower and upper bounds
+when a random variable X has a probability distribution function f(x) that is strictly positive on the interval a <= x <= b only
+P(X <= x) = 0 for x < a
+P(X <= x) = 1 for x > b
+the cumulative distribution function in these cases
+F(x) = P(X <= x) = {
+	0,   		   x < a
+	∫^x_a f(t) dt, a <= x <= b
+	1, 			   x > b
+}
+
+probability density function
+f(x) = {
+	1/72(x), 0 <= x <= 12
+	0,       otherwise
+}
+find the cumulative distribution function F(x)
+random variable X has a probability distribution function f(x) that is strickly positive only for 0 <= x <= 12 the cumulative distribution function:
+F(x) = P(X <= x) = {
+	0, 			   x < 0
+	∫^x_0 f(t) dt, 0 <= x <= 12
+	1, 			   x > 12
+}
+probability density function
+∫^x_0 f(t) dt
+= ∫^x_0 1/72t dt
+= [1/144(t^2)]|_0-x
+= 1/144(x^2)
+cumulative distribution function
+F(x) = {
+	0,       x < 0
+	x^2/144, 0 <= x <= 12
+	1, 		 x > 12
+}
+
+example:
+probability density function
+f(x) = {
+	2/21(x),  2 <= x <= 5
+	0,        otherwise
+}
+cumulative distribution function
+F(x) = {
+	0, 	  x < 2
+	h(x), 2 <= x <= 5
+	1,    x > 5
+}
+∫^x_2 2/21(t) dt
+= [1/21(t^2)]|_2-x
+= 1/21(x^2) - 4/21
+= (x^2 - 4)/21
+cumulative distribution function
+F(x) = {
+	0, 			  x < 2
+	(x^2 - 4)/21, 2 <= x <= 5
+	1, 			  x > 5
+}
+
+example:
+probability density function
+f(x) = {
+	2/33(2 + x), 2 <= x <= 5
+	0,           otherwise
+}
+cumulative distribution function
+F(x) = {
+	0,    x < 2
+	h(x), 2 <= x <= 5
+	1,    x > 5
+}
+∫^x_2 2/33(2 + x) dt
+= [2/33(2 + x)]|_2-x
+= (4x + x^2)/33 - 12/33
+(x^2 + 4x - 12)
+(x - 2)(x + 6)/33
+F(x) {
+	0, 				   x < 2
+	(x - 2)(x + 6)/33, 2 <= x <= 5
+	1, 				   x > 5
+}
+
+Using a CDF to compute a probability over an interval
+As with discrete random variables, we can use the CDF of a continuous random variable to quickly compute a probability over an interval:
+P(a <= X <= b) = F(b) - F(a)
+For example, suppose that a random variable X has the following CDF
+F(x) = 1/(1 + e^-x), -∞ < x < ∞
+we can use the above CDF to quickly compute P(0 <= x <= 1)
+= F(1) - F(0)
+= 1/(1 + e^-1) - 1/(1 + e^0)
+= 1/(1 + e^-1) - 1/2
+~= 0.231
+For continuous random variables it doesn't matter whether or not we include the endpoints of the interval so we have
+P(0 <= X <= 1) = P(0 < X <= 1) = P(0 <= X < 1) = P(0 < X < 1) = 0.231
+in general for a continuous randon variable X
+P(a <= X <= b) = P(a < X <= b) = P(a <= X < b) = P(a < X < b) = F(b) - F(a)
+
+Computing a probability over an interval using a CDF
+F(x) = {
+	0, 			   x < 5
+	(x^2 - 25)/75, 5 <= x <= 10
+	1, 			   x > 10
+}
+find P(2 <= X <= 6)
+For continuous random variables it doesn't matter whether or not we include the endpoints of the interval. So we can perform this computation as follows
+P(2 <= X <= 6)
+= P(X <= 6) - P(X <= 2)
+= F(6) - F(2)
+= (6^2 - 25)/75 - 0
+= 11/75
+
+example:
+given that the random variable X has the cumulative distribution function
+F(x) = {
+	0,        x < 0
+	1 - e^-x, x >= 0
+}
+find P(X > 2)
+= 1 - P(X <= 2)
+= 1 - F(2)
+= 1 - (1 - e^-2)
+= e^(-2)
+= 1/e^2
+
+example:
+the random variable X has the cumulative distribution function
+F(x) = {
+	0, 		x < 0
+	x^2/25, 0 <= x <= 5
+	1, 		x > 5
+}
+find P(1 <= X <= 3)
+= P(X <= 3) - P(X <= 1)
+= F(3) - F(1)
+= 3^2/25 - 1^2/25
+= 8/25
