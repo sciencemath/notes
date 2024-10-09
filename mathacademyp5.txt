@@ -783,3 +783,155 @@ f(x) = {
 2/3 + 3/24
 16/24 + 3/24
 = 19/24
+
+===================================================
+
+NOTE: the negative from integrating comes from the upper bound ∞ minus the lower bound.
+
+Continuous random variables over the infinite domains
+it is common for the support S of a continuous random variable X to be an infinite interval. We often need to evaluate improper integrals when determining whether a function is a validpdf and to compute probabilites associated with such a random variable.
+f(x) = {
+	e^-x, x > 0
+	0,    otherwise
+}
+Is f(x) a valid probability density function?
+when drawing the graph we can clearly see that f(x) >= 0 for all x
+to check if f(x) satisfies second condition we need to compute the integral
+∫_S f(x) dx = ∫^infinity_0 e^-x dx
+= [-e^-x]|_0-infinity
+= [-e^-infinity] - [-e^0]
+= 0 - (-1)
+= 1
+f(x) satisfies both conditions, we conclude that f(x) is a valid probability density function
+
+checking if a given function is a valid pdf
+f(x) = {
+	1/(x - 2)^2, x >= 3
+	0,           otherwise
+}
+which are the statements that are true?
+1. f(x) >= 0 for all x >= 3
+2. ∫^infinity_3 f(x) dx = 1
+3. f(x) is a valid probability density function
+For a function f(x) to be a valid probability density function on a set S, it must satisfy the following conditions
+f(x) >= 0 for all ∈ S
+∫_S f(x) dx = 1
+statement 1 is true, x >= 3, f(x) = 1/(x - 2)^2 >= 0
+statement 2 is true
+∫^∞_3 f(x) dx = ∫^∞_3 1/(x - 2)^2 dx
+= ∫^∞_3 (x - 2)^-2 dx
+= [-1/(x - 2)]|_3-∞
+= - (0 - 1)
+= 1
+statment 3 is ture, since 1 and 2 are true, f(x) is a valid probability density function
+
+example:
+given f(x) which of the following is true?
+f(x) = {
+	2/x^3, x >= 1
+	0,     otherwise
+}
+1. f(x) >= 0 for all x >= 1
+2. ∫^∞_1 f(x) dx = 1
+3. f(x) is a valid probability density function
+statement 1 is true, x >= 1, f(x) >= 0
+∫^∞_1 2/x^3 dx
+= ∫^∞_1 2x^-3 dx
+= ∫^∞_1 2x^-2 dx
+= [-1/x^2]|_1-∞
+= -(-1/1)
+= 1
+all three are true statements
+
+example:
+given the function f(x) which statements are true
+f(x) = {
+	e^(1-x), x >= 1,
+	0,       otherwise
+}
+1. f(x) >= 0 for all x >= 1
+2. ∫^∞_1 f(x) dx = 1
+3. f(x) is valid probability density function
+∫^∞_1 e^(1-x) dx
+= [-e^(1 - x)]|_1-∞
+= -(-e^0)
+= 1
+all three statements are true
+
+solving for a constant given a PDF
+solve for k given that the following function is a probability density function
+f(x) = {
+	k/(4x + 1)^3, x >= 0
+	0,            otherwise
+}
+A function f(x) defined on a set S to be a valid probability density function, it must satisfy the following conditions:
+f(x) >= 0 for all x ∈ S
+∫_S f(x) dx = 1
+f(x) = k/(4x + 1)^3 on the interval x >= 0 the second condition states that ∫^infinity_0 k/(4x + 1)^3 dx = 1
+computing the integral on the left-hand side we get
+∫^∞_0 k/(4x + 1)^3 dx
+= -[k/8(4x - 1)^2]|_0-∞
+= k/8
+= k/8 = 1  =>  k = 8
+(to get from k/(4x + 1)^3 to k/8(4x - 1)^2 using substitution)
+(u = 4x + 1, du = 4dx, dx = du/4)
+(k/(4x + 1)^3 dx = k/u^3 * du/4 = k/4 ∫ u^-3 du)
+(∫ u^-3 du = u^-2/-2 = -1/2u^2)
+(k/4(-1/2u^2) = -k/8u^2 = -k/8(4x - 1)^2)
+
+example:
+Solve for k given that the following function is a probability density function
+f(x) = {
+	k/x^2, x >= 4,
+	0,     otherwise
+}
+∫^∞_4 k/x^2 dx
+= -[-k/x]|_4-∞
+k/4 = 1
+k = 4 
+
+Solve for k given the function is a probability density function
+f(x) = {
+	ke^(-3x), x >= 0
+	0,        otherwise
+}
+∫^∞_0 ke^(-3x) dx
+= k * [-1/3(e^(-3x))]|_0-∞
+= [-k/3(e^-3x)]|_0-∞
+= -(-k/3)
+= k/3
+k = 3
+
+Computing a probability over an unbounded interval
+compute P(X > 8) given that the random variable X has the probability density function 
+f(x) = {
+	5e^(-5x), x >= 0
+	0,        otherwise
+}
+P(X > 8) = P(8 < X < ∞)
+= ∫^∞_8 f(x) dx
+= ∫^∞_8 5e^(-5x) dx
+= [-e^(-5x)]|_8-∞
+= e^(-40)
+
+example:
+compute P(X >= 5) given that the random variable X has the probability density function:
+f(x) = {
+	8e^(-8x), x >= 0
+	0, 		  x < 0
+}
+P(X >= 5) = P(5 <= X < ∞)
+∫^∞_5 8e^(-8x) dx
+= [-e^(-8x)]|_5-∞
+= e^(-40)
+
+Compute P(X > 8) given that the random cariable X has the probability density function
+f(x) = {
+	3/x^2, x >= 3
+	0,     x < 3
+}
+P(X > 8) = P(8 < X < ∞)
+∫^∞_8 3/x^2 dx
+= [-3/x]|_8-∞
+= -(-3/8)
+= 3/8
