@@ -1334,3 +1334,175 @@ P(X > 2)
 we extend the endpoints of the interval X >= 3 by 0.5
 P(X >= 3) ~= P(Y >= 3 - 0.5)
 = P(Y >= 2.5)
+
+===================================================
+
+Simulating random observations
+Suppose we have a random variable with the cumulative distribution function
+F(x) = 1/(1 + e^-x), x ∈ (-∞, ∞)
+(the graph looks like a relu function midpoint is y = 0.5)
+suppose we want to generate a sample size n = 3 from this distribution
+first draw a random sample of size n = 3 from the uniform distribution Y ~ U[0,1]
+then find the values xi such that yi = F(xi)
+xi = F^-1(yi), i = 1,2,3
+F(x) is strictly increasing and therefore F^-1(y) exists for all y ∈ (0,1) moreover we set F^-1(0) = 0 and F^-1(1) = 1 to deal with the endpoints
+Suppose that we run our simulation and generate n = 3 numbers from Y ~ U[0,1] and that our three numbers (rounded to 3 decimals places)
+y1 = 0.214, y2 = 0.707, y3 = 0.819
+to compute our xi's we first need to find the inverse of F(x) so we write y = F(x)
+y = 1/(1 + e^-x)
+solving for x
+1 + e^-x = 1/y
+e^-x = (1/y) - 1
+e^-x = (1 - y)/y
+-x = ln(1 - y/y)
+x = -ln(1 - y/y)
+x = ln(1 - y/y)^-1
+x = ln(y/y - 1)
+where 0 < y < 1
+substituting the values y1,y2,y3 into the formula for x = F^-1(y)
+x1 ~= -1.301, x2 ~= 0.881, x3 ~= 1.510
+algorithm above can be formalized by the following theorem:
+Let the random variable Y ~ U[0,1] be uniformly distributed. Suppose that the function F(x) is a cumulative distribution function, where F(a) = 0, F(b) = 1 and F is strictly monotonic on a < x < b where a and b could be infinite then the random variable X is given by
+X = F^-1(Y)
+is a continuous random variable with the cumulative distribution function F(x)
+
+Simulating observations given a CDF
+This random sample was drawn from the uniform distribution U[0,1]
+0.352, 0.567, 0.801
+use these numbers to generate three random numbers that follow a probability distribution with the CDF F(x) given by
+F(x) = {
+	0, 		 x < 1
+	2 - 2/x, 1 <= x <= 2
+	1, 		 x > 2
+}
+Let the random variable Y ~ U[0,1] be uniformly distributed suppose that the function F(x) is a cumulative distribution function where F(a) = 0, F(b) = 1 and F is strictly monotonic on a < x < b then the random variable X is given by
+X = F^-1(Y)
+is a continuous random variable with the cumulative distribution function F(x)
+find the inverse of y = F(x) we solve the following equation for x taking into account that 1 <= x <= 2 and 0 < y < 1
+y = 2 - 2/x
+y - 2 = -2/x
+2 - y = 2/x
+x = 2/2-y
+substitute drawn from U[0,1]
+for y = 0.352, x = 2/2-0.352 ~= 1.214
+for y = 0.567, x = 2/2-0.567 ~= 1.396
+for y = 0.801, x = 2/2-0.801 ~= 1.668
+
+example:
+random sample was drawn from the uniform distribution U[0,1]
+0.103, 0.534, 0.847
+use these numbers to generate three random numbers that follow a probability distribution with the CDF F(x) given by
+F(x) = arctan(x)/pi + 1/2, x ∈ (-∞, ∞)
+y = arctan(x)/pi + 1/2
+y - 1/2 = arctan(x)/pi
+pi(y - 1/2) = arctan(x)
+x = tan(pi(y - 1/2))
+for y = 0.103, x = tan(pi(0.103 - 0.5)) ~= -2.982
+for y = 0.534, x = tan(pi(0.534 - 0.5)) ~= 0.107
+for y = 0.847, x = tan(pi(0.847 - 0.5)) ~= 1.918
+
+example:
+0.224, 0.389, 0.701
+Use these numbers to generate three random numbers that follow a probability distribution with the CDF F(x)
+F(x) = {
+	0,  			    x < 2
+	1 - (16/(2 + x)^2), x >= 2
+}
+y = 1 - (16/(2 + x)^2)
+y - 1 = -16/(2 + x)^2
+(1 - y)(2 + x)^2 = 16
+(2 + x) = sqrt(16/(1 - y))
+x = -2 +/- sqrt(16/(1 - y))
+x = -2 +/- 4/sqrt(1 - y)
+y = 0.224, x = 4/sqrt(1 - (0.224)) - 2 ~= 2.541
+y = 0.389, x = 4/sqrt(1 - (0.389)) - 2 ~= 3.117
+y = 0.701, x = 4/sqrt(1 - (0.701)) - 2 ~= 5.315
+
+simulating observations given a PDF
+random sample was drawn from the uniform distribution U[0,1]
+0.354, 0.593, 0.792
+use these numbers to generate three random numbers that follow a probability distribution with the PDF f(x) given by
+f(x) = {
+	cos(x), 0 <= x <= pi/2
+	0,      otherwise
+}
+Let the random variable Y ~ U[0,1] be uniformly distributed. suppose F(x) is a cumulative distribution function where F(a) = 0, F(b) = 1 and F is strictly monotonic on a < x < b
+X = F^-1(Y)
+is continuous random variable with the cumulative distribution function F(x)
+We must find the cumulative distribution function F(x) corresponding to our random variable. Since our PDF f(x) is non-negative only for 0 <= x <= pi/2
+F(x) = {
+	0, 			   x < 0
+	∫^x_0 f(t) dt, 0 <= x <= pi/2
+	1, 			   x > pi/2
+}
+evaluating the integral
+∫^x_0 f(t) dt = ∫^x_0 cos(t) dt
+= [sin(t)]|_0-pi
+= sin(x)
+the cumulative distribution
+F(x) = {
+	0,      x < 0
+	sin(x), 0 <= x <= pi/2
+	1,      x > pi/2
+}
+finding the inverse of y = F(x) so we solve the following equation for x taking into account that 0 <= x <= pi/2 and 0 < y < 1
+y = sin(x)
+x = arcsin(y)
+substitute the numbers drawn from U[0,1] into the equation
+y = 0.354, x = arcsin(0.354) ~= 0.362
+y = 0.593, x = arcsin(0.593) ~= 0.635
+y = 0.792, x = arcsin(0.792) ~= 0.914
+
+example:
+random numbers drawn from a unform distribution
+0.231, 0.412, 0.602
+use these numbers to generate three random numbers that follow a probability distribution with the PDF f(x)
+f(x) = {
+	x^2/72, 0 <= x <= 6
+	0,      otherwise
+}
+CDF:
+F(x) = {
+	0, 			   x < 0
+	∫^x_0 f(t) dt, 0 <= x <= 6
+	1,             x > 6
+}
+∫^x_0 [x^2/72]|_0-6
+= x^3/216
+inverse of y = F(x)
+y = x^3/216
+216y = x^3
+x = 6 * ∛y
+substitute
+y = 0.231, x = 6∛(0.231) ~= 3.681
+y = 0.412, x = 6∛(0.412) ~= 4.465
+y = 0.602, x = 6∛(0.602) ~= 5.066
+
+example:
+0.241, 0.532, 0.824
+PDF f(x)
+f(x) = {
+	sin(x), 0 <= x <= pi/2
+	0,      otherwise
+}
+CDF:
+F(x) = {
+	0,             x < 0
+	∫^x_0 f(t) dt, 0 <= x <= pi/2
+	1, 			   x > pi/2
+}
+CDF:
+F(x) = {
+	0,          x < 0
+	1 - cos(x), 0 <= x <= pi/2
+	1, 			x > 4
+}
+∫^x_0 [sin(x)]|_0-pi/2
+= 1 - cos(x)
+inverse of y = F(x)
+y = 1 - cos(x)
+solve for x
+x = cos^-1(1 - y)
+y = 0.241, x = arccos(1 - 0.241) = 0.709
+y = 0.532, x = arccos(1 - 0.532) = 1.084
+y = 0.824, x = arccos(1 - 0.824) = 1.394
