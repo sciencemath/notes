@@ -1710,3 +1710,7 @@ f_Y(y) = 3y^2 * f_X(1 - y^3)
 = 3y^2 * e^-(1 - y^3)
 = 3y^2e^(y^3 - 1)
 full expression for the PDF of Y
+f_Y(y) = {
+	3y^2e^(y^3 - 1), y < 1
+	0,               otherwise
+}
