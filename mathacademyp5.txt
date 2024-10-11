@@ -1506,3 +1506,207 @@ x = cos^-1(1 - y)
 y = 0.241, x = arccos(1 - 0.241) = 0.709
 y = 0.532, x = arccos(1 - 0.532) = 1.084
 y = 0.824, x = arccos(1 - 0.824) = 1.394
+
+===================================================
+
+One-to-One transformations of discrete random variables
+and Many-to-One tranformations of discrete random variables
+(no notes needed for this section, simple algebra operations)
+
+===================================================
+
+NOTE:
+Use 1 - F_X when calculating the probability of an event where you're considering the compliment (like X being greater than a certain value)
+Use F_X when you are directly looking for the probabililty of X being less than or equal to a value
+(it depends on whether you're working with CDF or their compliments)
+
+The Distribution function method
+to find the PDF of Y, we can use the distributed function method, and it consists of two steps
+first, we find an expression for F_Y in terms of F_X where F_Y and F_X are the cumulative distribution functions of Y and X
+then we differentiate F_Y to get the probability density function f_Y of Y
+
+A worked example
+a continuous random variable X is defined
+f_X(x) = {
+	e^-x, x > 0
+	0,    otherwise
+}
+Y = 1 + 2X we can use the distribution function to find the probability density function of Y
+Y = 1 + 2X is a strictly increasing function of X. Moreover for x > 0 we have y > 1
+lets consider y > 1 we write down the definition of the cumulative distribution of Y and then use our transformation to isolate X in the parentheses, this will allow us to write F_Y in terms of F_X
+F_Y(y) = P(Y <= y)
+= P(2X + 1 <= y)
+= P(2X <= y - 1)
+= P(X <= (y - 1)/2)
+= F_X((y - 1)/2)
+compute the PDF f_Y(y) for y > 1 we differentiate F_Y with respect to y using the chain rule
+f_Y(y) = F'_Y(y)
+= d/dy(F_X((y - 1)/2))
+= d/dy((y - 1)/2) * F'_X((y - 1)/2)
+= 1/2 * F'_X((y - 1)/2)
+= 1/2 * f_X((y - 1)/2)
+applying the definition of f_X
+f_Y(y) = 1/2 * f_X((y - 1)/2)
+= 1/2 * e^-(y - 1)/2
+= 1/2(e^(1-y)/2)
+the full expression for the PDF of Y is
+f_Y(y) = {
+	1/2(e^(1-y)/2), y > 1
+	0,              otherwise
+}
+sometimes its worthwild to check this is a valid PDF
+
+Computing the PDF of a random variable under an affine transformation
+Let X be a continuous random variable with the following probability density function
+f_X(x) = {
+	2x, 0 < x < 1
+	0,  otherwise
+}
+if Y = 1 - 3X then what is the probability density function of Y
+to compute the probability density function of a random variable Y where Y = u(X) is a continuous strictly monotonic function of a continuous random variable X
+Find an expression for F_Y terms of F_X where F_Y and F_X are cumulative distribution functions of Y and X respectively
+then we differentiate F_Y to get the probability density function f_Y
+Y = 1 - 3X is a stictly decreasing function of X for 0 < x < 1 we have -2 < y < 1
+using the definition of the cumulative distribution of Y for -2 < y < 1
+F_Y(y) = P(Y <= y)
+= P(1 - 3X <= y)
+= P(-3X <= y - 1)
+= P(X >= 1 - y/3)
+= 1 - F_X(1 - y/3)
+to compute the PDF f_Y(y) for -2 < y < 1 we differentiate F_Y with respect to y using the chain rule
+f_Y(y) = F'_Y(y)
+= 0 - (-1/3) * F'_X(1 - y/3)
+= 1/3 * f_X(1 - y/3)
+applying the definition of f_X
+f_Y(y) = 1/3 * f_X(1 - y/3)
+= 1/3 * 2 * (1 - y/3)
+= 2/9(1 - y)
+PDF
+f_Y(y) = {
+	2/9(1 - y), -2 < y < 1
+	0,           otherwise
+}
+
+example:
+X is a continuous random variable with the PDF
+f_X(x) = {
+	4e^(-4x), x > 0
+	0,        otherwise
+}
+if Y = 2X then what is the probability density function of Y
+F_Y(y) = P(Y <= y)
+= P(2X <= y)
+= P(X <= y/2)
+F_X(y/2)
+to compute the PDF f_Y(y) for y > 0 we differentiate F_Y with respect to y using the chain rule
+f_Y(y) = F'_Y(y)
+= 1/2 * F'_x(y/2)
+= 1/2 * f_X(y/2)
+apply the definition of f_X
+f_Y(y) = 1/2 * f_X(y/2)
+= 1/2 * 4e^(-4*y/2)
+= 2e^(-2y)
+full expression PDF
+f_Y(y) = {
+	2e^(-2y), y > 0
+	0,        otherwise
+}
+
+example:
+PDF:
+f_X(x) = {
+	3e^(-3x), x > 0
+	0,        otherwise
+}
+if Y = 1 - 2X then what is the probability density function of Y?
+= P(1 - 2X <= y)
+= P(X >= 1 - y/2)
+= 1 - F_X(1 - y/2)
+chain rule
+f_Y(y) = F'_Y(y)
+= 0 - (-1/2) * F'_X(1 - y/2)
+= 1/2 * f_X(1 - y/2)
+applying f_X
+f_Y(y) = 1/2 * f_X(1 - y/2)
+= 1/2 * 3e^(-3(x))
+= 1/2 * 3e^(-3(1 - y/2))
+= 3/2(e^(-3(1 - y/2)))
+full PDF expression
+f_Y(y) = {
+	3/2(e^(-3(1 - y/2))), y <= 1
+	0,                    otherwise
+}
+
+computing the PDF of a random variable under a nonlinear transformation
+Let X be a continuous random variable with the following probability density function
+f_X(x) = {
+	3/8(2 - x)^2, 0 < x < 2
+	0,            otherwise
+}
+if Y = (2 - X)^3 what is the probility density function of Y
+First find an expression for F_Y in terms of F_X where F_Y and F_X are the cumulative distribution functions of Y and X.
+Next we differentiate F_Y to get the probabillity density function f_Y
+Y = (2 - X)^3 is a strictly decreasing function of X for 0 < x < 2 we have 0 < y < 8
+cumulative distribution of Y for 0 < y < 8
+f_Y(y) = P(Y <= y)
+= P((2 - X)^3 <= y)
+= P(2 - X <= y^(1/3))
+= P(-X <= y^(1/3) - 2)
+= P(X >= 2 - y^(1/3))
+= 1 - F_X(2 - y^(1/3))
+compute PDF f_Y(y) for 0 < y < 8 respect to y chain rule
+f_Y(y) = F'_Y(y)
+= 0 - (-1/3y^(2/3)) * F'_X(2 - y^(1/3))
+= 1/3y^(2/3) * F'_X(2 - y^(1/3))
+applying the definition of f_X (substitute)
+f_Y(y) = 1/3y^(2/3) * f_X(2 - y^(1/3))
+= 1/3y^(2/3) * 3/8(2 - (2 - y^(1/3)))^2
+= 1/3y^(2/3) * 3/8(2 - 2 + y^(1/3))^2
+= 1/3y^(2/3) * 3/8(y^(1/3))^2
+= 1/8
+full PDF for Y
+f_Y(y) = {
+	1/8, 0 < y < 8
+	0,   otherwise
+}
+
+example: 
+probability density function
+f_X(x) = {
+	3x^2, 0 < x < 1
+	0,    otherwise
+}
+Y = X^3 whats PDF of Y
+= P(X^3 <= y)
+= P(X <= y^(1/3))
+= F_X(y^(1/3))
+chain rule
+f_Y(y) = F'_Y(y)
+= 1/3y^(2/3) * F'_X(y^(1/3))
+applying the definition of f_X (substitute)
+= 1/3y^(-2/3) * f_X(y^(1/3))
+= 1/3y^(-2/3) * f_X(y^(1/3))
+definition of f_X
+f_Y(y) = 1/3y^(-2/3) * f_X(y^(1/3))
+= 1/3y^(-2/3) * 3(y^(1/3))^2
+= 1/3y^(-2/3) * 3y^(2/3))
+= 1
+
+example:
+PDF:
+f_X(x) = {
+	e^(-x), x > 0
+	0,      otherwise
+}
+Y = ∛1 - X, PDF of Y?
+= P(-X <= y^3 - 1)
+= P(X >= 1 - y^3)
+= 1 - F_X(1 - y^3)
+chain rule
+= 0 - (-3y^2) * F'_X(1 - y^3)
+= 3y^2 * f_X(1 - y^3)
+definition of f_X
+f_Y(y) = 3y^2 * f_X(1 - y^3)
+= 3y^2 * e^-(1 - y^3)
+= 3y^2e^(y^3 - 1)
+full expression for the PDF of Y
