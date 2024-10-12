@@ -15,6 +15,9 @@ Cumulative Probability Distribution functions (CDF), gives you the area under th
 dF(x)/dx = f(x) from CDF -> PDF
 ∫^x_-∞ f(x)dx = F(x) PDF -> CDF
 
+NOTE:
+Another identity sin(pi/2 +/- y) = cos(y)
+
 --------------------------------------------
 
 The law of total probability
@@ -1941,3 +1944,257 @@ f_X(u^-1(y))(u^-1)`(y)
 because u is monotonically increasing, u^-1 is monotonically increasing as well, its helpful to reflect a function over the line y = x to get its inverse
 The slope of monotonically increasing function is always zero or postive we have (u^-1)`(y) >= 0 consequently (u^-1)`(y) = |(u^-1)`(y)|
 f_Y(y) = f_X(u^-1(y))|(u^-1)`(y)|
+
+===================================================
+
+Distribution function method with many-to-one transformations
+we can also use the distribution method in cases where u is not monotonic.
+
+A worked example
+Let X be a continuous random variable, PDF
+f_X(x) = {
+	3/16(x^2), 0 < |x| < 2
+	0,         otherwise
+}
+Y = X^2 - 1
+this is two-to-one over interval 0 < |x| < 2
+for y values -1 < y < 3
+we first write doen the definition of the cumulative distribution of Y and then use our transformation to isolate X in the parentheses. This will allow us to write F_Y in terms of F_X
+F_Y(y) = P(Y <= y)
+= P(X^2 - 1 <= y)
+= P(X^2 <= y + 1)
+= P(-(y + 1)^1/2 <= X <= (y + 1)^1/2)
+= F_X((y + 1)^1/2) - F_X(-(y + 1)^1/2)
+To compute the PDF f_Y(y) for -1 < y < 3 differentiate F_Y with respect to y using the chain rule
+f_Y(y) = F'_Y(y)
+= 1/2(y + 1)^-1/2 * F'_X((y + 1)^1/2) + 1/2(y + 1)^-1/2 * F'_X(-(y + 1)^1/2)
+= 1/2(y + 1)^-1/2 * f_X((y + 1)^1/2) + 1/2(y + 1)^-1/2 * f_X(-(y + 1)^1/2)
+= 1/2(y + 1)^-1/2(f_X((y + 1)^1/2) + f_X(-(y + 1)^1/2))
+applying definition of f_X
+f_Y(y) = 1/2(y + 1)^-1/2(f_X((y + 1)^1/2) + f_X(-(y + 1)^1/2))
+= 1/2(y + 1)^-1/2(3/16((y + 1)^1/2)^2 + 3/16(-(y + 1)^1/2)^2)
+= 1/2(y + 1)^-1/2(3/16(y + 1) + 3/16(y + 1))
+= 3/16(y + 1)^-1/2(y + 1)
+= 3/16(y + 1)^1/2
+= 3/16(sqrt(y + 1))
+PDF of Y
+f_Y(y) = {
+	3/16(sqrt(y + 1)), -1 < y < 3
+	0,                  otherwise
+}
+
+Applying two-to-one transformations to random variables
+let X be a continuous random variable with the PDF:
+f_X(x) = {
+	1/24(x + 1)^2, -3 < x < 3
+	0,             otherwise
+}
+if Y = |X| whats the probability density function of Y?
+over the interval -3 < x < 3
+0 <= y < 3
+definition of the cumulative distribution of Y for 0 <= y < 3
+F_Y(y) = P(Y <= y)
+= P(|X| <= y)
+= P(-y <= X <= y)
+= F_X(y) - F_X(-y)
+chain rule
+f_Y(y) = F'_Y(y)
+= F'_X(y) - (-1)F'_X(-y)
+= F'_X(y) + F'_X(-y)
+= f_X(y) + f_X(-y)
+apply definition of f_X
+F_Y(y) = f_X(y) + f_X(-y)
+= 1/24(y + 1)^2 + 1/24(-y + 1)^2
+= 1/24[(y^2 + 2y + 1) + (y^2 - 2y + 1)]
+= 1/24(2y^2 + 2)
+= 1/12(y^2 + 1)
+PDF of Y
+f_Y(y) = {
+	1/12(y^2 + 1), 0 <= y < 3
+	0,             otherwise
+}
+
+example:
+PDF:
+f_X(x) = {
+	1/18(x^2), -3 < x < 3
+	0,         otherwise
+}
+Y = X^2 what is the PDF of Y?
+Y nonzero on 0 < y < 9
+= P(X^2 <= y)
+= P(-(y)^1/2 <= X <= (y)^1/2)
+= F_X((y)^1/2) - F_X(-(y)^1/2)
+chain rule
+= 1/2(y^-1/2) * F'_X((y)^1/2) + 1/2(y)^-1/2 * F'_X(-(y)^1/2)
+= 1/2(y^-1/2) * f_X((y)^1/2) + 1/2(y)^-1/2 * f_X(-(y)^1/2)
+= 1/2(y^-1/2)(f_X((y)^1/2) + f_X(-(y)^1/2))
+applying definition of f_X
+= 1/2(y^-1/2)(1/18((y)^1/2)^2 + 1/18(-(y)^1/2)^2)
+= 1/2(y^-1/2)(1/18(y) + 1/18(y))
+= 1/2(y^-1/2)(2/18(y))
+= 1/18(y^-1/2)
+= 1/18(sqrt(y))
+full PDF of Y
+f_Y(y) = {
+	1/18(sqrt(y)), 0 < y < 9
+	0,             otherwise
+}
+
+example:
+PDF:
+f_X(x) = {
+	sin(x)/2, 0 < x < pi
+	0,        otherwise
+}
+Y = |X - pi/2| whats the PDF of Y?
+= P(X - pi/2 <= y)
+= P(pi/2 - y <= X <= pi/2 + y)
+= F_X((pi/2 + y)) - F_X(pi/2 - y)
+chain rule
+= (1)F'_X(pi/2 + y) - (-1)F'_X(pi/2 - y)
+= F'_X(pi/2 + y) + F'_X(pi/2 - y)
+= f_X(pi/2 + y) + f_X(pi/2 - y)
+= sin(pi/2 + y)/2 + sin(pi/2 - y)/2
+= cos(y)/2 + cos(y)/2
+= 2cos(y)/2
+= cos(y)
+full PDF expression:
+f_Y(y) = {
+	cos(y), 0 <= y <= pi/2
+	0,      otherwise
+}
+
+One-to-one and many-to-one transformations
+cases where u(X) is both one-to-one and many-to-one over different intervals
+as an example PDF:
+f_X(x) = {
+	e^(x-1), x < 1
+	0,       otherwise
+}
+Y = |X|
+over the interval x < 1
+computing the PDF of Y we separately apply the distribution function method on the regions where Y is one-to-one and many-to-one
+Transformation is one-to-one over the interval x <= -1 on interval y >= 1
+Transformation is two-to-one over the inverval -1 < x < 1 on 0 <= y <1
+(graphing the function for visual interval reference)
+We need to consider these two cases separately
+first y >= 1
+F_Y(y) = P(Y <= y)
+= P(|X| <= y)
+= P(-X <= y)
+= P(X >= -y)
+= 1 - P(X <= -y)
+= 1 - F_X(-y)
+we used |X| = -X for X < 0
+PDF for y >= 1
+d/dy(1 - F_X(-y))
+= F'_X(-y)
+= f_X(-y)
+definition of f_X
+f_Y(y) = f_X(-y)
+= e^-(y-1)
+next 0 <= y < 1
+= P(|X| <= y)
+= P(-y <= X <= y)
+= F_X(y) - F_X(-y)
+PDF for 0 <= y < 1, chain
+d/dy(F_X(y) - F_X(-y))
+= F_X(y) + F'_X(-y)
+= f_X(y) + f_X(-y)
+definition of f_X
+f_Y(y) = f_X(y) + f_X(-y)
+= e^(y-1) + e^-(y-1)
+full expression for the PDF:
+f_Y(y) = {
+	e^(y-1) + e^-(y-1), 0 <= y < 1
+	e^-(y-1),           y >= 1
+	0,				    otherwise
+}
+
+example:
+X is a continuous random variable its PDF:
+f_X(x) = {
+	1/5, 0 < x < 5
+	0,   otherwise
+}
+PDF of Y = (X - 3)^2 is given by
+f_Y(y) = {
+	g(y), 0 < y < 4
+	h(y), 4 <= y < 9
+	0,    otherwise
+}
+find the function h(y)
+(first you can visulaize the transformation plug in Y = (X - 3)^2 and simply look at the interval 0 < x < 5)
+Transformation is one-to-one over the interval 0 < x <= 1, on this interval Y is nonzero on 4 <= y < 9
+Transformation is two-to-one over the interval 1 < x < 5 on this interval, Y is nonzero on 0 < y < 4
+for this question we only look at 4 <= y < 9
+definition of the cumulative distribution of Y, for 4 <= y < 9
+F_Y(y) = P(Y <= y)
+= P((X - 3)^2 <= y)
+= P(sqrt((X - 3)^2) <= sqrt(y))
+= P(|X - 3| <= sqrt(y))
+= P(X - 3 >= -sqrt(y))
+= P(X >= 3 - sqrt(y))
+= 1 - P(X <= 3 - sqrt(y))
+= 1 - F_X(3 - sqrt(y))
+To compute the PDF f_Y(y) for 4 <= y < 9 chain rule:
+f_Y(y) = F'_Y(y)
+= d/dy(1 - F_X(3 - sqrt(y)))
+= 1/2sqrt(y) * f_X(3 - sqrt(y))
+applying definition of f_X
+f_Y(y) = 1/2sqrt(y) * f_X(3 - sqrt(y))
+= 1/2sqrt(y) * 1/5
+h(y) = 1/10sqrt(y)
+
+example:
+PDF:
+f_X(x) = {
+	1/3(x^2), -1 < x < 2
+	0,        otherwise
+}
+PDF of Y = X^2 is
+f_Y(y) = {
+	g(y), 0 < y < 1
+	h(y), 1 <= y < 4
+	0,    otherwise
+}
+find h(y)
+F_Y(y) = P(Y <= y)
+= P(X^2 <= y)
+= P(X <= sqrt(y))
+= P(X <= y^1/2)
+F_X(y^1/2)
+= 1/2y^-1/2 * F'_X(y^1/2)
+= 1/2y^-1/2 * f_X(y^1/2)
+applying the definition of f_X
+f_Y(y) = 1/2y^-1/2 * f_X(y^1/2)
+= 1/2y^-1/2 * 1/3(y^1/2)^2
+= 1/2y^-1/2 * 1/3y
+h(y) = 1/6(y^1/2)
+
+example:
+PDF:
+f_X(x) = {
+	1/3(x^2), -1 < x < 2
+	0,        otherwise
+}
+PDF of Y = X^2 is given by
+f_Y(y) = {
+	g(y), 0 < y < 1
+	h(y), 1 <= y < 4
+	0,    otherwise
+}
+find g(y)
+= P(X^2 <= y)
+= P(-y^1/2 <= X <= y^1/2)
+compute PDF f_Y(y) for 0 < y < 1 chain rule:
+= 1/2y^-1/2 * F'_X(y^1/2) + 1/2y^-1/2 * F'_X(-y^1/2)
+= 1/2y^-1/2 * f_X(y^1/2) + 1/2y^-1/2 * f_X(-y^1/2)
+= 1/2y^-1/2(f_X(y^1/2) + f_X(-y^1/2))
+apply definition of f_X
+= 1/2y^-1/2(1/3(y^1/2)^2 + 1/3(-y^1/2)^2)
+= 1/2y^-1/2(1/3(y) + 1/3(y))
+= 1/2y^-1/2(2/3(y))
+= 1/3(y^1/2)
+g(y) = 1/3(y^1/2)
