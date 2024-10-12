@@ -2704,3 +2704,128 @@ E[E[X]^2] = E[X]^2
 Var[X] = E[X^2] + E[-2E[X] * X] + E[E[X]^2]
 = E[X^2] - 2E[X]^2 + E[X]^2
 = E[X^2] - E[X]^2
+
+===================================================
+
+The variance of a constant is always 0, for any constant a
+Var[a] = 0
+
+computing the variance of a constant
+calculate Var[4k^2 - 1] where k is a constant
+since k is a constant 4k^2 - 1 is also a constant
+Var[4k^2 - 1] = 0
+
+example:
+Var[pi] = 0
+Var[k^2] = 0
+
+the variance of a scaled random variable
+X is a random variable and a is a constant then
+Var[aX] = a^2Var[X]
+if we know that Var[X] = 2, then
+Var[3X] = 3^2 * Var[X]
+= 9 * Var[X]
+= 9 * 2
+= 18
+similarly
+Var[-4X] = (-4)^2 * Var[X]
+= 16 * Var[X]
+= 16 * 2
+= 32
+why do we sqare the constant when we factor it outside the variance?
+Var[X] = E[(X - E[X])^2]
+Var[aX] = E[(aX - E[aX])^2]
+= E[(aX - aE[X])^2]
+= E[a^2(X - E[X])^2]
+= a^2E[(X - E[X])^2]
+= a^2Var[X]
+
+computing the variance of a scaled random variable
+the probability distribution of the random variable X is given below, given that E[X] = 2.3 calculate Var[-10X]
+------------------
+x    | 1 | 2 | 3 |
+f(x) |0.2|0.3|0.5|
+------------------
+Var[aX] = a^2*Var[X]
+a = -10
+Var[-10X] = (-10)^2 * Var[X]
+= 100 * Var[X]
+compute the variance of X using the formula
+Var[X] = E[X^2] - E[X]^2
+given E[X] = 2.3
+E[X^2] = 0.2 + 4(0.3) + 9(0.5)
+= 5.9
+5.9 - (2.3)^2
+= 0.61
+Var[-10X] = 100 * Var[X]
+= 100 * 0.61
+= 61
+
+example:
+Var[X] = 8, calculate Var[2X]
+Var[2X] = (2)^2 * 8
+= 32
+
+example:
+E[X] = 7, calculate Var[5X]
+------------------
+x    | 5 | 6 | 9 |
+f(x) |1/5|2/5|2/5|
+------------------
+E[X^2] = 25(1/5) + 36(2/5) + 81(2/5)
+= 25/5 + 72/5 + 162/5
+= 259/5 - 245/5
+= 14/5
+Var[5X] = 25 * 14/5
+= 350/5
+= 70
+
+When a random variable is scaled by a factor of a and shifted by a constant b
+the variance is scaled by a factor of a^2
+the variance is unaffected by the shift
+Shifting all values of X by a fixed amount does not change how far apart those values are form each other
+if we know that Var[X] = 3
+Var[2X + 1] = 2^2 * Var[X]
+= 2^2 * 3
+= 4 * 3
+= 12
+
+variance of a transformed random variable
+Var[X] = 10 calculate Var[1 - 2X]
+Var[aX + b] = a^2 * Var[X]
+a = -2, and b = 1
+Var[1 - 2X] = (-2)^2 * Var[X]
+= 4 * 10
+= 40
+
+example:
+Var[X] = 8, Var[4X + 3]
+16 * 8 = 128
+
+example:
+E[X] = 7, calculate Var[2 - 5X]
+------------------
+x    | 5 | 6 | 9 |
+f(x) |1/5|2/5|2/5|
+------------------
+E[X^2] = 25(1/5) + 36(2/5) + 81(2/5)
+= 25/5 + 72/5 + 162/5
+= 259/5 - 245/5
+= 14/5
+Var[2 - 5X] = 25 * Var[X]
+Var[-5X] = 25 * 14/5
+= 14 * 5
+= 70
+
+proof of general formula
+Var[aX + b] = a^2Var[X]
+by definition
+Var[X] = E[aX - E[X])^2]
+Var[aX + b] = E[(aX + b - E[aX + b])^2]
+simplify
+E[(aX + b - E[aX + b])^2] = E[(aX + b - aE[X] - b)^2]
+= E[(aX - aE[X])^2]
+= E[(a(X - E[X]))^2]
+= E[a^2(X - E[X])^2]
+= a^2E[(X - E[X])^2]
+= a^2Var[X]
