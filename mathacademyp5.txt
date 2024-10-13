@@ -3687,3 +3687,73 @@ f(x) = {
 }
 there are 2 items (5,6)
 2 * 1/7 = 2/7
+
+===================================================
+
+Modeling with discrete uniform distributions
+Occurs regularly in games of chance
+for example, in a particular lottery, players must select a number from the set: {1,2,...,50}
+A player randomly selects a number from this set such that each number has an equal probability of being selected if X represents the number the player chooses we can model this situation using a discrete uniform distribution
+X ~ U{1,2,...,50}
+since S = {1,2,...,50} has |S| = 50 items the probability mass function for the random variable X
+f(x) = {
+	1/50, x ∈ {1,2,...,50}
+	0,    otherwise
+}
+
+determining when a discrete uniform distribution is appropriate
+to apply a discrete uniform probability model to a situation in context
+The support S of our random variable should be finite
+Each x ∈ S must be equally likely
+some common pitfalls
+We cannot use a discrete uniform distribution to model continuous measurements
+(for example weight, time and distance)
+We must be wary of discrete models requiring infinitely large support
+(X could be any positive integer if it represents something like number of suicides in a given month. X is hopefully 0 or a very small number but a variable with inifinite support is more appropriate)
+
+Determining situations that can be modeled as a discrete uniform distributino
+which of the following can be modeled as a discrete uniform distribution
+1. The amount of time, in seconds, needed to download a game
+2. the number obtained when rolling a fair 4-sided die whose sides are labeled 5,6,7,8
+3. the number of rainy days in a randomly selected summer month in NY
+1) cannot be modeled as a discrete uniform distribution, time is a real number and the support is not finite.
+2) 2 can be modeled as a discrete uniform distribution theres a finite number of sides and the die is fair
+3) 3 cannot be modeled, each possible number of rainy days is not equally likely, for example its more likely that there will be 5 rainy days than 31 rainy days
+2 only works here
+
+a situation that I thought would model but doesn't:
+the number of correct answers in a multiple choice test of 10 questions where each answer is either "true" or "false" and each answer is guess randomly
+why? Each number of correct answers is not equally likely for example, it is more likely to score 50% than 100%
+
+modeling a situation in context with the discrete uniform distribution
+A fair die has 9 sides labeled with numbers 1-9 whats the probability of getting a number greater than or equal to 6 on the next throw of the die
+X ~ U{1,2,...,9} compute P(X >= 6)
+S = {1,2,...,9} has |S| = 9 - 1 + 1 = 9
+f(x) = {
+	1/9, x = 1,2,...,9
+	0,   otherwise
+}
+X >=6 are 6,7,8,9 4 elements in total
+P(X >= 6) = 4 * 1/9 = 4/9
+
+example:
+In a game show, a contestant can choose a prize from any box. The boxes are labeled with number 5-15 if the contestant choosess a box at random, what is the probability that the box number they pick is less than 10?
+X ~ U{5,6,7,...,15} compute P(X < 10)
+S = {5,6,7,...,15} has |S| = 15 - 5 + 1 = 11 items
+f(x) = {
+	1/11, x = 5,6,7,...,15
+	0,   otherwise
+}
+X < 10 are 5,6,7,8,9 5 elements in total
+P(X < 10) = 5 * 1/11 = 5/11
+
+example:
+in a videogame, the number of obstacles that show up during a game can vary between 100 and 155 inclusive. Assuming that each number of the obstacles has the same probability to occur, what is the probability of having less than 130 obstacles?
+X ~ U{100,101,102,...,155} P(X < 130)
+S = {100,101,102,...,155} has |S| = 155 - 100 + 1 = 56 items
+f(x) = {
+	1/56, x = 100,101,102,...,155
+	0,   otherwise
+}
+X < 130 is 30 elements in total (starting at 100 makes it easy)
+P(X < 130) = 30 * 30/56 = 15/28
