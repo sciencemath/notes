@@ -3578,3 +3578,112 @@ X ~ B(12, 0.05)
 = (0.6)(0.95)
 = sqrt(0.57)
 ~= 0.755
+
+===================================================
+
+The discrete uniform distribution
+A discrete random variable X follows a discrete uniform distribution over a set S if each value in S is equally likely.
+The porbability mass function (PMF) for discrete uniform distribution on a set S
+f(x) = {
+	1/|S|, x ∈ S
+	0,     otherwise
+}
+a random variable X follows a discrete uniform distribution over the set S = {s1,s2,...,sn}, we denote it as
+X ~ U{s1,s2,...,sn}
+we say that X is uniformly distributed over S
+
+consider the random variable T ~ U{1,2,4} in this case S = {1,2,4}, |S| = 3 and PMF for T
+f(t) = {
+	1/3, t ∈ {1,2,4}
+	0,   otherwise
+}
+cardinality of a set of consecutive numbers
+|{a, a+1, a+2, ..., b}| = b - a + 1
+the +1 is needed because we are including both expoints a and b in the count. Notice that |{4,5}| = 5 - 4 + 1 = 2
+
+computing a probability at a single point
+given that X ~ U{7,8,9,...,21} compute P(X = 18)
+S = {7,8,9,...,21} has |S| 21 - 7 + 1 = 15 items
+f(x) = {
+	1/15, x = 7,8,9,...,21
+	0,    otherwise
+}
+P(X = 18) = f(18) = 1/15
+
+example:
+given that X ~ U{3,4,5,...,22} compute P(X = 7)
+S = {3,4,5,...,22} has |S| 22 - 3 + 1 = 20 items
+f(x) = {
+	1/20, x = 3,4,5,...,22
+	0,    otherwise
+}
+P(X = 7) = f(7) = 1/20
+
+example:
+given that X ~ U{2,3,5,6,9} compute P(X = 3)
+S = {2,3,5,6,9} has |S| 5 items
+f(x) = {
+	1/5, x = 2,3,5,6,9
+	0,    otherwise
+}
+P(X = 3) = f(3) = 1/5
+
+computing a probability on an unbounded interval
+given X ~ U{5,6,7,...,14} compute P(X >= 9)
+X ~ U{5,6,7,...,14} and set S = {5,6,7,...,14} has |S| = 14 - 5 + 1 = 10 items
+f(x) = {
+	1/10, x = 5,6,7,...,14
+	0,    otherwise
+}
+In S the items that satisfy X >= 9 are 9,10,11,...,14 there are 14 - 9 + 1 = 6
+P(X >= 9) = 6 * 1/10 = 3/5
+
+example:
+X ~ U{3,4,5,...,22} compute P(X <= 17)
+S = {3,4,5,...,22} has |S| = 22 - 3 + 1 = 20 items
+f(x) = {
+	1/20, x = 3,4,5,...,22
+	0,    otherwise
+}
+X <= 17 are 3,4,5,...,17 17 - 3 + 1 = 15 items
+P(X <= 17) = 15 * 1/20 = 15/20 = 3/4
+
+example:
+X ~ U{2,3,5,6,9} compute P(X > 4)
+S = {2,3,5,6,9} has |S| = 5 items
+f(x) = {
+	1/5, x = 2,3,5,6,9
+	0,    otherwise
+}
+X > 4 = 3 items
+P(X > 4) = 3 * 1/5 = 3/5
+
+computing probability on a counded interval
+X ~ U{7,8,9,...,16} compute P(8 <= X < 13)
+S = {7,8,9,...,16} has |S| = 16 - 7 + 1 = 10 items
+f(x) = {
+	1/10, x = 7,8,9,...,16
+	0,    otherwise
+}
+there are 5 items (8,9,10,11,12) that satisfy 8 <= X < 13
+P(8 <= X < 13) = 5 * 1/10 = 1/2
+
+example:
+X ~ U{3,4,5,...,22} compute P(5 < X <= 10)
+S = {3,4,5,...,22} |S| has 22 - 3 + 1 = 20 items
+f(x) = {
+	1/20, x = 3,4,5,...,22
+	0,    otherwise
+}
+there are 5 items (6,7,8,9,10)
+5 * 1/20 = 5/20 = 1/4
+
+example:
+X ~ U{1,3,5,6,8,10,12} compute P(3 < X < 8)
+S = {1,3,5,6,8,10,12} |S| has 7 items
+f(x) = {
+	1/7, x = 1,3,5,6,8,10,12
+	0,    otherwise
+}
+there are 2 items (5,6)
+2 * 1/7 = 2/7
