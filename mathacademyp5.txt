@@ -3123,3 +3123,133 @@ f(x) = (3x^2 + 4)/5, 0 < x < 1
 = 36/20
 = 18/10
 = 9/5
+
+===================================================
+
+The variance of a continuous random variable is the expected squared difference between the variable and its expected value
+For a continuous random variable X with PDF f(x) defined over a set S the variance
+Var[X] = E[(X - E[X])^2]
+= ∫_S (x - E[X])^2 * f(x) dx
+its easier to use
+Var[X] = E[X^2] - E[X]^2
+for example consider this PDF with the continuous random variable X
+f(x) = x/4, 1 < x < 3
+first compute E[X]
+= ∫^3_1 x * x/4 dx
+= ∫^3_1 x^2/4 dx
+= [x^3/12]|_1-3
+= 13/6
+E[X^2] = ∫^3_1 x^2 * x/4 dx
+= ∫^3_1 x^3/4 dx
+= [x^4/16]|_1-3
+= 5
+variance
+Var[X] = E[X^2] - E[X]^2
+= 5 - (13/6)^2
+= 11/36
+
+computing the variance of a continuous random variable given two-branch PDF
+the continuouis random variable X has the PDF f(x) given E[X] = 10/3 compute Var[X]
+f(x) = {
+	8 - 2x, 3 <= x <= 4
+	0,      otherwise
+}
+compute E[X^2]
+= ∫^4_3 x^2 * (8 - 2x) dx
+= ∫^4_3 (8x^2 - 2x^3) dx
+= [8^3/3 - x^4/2]|_3-4
+= 67/6
+Var[X] = E[X^2] - E[X]^2
+67/6 - (10/3)^2
+= 1/18
+
+example:
+The continuous random variable X has the PDF given E[X] = 3/2 compute Var[X]
+f(x) = {
+	3/x^4, x >= 1,
+	0,     otherwise
+}
+= ∫^∞_1 x^2 3/x^4 dx
+= ∫^∞_1 3/x^2 dx
+= [-3/x]|_1-∞
+= (0) - (-3/1)
+= 3
+3 - (3/2)^2
+= 12/4 - 9/4
+= 3/4
+
+example:
+PDF given E[X] = 3/2 compute Var[X]
+f(x) = {
+	3x^2/8, 0 <= x <= 2
+	0,      otherwise
+}
+= ∫^2_0 x^2 3x^2/8 dx
+= ∫^2_0 3x^4/8 dx
+= [3x^5/40]|_0-2
+= (96/40) - (0)
+= 48/20
+= 24/10
+= 12/5
+12/5 - (3/2)^2
+= 48/20 - 45/20
+= 3/20
+
+computing the variance of a continuous random variable given three-branch PDF
+given E[X] ~= 1.79167 compute Var[X] round 2 decimals
+f(x) = {
+	1/4, 	   0 < x < 2
+	x/2 - 3/4, 2 <= x < 3
+	0,         otherwise
+}
+= ∫^3_0 x^2 f(x) dx
+= ∫^2_0 x^2 1/4 dx + ∫^3_2 x^2 * (x/2 - 3/4) dx
+= ∫^2_0 x^2/4 dx + ∫^3_2 (x^3/2 - 3x^2/4) dx
+= [x^3/12]|_0-2 + [x^4/8 - x^3/4]|_2-3
+~= 4.04167
+~= 4.04167 - (1.79167)^2
+~= 0.83
+
+example:
+PDF given E[X] ~= 2.2778 compute Var[X] round 3 decimals
+f(x) = {
+	x^2/12, 0 < x < 2
+	7/9,    2 <= x < 3
+	0,      otherwise
+}
+= ∫^2_0 x^2 x^2/12 dx + ∫^3_2 x^2 7/9 dx
+= ∫^2_0 x^4/12 dx + ∫^3_2 7x^2/9 dx
+= [x^5/60]|_0-2 + [7x^3/27]|_2-3
+= (32/60) - (0) + (189/27) - (56/27)
+= 16/30 + 133/27
+= 8/15 + 133/27
+= 72/135 + 665/135
+= 737/135
+~= 5.459259
+~= 5.459259 - (2.2778)^2
+~= 5.459259 - 5.18837
+~= 0.271
+
+example:
+PDF given E[X] = 3 compute Var[X]
+f(x) = {
+	x/9, 		0 < x < 3
+	1/9(6 - x), 3 <= x < 6
+	0,  		otherwise
+}
+= ∫^3_0 x^2 x/9 dx + ∫^6_3 x^2 1/9(6 - x) dx
+= ∫^3_0 x^3/9 dx + ∫^6_3 2x^2/3 - x^3/9 dx
+= [x^4/36]|_0-3 + [2x^3/9 - x^4/36]|_3-6
+= (81/36) - (0) + ((432/9) - (1296/36) - (54/9) - (81/36))
+= (81/36) + ((1728/36) - (1296/36) - (54/9) - (81/36))
+= (81/36) + ((432/36) - (216/36) - (81/36))
+= (81/36) + ((432/36) - (135/36))
+= (81/36) + (297/36)
+= 378/36
+= 189/18
+= 63/6
+= 21/2
+= 21/2 - (3)^2
+= 21/2 - 9
+= 21/2 - 18/2
+= 3/2
