@@ -3473,3 +3473,108 @@ given that X ~ Bernoulli(0.5) and Y ~ Bernoulli(0.3) are independent, calculate 
 0.5 + 0.3 - 0.5 * 0.3
 = 0.8 - 0.15
 = 0.65
+
+===================================================
+
+Mean and Variance of the binomial distribution
+if X is a binomial random variable in which there are n experiments and p is the probability of success on each experiment, then X has the following PMF
+(its hard to show by typing but here (n, x) should be denoted as a column refering to n choose x)
+f(x) = (n, x)p^x(1 - p)^(n - x)
+expected value, variance and SD of a binomial random variable X can be computed as so
+E[X] = np
+Var[X] = np(1 - p)
+SD[X] = sqrt(np(1 - p))
+
+finding the mean of a binomial random variable
+A coin is biased so that the probability of it landing on heads is 0.4 the coin is tossed 7 times. What is the mean number of times the coin lands on heads?
+there are n = 7 tosses
+the probability of landing on heads for each toss is p = 0.4
+X follows a binomial distribution where X ~ B(7, 0.4)
+for a binomial random variable X, the mean is given by
+E[X] = np
+n is the number of experiments and p is the probability of success on each experiment
+the mean of the number of times the coin lands on heads is
+E[X] = np
+= 7(0.4)
+= 2.8
+
+example:
+A fair six-sided die is rolled 7 times, what is the mean of the number of times that the outcome of a single roll is a 2 or a 3?
+p = 2/6 = 1/3
+n = 7 rolls
+X ~ B(7, 1/3)
+E[X] = np
+= 7(1/3)
+= 7/3
+
+example:
+A football team has a 60% change of winning each game in a 12 game season what is the mean number of games that the team wins during a season?
+p = 0.6
+n = 12 games
+X ~ B(12, 0.6)
+E[X] = np
+= 12(0.6)
+= 7.2
+
+variance of a binomial random variable
+An archer practices shooting 12 arrows at a target. The archer has a 50% chance of hitting the bull's eye, what is the variance in the number of arrows that hit the bull's eye?
+n = 12 shots
+p = 50% = 0.5
+X ~ B(12, 0.5)
+for binomial random variable X the variance
+Var[X] = np(1 - p)
+= (12)(0.5)(1 - 0.5)
+= (6)(0.5)
+= 3
+
+example:
+A fair six-sided die is rolled 12 times, what is the variance of the number of times we get a number less than 3?
+n = 12 times
+p = 2/6 = 1/3
+X ~ B(12, 1/3)
+= (12)(1/3)(1 - 1/3)
+= (12/3)(2/3)
+= 24/9
+= 8/3
+
+example:
+A cross-country running team has a 30% change of winning each run in a 20 race season. What is the variance of the number of runs that the running team wins during a season?
+n = 20 races
+p = 30% = 0.3
+X ~ B(20, 0.3)
+= (20)(0.3)(1 - 0.3)
+= 6(0.7)
+= 4.2
+
+finding the standard deviation of a binomial random variable
+A fair five-sided die is rolled 8 times. What is the SD of the number of times we get an even number, round to 3
+n = 8 rolls
+p = (2, 4) = 2/5
+X ~ B(8, 2/5)
+the SD is given by
+SD[X] = sqrt(Var[X]) = sqrt(np(1 - p))
+n is number of experiments, p is probability of success
+SD to get an even number
+= sqrt(8 * 2/5 * (1 - 2/5))
+= sqrt(1.92)
+= 1.386
+
+example:
+A fair six-sided die is rolled 10 times what is the SD of the number of times we get an even number? round 3 decimal
+n = 10 rolls
+p = 3/6 = 1/2
+X ~ B(10, 1/2)
+= (10)(1/2)(1 - 1/2)
+= 5(1/2)
+= sqrt(5/2)
+~= 1.581 
+
+example:
+At a grocery store, it is found that 5% of eggs are cracked, if a customer purchases a carton of 12 eggs, what is the SD of the number of cracked eggs in the carton?
+n = 12 eggs
+p = 5% = 0.05
+X ~ B(12, 0.05)
+= (12)(0.05)(1 - 0.05)
+= (0.6)(0.95)
+= sqrt(0.57)
+~= 0.755
