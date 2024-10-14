@@ -4521,3 +4521,67 @@ by symmetry
 ∫^∞_0 e^-u^2 = 1/2(sqrt(pi))
 therefore
 Γ(1/2) = 2 * 1/2(sqrt(pi)) = sqrt(pi)
+
+===================================================
+
+(please note that X is sometimes refered to the chi symbol, most of the time chi is used in the context of a function X^2(k))
+The chi-square distribution with k degrees of freedom denoted X^2(k) is the distribution of a random variable that is the sum of the squares of k independent standard normal random variables.
+if Z1,Z2,...,Zk are mutually independent where Zi ~ N(0,1) then
+Z1^2 + Z2^2 + ... + Zk^2 ~ X^2(k)
+X ~ X^2(k) PDF
+f(x) = {
+	x^(k/2-1)e^(-x/2)/2^(k/2)Γ(k/2),  x >= 0
+	0,								  otherwise
+}
+Γ is the gamma function
+the chi-square distribution is widely used in inferential statistics, in particular its used in goodness of fit tests where experimental data is compared against a hypothesized theoretical model.
+
+computing a "less than" probability for a chi-square distribution
+given X ~ X^2(4) calculate P(X < 5)
+hint:
+∫^5_0 xe^(-x/2) dx ~= 2.85081
+X ~ X^2(4) PDF
+f(x) = {
+	xe^(-x/2)/4Γ(2), x >= 0
+	0,                otherwise
+}
+Γ(n) = (n - 1)! for any number n >= 1
+Γ(2) = 1! = 1
+so the probability distribution becomes
+f(x) = {
+	xe^(-x/2)/4, x >= 0
+	0,           otherwise
+}
+calculating P(X < 5)
+= ∫^5_0 f(x) dx
+= ∫^5_0 xe^(-x/2)/4 dx
+= 1/4 ∫^5_0 xe^(-x/2) dx
+~= 1/4 * 2.85081
+~= 0.7127
+
+example:
+X ~ X^2(6) what is P(X < 4) expressed as an integral
+PDF:
+f(x) = {
+	x^2e^(-x/2)/8Γ(3), x >= 0
+	0,                 otherwise
+}
+Γ(3) = 2! = 2
+PDF becomes:
+f(x) = {
+	x^2e^(-x/2)/16, x >= 0
+	0,                 otherwise
+}
+express P(X < 4)
+= ∫^4_0 f(x) dx
+= ∫^4_0 x^2e^(-x/2)/16 dx
+= 1/16 ∫^4_0 x^2e^(-x/2) dx
+
+example:
+X ~ X^2(6) calculate P(X < 4)
+hint: ∫^4_0 x^2e^(-x/2) dx ~= 5.17318
+(implemented the example I completed right before this one)
+= 5.17318/16
+~= 0.3233
+
+(rest of the exercises for this section involved looking up values and compliments on a points table to find a chi-squared value)
