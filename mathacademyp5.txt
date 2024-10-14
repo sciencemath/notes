@@ -3757,3 +3757,100 @@ f(x) = {
 }
 X < 130 is 30 elements in total (starting at 100 makes it easy)
 P(X < 130) = 30 * 30/56 = 15/28
+
+===================================================
+
+mean and variance of discrete uniform distributions
+X ~ {a,a+1,a+2,...,b}
+a and b are integers, we're concerned with the special case where the support S of X contains every integer between a and b inclusive
+in this case the mean value of X
+E[X] = (a + b)/2
+also
+Var[X] = (|S|^2 - 1)/12
+
+computing mean values in context
+A fair die has 12 sides labeled with numbers 1-12 what is the expected value of a random roll of this die?
+X ~ U{1,2,...,12} we want to compute E[X]
+E[X] = 1+12/2 = 6.5
+
+example:
+in a game show, a contestant can choose a prize from any box the boxes are labeled 3-19 if the contestant chooses a box at random what is the expected value of the chosen number?
+X ~ U{3,4,...,19}
+E[X] = 3+19/2 = 22/2 = 11
+
+example:
+Grandpa is playing with his phone without his glasses and opens an app at random, the apps working on that phone are labeled with numbers 4-21 what is the expected number of the chosen app
+X ~ U{4,5,...,21}
+E[X] = 4+21/2 = 25/2 = 12.5
+
+computing variances in context
+A fair die has sides labeled with numbers 4-15, what is the variance of the numbers obtained when rolling this die?
+X ~ U{4,5,...,15} we want Var[X]
+in general if X ~ U{a,a+1,...,b}
+Var[X] = (|S|^2 - 1)/12
+|S| = b - a + 1
+= 15 - 4 + 1 = 12
+Var[X] = (12^2 - 1)/12
+= 143/12
+
+example:
+in a game show a contestant can choose a prize from any box, the boxes are labeled with numbers 2-8. If contestants choose a box at random, what is the variance of the chosen numbers?
+X ~ U{2,3,...,8}
+|S| = 8 - 2 + 1 = 7
+Var[X] = (7^2 - 1)/12
+48/12 = 4
+
+example:
+in winter the max daily temp of a certain mountain location varies between -5C and 10C, inclusive, assuming that for a given winter day, each max temp value between -5C and 10C has an equal probability of occuring, what is the temp standard deviation
+X ~ U{-5,-4,...,10}
+|S| = 10 - (-5) + 1 = 16
+Var[X] = (16^2 - 1)/12
+= 255/12
+= sqrt(21.25)
+= 4.61
+
+proving formula for mean
+E[X] = (a + b/2)
+PMF:
+f(x) = {
+	1/|S|, x ∈ S
+	0,     otherwise
+}
+definition of expected value for discrete random variables
+E[X] = Σ_x∈S x f(x)
+= Σ_x∈S x * 1/|S|
+= 1/|S| Σ_x∈S x
+= 1/|S| [a + (a+1) + (a+2) + ... + b]
+the term in the square brackets is an arithmetic series with the first term a and last term b, using the formula for the sum of an arithmetic series
+E[X] = 1/|S| [a + (a+1) + (a+2) + ... + b]
+= 1/|S| * |S|/2 * (a + b)
+= 1/2 * (a + b)
+= (a + b)/2
+
+formula for variance
+Var[X] = |S|^2 - 1/12
+we will assume without loss of generality that the distribution of our random variable X
+X ~ {1,2,3,...,|S|}
+in general the variance (i.e. spread) of a random variable is unaffected by translations
+Var[X + c] = Var[X]
+E[X^2] = Σ_x∈S x^2 f(x)
+= Σ_x∈S x^2 1/|S|
+= 1/|S| * Σ_x∈S x^2
+= 1/|S| *  [1^2 + 2^2 + ... + |S|^2]
+make use of the following result
+Σ^n_i=1 i^2 = 1/6(n)(n + 1)(2n + 1)
+E[X^2] = 1/|S| * [1^2 + 2^2 + ... + |S|^2]
+= 1/|S| * 1/6 * |S| * (|S| + 1)(2|S| + 1)
+(|S| cancel out)
+= ((|S| + 1)(2|S| + 1)/6)
+next we use the results:
+Var[X] = E[X^2] - (E[X])^2,  E[X] = (1 + |S|/2)
+therefore
+= ((|S| + 1)(2|S| + 1)/6) - (|S| + 1/2)^2
+= ((|S| + 1)(2|S| + 1)/6) - (|S| + 1)^2/4
+= (2((|S| + 1)(2|S| + 1))/12) - 3(|S| + 1)^2/12
+= (|S| + 1/12)(2(2|S| + 1)) - 3(|S| + 1)
+= (|S| + 1/12)(4|S| + 2 - 3|S| - 3)
+= (|S| + 1/12)(|S| - 1)
+= ((|S| + 1)(|S| - 1)/12)
+= (|S|^2 - 1/12)
