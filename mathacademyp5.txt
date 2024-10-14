@@ -4418,3 +4418,106 @@ X ~ U[2,6]
 Var[X] = (6 - 2)^2/12
 = 16/12
 = 4/3
+
+===================================================
+
+The gamma function Γ(z) is a function of a complex number z that is used to extend the factorial function to the real and complex numbers.
+for any natural number n >= 1
+Γ(n) = (n - 1)!
+if the complex number z satisfies Re(z) > 0 then the gamma function can be defined as the improper integral
+Γ(z) = ∫^∞_0 t^(z-1)e^(-t) dt
+
+defining the gamma function
+which of the following integrals are equivalent to Γ(z) for Re(z) > 0
+1. ∫^1_0 t^(z-1)e^(-t) dt
+2. ∫^∞_0 t^z/te^t dt
+3. ∫^∞_0 e^t/t^(1-z) dt
+1 and 3 don't match, for 1 the upperbound does not match, for 3 the inegrand e^t/t^(1-z)
+2 matches ∫^∞_0 (t^z/(te^t)) dt = ∫^∞_0 t^(z-1)e^(-t) dt = Γ(z)
+
+these also are equivlant forms of the gamma function 
+∫^∞_0 t^(z-1)/e^t dt
+2∫^∞_0 t^(2z-1)/e^-t^2 dt
+both math for the second one we can see this by using a substitution
+s = t^2 and 2t dt = ds
+= ∫^∞_0 t^2(z-1)/e^-t^2 (2t) dt
+= ∫^∞_0 s(z-1)/e^-s ds = Γ(z)
+
+evaluating the gamma function for a positive integer
+evaluate Γ(7)
+for any natural number n >= 1
+Γ(n) = (n - 1)!
+therefore
+Γ(7) = 6! = 720
+
+example:
+Γ(5)
+= 4! = 24
+
+example:
+Γ(12)
+= 11! = a large number
+we can leave it as the final answer
+
+The recursive formula and the value of the gamma function at one-half
+to evaluate the gamma function at positive integer multiples of one-hlf we use the recursive formula
+Γ(z + 1) = zΓ(z), Γ(1/2) = sqrt(pi)
+
+evaluating the gamma function at a multiple of one-half
+calculate Γ(5/2)
+Γ(5/2) = 3/2Γ(3/2)
+= 3/2 * 1/2Γ(1/2)
+= 3/2 * 1/2(sqrt(pi))
+= 3/4(sqrt(pi))
+
+example:
+Γ(7/2) = 5/2Γ(5/2)
+= 5/2 * 3/2Γ(3/2)
+= 5/2 * 3/2 * 1/2Γ(1/2)
+= 5/2 * 3/2 * 1/2(sqrt(pi))
+= 15/8(sqrt(pi))
+
+example:
+Γ(1/2) + Γ(3/2)
+Γ(1/2) = sqrt(pi)
+Γ(3/2) = 1/2Γ(1/2)
+= sqrt(pi) + 1/2(sqrt(pi))
+= 3/2(sqrt(pi))
+
+proof of the recursive formula
+Γ(z + 1) = zΓ(z)
+the formula comes from applying integration by parts to the integral in the definition of the gamma function
+Γ(z) = ∫^∞_0 t^(z-1)e^-t dt, Re(z) > 0
+Γ(z + 1) = ∫^∞_0 t^ze^-t dt
+= [-t^ze^-t]|_0-∞ - ∫^∞_0 -zt^(z-1)e^-t dt
+= lim_t->∞ (-t^z/e^t) - lim_t->0 (-t^z/e^t) + ∫^∞_0 zt^(z-1)e^-t dt
+= 0 - 0 + z∫^∞_0 t^(z-1)e^-t dt
+= zΓ(z)
+
+proving the relationship between the gamma function and the factorial
+Γ(n) = (n - 1)!
+first identity
+Γ(z + 1) = zΓ(z)
+n >= 1
+Γ(n + 1) = nΓ(n)
+repeatedly expand out the right hand side most of the terms can be grouped into a factorial
+= n * (n - 1) * Γ(n - 1)
+= n * (n - 1) * (n - 2) * Γ(n - 2)
+= ...
+= n * (n - 1) * (n - 2) * ... * 1 * Γ(1)
+Γ(n + 1) = n! * Γ(1)
+evaluate Γ(1)
+Γ(1) = ∫^∞_0 e^-t dt = 1
+Γ(n + 1) = n!
+
+evaluating the gamma function at one-half
+Γ(1/2) = sqrt(pi)
+Γ(1/2) = ∫^∞_0 t^(-1/2)e^-t dt
+substituting t = u^2
+Γ(1/2) = 2∫^∞_0 e^-u^2 du
+similar to the gaussian integral for which it is known that
+∫^∞_-∞ e^-u^2 du = sqrt(pi)
+by symmetry
+∫^∞_0 e^-u^2 = 1/2(sqrt(pi))
+therefore
+Γ(1/2) = 2 * 1/2(sqrt(pi)) = sqrt(pi)
