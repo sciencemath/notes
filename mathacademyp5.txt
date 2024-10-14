@@ -4315,3 +4315,106 @@ Var[X] = E[X^2] - (E[X])^2
 = 1/12(4b^2 + 4ab + 4a^2) - 1/12(3b^2 + 6ab + 3a^2)
 = 1/12(b^2 - 2ab + a^2)
 = (b - a)^2/12
+
+===================================================
+
+Modeling with continuous uniform distributions
+we can use a continuous uniform distribution to model situations where all possible outcomes on a finite interval are equally likely
+Suppose a doctor wants to model the waiting time of a randomly selected patient, after observing a number of patients over several days the doctor notices that the waiting time is uniformly distributed between 6 and 14 minutes inclusive.
+Let X be the amount of time a randomly selected patient spends waiting, we can model the waiting time using the continuous uniform distribution.
+X ~ U[6,14]
+PMF
+f(x) = {
+	1/8, 6 <= x <= 14
+	0,   otherwise
+}
+we can now make predictions about patient waiting times.
+if a patient waits longer than 9 minutes
+∫^14_9 1/8 dx
+= 1/8 ∫^14_9 dx
+= 1/8 [x]|_9-14
+= 1/8[14 - 9]
+= 5/8
+the mean waiting time
+E[X] = a+b/2
+= 6+14/2
+= 10
+
+Calculating a probability in context
+The duration of a podcast is uniformly distributed between 27 and 34 mins inclusive, what is the probability that a randomly chosen program lasts less than 30 minutes?
+X ~ U[27,34] we wish to compute P(X < 30)
+f(x) = {
+	1/7, 27 <= x <= 34
+	0,   otherwise
+}
+= ∫^30_27 f(x) dx
+= ∫^30_27 1/7 dx
+= [x/7]|_27-30
+= 30/7 - 27/7
+= 3/7
+
+example:
+In an environmental study, many pond water samples were taken at various depths from 1 foot to 13 feet below the surface. The sample depths were uniformly distributed, what is the probability that a randomly chosen sample came from depth between 5 and 8 feet
+X ~ U[1,13] P(5 <= X <= 8)
+f(x) = {
+	1/12, 1 <= x <= 13
+	0,   otherwise
+}
+= ∫^8_5 f(x) dx
+= ∫^8_5 1/12 dx
+= [x/12]|_5-8
+= 8/12 - 5/12
+= 3/12
+= 1/4
+
+example:
+A lifetime of an ion battery is uniformly distributed between 100 and 300 hours inclusive. What is the probability that a randomly chosen battery last more than 160
+X ~ U[100,300] P(X > 160)
+f(x) = {
+	1/200, 100 <= x <= 300
+	0,     otherwise
+}
+= ∫^300_160 f(x) dx
+= ∫^300_160 1/200 dx
+= [x/200]|_160-300
+= 300/200 - 160/200
+= 3/2 - 16/20
+= 3/2 - 8/10
+= 15/10 - 8/10
+= 7/10
+
+calculating an epected value in context
+A video game randomly generates an obstacle the player has to avoid. The obstacles x-coordinate is uniformaly distributed along a segment whos endpoints have x-coordinates of -6 and 12, what is the mean x-coordinate of the obstacle?
+X ~ U[-6,12] compute E[X]
+E[X] = (-6 + 12/2) = 3
+x-coordinate is 3
+
+example:
+In a zoo the smallest tree is 6 meters tall and the tallest tree 10 meters tall, assuming height is uniformly distributed, what is the mean height of the trees in this zoo?
+X ~ U[6,10]
+E[X] = (6 + 10/2) = 8
+
+example:
+X ~ U[25,34]
+E[X] = (25 + 34/2) = 29.5
+
+calculating a variance in context
+A museum janitor notices that the min visting time of vistors to the museum is 1.5 hours the max time is 4.5 hours, if the time is uniformly distributed what is its variance?
+X ~ U[1.5,4.5]
+Var[X] = (b - a)^2/12
+Var[X] = (4.5 - 1.5)^2/12
+= 9/12 = 3/4
+
+example:
+a bus arrives at its destination is 3 min early, the latest that it arrives is 5 min late, uniform distributed, what is the variance?
+X ~ U[-3,5]
+Var[X] = (5 - (-3))^2/12
+= 64/12
+= 16/3
+
+example:
+The time it takes elon to repair a car is uniformly distributed with a min of 2 hours and max 6 what is the variance
+X ~ U[2,6]
+Var[X] = (6 - 2)^2/12
+= 16/12
+= 4/3
