@@ -4585,3 +4585,31 @@ hint: ∫^4_0 x^2e^(-x/2) dx ~= 5.17318
 ~= 0.3233
 
 (rest of the exercises for this section involved looking up values and compliments on a points table to find a chi-squared value)
+
+===================================================
+
+An important family of distibutions in probability and statistics is the student's t-distribution
+each family member has an associated positive integer parameter k known as the degrees of freedom.
+The probability density function of a student's t-distribution is symmetric and bell-shaped, similar to the standard normal distribution. t-distribution curves have fatter tails. A consequence is that extreme events (events far from the mean) are more likely with a t-distribution than a standard normal distribution.
+consider a large random sample size n
+X1, X2, ..., Xn
+drawn from a population with a mean μ and a variance σ^2 according to the central limit theorem
+(|X here mean X bar with a line over the X to represent mean)
+(|X - μ/(σ/sqrt(n))) ~= N(0, 1)
+X is the sample mean
+in reality its unlikely that the population variance σ^2 is known, in which case it must be estimated
+recall that an unbiased estimated for σ^2 known as the sample variance is given by
+S^2 = 1/n-1 Σ^n_i=1 (Xi - |X)^2
+if we estimate σ^2 using S^2 then it can be shown
+(|X - μ)/(S/sqrt(n)) ~= Tn-1
+where Tn-1 is a t-distributed random variable with n - 1 degrees of freedom.
+The t-distribution is widely used in statistical esitmation problems.
+
+(again rest of the exercises for this section involved looking up values, their compliments and symmetry on a points table to find a t-value which was review anyways, no notes warrented)
+
+The shape of the student's t-distribution is similar to that of the standard normal distribution, which are related.
+theorem:
+The student's t-distribution Tk approaches N(0,1) as k -> ∞
+the tails of Tk become smaller as k -> ∞
+the peak of Tk (i.e. the mode) becomes taller as k -> ∞
+Tk approaches N(0,1) as k -> ∞
