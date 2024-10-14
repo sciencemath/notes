@@ -4089,3 +4089,129 @@ f(x) = (2^x * e^(-2)/x!)
 ~= 0.857
 ~= 1 - 0.857
 ~= 0.143
+
+===================================================
+
+The continuous uniform distribution
+A continuous random variable X follows a continuous uniform distribution on the interval [a,b] if all values of X are equally likely on [a,b]
+the familiar statement "choose a random number between a and b" can be translated as "observe a value from the continuous uniform distribution on [a,b]"
+The probability density function for the continuous uniform distribution on an interval [a,b] takes the following form
+f(x) = {
+	1/b - a, a <= x <= b
+	0, 		 otherwise
+}
+The PDF of the continuous uniform distribution on [a,b] is just 1 divided by the length of the interval. This ensures that our PDF has the same value everywhere in the interval and integrates to 1
+∫^b_a (1/b - a) dx = [x/b - a]|_a-b
+= (b - a/b - a)
+= 1
+when X follows a continuous uniform distribution on the interval [a,b] we often write
+X ~ U[a,b]
+"X is unfiromly distributed on the interval [a,b]"
+
+computing a "less than" probability for a uniformly distributed continuous random variable.
+X is uniformly distributed on the interval [0,10] compute P(X <= 7)
+f(x) = {
+	1/10, 0 <= x <= 10
+	0,    otherwise
+}
+P(X <= 7) = P(0 <= X <= 7)
+= ∫^7_0 f(x) dx
+= ∫^7_0 1/10 dx
+= 7 - 0/10
+= 7/10
+
+example:
+X is uniformly distributed on the interval [-4,3] compute P(X < -2)
+f(x) = {
+	1/7, -4 <= x <= 3
+	0,    otherwise
+}
+P(X < -2) = P(-4 <= x < -2)
+= ∫^-2_-4 f(x) dx
+= ∫^-2_-4 1/7 dx
+= -2 - (-4)/7
+= 2/7
+
+example:
+X is uniformly distributed on the interval [-3,10] compute P(X <= 0)
+f(x) = {
+	1/13, -3 <= x <= 10
+	0,    otherwise
+}
+P(X <= 0) = P(-3 <= x <= 0)
+= ∫^0_-3 f(x) dx
+= ∫^0_-3 1/13 dx
+= 0 - (-3)/13
+= 3/13
+
+Computing the probability of a uniformly distributed random variable over an interval
+X is uniformly distributed on the interval [-1,4] compute P(0 < X < 3)
+f(x) = {
+	1/5, -1 <= x <= 4
+	0,   otherwise
+}
+P(0 < X < 3) 
+= ∫^3_0 f(x) dx
+= ∫^3_0 1/5 dx
+= 3 - 0/5
+= 3/5
+
+example:
+X is uniformly distributed on the interval [-2, 6] compute P(1 < X < 2)
+f(x) = {
+	1/8, 1 < x < 2
+	0,   otherwise
+}
+= ∫^2_1 f(x) dx
+= ∫^2_1 1/8 dx
+= 2 - 1/8
+= 1/8
+
+example:
+W is uniformly distributed on the interval [-3,4] compute P(-2 <= W <= 3)
+f(w) = {
+	1/7, -2 <= w <= 3
+	0,   otherwise
+}
+= ∫^3_-2 f(w) dw
+= ∫^3_-2 1/7 dw
+= 3 - (-2)/7
+= 5/7
+
+computing a "greater than" probability for unfiromly distributed continuous random variable
+Y is uniformly distributed on the interval [1,16] compute P(Y >= 10)
+f(y) = {
+	1/15, 1 <= y <= 16
+	0,   otherwise
+}
+P(Y >= 10) = P(10 <= Y <= 16)
+= ∫^16_10 f(y) dy
+= ∫^16_10 1/15 dy
+= 16 - 10/15
+= 6/15
+= 2/5
+
+example:
+Y is uniformly distributed on the interval [-3,7] compute P(Y > 3)
+f(y) = {
+	1/10, -3 <= y <= 7
+	0,   otherwise
+}
+P(Y > 3) = (3 < Y <= 7)
+= ∫^7_3 f(y) dy
+= ∫^7_3 1/10 dy
+= 7 - 3/10
+= 4/10
+= 2/5
+
+example:
+Y is unfiormly distributed on interval [-6,-1] compute P(Y > -5)
+f(y) = {
+	1/5, -6 <= y <= -1
+	0,   otherwise
+}
+P(Y > -5) = P(-5 < Y <= -1)
+= ∫^-1_-5 f(y) dy
+= ∫^-1_-5 1/5 dy
+= -1 - (-5)/5
+= 4/5
