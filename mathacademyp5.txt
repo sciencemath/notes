@@ -4570,7 +4570,7 @@ f(x) = {
 PDF becomes:
 f(x) = {
 	x^2e^(-x/2)/16, x >= 0
-	0,                 otherwise
+	0,              otherwise
 }
 express P(X < 4)
 = ∫^4_0 f(x) dx
@@ -4613,3 +4613,134 @@ The student's t-distribution Tk approaches N(0,1) as k -> ∞
 the tails of Tk become smaller as k -> ∞
 the peak of Tk (i.e. the mode) becomes taller as k -> ∞
 Tk approaches N(0,1) as k -> ∞
+
+===================================================
+
+A continuous random variable X follows an exponential distributino if it has the PDF
+f(x) = {
+	 λe^(-λx), x >= 0
+	 0,        otherwise
+}
+the rate parameter λ is a positive real number and e ~= 2.71828 is eulers number
+if a random variable X follows an exponential distribution we write X ~ Exp(λ)
+the exponential distribution models the amount of continuous space or time between two events.
+
+Computing "Less Than" probability with the exponential distribution
+given that the random variable X ~ Exp(1) calculate P(X < 2)
+An exponential random variable X with rate λ has the PDF
+f(x) = {
+	λe^(-λx), x >= 0
+	0,        otherwise
+}
+X ~ Exp(1) PDF:
+f(x) = {
+	e^-x, x >= 0
+	0,    otherwise
+}
+∫^2_0 f(x) dx
+= ∫^2_0 e^-x dx
+= [-e^-x]|_0-2
+= -e^-2 + e^0
+~= 0.8647
+
+example:
+X ~ Exp(2) calculate P(X < 1/6)
+f(x) = {
+	2e^-2x, x >= 0
+	0,      otherwise
+}
+∫^(1/6)_0 f(x) dx
+∫^(1/6)_0 2e^-2x dx
+[-e^-2x]|_0-1/6
+= -e^(-1/3) + e^0
+~= 0.2835
+
+example:
+X ~ Exp(1/2) calculating P(X <= 3)
+f(x) = {
+	1/2e^-1/2x, x >= 0
+	0,      	otherwise
+}
+∫^3_0 f(x) dx
+∫^3_0 1/2e^-x/2 dx
+[-e^-x/2]|_0-3
+= -e^(-3/2) + e^0
+~= 0.7769
+
+computing a "greater than" probability with the exponential distribution
+X ~ Exp(2/3) calculate P(X >= 3)
+PDF:
+f(x) = {
+	2/3e^(-2x/3), x >= 0
+	0,       	  otherwise
+}
+P(X >= 3) = ∫^∞_3 f(x) dx
+= ∫^∞_3 2/3e^(-2x/3) dx
+= [-e^(-2x/3)]|_3-∞
+= e^-2
+~= 0.1353
+
+example:
+X ~ Exp(1/3) calculate P(X > 1)
+PDF:
+f(x) = {
+	1/3e^(-x/3), x >= 0
+	0,       	 otherwise
+}
+P(X > 1) = ∫^∞_1 f(x) dx
+= ∫^∞_1 1/3e^(-x/3) dx
+= [-e^(-x/3)]|_1-∞
+= e^(-1/3)
+~= 0.7165
+
+example:
+X ~ Exp(1/5) calculate P(X >= 4)
+PDF:
+f(x) = {
+	1/5e^(-x/5), x >= 0
+	0,       	 otherwise
+}
+P(X >= 4) = ∫^∞_4 f(x) dx
+= ∫^∞_4 1/5e^(-x/5) dx
+= [-e^(-x/5)]|_4-∞
+= e^(-4/5)
+~= 0.4493
+
+Computing a probability on a bounded interval using the exponential distribution
+X ~ Exp(2) calc P(1/2 < X < 2)
+PDF:
+f(x) = {
+	2e^-2x, x >= 0
+	0,      otherwise
+}
+= ∫^2_1/2 f(x) dx
+= ∫^2_1/2 2e^-2x dx
+= [-e^-2x]|_1/2-2
+= -e^-4 + e^-1
+~= 0.3496
+
+example:
+X ~ Exp(1/2) calculate P(1 < X < 4)
+PDF:
+f(x) = {
+	1/2e^(-x/2), x >= 0
+	0,      	 otherwise
+}
+= ∫^4_1 f(x) dx
+= ∫^4_1 1/2e^(-x/2) dx
+= [-e^(-x/2)]|_1-4
+= -e^-2 + e^-1/2
+~= 0.4712
+
+example:
+X ~ Exp(5) calculate P(1 <= X <= 7)
+PDF:
+f(x) = {
+	5e^(-5x), x >= 0
+	0,      	 otherwise
+}
+= ∫^7_1 f(x) dx
+= ∫^7_1 5e^(-5x) dx
+= [-e^(-5x)]|_1-4
+= -e^(-20) + e^(-5)
+~= 0.0067
