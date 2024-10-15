@@ -156,3 +156,128 @@ given
 = (84) * (70 - 60)
 = (84) * (10)
 = 840
+
+===================================================
+
+We often want to know if there is a relationship between two random variables. For this reason we wish to formulate the idea of a joint probability distribution
+X represents the number of heads obtained when a fair coin is flipped. The support of X denoted S_X consists of all possible values of X is given by S_X = {0,1}
+Y represents the result of rolling a fair tetrahedral die then the support of Y denoted S_Y is S_Y = {1,2,3,4}
+The joint support of X and Y denoted S consists of all possible pairs (x, y) such that x is a possible outcome for X and y is a possible outcome for Y
+S = S_X x S_Y = {
+	(0,1), (0,2), (0,3), (0,4)
+	(1,1), (1,2), (1,3), (1,4)
+}
+S_X x S_Y is the cartesian product of S_X and S_Y
+flipping of the coin and rolling of the die are independent then for any x ∈ X and any y ∈ Y
+P(X = x and Y = y) = 1/2 * 1/4 = 1/8
+the joint probability mass function of X and Y denoted f(x,y) can be represented by the table
+f(x,y)|y=1|y=2|y=3|y=4|
+x = 0 |1/8|1/8|1/8|1/8|
+x = 1 |1/8|1/8|1/8|1/8|
+similar to the case of single random variables
+f(x,y) = P(X = x and Y = y)
+P(X = x,Y = y) as short hand
+
+Bivariate and multivariate distributions
+X and Y are discrete random variables with supports S_X and S_Y
+f(x,y) = P(X = x,Y = y)
+to be a valid joint probability mass function with joint support S = S_X x S_Y it must satisfy following conditions
+0 <= f(x,y) <= 1 for all (x,y) ∈ S
+Σ_(x,y)∈S f(x,y) = 1
+P((X,Y) ∈ A) = Σ_(x,y)∈A f(x,y) where A is a subset of S
+some intuition
+the consition 0 <= f(x,y) <= 1 for all (x,y) ∈ S states that any possible outcome for (X,Y) must have a probability between 0 and 1
+The Σ_(x,y)∈S f(x,y) = 1 states that the sum of all probabilities over all possible values of X and Y must add up to 1
+The third condition states that we compute the probability of an event A by adding up the probabilites associated with A
+The joint probability table
+f(x,y) | Y = y1 | Y = y2 | ... | Y = yn |
+x = x1 |f(x1,y1)|f(x1,y2)| ... |f(x1,yn)|
+x = x2 |f(x2,y1)|f(x2,y2)| ... |f(x2,yn)|
+ ...   |   ...  |   ...  | ... |   ...  |
+x = xk |f(xk,y1)|f(xk,y2)| ... |f(xk,yn)|
+two random variables the joint distribution is sometimes called a bivariate distribution, any number of random variables is a multivariate distribution
+
+finding the joint distribution of two discrete random variables
+   |Y=0|  Y=1 |
+X=0|a/2|   a  |
+X=1| a |5/2(a)|
+the joint probability mass function f(x,y) for the discrete random variables X and Y is given above
+The support of X is S_X = {0,1} the support of Y is S_Y = {0,1} and therefore the joint support S is
+S = S_X x S_Y = {(0,0),(0,1),(1,0),(1,1)}
+f(0,0) + f(0,1) + f(0,1) + f(1,1) = 1
+a/2 + a + a + 5/2(a) = 1
+5a = 1
+a = 1/5
+
+example:
+   |Y=1|Y=2|
+X=0| 2a| 3a|
+X=1| 5a| 2a|
+S = S_X x S_Y = {(0,1),(0,2),(1,1),(1,2)}
+2a + 3a + 5a + 2a = 1
+12a = 1
+a = 1/12
+
+example:
+   |Y=2 |Y=4 |Y=6 |
+X=1|0.1 |0.25|0.25|
+X=2|0.05|0.15|0.2 |
+which of the following conditions are true?
+1. 0 <= f(x,y) <= 1 for all (x,y) in S
+2. Σ_(x,y)∈S f(x,y) = 1
+3. f(x,y) is a valid joint probability mass function
+all 3 are valid, and since 1 and 2 we've seen makes 3 true.
+
+Calculating a joint probability from a table
+   |Y=1 |Y=3 |
+X=2|0.05|0.25|
+X=4|0.2 |0.05|
+X=6|0.3 |0.15|
+compute P((X,Y) ∈ {(2,3),(6,1)})
+= P((X,Y) = (2,3)) + P((X,Y) = (6,1))
+= f(2,3) + f(6,1)
+= 0.25 + 0.3
+= 0.55
+
+example:
+   |Y=0|Y=1|
+X=0|1/4|1/2|
+X=1|1/8|1/8|
+calculate P(X=0,Y=1)
+= f(0,1) = 1/2
+
+example:
+   |Y=2 |Y=4 |Y=6 |
+X=1|0.1 |0.25|0.25|
+X=2|0.05|0.15|0.2 |
+Compute P((X,Y) ∈ {(1,4),(1,6),(2,6)})
+= 0.25 + 0.25 + 0.2
+= 0.7
+
+Calculating a joint probability containing inequalities from a table
+   |Y=0 |Y=2 |Y=4
+X=0|0.15|0.1 |0.1
+X=1|0.05|0.1 |0.05
+X=2|0.05|0.25|0.15
+Compute P(X*Y >= 4)
+= P((X,Y) ∈ {(1,4),(2,2),(2,4)})
+= 0.05 + 0.25 + 0.15
+= 0.45
+
+example:
+   |Y=2 |Y=4 |Y=6 |
+X=1|0.1 |0.25|0.25|
+X=2|0.05|0.15|0.2 |
+Compute P(X = 2 and Y <= 4)
+= P((X,Y) ∈ {(2,2),(2,4)})
+= 0.05 + 0.15
+= 0.2
+
+example:
+   |Y=2 |Y=4 |Y=6 |
+X=1|0.1 |0.25|0.25|
+X=2|0.05|0.15|0.2 |
+Compute P(X < 2 or Y = 6)
+= P((X,Y) ∈ {(1,2),(1,4),(1,6),(2,6)})
+= 0.1 + 0.25 + 0.25 + 0.2
+= 0.8
