@@ -363,3 +363,97 @@ X=1|1/8|1/8|
 = 3/8
 
 (rest of examples are simple table lookups and summations no new knowledge to note)
+
+===================================================
+
+Determining whether two random variables are independent
+   |Y=0 |Y=1 |
+X=0|0.24|0.06|
+X=1|0.56|0.14|
+marginal mass functions
+x     |0  |1  |
+f_X(x)|0.3|0.7|
+---------------
+y     |0  |1  |
+f_Y(y)|0.8|0.2|
+which of the following statements are true?
+1. P(X = 0,Y = 0) = P(X = 0)*P(Y = 0)
+2. P(X = x,Y = y) = P(X = x)*P(Y = y) for all possible x and y
+3. X and Y are independent
+Two discrete random variables X and Y with joint probability mass function f(x,y) are independent iff
+f(x,y) = f_X(x)*f_Y(y)
+Statements 1,2, and 3 is true. 1 is true because
+P(X = 0,Y = 0) = f(0,0) = 0.24
+P(X = 0) * P(Y = 0) = f_X(0) * f_Y(0) = 0.3 * 0.8 = 0.24
+2 is true because
+f(1,0) = 0.56 = 0.7 * 0.8 = f_X(1) * f_Y(0)
+f(0,1) = 0.06 = 0.3 * 0.2 = f_X(0) * f_Y(1)
+f(1,1) = 0.14 = 0.7 * 0.2 = f_X(1) * f_Y(1)
+P(X = x,Y = y) = P(X = x) * P(Y = y) for all possible x and y
+statement 3 is true because of 1 and 2 is true X and Y must be independent
+
+example:
+   |Y=0 |Y=1|
+X=0|0.05|0.2|
+X=1|0.15|0.6|
+computing the marginal probability mass functions for X and Y
+   |Y=0 |Y=1| f_X|
+X=0|0.05|0.2|0.25|
+X=1|0.15|0.6|0.75|
+f_Y| 0.2|0.8|  1 |
+check if these statements are true
+this first statement is true:
+P(X = 1,Y = 1) = P(X = 1) * P(Y = 1)
+0.75 * 0.8 = 0.6
+this is also true
+P(X = x,Y = y) = P(X = x) * P(Y = y)
+making X and Y independent
+
+example:
+   |Y=0 | Y=1|
+X=0|0.05|0.15|
+X=1|0.25|0.55|
+computing the marginal probability mass functions for X and Y
+   |Y=0 | Y=1| f_X|
+X=0|0.05|0.15| 0.2|
+X=1|0.25|0.55| 0.8|
+f_Y| 0.3| 0.7|  1 |
+check if these statements are true
+this first statement is true:
+P(X = 0,Y = 1) = P(X = 0) * P(Y = 1)
+0.2 * 0.7 = 0.14 != 0.15
+so this would also be false
+P(X = x,Y = y) = P(X = x) * P(Y = y)
+and X and Y are not independent
+
+example:
+   |Y=2| Y=4|
+X=1|0.2| 0.2|
+X=3|0.1|0.25|
+X=5|0.2|0.05|
+computing the marginal probability mass functions for X and Y
+   |Y=2| Y=4| f_X|
+X=1|0.2| 0.2| 0.4|
+X=3|0.1|0.25|0.35|
+X=5|0.2|0.05|0.25|
+f_Y|0.5| 0.5|  1 |
+check if these statements are true
+this is true:
+P(X = 1,Y = 2) = P(X = 1) * P(Y = 2)
+0.4 * 0.5 = 0.2
+this is false (only have to check one instance)!
+P(X = x,Y = y) = P(X = x) * P(Y = y)
+0.5 * 0.35 = 0.175 != 0.1
+making X and Y dependent
+
+example:
+   |Y=1| Y=3| f_X|
+X=2| * |0.27|  * |
+X=4| * |0.63|  ? |
+f_Y|0.1| 0.9|  1 |
+find P(X = 4)
+normally to cross reference we * by totals, we don't
+have all totals but we can find it by the info given to us
+by dividing total with the cross reference cell
+0.63/0.9 = 0.7
+P(X = 4) = 0.7
