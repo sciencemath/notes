@@ -6,4 +6,153 @@ Expectation for Joint Distributions
 Covariance of Random Variables
 Normally Distributed Random Variables
 
+NOTE:
+sigma notation is similar to integral notation as I am not using anything like MathML example: Σ^3_j=1(j + 1) in this case 3 is above the sigma and ^, and _ separates what would be on the top and bottom respectively and next to sigma is the iterator (j + 1)
+
 --------------------------------------------
+
+Sigma notation
+Σ^n_i=1(ai)
+refers to the sum of all terms in the sequence ai where index i ranges from 1 to n
+Σ^n_i=1 ai = a1 + a2 + ... + an
+sigma notion can also represents sums whose terms depend on two indices that is double sums
+Σ^m_i=1Σ^n_j=1(aij)
+where i ranges from 1 to m and j ranges from 1 to n, "sum of a sum"
+first we evaluate the inner sum by fixing the index of the outer sum (i) and incrementing only the inner index (j)
+next we evaluate out sum by incrementing the outer sum index
+Σ^2_i=1Σ^4_j=1(i + j)
+= Σ^2_i=1[Σ^4_j=1(i + j)]
+= Σ^2_i=1[(i + 1) + (i + 2) + (i + 3) + (i + 4)]
+= Σ^2_i=1(4i + 10)]
+= 4(1) + 10 + 4(2) + 10
+= 4 + 10 + 8 + 10
+= 32
+
+example:
+Σ^3_j=1Σ^2_i=1(i + j)
+= Σ^3_j=1[Σ^2_i=1(i + j)]
+= Σ^3_j=1[(1 + j) + (2 + j)]
+= Σ^3_j=1(3 + 2j)
+outer
+Σ^3_j=1(3 + 2j) = (3 + 2 * 1) + (3 + 2 * 2) + (3 + 2 * 3)
+= 5 + 7 + 9
+= 21
+
+example:
+Σ^3_i=1Σ^3_j=2(i^2 + j)
+= Σ^3_i=1[Σ^3_j=2(i^2 + j)]
+= Σ^3_i=1[(i^2 + 2) + (i^2 + 3)]
+= Σ^3_i=1(2i^2 + 5)
+outer
+Σ^3_i=1(2i^2 + 5) = (2(1)^2 + 5) + (2(2)^2 + 5) + (2(3)^2 + 5)
+= 7 + 13 + 23
+= 43
+
+example:
+Σ^2_j=1Σ^3_i=1(ij)
+= Σ^2_j=1[Σ^3_i=1(ij)]
+= Σ^2_j=1[(1j) + (2j) + (3j)]
+= Σ^2_j=1(6j)
+outer
+Σ^2_j=1(6j) = (6(1)) + (6(2))
+= 6 + 12
+= 18
+
+The sum and constant multiple rules
+The constant multiple rule
+we can factor out a constant multiple from a double summation
+Σ^m_i=1Σ^n_j=1(kaij) = kΣ^m_i=1Σ^n_j=1(aij)
+The sum rule
+we can distribute a double summation over a sum of terms
+Σ^m_i=1Σ^n_j=1(aij + bij) = Σ^m_i=1Σ^n_j=1(aij) + Σ^m_i=1Σ^n_j=1(bij)
+The double sum of units
+for single summations we have
+Σ^n_j=1(1) = 1 + 1 + ... + 1 = n (n times)
+double summations
+Σ^m_i=1Σ^n_j=1(1) = mn
+
+Applying the sum and constant multiple rules
+find the value of the double sum
+Σ^5_i=1Σ^8_j=1(1 + 2aj - bij)
+given that
+Σ^5_i=1Σ^8_j=1(aij) = 8
+Σ^5_i=1Σ^8_j=1(bij) = 15
+the sum and contant multiple rules for double summations
+Σ^m_i=1Σ^n_j=1(aij + bij) = Σ^m_i=1Σ^n_j=1(aij) + Σ^m_i=1Σ^n_j=1(bij)
+Σ^m_i=1Σ^n_j=1(kaij) = kΣ^m_i=1Σ^n_j=1(aij)
+applying the sum rule to the given double summation
+Σ^5_i=1Σ^8_j=1(1 + 2aj - bij)
+= Σ^5_i=1Σ^8_j=1(1) + Σ^5_i=1Σ^8_j=1(2aij) - Σ^5_i=1Σ^8_j=1(bij)
+= (Σ^5_i=1Σ^8_j=1(1)) + 2Σ^5_i=1Σ^8_j=1(aij) - Σ^5_i=1Σ^8_j=1(bij)
+from the info given
+= (Σ^5_i=1Σ^8_j=1(1)) + 2(8) - 15
+= (Σ^5_i=1Σ^8_j=1(1)) + 1
+using
+Σ^m_i=1Σ^n_j=1(1) = mn
+(Σ^5_i=1Σ^8_j=1(1)) + 1 = 5 * 8 + 1
+= 41
+Σ^5_i=1Σ^8_j=1(1 + 2aj - bij)
+= 41
+
+example:
+find the value of the double sum
+Σ^50_i=1Σ^100_j=1(4(aij + bij))
+given
+Σ^50_i=1Σ^100_j=1(aij) = 40
+Σ^50_i=1Σ^100_j=1(bij) = 60
+= 4Σ^50_i=1Σ^100_j=1(aij) + 4Σ^50_i=1Σ^100_j=1(bij)
+= 4 * 40 + 4 * 60
+= 160 + 240
+= 400
+
+example:
+Σ^5_i=1Σ^10_j=1(1 - aij - bij)
+Σ^5_i=1Σ^10_j=1(aij) = 10
+Σ^5_i=1Σ^10_j=1(bij) = 20
+= (Σ^5_i=1Σ^10_j=1(1)) - 30
+= 5 * 10 - 30
+= 50 - 30
+= 20
+
+The product and swap rules
+the product rule
+Σ^m_i=1Σ^n_j=1(aibj) = Σ^m_i=1(ai)Σ^n_j=1(bj)
+the swap rule
+Σ^m_i=1Σ^n_j=1(aij) = Σ^n_j=1Σ^m_i=1(aij)
+
+Appling the product rule and swap rules
+find the value of the double sum
+Σ^15_i=1Σ^18_j=1(ai - 2)(bj + 1)
+given
+Σ^15_i=1(ai) = 40
+Σ^18_j=1(bj) = -8
+Σ^15_i=1Σ^18_j=1(ai - 2)(bj + 1)
+= Σ^15_i=1(ai - 2)Σ^18_j=1(bj + 1)
+= (Σ^15_i=1(ai) - Σ^15_i=1(2)) * (Σ^18_j=1(bj) + Σ^18_j=1(1))
+= (Σ^15_i=1(ai) - 2Σ^15_i=1(1)) * (Σ^18_j=1(bj) + Σ^18_j=1(1))
+= (40 - 2 * 15) * (-8 + 18)
+= 10 * 10
+= 100
+
+example:
+Σ^10_i=1Σ^20_j=1(ai - 1)(bj + 1)
+given
+Σ^10_i=1(ai) = 12
+Σ^20_j=1(bj) = 5
+= (Σ^10_i=1(ai - 1)Σ^20_j=1(bj + 1))
+= (Σ^10_i=1(ai) - Σ^10_i=1(1)) * (Σ^20_j=1(bj) + Σ^20_j=1(1))
+= (12 - 10) * (5 + 20)
+= (2) * (25)
+= 50
+
+example:
+Σ^30_i=1Σ^30_j=1(2ai(bj - 2))
+given
+Σ^30_i=1(ai) = 42
+Σ^30_j=1(bj) = 70
+= 2Σ^30_i=1(ai)Σ^30_j=1(bj - 2)
+= (2Σ^30_i=1(ai)) * (Σ^30_j=1(bj) - 2Σ^30_j=1(1))
+= (2 * 42) * (70 - 2 * 30)
+= (84) * (70 - 60)
+= (84) * (10)
+= 840
