@@ -624,3 +624,159 @@ f_X|Y(x|1)|1/5|3/5|1/5|
 -----------------------
 
 (rest of the example were faster to answer and calculate in my head then creating tables here for notes)
+
+===================================================
+
+The joint cumulative distribution function (or joint CDF)
+F(x,y) = P(X <= x,Y <= y) = Σ_xi<=xΣ_yi<=y(f(xi,yi))
+the sets S_X and S_Y are called the supports of X and Y
+joint CDF is analogous to the cumulative distribution function of a single random variable
+joint PMF:
+   | Y=0| Y=1| Y=2|
+X=0| 0.1| 0.2| 0.1|
+X=1| 0.3| 0.2| 0.1|
+the supports of X and Y are S_X = {0,1} and S_Y = {0,1,2}
+lets compute F(1,1)
+F(1,1) = P(X <= 1, Y <= 1)
+f(0,0) + f(0,1) + f(1,0) + f(1,1)
+= 0.1 + 0.2 + 0.3 + 0.2
+= 0.8
+
+Evaluating a joint CDF
+   |Y=-2|Y=-1| Y=0|Y=2|
+X=1| 0.1| 0.3|0.05|0.1|
+X=3| 0.1|0.05| 0.1|0.2|
+find F(2,1)
+F(2,1) = P(X <= 2, Y <= 1)
+f(1,-2) + f(1,-1) + f(1,0)
+= 0.1 + 0.3 + 0.05
+= 0.45
+
+example:
+   | Y=2| Y=4| Y=6|
+X=1| 0.1|0.25|0.25|
+X=2|0.05|0.15| 0.2|
+find F(2,4)
+F(2,4) = P(X <= 2, Y <= 4)
+f(1,2) + f(1,4) + f(2,2) + f(2,4)
+0.1 + 0.25 + 0.05 + 0.15
+= 0.55
+
+example:
+   | Y=0| Y=1|
+X=2| 0.2|0.25|
+X=4|0.16|0.15|
+X=6|0.04|0.15|
+find F(5,1/2)
+F(5,1/2) = P(X <= 5, Y <= 1/2)
+f(2,0) + f(4,0)
+0.2 + 0.16
+= 0.36
+
+Some properties of the joint CDF
+0 <= F(x,y) <= 1
+the marginal CDF of X is given by F_X(x) = F(x, ∞)
+the marginal CDF of Y is given by F_Y(y) = F(∞, y)
+F(∞, ∞) = 1
+F(-∞, y) = F(x, -∞) = 0
+if X and Y are independent random variables then F(x,y) = F_X(x)*F_Y(y)
+
+Interpreting the joint CDF Geometrically
+(think of f(x,y) as our top right corner)
+S_X = {1,2,3,4}, S_Y = {2,3,4}
+find an expression for the corresponding joint CDF when x > 4, y < 2
+We can think of each point where f(x,y) != 0 as a point mass in the plane where the probability mass at each point equals the probability associated with that point
+The joint CDF F(x,y) = P(X <= x,Y <= y) is the total probability mass that lies in the infinite rectangular region that has its top-right corner at (x,y) and whose sides are parallel to the coordinate axis
+all our points are on S = S_X x S_Y = {1,2,3,4} x {2,3,4} our region lies x > 4 and y < 2 there are no points that lie in our region
+f(x,y) = 0
+
+example:
+S_X = {-2,0,2}, S_Y = {0,1,2,3}
+when x < -3, y > 3
+f(x,y) = 0
+the region is outside any of our supports
+
+example:
+when x > 4, y > 3
+S_X = {1,2,3,4}, S_Y = {0,1,2,3}
+f(x,y) = 1
+region includes all points
+
+Finding the cumulative probabilities given values from the joint CDF
+F(5,4) = 0.9, F(5,2) = 0.2, F(3,4) = 0.5, F(3,2) = 0.1
+S_X = {1,3,5,7}, S_Y = {1,2,3,4,5}
+Find P(3 < X <= 5, 2 < Y <= 4)
+For a given joint PMF f(x,y) we can think of each point where f(x,y) != 0 as a point mass in the plane, where the probability mass at each point equals the probability associated with that point.
+The joint CDF F(x,y) = P(X <= x,Y <= y) is the total probability mass that lies in the infinite rectangular region that has its top-right corner at (x,y) and whose sides are parallel to the coordinate axis.
+S = S_X x S_Y = {1,3,5,7} x {1,2,3,4,5}
+if we want to find a sub-region within our support say at (5,4) 
+subtract the infinite rectangles that have their top-right at (5,2) and (3,4)
+we need to add back the infinite rectangle that has its top-right corner at (3,2) this is because we subtracted this region twice in step 2
+Find P(3 < X <= 5, 2 < Y <= 4)
+top-right corner at (5,4):
+= P(X <= 5, Y <= 4)
+top-right corner at (5,2) - top-right corner at (3,4)
+- P(X <= 5, Y <= 2) - P(X <= 3, Y <= 4)
+top-right corner at (3,2)
++ P(X <= 3, Y <= 2)
+= F(5,4) - F(5,2) - F(3,4) + F(3,2)
+= 0.9 - 0.2 - 0.5 + 0.1
+= 0.3
+
+example:
+joint CDF of X and Y be F(x,y)
+F(9,10) = 0.65, F(6,10) = 0.31, F(3,10) = 0.12
+supports are
+S_X = {3,6,9,12}, S_Y = {2,4,6,8,10,12}
+Find P(3 < X <= 9,Y <= 10)
+top-right corner at (9,10) - top-right corner at (3,10):
+= P(X <= 9, Y <= 10) - P(X <= 3, Y <= 10)
+= F(9,10) - F(3,10)
+= 0.65 - 0.12
+= 0.53
+
+example:
+joint CDF of X and Y be F(x,y)
+F(10,9) = 0.72, F(10,6) = 0.3, F(8,9) = 0.15, F(8,6) = 0.08
+supports of X and Y
+S_X {2,4,6,8,10,12}, S_Y = {3,6,9,12}
+find P(8 < X <= 10, 6 < Y <= 9)
+top-right corner at (10,9)
+P(X <= 10, Y <= 9)
+top-right corner at (10,6) - top-right corner at (8,9)
+- P(X <= 10, Y <= 6) - P(X <= 8, Y <= 9)
+top-right corner at (8,6)
++ P(X <= 8, Y <= 6)
+= F(10,9) - F(10,6) - F(8,9) + F(8,6)
+= 0.72 - 0.3 - 0.15 + 0.08
+= 0.35
+
+Further finding cumulative probabilities given values from the joint CDF
+the joint CDF of X and Y be F(x,y)
+F(8,3) = 0.9, F(6,3) = 0.7, F(4,3) = 0.4
+S_X = {2,4,6,8}, S_Y = {1,3,5}
+P(X > 6, Y <= 4)
+top-right corner at (8,3) - top-right corner at (6,3)
+P(X <= 8, Y <= 3) - P(X <= 6, Y <= 3)
+= F(8,3) - F(6,3)
+= 0.9 - 0.7
+= 0.2
+
+example:
+joint CDF
+F(6,5) = 3/5, F(6,3) = 2/5, F(6,2) = 1/10
+S_X = {2,6,10}, S_Y = {0,1,2,3,4,5}
+find P(X < 7, Y > 3)
+top-right corner at (6,5) - top-right corner at (6,3)
+P(X <= 6,Y <= 5) - P(X <= 6,Y <= 3)
+F(6,5) - F(6,3)
+= 3/5 - 2/5
+= 1/5
+
+example:
+joint CDF
+F(7,1) = 9/16, F(7,-2) = 1/4, F(3,1) = 1/8, F(3,-2) = 1/16
+S_X = {1,3,5,7,9}, S_Y = {-2,-1,0,1,2}
+P(5 <= X <= 8,-1 <= Y <= 1)
+9/16 - 4/16 - 2/16 + 1/16
+4/16 = 1/4
