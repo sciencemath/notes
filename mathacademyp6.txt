@@ -281,3 +281,85 @@ Compute P(X < 2 or Y = 6)
 = P((X,Y) ∈ {(1,2),(1,4),(1,6),(2,6)})
 = 0.1 + 0.25 + 0.25 + 0.2
 = 0.8
+
+===================================================
+
+The joint PMF f(x,y) tells us all possible events (X,Y) and the probabilities associated with each event, however we wish to determine the PMF for X only how can this be deduced from the joint PMF?
+consider the joint PMF
+   |Y=1 |Y=2 |
+X=1|0.05|0.15|
+X=2|0.7 |0.1 |
+The support of X is S_X = {1,2} lets now deduce the probabilites associated with each value of X in S_X
+According to the law of total probability we can deduce P(X = 1) by summing the values in the first row of the table
+P(X = 1) = P(X = 1,Y = 1) + P(X = 1,Y = 2)
+= 0.05 + 0.15
+= 0.2
+summing the values in second row in table
+P(X = 2) = P(X = 2,Y = 1) + P(X = 2,Y = 2)
+= 0.7 + 0.1
+= 0.8
+PMF for X
+x     | 1 | 2 |
+f_X(x)|0.2|0.8|
+f_X(x) was deduced from the joint probability mass function, we call f_X(x) the marginal mass function for X
+
+Deducing the marginal mass function for Y
+   |Y=1 |Y=2 |f_X|
+X=1|0.05|0.15|0.2|
+X=2|0.7 |0.1 |0.8|
+the marginal mass function in the right margin of the table
+P(X = 1) = f_X(1) = 0.2
+P(X = 2) = f_X(2) = 0.8
+similary we can compute the marginal mass function of Y denoted f_Y(y) by summing the columns adding these totals to our table
+   |Y=1 |Y=2 |f_X|
+X=1|0.05|0.15|0.2|
+X=2|0.7 |0.1 |0.8|
+f_Y|0.75|0.25| 1 |
+P(Y = 1) = f_Y(1) = 0.75
+P(Y = 2) = f_Y(2) = 0.25
+marginal mass function f_Y(y) of Y
+x     | 1  |  2 |
+f_Y(y)|0.75|0.25|
+
+A formal definition of the margin mass function
+The maginal mass function of X denoted f_X(x)
+f_X(x) = P(X = x) = Σ_y∈SY f(x,y)
+The marginal mass function of Y denoted f_Y(y)
+f_Y(y) = P(Y = x) = Σ_x∈SX f(x,y)
+To compute P(X = x) for some particular x we sum all possible values of Y in the row corresponding to X = x
+To compute P(Y = y) for some particular y we sum all possible values of X in the column corresponding to Y = y
+Marginal mass functions are sometimes called marginal probability mass functions, marginal PMFs, or marginal distributions
+
+Finding a marginal probability
+   |Y=0 |Y=1 |
+X=0|1/6 |5/12|
+X=1|1/4 |1/6 |
+P(X = x) = f_X(x) = Σ_y f(x,y)
+P(Y = y) = f_Y(y) = Σ_x f(x,y)
+The marginal distribution for X corresponds to the row totals and the marginal distribution for Y corresponds to the column totals.
+   |Y=0 |Y=1 |f_X |
+X=0|1/6 |5/12|7/12|
+X=1|1/4 |1/6 |5/12|
+f_Y|5/12|7/12|  1 |
+P(X = 0) = f_X(0)
+= f(0,0) + f(0,1)
+= 1/6 + 5/12
+= 7/12
+
+example:
+find P(X = 0)
+   |Y=1 |Y=2 |
+X=0|0.4 |0.2 |
+X=1|0.15|0.25|
+= 0.4 + 0.2
+= 0.6
+
+example:
+find f_Y(0)
+   |Y=0|Y=1|
+X=0|1/4|1/2|
+X=1|1/8|1/8|
+= 1/4 + 1/8
+= 3/8
+
+(rest of examples are simple table lookups and summations no new knowledge to note)
