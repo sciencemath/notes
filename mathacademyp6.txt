@@ -457,3 +457,170 @@ have all totals but we can find it by the info given to us
 by dividing total with the cross reference cell
 0.63/0.9 = 0.7
 P(X = 4) = 0.7
+
+===================================================
+
+Conditional distributions for discrete random variables
+the multiplication law for conditional probability for two events A and B
+P(A|B) = P(A ∩ B)/P(B)
+suppose X and Y are discrete random variables the conditional probability X = x given that Y = y follows immediately from the multiplication law
+P(X = x|Y = y) = P(X = x,Y - y)/P(Y = y) = f(x,y)/f_Y(y)
+F(x,y) is the joint PMF of X and Y, f_Y(y) is the marginal mass function
+To avoid getting a zero in the denominator the formula assumes that P(Y = y) = f_Y(y) != 0
+In the case where P(Y = y) = 0 the corresponding probability for X does not exist it makes no sense to ask about the event of X = x occuring given that Y = y has occurred if the event Y = y is impossible
+similarly the conditional probability Y = y given X = x
+P(Y = y|X = x) = P(X = x,Y = y)/P(X = x) = f(x,y)/f_X(x)
+where f_X(x) is the marginal mass function of X this formula assumes that P(X = x) != 0
+
+Computing a conditional probability
+   | Y=0| Y=1|
+X=0| 0.5|0.05|
+X=1|0.15| 0.3|
+compute P(Y = 0|X = 1) given that the discrete random variables X and Y have the joint probability function f(x,y)
+P(Y = 0|X = 1) = P(X = 1,Y = 0)/P(X = 1) = f(1,0)/f_X(1)
+f_X(1) = f(1,0) + f(1,1)
+= 0.15 + 0.3
+= 0.45
+substituting
+f_X(1) = 0.45 and f(1,0) = 0.15 in our formula
+P(Y = 0|X = 1) = f(1,0)/f_X(1)
+= 0.15/0.45
+= 1/3
+
+example:
+   | Y=1| Y=3|
+X=2|0.05|0.25|
+X=4| 0.2|0.05|
+X=6| 0.3|0.15|
+Compute P(X = 2|Y = 3)
+P_Y(3) = 0.25 + 0.05 + 0.15
+= 0.45
+f(2,3)/P_Y(3)
+= 0.25/0.45
+~= 0.56
+
+example:
+   | Y=1| Y=3|
+X=2|0.05|0.25|
+X=4| 0.2|0.05|
+X=6| 0.3|0.15|
+Compute P(Y = 3|X = 2)
+P_X(2) = 0.05 + 0.25 = 0.3
+f(2,3)/f_X(2)
+= 0.25/0.3
+~= 0.83
+
+Computing a conditional probability over an interval
+   | Y=0| Y=1|Y=2 |Y=3|
+X=2| 0.2|   0|0.05|0.1|
+X=4| 0.1|0.05|0.15|  0|
+X=6| 0.2|0.05|   0|0.1|
+Compute P(0 < Y < 3|X = 0)
+= P((0 < Y < 3), X = 0)/P(X = 0)
+= P(X = 0, (0 < Y < 3))/P(X = 0)
+= P(X = 0,Y = 0) + P(X = 0,Y = 2)/P(X = 0)
+= (f(0,1) + f(0,2))/f_X(0)
+f_X(0) = 0.2 + 0 + 0.05 + 0.1
+= 0.35
+= 0 + 0.05/0.35
+= 0.05/0.35
+~= 0.14
+
+example:
+    | Y=0| Y=2| Y=4|
+X=0 |0.15| 0.1| 0.1|
+X=4 |0.05| 0.1|0.05|
+X=8 | 0  | 0.2|0.15|
+X=12|0.05|0.05|   0|
+Compute P(4 <= X <= 8|Y = 0)
+= (f(4,0) + (8,0))/f_Y(0)
+= 0.05 + 0
+f_Y(0) = 0.15 + 0.05 + 0 + 0.05 = 0.25
+(0.05 + 0)/0.25
+~= 0.2
+
+example:
+    | Y=0| Y=2| Y=4|Y=6|
+X=1 |1/18|5/18| 1/9|2/9|
+X=2 | 1/9|1/18|   0|1/6|
+Compute P(2 <= Y <= 6|X = 2)
+f_X(2) = 1/9 + 1/18 + 0 + 1/6
+= 2/18 + 1/18 + 3/18
+= 6/18
+= 1/3
+f(2,2) + f(2,4) + f(2,6)
+= 1/18 + 0 + 1/6
+= 4/18
+= 2/9
+= ((2/9)/(1/3)) 
+= 2/9 * 3/1
+= 6/9 = 2/3
+
+Conditional probability mass functions
+We can now define two more probability mass functions
+The conditional probability mass function of X given that Y = y denoted f_X|Y(x|y)
+f_X|Y(x|y)
+= P(X = x,Y = y) = P(X = x,Y = y)/P(Y = y) 
+= f(x,y)/f_Y(y)
+f(x,y) is the joint probability mass function of X and Y and f_Y(y) is the marginal mass function of Y
+The conditional probability mass function of Y given that X = x denoted f_Y|X(y|x)
+f_Y|X(y|x)
+= P(Y = y,X = x) = P(X = x,Y = y)/P(X = x)
+= f(x,y)/f_X(x)
+f(x,y) is a joint probability mass function of X and Y and f_X(x) in the marginal mass function of X
+The conditional distribution of X given Y does not equal the conditional distribution of Y given X
+f_X|Y(x|y) != f_Y|X(y|x)
+if X and Y and independent
+f_X|Y(x|y) = f_X(x), f_Y|X(y|x) = f_Y(y)
+X and Y are independent, knowing the value of one random variable does not affect the probability distribution of the other.
+
+Computing the value of a conditional probability mass function at a point
+    | Y=0| Y=1| Y=2|
+X=1 | 1/6| 1/9| 1/6|
+X=2 |1/18|1/18| 1/6|
+X=3 |1/9 | 1/9|1/18|
+Compute f_X|Y(2|2)
+= f(x,y)/f_Y(2)
+f_Y(2) = 1/6 + 1/6 + 1/18
+= 3/18 + 3/18 + 1/18
+= 7/18
+f(2,2) = 1/6
+= (1/6)/(7/18)
+= 18/42
+= 3/7
+
+example:
+   | Y=0| Y=1| Y=2|
+X=0| 0.3| 0.2| 0.1|
+X=1| 0.1| 0.1| 0.2|
+Comput f_X|Y(1|0)
+f_Y(0) = 0.3 + 0.1 = 0.4
+f(1,0) = 0.1
+0.1/0.4 = 0.25
+
+example:
+   | Y=0| Y=1| Y=2|
+X=0| 0.3| 0.2| 0.1|
+X=1| 0.1| 0.1| 0.2|
+Compute f_Y|X(1|0)
+f_X(0) = 0.3 + 0.2 + 0.1 = 0.6
+f(0,1) = 0.2
+0.2/0.6
+~= 0.33
+
+Computing conditional probability mass function
+   | Y=1| Y=3| Y=5|
+X=0| 0.1|   0| 0.2|
+X=2| 0.3| 0.1|   0|
+X=4| 0.1|   0| 0.2|
+find f_X|Y(x|1)
+= f(x,1)/f_Y(1)
+x ∈ {0,2,4}
+P(X = 0|Y = 1) = f(0,1)/f_Y(1) = 0.1/0.5 = 1/5
+P(X = 2|Y = 1) = f(2,1)/f_Y(1) = 0.3/0.5 = 3/5
+P(X = 4|Y = 1) = f(4,1)/f_Y(1) = 0.1/0.5 = 1/5
+x         |0  |2  |4  |
+f_X|Y(x|1)|1/5|3/5|1/5|
+-----------------------
+
+(rest of the example were faster to answer and calculate in my head then creating tables here for notes)
