@@ -1240,3 +1240,253 @@ F_Y(y) = {
 	1,   y > 1
 }
 g(y) = y^2
+
+===================================================
+
+Independence of continuous random variables
+Let X and Y be continuous random variables X and Y are independent if for all A ⊆ R and B ⊆ R
+P(X ∈ A,Y ∈ B) = P(X ∈ A) * P(Y ∈ B)
+X and Y are independent iff
+f(x,y) = f_X(x) * f_Y(y)
+(we've seen this before)
+direct analogy with the case of independence for discrete random variables.
+
+Finding the joint PDF of two independent random variables using marginal PDFs
+X and Y are two independent continuous random variables whose MDF are
+f_X(x) = {
+	2/9(x), 0 <= x <= 3
+	0,      otherwise
+}
+f_Y(y) = {
+	1/4(y^3), 0 <= y <= 2
+	0,        otherwise
+}
+find the joint probability density function f(x,y)
+since our random variables are independent
+f(x,y) = f_X(x) * f_Y(y)
+= 2/9(x) * 1/4(y^3)
+= 2/36(xy^2)
+= 1/18(xy^2)
+where (x,y) ∈ [0,3] x [0,2] the full expression f(x,y)
+f(x,y) = {
+	1/18(xy^3), 0 <= x <= 3, 0 <= y <= 2
+	0,          otherwise
+}
+
+example:
+X and Y and their marginal density functions:
+f_X(x) = {
+	4x^3, 0 <= x <= 1
+	0,    otherwise
+}
+f_Y(y) = {
+	2/3y, 1 <= y <= 2
+	0,    otherwise
+}
+find the joint probability density function f(x,y)
+X and Y are independent so 
+f(x,y) = f_X(x) * f_Y(y)
+4x^3 * 2/3y
+= 8/3x^3y
+where (x,y) ∈ [0,1] x [1,2] the full expression f(x,y)
+f(x,y) = {
+	8/3(x^3y), 0 <= x <= 1, 1 <= y <= 2
+	0,         otherwise
+}
+
+example:
+X and Y are two continuous random variables whose marginal density functions are
+f_X(x) = {
+	3x^2, 0 <= x <= 1
+	0,    otherwise
+}
+f_Y(y) = {
+	4y^3, 0 <= y <= 1
+	0,    otherwise
+}
+find the joint probability density function f(x,y)
+hint: We don't know if X and Y are independent
+if we don't know if X and Y and independent then its impossible to determine using only the given information
+
+Finding a joint probability for some independent random variables using marginal PDFs
+Let X and Y be two independent continuous random variables whose marginal density functions
+f_X(x) = {
+	10/3x^2, 2 <= x <= 5
+	0,       otherwise
+}
+f_Y(y) = {
+	1/4(y), 1 <= y <= 3
+	0,      otherwise
+}
+find P(X >= 3,Y <= 2)
+f(x,y) = f_X(x) * f_Y(y)
+= 10/3x^2 * 1/4(y)
+= 5y/6x^2
+where (x,y) ∈ [2,5] x [1,3] the full expression f(x,y)
+f(x,y) = {
+	5y/6x^2, 2 <= x <= 5, 1 <= y <= 3
+	0,       otherwise
+}
+required probability
+P(X >= 3,Y <= 2)
+= ∫^5_3 ∫^2_1 5y/6x^2 dy dx
+= ∫^5_3 [∫^2_1 5y/6x^2 dy] dx
+= ∫^5_3 5/6x^2 [y^2/2]|_1-2 dx
+= ∫^5_3 5y/6x^2 (3/2) dx
+= ∫^5_3 5/4x^2 dx
+= [-5/4x]|_3-5
+= -5/4(1/5 - 1/3)
+= 1/6
+
+example:
+X and Y are two independent continuous random variables MDF
+f_X(x) = {
+	2x, 0 <= x <= 1
+	0,  otherwise
+}
+f_Y(y) = {
+	3y, 0 <= y <= sqrt(2/3)
+	0,  otherwise
+}
+find P(X <= 0.5,Y <= 1)
+f(x,y) = f_X(x) * f_Y(y)
+2x * 3y = 6xy
+where (x,y) ∈ [0,1] x [0,sqrt(2/3)] the full expression f(x,y)
+f(x,y) = {
+	6xy, 0 <= x <= 1, 0 <= y <= sqrt(2/3)
+	0,   otherwise
+}
+required probability
+= ∫^0.5_0 [∫^1_0 6xy dy] dx
+= ∫^0.5_0 6x[y]|_0-1 dx
+= ∫^0.5_0 6x[y^2/2]|_0-1 dx
+= ∫^0.5_0 6x(1/3) dx
+= ∫^0.5_0 3x(1) dx
+= ∫^0.5_0 3x dx
+= [3x^2/2]|_0-0.5
+= ((3(0.5)^2/2) - (0))
+= 0.375
+
+example:
+MDF:
+f_X(x) = {
+	3/2(sqrt(x)), 0 <= x <= 1
+	0,  		  otherwise
+}
+f_Y(y) = {
+	2/3(y), 1 <= y <= 2
+	0,      otherwise
+}
+find P(0 <= X <= 0.4, Y <= 2)
+3/2(sqrt(x)) * 2/3(y)
+= ysqrt(x)
+where (x,y) ∈ [0,1] x [1,2] the full expression f(x,y)
+f(x,y) = {
+	ysqrt(x), 0 <= x <= 1, 1 <= y <= 2
+	0,		  otherwise
+}
+required probability
+= ∫^0.4_0 [∫^2_1 ysqrt(x) dy] dx
+= ∫^0.4_0 sqrt(x)[y^2/2]|_1-2 dx
+= ∫^0.4_0 sqrt(x)(4/2 - 1/2) dx
+= ∫^0.4_0 sqrt(x)(3/2) dx
+= 3/2[x^1/2]|_0-0.4
+= 3/2[2/3(x^(3/2))]|_0-0.4
+= 3/2(2/3(0.4)^(3/2) - 2/3(0)^(3/2))
+(0.4^(3/2) = 0.4^1 * 0.4^1/2 = 0.4 * sqrt(0.4))
+(sqrt(0.4) ~= 0.6325)
+(0.4 * 0.253)
+= 2/3 * 0.253 ~= 0.506/3 ~= 0.16867
+= 3/2(0.16867)
+~= 0.253
+
+Determining whether two continuous random variables are independent
+The joint PDF for the continuous random variables X and Y
+f(x,y) = {
+	1/4(xe^-y/2), 0 <= x <= 2, y >= 0
+	0,            otherwise
+}
+which statements are true?
+1. f_Y(y) = 1/2(e^-y/2) for y ∈ [0, ∞)
+2. f(x,y) = f_X(x) * f_Y(y) for all possible x and y
+3. X and Y are independent
+statement 1 is true, computing the MDF for Y
+f_Y(y) = ∫^2_0 1/4(xe^-y/2) dx
+= 1/4(e^-y/2) [x^2/2]|_0-2
+= 1/2(e^-y/2)
+where y ∈ [0, ∞)
+statement 2 is true, computing the marginal density function for X
+f_X(x) = ∫^∞_0 1/4xe^-y/2 dy
+= 1/4(x) ∫^b_0 e^-y/2 dy
+= 1/4(x) [-2e^-y/2]|_0-b
+= 1/4(x) (-2e^-b/2 + 2)
+(-2e^-b/2 b -> ∞ this becomes 0)
+we are left with
+= x/4(2)
+= x/2
+when x ∈ [0,2] and y ∈ [0, ∞)
+1/4(xe^-y/2) <- f(x,y)
+= x/2 <- f_X(x)  *  1/2(e^-y/2) <- f_Y(y)
+Statement 3 is also true, because of 2 X and Y are independent
+
+example:
+joint PDF:
+f(x,y) = {
+	2/3(xy^3), 2 <= x <= 4, 0 <= y <= 1
+	0,         otherwise
+}
+Which statements are true?
+1. f_X(x) = 2x for x ∈ [2,4]
+2. f(x,y) = f_X(x) * f_Y(y) for all possible x and y
+3. X and Y are independent
+f_X(x) = ∫^1_0 2/3(xy^3) dy
+= 1/3(x)[y^4/2]|_0-1
+= 1/3(x)(1/2)
+= 1/6(x)
+statement 1 is false because 2x is not x/6
+f_Y(y) = ∫^4_2 2/3(xy^3) dx
+= 2/3(y^3) [x^2/2]|_2-4
+= 2/3(y^3) (16/2 - 4/2)
+= 2/3(y^3) (16/2 - 4/2)
+= 2/3(y^3)(6)
+= 4y^3
+Statement 3 is true, since 2 is true. X and Y are independent
+f(x,y) = f_X(x) * f_Y(y)
+2/3(xy^3) = 1/6(x) * 4y^3
+
+example:
+joint PDF:
+f(x,y) = {
+	3/2(x^2 + y^2), 0 <= x <= 1, 0 <= y <= 1
+	0,              otherwise
+}
+1. f_X(x) = 3/2(x^2) + 1/2 for x ∈ [0,1]
+2. f(x,y) = f_X(x) * f_Y(y) for all possible x and y
+3. X and Y are independent
+f_X(x) = ∫^1_0 3/2(x^2 + y^2) dy
+= 3/2(x^2) ∫^1_0 3/2[y^2] dy
+= 3/2(x^2) + 3/2[y^3/3]|_0-1
+= 3/2(x^2) + 3/2(1/3)
+= 3/2(x^2) + 1/2
+statement 1 is true
+f_Y(y) = ∫^1_0 3/2(x^2 + y^2) dx
+= 3/2[x^3/3 + xy^2]|_0-1
+= 3/2(y^2) + 1/2
+statement 2 is false
+f(x,y) 		   !=       f_X(x) 	  *     f_Y(y)
+3/2(x^2 + y^2) != (3/2(x^2) + 1/2)(3/2(y^2) + 1/2)
+statement 3 is false, since statment 2 is not true X and Y are not independent therefore correct answer is 1 only
+
+theorem:
+Suppose that the joint support of two continuous random variables X and Y with a joint probability density function f(x,y) is rectangular if
+f(x,y) = g(x) * h(x)
+for some two functions g and h (not necessarily PDF) then X and Y are independent, the rectangular joint support S does not need to be finite.
+For example random variables X and Y with the following joint PDF:
+f(x,y) = {
+	1/4(xe^-y/2), 0 <= x <= 2, y >= 0
+	0,			  otherwise
+}
+the joint support [0,2] x [0, ∞) is rectangular, we can write f(x,y) = g(x) * h(x) where
+g(x) = 1/4x,  h(y) = e^-y/2
+X and Y are independent
+
