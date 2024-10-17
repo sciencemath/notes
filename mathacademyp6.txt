@@ -1491,7 +1491,7 @@ g(x) = 1/4x,  h(y) = e^-y/2
 X and Y are independent
 
 ===================================================
-
+**
 For continuous random variables X and Y the conditional probability density function of X is given Y = y is
 f_X|Y(x|y) = f(x,y)/f_Y(y), f_Y(y) != 0
 and the CPD function Y given X = x is
@@ -1754,3 +1754,179 @@ P(Y < X|X = 1/3) = P(Y < 1/3|X = 1/3)
 = 9/2 [y^2/2]|_0-1/3
 = 9/2(1/18 - 0)
 = 1/4
+
+===================================================
+
+The joint cumulative distribution function (joint CDF)
+F(x,y) = P(X <= x,Y <= y)
+Joint CDF gives the probability that pair (X,Y) will lie inside the inifinite rectangular region Δ that has its top-right corner at (x,y) and whose sides are parallel to the coordinate axes
+0 <= F(x,y) <= 1
+the marginal CDF of X is given by F_X(x) = F(x, ∞)
+the marginal CDF of Y is given by F_Y(y) = F(∞, y)
+F(∞,∞) = 1
+F(-∞,y) = F(x,-∞) = 0
+if X and Y are independent random variables, F(x,y) = F_X(x) * F_Y(y)
+if X and Y are continuous random variables with joint probability density function f(x,y) we have the following relationship between the joint PDF and joint CDF
+F(x,y) = ∫^y_-∞ ∫^x_-∞ f(u,v) dudv
+over the rectangle [a,b]x[c,d] then the joint CDF is
+F(x,y) = ∫^d_c ∫^b_a f(u,v) dudv
+
+Computing the value of the joint CDF at a point
+X and Y be continuous random variables with the joint PDF
+f(x,y) = {
+	3/5(sqrt(x)y), (x,y) ∈ D
+	0,              otherwise
+}
+if F(x,y) is the joint CDF of X and Y find F(2,2/5)
+using the definition of the joint CDF
+F(2, 5/2) = P(X < 2, Y < 5/2) = ∫^5/2_-∞ ∫^2_-∞ f(u,v) dudv
+we're only interested in the region inside the Δ where f(x,y) is non-zero
+D ∩ Δ = {(x,y) : 0 <= x <= 1, 2 <= y <= 5/2}
+∫^5/2_2 ∫^1_0 3/5(sqrt(u)v) dudv
+= ∫^5/2_2 ∫^1_0 3/5(u^(1/2)v) dudv
+= ∫^5/2_2 [3/5 * 2/3(u^(3/2)v)]|_0-1 dv
+= ∫^5/2_2 [2/5u^(3/2)v]|_0-1 dv
+= ∫^5/2_2 2/5(v) dv
+= [v^2/5]|_2-5/2
+= 5/4 - 4/5
+= 9/20
+
+example:
+joint probability density function
+f(x,y) = {
+	x + y, (x,y) ∈ D
+	0,     otherwise
+}
+if F(x,y) is the joint CDF of X and Y find F(1/2,1/5)
+F(1/2, 1/5) = P(X < 1/2, Y < 1/5) = ∫^1/5_-∞ ∫^1/2_-∞ f(u,v) dudv
+D ∩ Δ = {(x,y) : 0 <= x <= 1/2, 0 <= y <= 1/5}
+= ∫^1/5_0 ∫^1/2_0 (u + v) dudv
+= ∫^1/5_0 [u^2/2 + uv]|_0-1/2 dv
+= ∫^1/5_0 (1/8 + v/2) dv
+= [v/8 + v^2/4]|_0-1/5
+= [1/40 + 1/100] - 0
+= 7/200
+
+example:
+joint probability density function
+f(x,y) = {
+	x + y, (x,y) ∈ D
+	0,     otherwise
+}
+if F(x,y) is the joint CDF of X and Y find F(3/2, 1/2)
+F(3/2, 1/2) = P(X < 3/2, Y < 1/2) = ∫^1/2_-∞ ∫^3/2_-∞ f(u,v) dudv
+D ∩ Δ = {(x,y) : 0 <= x <= 1, 0 <= y <= 1/2}
+= ∫^1/2_0 ∫^1_0 (u + v) dudv
+= ∫^1/2_0 [u^2/2 + uv]|_0-1 dv
+= ∫^1/2_0 (1/2 + v) dv
+= [v/2 + v^2/2]|_0-1/2
+= 1/4 + 1/8
+= 2/8 + 1/8
+= 3/8
+
+Finding a probability geometrically using a CDF
+the joint CDF of X and Y be F(x,y)
+F(5,5) = 0.9, F(5,2) = 0.3, F(0,5) = 0.45, F(0,2) = 0.15
+find P(0 <= X <= 5, 2 <= Y <= 5)
+geometrically this region can be obtained by
+1. take the infinite rectangle that has its top-right corner at (5,5)
+2. subtract the infinite rectangles that have their top-right corners at (5,2) and (0,5)
+3. add back the infinite rectangle that has its top-right corner at (0,2) this is because we subtracted this region in step 2
+P(0 <= X <= 5, 2 <= Y <= 5)
+top-right corner: at (5,5) - at (5,2) - at (0,5)
+P(X <= 5,Y <= 5) - P(X <= 5,Y <= 2) - P(X <= 0,Y <= 5)
+at (0,2)
++ P(X <= 0,Y <= 2)
+= F(5,5) - F(5,2) - F(0,5) + F(0,2)
+= 0.3
+
+example:
+joint CDF of X and Y be F(x,y)
+F(10,9) = 0.7, F(9,5) = 0.4, F(10,5) = 0.2
+find P(X <= 10, 5 <= Y <= 9)
+F(10,9) - F(10,5) (same x axis)
+= 0.7 - 0.2
+= 0.5
+
+example:
+joint CDF of X and Y be F(x,y)
+F(10,9) = 0.7, F(10,5) = 0.2, F(8,9) = 0.3, F(8,5) = 0.1
+find P(8 <= X <= 10, 5 <= Y <= 9)
+F(10,9) - F(10,5) - F(8,9) + F(8,5)
+= 0.7 - 0.2 - 0.3 + 0.1
+= 0.3
+
+Finding Part of a Joint CDF from a joint PDF simple cases
+joint probability density function
+f(x,y) = {
+	1/4(xy), 0 <= x <= 1, 0 <= y <= 4
+	0,       otherwise
+}
+find the expression for the corresponding joint CDF x > 1, y > 4
+only interested in the region inside Δ where f(x,y) is nonzero
+D ∩ Δ = D
+our region covers the entire region
+∫^y_-∞ ∫^x_-∞ f(u,v) dudv = ∫∫_D f(u,v) dudv = 1
+
+example:
+joint probability density function
+f(x,y) = {
+	1/3(x^2y^2), 0 <= x <= 1, 0 <= y <= 3
+	0,           otherwise
+}
+find the expression for the corresponding joint CDF x > 1, y > 3
+D ∩ Δ = D (picked a point where x > 1 and y > 3)
+so our entire region gets covered
+
+example:
+joint probability density function
+f(x,y) = {
+	1/3(x^2y^2), 0 <= x <= 1, 0 <= y <= 3
+	0,           otherwise
+}
+find the expression for the corresponding joint CDF x > 1, y > 3
+D ∩ Δ = D (picked a point where x < 0 and 1 < y < 3)
+so our region lies below and to the left of our point (f(x,y))
+D ∩ Δ = 0
+
+finding part of a joint CDF from a joint PDF
+joint probability density function
+f(x,y) = {
+	1/3(x + y), 0 <= x <= 2, 0 <= y <= 1
+	0,          otherwise
+}
+find the expression corresponding joint CDF 0 <= x <= 2 and y > 1
+∫^1_0 ∫^x_0 1/3(u + v) dudv
+= 1/3 ∫^1_0 [u^2/2 + uv]|_0-x dv
+= 1/3 ∫^1_0 [x^2/2 + xv] dv
+= 1/3[x^2v/2 + xv^2/2]|_0-1
+= 1/3(x^2/2 + x/2 - 0)
+= 1/6(x^2 + x)
+
+example:
+joint probability density function
+f(x,y) = {
+	4xy, 0 <= x <= 1, 0 <= y <= 1
+	0,   otherwise
+}
+find the expression for the corresponding joint CDF when 0 <= x <= 1, 0 <= y <= 1
+∫^y_0 ∫^x_0 4uv dudv
+= ∫^y_0 [4vu^2/2]|_0-x dv
+= ∫^y_0 4vx^2/2 dv
+= [2v^2x^2/2]|_0-y
+= 2y^2x^2/2
+= y^2x^2
+
+example:
+joint probability density function
+f(x,y) = {
+	1/2sin(x + y), 0 <= x <= pi/2, 0 <= y <= pi/2
+}
+find the expression for the joint CDF x > pi/2 and 0 <= t <= pi/2
+D ∩ Δ = {(u,v) : 0 <= u <= pi/2, 0 <= v <= y}
+∫^y_0 ∫^pi/2_0 1/2sin(u + v) dudv
+= 1/2 ∫^y_0 [-cos(u + v)]|_0-pi/2 dv
+= 1/2 ∫^y_0 (cos(v) - cos(pi/2 + v)) dv
+= 1/2 [sin(v) - sin(pi/2 + v)]|_0-y
+= 1/2 (sin(y) - sin(pi/2 + y)) - 1/2(sin(0) - sin(pi/2 + 0))
+= 1/2(sin(y) - sin(pi/2 + y) + 1)
