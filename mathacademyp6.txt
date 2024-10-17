@@ -2215,3 +2215,83 @@ find E[XY]
 E[X] = 0.6 + 2*0.2 + 3*0.1 = 1.3
 E[Y] = 0.3 + 2*0.2 = 0.7
 1.3 * 0.7 = 0.91
+
+===================================================
+
+Variance of sums of independent random variables
+Var[X + Y] = Var[X] + Var[Y]
+Var[X - Y] = Var[X] + Var[Y]
+When computing the variance of a difference we add the variances
+
+Calculating the variance of a sum or difference of independent random variables
+For two independent random variables X and Y we have Var[X] = 3 and Var[Y] = 7 find Var[X - Y]
+Var[X - Y] = 3 + 7 = 10
+
+example:
+Var[X] = 12 and Var[Y] = 5, find Var[X + Y]
+= 17
+
+example:
+Var[X] = 12 and Var[Y] = 5, find Var[X - Y]
+= 17
+
+calculating the variance of a sum of scaled random variables
+Var[X] = 10 and Var[Y] = 12, find Var[X - 2Y]
+if X and Y are independent variables, and a and b are constants then
+Var[aX + bY] = a^2Var[X] + b^2Var[Y]
+substituting we get
+Var[X - 2Y] =  (1)^2 * 10 + (-2)^2*12 = 58
+
+example:
+Var[X] = 12 and Var[Y] = 5, find Var[2X + 5Y]
+= (2)^2*12 + (5)^2*5
+= 173
+
+example:
+Var[X] = 11 and Var[Y] = 15, find Var[2X - 3Y]
+= (2)^2*11 + (3)^2*15
+= 179
+
+calculate a combined variance given some raw moments
+E[X] = 5, E[Y] = 4 and second raw moments E[X^2] = 30 and E[Y^2] = 18 find the variance of 12X - 11Y
+Var[X] = E[X^2] - E[X]^2
+= 30 - 5^2
+= 5
+Var[Y] = E[Y^2] - E[Y]^2
+= 18 - 4^2
+= 2
+Var[12X - 11Y] = 12^2Var[X] + (-11)^2Var[Y]
+= 144(5) + 121(2)
+= 962
+
+example:
+E[X] = 2, E[Y] = 4, second raw moments E[X^2] = 5, E[Y^2] = 23 find the variance of 5X + 7Y
+Var[X] = 5 - 2^2 = 1
+Var[Y] = 23 - 4^2 = 23 - 16 = 7
+5^2(1) + 7^2(7)
+25 + 343 = 368
+
+example:
+PMF
+x   | 1 | 2 | 3 |
+f(x)|0.2|0.3|0.5|
+-----------------
+y   |  1 |  2 |
+f(y)|0.25|0.75|
+---------------
+find Var[3X + 2Y]
+E[X] = 0.2 + 2*0.3 + 3*0.5 = 2.3
+E[Y] = 0.25 + 2*0.75 = 1.75
+E[X^2] = 1*0.2 + 4*0.3 + 9*0.5 = 5.9
+Var[X] = E[X^2] - E[X]^2
+= 5.9 - 2.3^2
+= 0.61
+E[Y^2] = 1*0.25 + 4*0.75
+= 3.25
+Var[Y] = E[Y^2] - E[Y]^2
+= 3.25 - 1.75^2
+= 0.1875
+Var[3X - 2Y] = 3^2Var[X] + 2^2Var[Y]
+= 3^2(0.61) + 2^2(0.1875)
+= 6.24
+
