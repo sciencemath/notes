@@ -1930,3 +1930,172 @@ D ∩ Δ = {(u,v) : 0 <= u <= pi/2, 0 <= v <= y}
 = 1/2 [sin(v) - sin(pi/2 + v)]|_0-y
 = 1/2 (sin(y) - sin(pi/2 + y)) - 1/2(sin(0) - sin(pi/2 + 0))
 = 1/2(sin(y) - sin(pi/2 + y) + 1)
+
+=================================================
+
+Recovering a marginal CDF
+how to recover the marginal CDFs of X and Y from the joint CDF
+the joint CDF of two continuous random variables X and Y is
+F(x,y) = {
+	(1 - e^-x)(1 - e^2y), x >= 0, y >= 0
+	0,                    otherwise
+}
+lets calculate F_Y(y) the marginal CDF of Y using the property
+F_Y(y) = F(∞,y) lim_x->∞ F(x,y)
+therefore y >= 0
+F_Y(y) = lim_x->∞ [(1 - e^-x)(1 - e^-2y)]
+= (1 - e^-2y) lim_x->∞ (1 - 1/e^x)
+= (1 - e^-2y) lim_x->∞ (1 - 0)
+= 1 - e^-2y
+the full expression for the marginal CDF
+F_Y(y) = {
+	1 - e^-2y, y >= 0
+	0,         otherwise
+}
+
+Finding a marginal CDF using a joint CDF
+The joint CDF of two continuous random variables X and Y for (x,y) memberof [0,1] x [0,2]
+F(x,y) = xy/8(2x^2 + y)
+find F_X(x) the marginal CDF of X for 0 <= x <= 1
+the marginal CDF of X is given by
+F_X(x) = F(x, ∞) = lim_y->∞ F(x,y)
+for 0 <= x <= 1
+F_X(x) = F(x, ∞)
+= F(x,2)
+= x(2)/8(2x^2 + (2))
+= 4x/8(x^2 + 1)
+= 1/2(x^3 + x)
+
+example:
+the joint CDF
+F(x,y) {
+	0, 			    x < 0 or y < 0
+	(1 - e^-3x)y^2, x >= 0, 0 <= y <= 1
+	F_X(x),         x >= 0, y > 1
+}
+find F_Y(y) the marginal CDF of Y for y >= 0
+for y >= 0
+y^2 lim_x->∞ (1 - e^-3x)
+= y^2 lim_x->∞ (1 - 0)
+= y^2
+
+example:
+the joint CDF for (x,y) [0,1] x [0,2]
+F(x,y) = 1/20x^2y(4x + 3y)
+find F_X(x) the marginal CDF of X for 0 <= x <= 1
+1/20x^2(2)(4x + 3(2))
+= 1/20x^2(2)(4x + 6)
+= 1/20x^2(8x + 12)
+= 1/5(2x^3 + 3x^2)
+
+Finding part of a joint CDF from marginal CDFs for continuous random variables
+the marginal CDFs
+F_X(x) = {
+	1 - 1/x, x >= 1
+	0,       otherwise
+}
+F_Y(y) = {
+	1 - 1/sqrt(y^3), y >= 1
+	0,               otherwise
+}
+for x >= 1 and y >= 1 the joint CDF
+= (1 - 1/x)(1 - 1/sqrt(y^3))
+= 1 - 1/x - 1/sqrt(y^3) + 1/xsqrt(y^3)
+full expression for the joint CDF
+F(x,y) = {
+	1 - 1/x - 1/sqrt(y^3) + 1/xsqrt(y^3), x >= 1, y >= 1
+	0,								      otherwise
+}
+
+example:
+The marginal CDFs
+F_X(x) = {
+	1 - e^-2x, x >= 0
+	0,         otherwise
+}
+F_Y(y) = {
+	1 - e^-3y, y >= 0
+	0,         otherwise
+}
+find the expression for the joint CDF when x >= 0 and y >= 0
+(1 - e^-2x)(1 - e^-3y)
+= 1 - e^-2x - e^-3y + e^-2x-3y
+F(x,y) = {
+	1 - e^-2x - e^-3y + e^-2x-3y, x >= 0, y >= 0
+	0,							  otherwise
+}
+
+example:
+The marginal CDFs
+F_X(x) = {
+	1 - 1/x^2, x >= 1
+	0,         otherwise
+}
+F_Y(y) = {
+	1 - 1/y, y >= 1
+	0,       otherwise
+}
+find the expression for the joint CDF when x >= 1 and y >= 1
+(1 - 1/x^2)(1 - 1/y)
+= 1 - 1/x^2 - 1/y + 1/x^2y
+F(x,y) = {
+	1 - 1/x^2 - 1/y + 1/x^2y, x >= 1, y >= 1
+	0,                        otherwise
+}
+
+Recovering the joint PMF from the joint CDF
+the joint CDF
+F(x,y) = {
+	0,             x < 0 or y < 0
+	x^2(1 - e^-y), 0 <= x <= 1, y >= 0
+	F_Y(y),        x > 1, y >= 0
+}
+find the joint PMF f(x,y) for 0 <= x <= 1, y >= 0
+since the partial derivatives of F(x,y) are defined the joint probability density function f(x,y)
+f(x,y) = ∂^2/∂x∂y F(x,y)
+for 0 <= x <= 1 and y >= 0
+= ∂/∂x(∂/∂y(x^2(1 - e^-y)))
+= ∂/∂x(x^2∂/∂y(1 - e^-y))
+= ∂/∂x(x^2e^-y)
+= e^-y * ∂/∂x(x^2)
+= e^-y * 2x
+= 2xe^-y
+f(x,y) = {
+	2xe^-y, 0 <= x <= 1, y >= 0
+	0,      otherwise
+}
+
+example:
+joint CDF:
+F(x,y) = {
+	(1 - e^-x)(1 - e^-y), x >= 0, y >= 0
+	0,					  otherwise
+}
+find the joint PMF f(x,y) for x >= 0, y >= 0
+∂/∂x(∂/∂y(1 - e^-x)(1 - e^-y))
+∂/∂x((1 - e^-x)(e^-y))
+e^-x-y
+f(x,y) = {
+	e^-x-y, x >= 0, y >= 0
+	0,      otherwise
+}
+
+example:
+joint CDF:
+F(x,y) = {
+	0,	                  x < 1 or y < 1
+	4(x^2 - 1)(y - 1)/9y, 1 <= x <= 2, 1 <= y <= 4
+	F_X(x),				  1 <= x <= 2, y > 4
+	F_Y(y),				  x > 2, 1 <= y <= 4
+	1,					  x > 2, y > 4
+}
+where F_X and F_Y are the marginal CDFs of C and Y. Find the joint PMF f(x,y) for 1 <= x <= 2 and 1 <= y <= 4
+∂/∂x(∂/∂y(4(x^2 - 1)(y - 1)/9y))
+= ∂/∂x(4(x^2 - 1) * ∂/∂y(1/9 - 1/9y))
+= ∂/∂x(4(x^2 - 1) * 1/9y^2)
+= 4/9y^2 * ∂/∂x(x^2  -1)
+= 8x/9y^2
+f(x,y) = {
+	8x/9y^2, 1 <= x <= 2, 1 <= y <= 4
+	0,       otherwise
+}
