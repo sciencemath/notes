@@ -2295,3 +2295,132 @@ Var[3X - 2Y] = 3^2Var[X] + 2^2Var[Y]
 = 3^2(0.61) + 2^2(0.1875)
 = 6.24
 
+===================================================
+
+To compute the expected value of a discrete random variable X given a joint mass function f(x,y) we must first find its marginal mass function f_X once the marginal mass function is known we can compute E[X] using
+E[X] = Σ^n_i=1(f_X(xi))
+joint probability mass function f(x,y)
+f  |Y=1 | Y=2|
+X=1|0.05|0.15|
+X=2| 0.7| 0.1|
+--------------
+the marginal distribution for X corresponds to the row totals and the marginal distributino for Y corresponds to the column totals, we're only interested in expected value of X
+
+f  |Y=1 | Y=2| f_X|
+X=1|0.05|0.15|0.20|
+X=2| 0.7| 0.1|0.80|
+-------------------
+x     |  1 |  2 |
+f_X(x)|0.20|0.80|
+-----------------
+expected value of X:
+E[X] = 1*0.2 + 2*0.8
+= 0.2 + 1.6
+E[X] = 1.8
+
+example:
+joint probability distribution, find E[Y]
+f  |Y=0 | Y=1| Y=2|
+X=1|0.05| 0.1|0.25|
+X=2|0.25|0.15| 0.2|
+-------------------
+y     | 0 |  1 |  2 |
+f_Y(y)|0.3|0.25|0.45|
+---------------------
+E[Y] = 0*0.3 + 1*0.25 + 2*0.45
+= 1.15
+
+example:
+joint probability distribution, find E[5X - 2Y]
+f  |Y=0 | Y=1| Y=2|
+X=1|0.05| 0.1|0.25|
+X=2|0.25|0.15| 0.2|
+-------------------
+y     | 0 |  1 |  2 |
+f_Y(y)|0.3|0.25|0.45|
+---------------------
+x     | 0 | 1 |
+f_X(x)|0.4|0.6|
+---------------
+E[Y] = 0*0.3 + 1*0.25 + 2*0.45
+= 1.15
+E[X] = 0.6
+5(0.6) - 2(1.15)
+= 0.7
+
+Continuous random variable
+to compute the expected value of a continuous random variable X given a joint density function f(x,y) we must first find its marginal mass function f_X once the marginal mass function is known we can then compute E[X] using
+E[X] = ∫^∞_-∞ x * f_X(x) dx
+
+finding the expected value of a continuous random variable from a joint distribution
+joint PDF:
+f(x,y) = {
+	4/x^3y^3, x >= 1, y >= 1
+	0,        otherwise
+}
+find the expected value of Y
+The marginal density for Y when y >= 1
+f_Y(y) ∫^∞_1 4/x^3y^3 dx
+= 4/y^3 ∫^b_1 1/x^3 dx
+= 4/y^3 [-1/2x^2]|_1-b
+= 4/y^3 (1/2 - 1/2b^2)
+= 4/y^3 (1/2 - 0)
+= 2/y^3
+full expression for f_Y(y)
+f_Y(y) = {
+	2/y^3, y >= 1
+	0,     otherwise
+}
+expected value of Y
+E[Y] = ∫^∞_-∞ y * f_Y(y) dy
+= ∫^∞_1 y * 2/y^3 dy
+= 2 ∫^b_1 1/y^2 dy
+= 2 [-1/y]|_1-b
+= 2(1 - 1/b)
+= 2
+
+example:
+joint probability density function
+f(x,y) = {
+	2/pi(sin(y)), 0 <= x <= pi/2, 0 <= y <= pi/2
+	0,	          otherwise
+}
+find the expected value of X
+marginal density function for X
+f_X(x) ∫^pi/2_0 2/pi(sin(y)) dy
+2/pi ∫^pi/2_0 sin(y) dy
+2/pi [-cos(y)]|_0-pi/2
+2/pi (-cos(pi/2) - (-cos(0)))
+2/pi (0 - (-1))
+= 2/pi
+f_X(x) = {
+	2/pi, 0 <= x <= pi/2
+	0,    otherwise
+}
+E[X] = ∫^pi/2_0 x * 2/pi dx
+= 2/pi [x^2/2]|_0-pi/2
+= 2/pi (pi^2/8)
+= 2pi^2/8pi
+= pi^2/4pi
+= pi/4
+
+example:
+joint PDF
+f(x,y) = {
+	3/2(x^2y), 0 <= x <= 1, 0 <= y <= 2
+	0,		   otherwise
+}
+E[X] = 3/4, find E[4X + 6Y]
+f_y(y) ∫^1_0 3/2(x^2y) dx
+= 3/2 ∫^1_0 (x^2y) dx
+= 3/2y [x^3/3]|_0-1
+= 3/2y(1/3)
+= 3/6(y)
+= 1/2(y)
+E[Y] = ∫^2_0 y * 1/2(y) dy
+= ∫^2_0 y^2/2 dy
+= [y^3/6]|_0-2
+= 8/6 
+= 4/3
+E[4X + 6Y] = 4(3/4) + 6(4/3)
+3 + 8 = 11
