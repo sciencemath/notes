@@ -2424,3 +2424,153 @@ E[Y] = ∫^2_0 y * 1/2(y) dy
 = 4/3
 E[4X + 6Y] = 4(3/4) + 6(4/3)
 3 + 8 = 11
+
+===================================================
+
+For discrete random variables X and Y the conditional expected value of X given Y = y is
+E[X|Y = y] = Σ_x(xf_X|Y(x|y))
+where f_X|Y(x|y) is the conditional probability mass function of X given Y
+This definition is similar to that of E[X] however we now use the conditional PMF f_X|Y(x|y) instead of the marginal PMF f_X(x) in the summation
+The conditional expectation E[X|Y = y] is (in general) a function of y. If the distribution of X varies with Y then the expected value of X for a given Y must vary with the value of Y
+If y is replaced with a number then E[X|Y = y] returns a single value
+If X and Y are independent then E[X|Y = y] = E[X] for all y. If the outcome of Y has no influence on the outcome of X then the distribution of X and its mean is also unaffected by Y
+something the notation μ_X|y to denote E[X|Y = y]
+same for E[Y|X = x]
+= Σ_y(yf_Y|X(y|x))
+
+Calculating a conditional expected value given conditional mass
+y         | 1 | 2 |
+f_Y|X(y|2)|2/3|1/3|
+-------------------
+find the E[Y|X = 2] given that the conditional probability mass function f_Y|X(y|2) is shown in the table above
+E[Y|X = 2] = Σ_y(yf_Y|X(y|2))
+= 1 * 2/3 + 2 * 1/3
+= 4/3
+
+example:
+x         | 2 | 3 |
+f_X|Y(x|1)|4/5|1/5|
+-------------------
+find E[X|Y = 1] given that the conditional probability mass function f_X|Y(x|1)
+= 2 * 4/5 + 3 * 1/5
+= 11/5
+
+example:
+f_Y|X(y|5) = {
+	0.2, y = 1
+	0.8, y = 3
+	0,   otherwise
+}
+find E[Y|X = 5] given that the conditional probability mass function f_Y|X(y|5)
+E[Y|X = 5] = 0.2 + 0.8 * 3
+= 2.6
+
+Calculating a conditional expectation using row totals
+f  | Y=1| Y=2|
+X=1| 1/9| 2/9|
+X=2|8/27|5/27|
+X=3|2/27|1/91|
+--------------
+find E[Y|X = 2]
+in order to find f_Y|X(y|x) lets first find the marginal distribution for X corresponding row totals
+f  | Y=1| Y=2|f_X(x)|
+X=1| 1/9| 2/9|   1/3|
+X=2|8/27|5/27| 13/27|
+X=3|2/27|1/91|  5/27|
+---------------------
+The conditional probability mass function of Y given that X = x is
+f_Y|X(y|x) = f(x,y)/f_X(x)
+dividing each joint probability by the corresponding row total we obtain the conditional probability mass function of Y given that X = x
+f_Y|X(y|x)| Y=1| Y=2|f_X(x)|
+X=1       | 1/3| 2/3|     1|
+X=2       |8/13|5/13|     1|
+X=3       | 2/5| 3/5|     1|
+----------------------------
+E[Y|X = 2] = 1 * 8/13 + 2 * 5/13
+= 18/13
+
+example:
+f  |Y=0|Y=1|Y=2|f_X(x)|
+X=0|1/8|1/4|1/8|   1/2|
+X=1|1/4|1/8|1/8|   1/2|
+-----------------------
+find E[Y|X = 0] given the joint probability mass function
+f  |Y=0|Y=1|Y=2|f_X(x)|
+X=0|1/4|1/2|1/4|     1|
+X=1|1/2|1/4|1/4|     1|
+-----------------------
+= 0*1/4 + 1*1/2 + 2*1/4
+= 1
+
+example:
+f  |Y=0| Y=2| Y=4|
+X=0|1/9|3/18|1/18|
+X=2|1/3| 1/9| 2/9|
+------------------
+find E[Y|X = 2] givem the joint probability mass function
+f  |Y=0| Y=2| Y=4|f_X(x)|
+X=0|1/9|3/18|1/18|   1/3|
+X=2|1/3| 1/9| 2/9|   2/3|
+-------------------------
+f  |Y=0| Y=2| Y=4|f_X(x)|
+X=0|1/9|3/18|1/18|   1/3|
+X=2|1/3| 1/9| 2/9|   2/3|
+-------------------------
+3/6 3/18 6/18 (multiplying row 2 by the recipical of total)
+(0)9/18 + (2)3/18 + (4)6/18 = 6/18 + 24/18
+= 30/18 = 15/9
+= 5/3
+
+Calculating a conditional expectation using column totals
+f  |Y=1|Y=2|
+X=2|1/9|2/9|
+X=4|1/3|1/9|
+X=6|1/9|1/9|
+------------
+find E[X|Y = 1] given the joint probability mass function
+In order to find f_X|Y(x|y) lets first find the marginal distribution for Y corresponding to the column totals
+f     |Y=1|Y=2|
+X=2   |1/9|2/9|
+X=4   |1/3|1/9|
+X=6   |1/9|1/9|
+f_Y(y)|5/9|4/9|
+---------------
+f_X|Y(x|y) = f(x,y)/f_Y(y)
+same processes as the rows we divide each joint probability by the corresponding column total we obtain the conditional probability mass function of X given Y = y
+f_X|Y(x|y)|Y=1|Y=2|
+X=2       |1/5|1/2|
+X=4       |3/5|1/4|
+X=6       |1/5|1/4|
+          |  1|  1|
+-------------------
+= 2*1/5 + 4*3/5 + 6*1/5
+= 20/5
+= 4
+
+example:
+f  |Y=0|Y=1|Y=2|
+X=0|1/8|1/4|1/8|
+X=1|1/4|1/8|1/8|
+----------------
+find E[X|Y = 1] given the joint probability mass function
+f     |Y=0|Y=1|Y=2|
+X=0   |1/8|1/4|1/8|
+X=1   |1/4|1/8|1/8|
+f_Y(y)|3/8|3/8|1/4|
+-------------------
+= (0)16/24 + (1)8/24 (focusing on second column only)
+= 1/3
+
+example:
+f  |Y=4|Y=5|Y=6|
+X=0|1/9|1/3|1/9|
+X=3|2/9|1/9|1/9|
+----------------
+find E[X|Y = 6] given the joint probability mass function
+f     |Y=4|Y=5|Y=6|
+X=0   |1/9|1/3|1/9|
+X=3   |2/9|1/9|1/9|
+f_Y(y)|3/9|4/9|2/9|
+-------------------
+9/18 9/18 = (1)1/2 + (3)1/2
+= 4/2 = 2
