@@ -2574,3 +2574,151 @@ f_Y(y)|3/9|4/9|2/9|
 -------------------
 9/18 9/18 = (1)1/2 + (3)1/2
 = 4/2 = 2
+
+===================================================
+
+X and Y are discrete random variables, where the conditional expected value of X given Y = y is given by μ_X|y
+E[X|Y = y] = μ_X|y
+The conditional variance of X given Y = y
+Var[X|Y] = E[(X - μ_X|y)^2|Y = y]
+This is similar to the definition of Var[X] in that it represents the average (squared) distance of the random variable X from the mean. The difference here is that the expected values are now dependent on the outcome of Y
+similarly to the case of Var[X] this often isn't the easiest formula to use in practice, it can be shown that the definition of conditional variance is equivalent to
+Var[X|Y = y] = E[X^2|Y = y] - μ^2_X|y
+= [Σ_x(x^2f_X|Y(x|y))] - μ^2_X|y
+where f_X|Y(x|y) is the conditional PMF of X given Y these formulas are analogous to those for Var[X]
+similar Y given X = x
+Var[Y|X] = E[(Y - μ^2_Y|x)^2|X = x]
+= E[Y^2|X = x] - μ^2_Y|x
+= [Σ_y(y^2f_Y|X(y|x))] - μ^2_Y|x
+
+Calculating a conditional variance given a conditional mass function
+     y    | 1 | 2 | 4 |
+f_Y|X(y|3)|1/3|1/6|1/2|
+-----------------------
+X and Y are discrete random variables. Find Var[Y|X = 3] the corresponding conditional expected value is μ_Y|3 = 8/3
+Var[Y|X = 3] = [Σ_y(y^2f_Y|X(y|3))] - μ^2_Y|3
+= [(1)^2*1/3 + (2)^2*1/6 + (4)^2*1/2] - (8/3)^2
+= 1/3 + 2/3 + 8 - 64/9
+= 17/9
+
+example:
+f_X|Y(x|3) = {
+	1/3, x = 12
+	2/3, x = 18
+	0,   otherwise
+}
+find the conditional variance Var[X|Y = 3] given that the conditional probability mass function f_X|Y(x|3) is shown above the corresponding conditional expected value is μ_X|3 = 16
+= [(12)^2*1/3 + (18)^2*2/3]
+= [48 + 216] - 256
+= 8
+
+example:
+     y    | 0 | 1 | 2 |
+f_Y|X(y|1)|0.1|0.4|0.5|
+-----------------------
+find Var[Y|X = 1] given the conditional probability mass function f_Y|X(y|1) conditional expected value is μ_Y|1 = 1.4
+= [0.4 + 2^2*0.5] - 1.96
+= 0.44
+
+calculating a conditional variance using row totals
+f  | Y=1| Y=2| Y=3|
+X=1|1/10|1/10| 1/5|
+X=2|3/10| 1/5|1/10|
+-------------------
+find Var[Y|X = 1] given the joint probability mass function f(x,y) corresponding conditional expected value is μ_Y|1 = 9/4
+f  | Y=1| Y=2| Y=3|f_X(x)|
+X=1|1/10|1/10| 1/5|   2/5|
+X=2|3/10| 1/5|1/10|   3/5|
+--------------------------
+the conditional probability mass function of Y given that X = x
+f_Y|X(y|x) = f(x,y)/f_X(x)
+dividing each joint probability by the row total we obtain the conditional probability mass function of Y given that X = x
+f_Y|X(y|x)|Y=1| Y=2|Y=3|f_X(x)|
+X=1       |1/4| 1/4|1/2|     1|
+X=2       |1/2| 1/3|1/6|     1|
+-------------------------------
+Var[Y|X = 1] = [Σ_y(y^2f_Y|X(y|1))] - μ^2_Y|1
+= [1^2*1/4 + 2^2*1/4 + 3^2*1/2] - (9/4)^2
+= 1/4 + 1 + 9/2 - 81/16
+= 11/16
+
+example:
+f  |Y=0|Y=1|Y=2|
+X=0|1/8|1/4|1/8|
+X=1|1/4|1/8|1/8|
+----------------
+find Var[Y|X = 0] given the joint probability mass function f(x,y), conditional expected value is μ_Y|0 = 1
+f  |Y=0|Y=1|Y=2|f_X(x)|
+X=0|1/8|1/4|1/8|   1/2|
+X=1|1/4|1/8|1/8|   1/2|
+-----------------------
+2/8 + 4/8 + 2/8 (first row)
+4/8 + 8/8 = 12/8 - 1
+= 6/4 = 3/2 - 2/2
+= 1/2
+
+example:
+find Var[Y|X = 1] given the joint probability mass function f(x,y), corresponding conditional expected value is μ_Y|1 = 6/5
+f  |Y=1|Y=2|f_X(x)|
+X=1|1/2|1/8|   5/8|
+X=2|1/8|1/4|   3/8|
+-------------------
+32/40 + 8/40
+= 16/20 + 4/20
+= 8/10 + 2/10
+= 4/5 + 1/5
+= 4/5 + 4*1/5 = 8/5 - (6/5)^2
+= 40/25 - 36/25 = 4/25
+
+Calculate a conditional variance using column totals
+f  | Y=2| Y=4|
+X=1| 1/2| 1/4|
+X=2|1/16|3/16|
+--------------
+find Var[X|Y = 2] given the joint probability mass function f(x,y), conditional expected value μ_X|2 = 10/9
+find f_X|Y(x|y) lets first find the marginal distribution of Y corresponding to the column totals
+f     | Y=2| Y=4|
+X=1   | 1/2| 1/4|
+X=2   |1/16|3/16|
+f_Y(y)|9/16|7/16|
+-----------------
+the conditional probability mass function of X given that Y = y
+f_X|Y(x|y) = f(x,y)/f_Y(y)
+dividing each joint probability by the corresponding column total we get the conditional probability mass function of X given Y = y
+f_X|Y(x,y)|Y=2|Y=4|
+X=1       |8/9|4/7|
+X=2       |1/9|3/7|
+          |  1|  1|
+-------------------
+= [1^2*8/9 + 2^2*1/9] - (10/9)^2
+= 8/9 + 4/9 - 100/81
+= 8/81
+
+example:
+f  |Y=0|Y=1|
+X=0|1/2|1/8|
+X=1|1/4|1/8|
+------------
+find Var[X|Y = 0] given the joint PMF the expected value is μ_X|0 = 1/3
+f     |Y=0|Y=1|
+X=0   |1/2|1/8|
+X=1   |1/4|1/8|
+f_Y(y)|3/4|2/8|
+---------------
+= [0^2*4/6 + 1^2*4/12] - (1/3)^2
+1/3 - 1/9
+3/9 - 1/9 = 2/9
+
+example:
+f     | Y=0|  Y=1|
+X=0   |1/10|  1/5|
+X=3   | 1/5|  1/4|
+X=9   |3/20| 1/10|
+f_Y(y)|9/20|11/20|
+------------------
+find Var[X|Y = 0] given the joint PMF, expected value is μ_X|0 = 13/3
+[0 + 3^2*20/45 + 9^2*60/180] - 169/9
+180/45 + 4860/180 - 169/9
+4 + 27 - 169/9
+279/9 - 169/9
+110/9
