@@ -2945,3 +2945,217 @@ where x^2 <= y <= 1, 0 < x < 1
 = 1/(1 - x^2)(1 - x^4/2)
 = 1(1 + x^2)/2
 = 1 + x^2/2
+
+===================================================
+
+The conditional expected value of X given Y = y
+E[X|Y = y] = μ_X|y
+The conditional variance of X given Y = y
+Var[X|Y] = E[(X - μ_X|y)^2|Y = y] 
+the discrete case can be written as
+Var[X|Y = y] = E[X^2|Y = y] - μ^2_X|y
+where
+E[X^2|Y = y] = ∫^∞_-∞ x^2 f_X|Y(x|y) dx
+f_X|Y(x|y) is the conditional probability mass function of X given Y = y analogous to Var[X] for continuous X
+when a particular y is selected the conditional variance of X given Y = y returns a real number, if y is not specified then Var[X|Y = y] gives us a function of y
+theres an analogous definition for the conditional variance of Y given X = x
+Var[Y|X = x] = E[(Y - μ_Y|x)^2|X = x]
+= E[Y^2|X = x] - μ^2_Y|x
+where
+μ_Y|x = E[Y|X = x] is the conditional expected value of Y given X
+E[Y^2|X = x] = ∫^∞_-∞ y^2 f_Y|X(y|x) dy
+f_Y|X(y|x) is the conditional probability mass function of Y give X = x
+
+Suppose that X and Y are continuous random variables it is known that the conditional probability density function f_Y|X(y|1)
+f_Y|X(y|1) = {
+	4y^3, 0 <= y <= 1
+	0,    otherwise
+}
+μ_Y|1 = 4/5
+what is the conditional Var[Y|X = 1]
+∫^1_0 y^2 * 4y^3 dx
+= ∫^1_0 4y^5 dy
+= [2y^6/3]|_0-1
+= 2/3
+Var[Y|X = 1] = E[Y^2|X = 1] - μ^2_Y|1
+= 2/3 - (4/5)^2
+= 2/3 - 16/25
+= 2/75
+
+find the conditional variance Var[X|Y = -2] given that the conditional probability density function f_X|Y(x|-2)
+f_X|Y(x|-2) = {
+	3x^2, 0 <= x <= 1
+	0,    otherwise
+}
+the corresponding expected value is μ_X|-2 = 3/4
+= ∫^1_0 x^2 * 3x^2 dx
+= ∫^1_0 3x^4 dx
+= [3x^5/5]|_0-1
+= 3/5 - 0
+= 3/5
+Var[X|Y = -2] = E[X^2|Y = -2] - μ^2_X|-2
+= 3/5 - (3/4)^2
+= 3/5 - 9/16
+= 3/80
+
+example:
+find the conditional variance Var[X|Y = 2] given that the conditional probability density function f_X|Y(x|2)
+f_X|Y(x|2) = {
+	x/4, 1 <= x <= 3
+	0,   otherwise
+}
+expected value is μ_X|2 = 13/6
+= ∫^3_1 x^2 * x/4 dx
+= ∫^3_1 x^3/4 dx
+= [x^4/16]|_1-3
+= 81/16 - 1/16
+= 80/16
+= 5
+(13/6)^2
+= 180/36 - 169/36
+11/36
+
+example:
+find the conditional variance Var[Y|X = 2] given that the conditional probability density function f_Y|X(y|2) the expected value: μ_Y|2 = 0
+f_Y|X(y|2) = {
+	3/2(y2), -1 <= y <= 1
+	0,       otherwise
+}
+= ∫^1_-1 y^2 * 3/2(y^2) dy
+= 3/2 ∫^1_-1 (y^4) dy
+= 3/2 [y^5/5]|_-1-1
+= 3/2(1/5 - (-1/5))
+= 3/2(2/5)
+= 6/10
+= 3/5 - (0)^2
+
+Calculating a conditional variance given a conditional PDF using improper integrals
+f_Y|X(y|3) = {
+	3/y^4, y >= 1
+	0,     otherwise
+}
+find the conditional variance Var[Y|X = 3] and the expected value is μ_Y|3 = 3/2
+∫^∞_1 y^2 * 3/y^4 dy
+= ∫^∞_1 3/y^2 dy
+= ∫^∞_1 3y^-2 dy
+= [3 * y^-1/-1]|_1-∞
+= [-3/y]|_1-∞
+= 0 - (-3)
+= 3
+Var[Y|X = 3] = E[Y^2|X = 3] - μ^2_Y|3
+= 3 - (3/2)^2
+= 3 - 9/4
+= 3/4
+
+example:
+find the conditional variance Var[X|Y = -2] given that the conditional probability density function f_X|Y(x|-2) expected value μ_X|-2 = 4/3
+f_X|Y(x|-2) = {
+	4/x^5, x >= 1
+	0,     otherwise
+}
+∫^∞_1 x^2 * 4/x^5 dx
+= [-2/x^2]|_1-∞
+= (0 - (-2))
+= 2
+2 - (4/3)^2
+= 2 - 16/9
+= 18/9 - 16/9
+= 2/9
+
+example:
+find the conditional variance Var[Y|X = 3] given that the conditional probability density function f_Y|X(y|3) expected value μ_Y|3 = 5/3
+f_Y|X(y|3) = {
+	5/2y^(7/2), 1 <= y
+	0,          otherwise
+}
+∫^∞_1 y^2 * 5/2y^(7/2) dy
+= ∫^∞_1  5/2 y^(2 - 7/2) dy
+= ∫^∞_1  5/2 y^(4/2 - 7/2) dy
+= ∫^∞_1  5/2 y^(-3/2) dy
+= ∫^∞_1  5/2 y^(-3/2) dy
+= 5/2[y^(-3/2)]|_1-∞
+= 5/2 [y^(-3/2 + 1)/-3/2 + 1]|_1-∞
+= 5/2 [y^(-3/2 + 2/2)/-3/2 + 2/2]|_1-∞
+= 5/2 [y^(-1/2)/-1/2]|_1-∞
+= 5/2 [-2y^(-1/2)]|_1-∞
+= 5/2 [-2y^(-1/2)]|_1-∞
+= (0) - (-5/sqrt(1))
+= 5
+(5/3)^2
+= 25/9
+= 45/9 - 25/9
+= 20/9
+
+Calculating a conditional variance given joint and marginal density functions
+f(x,y) = {
+	2yln(x), 1 <= x <= e, 0 <= y <= 1
+	0,       otherwise
+}
+f_X(x) = {
+	ln(x), 1 <= x <= e
+	0,	   otherwise
+}
+given the joint probability density function and the marginal probability density function. Find the conditional variance Var[Y|X = 1] the expected value is μ_Y|1 = 2/3
+f_Y|X(y|x) = f(x,y)/f_X(x)
+= 2yln(x)/ln(x)
+= 2y
+where 1 <= x <= e, 0 <= y <= 1
+= ∫^1_0 y^2 * 2y dy
+= ∫^1_0 2y^3 dy
+= [y^4/2]|_0-1
+= 1/2
+Var[Y|X = 1] = E[Y^2|X = 1] - μ^2_Y|1
+= 1/2 - (2/3)^2
+= 1/2 - 4/9
+= 1/18
+
+example:
+given the joint probability density function and the marginal probability density function
+f(x,y) = {
+	x + y, 0 <= x <= 1, 0 <= y <= 1
+	0,     otherwise
+}
+f_Y(y) = {
+	1/2 + y, 0 <= y <= 1
+	0,       otherwise
+}
+find the conditional variance Var[X|Y = 1/2]
+expected value is μ_X|1/2 = 7/12
+= (x + y)/(1/2 + y)
+= 2(x + y)/(1 + 2y)
+= 2(x + (1/2))/(1 + 2(1/2))
+= (2x + 1)/2
+= x + 1/2
+= ∫^1_0 x^2 * x + 1/2 dx
+= ∫^1_0 (x^3 + x^2/2) dx
+= [x^4/4 + x^2/6]|_0-1 + y
+= (1/4 + 1/6) - (0)
+= 5/12
+(7/12)^2
+= 5/12 - 49/144
+= 11/144
+
+example:
+given the joint probability density function and the marginal probability density function
+f(x,y) = {
+	24y/7(1 + x), 0 <= x <= 1, x^2 <= y <= 1
+	0,            otherwise
+}
+f_X(x) = {
+	12(1 - x^4)/7(1 + x), 0 <= x <= 1
+	0,                    otherwise
+}
+find the conditional variance Var[Y|X = 0] expected value is μ_Y|0 = 2/3
+(24y/7(1 + x))/(12(1 - x^4)/7(1 + x))
+= 24y/12(1 - x^4)
+Var[Y|X = 0]
+= 24y/12
+= ∫^1_x^2 y^2 * 24y/12 dy
+= ∫^1_x^2 24y^3/12 dy
+= [24y^4/48]|_x^2-1
+= (1/2 - 24x^6/48)
+(2/3)^2 = 4/9
+= 9/18 - 8/18
+= 1/18
+(lower limit bound should be 0 instead of x^2 answer is correct tho)
+(i.e. E[Y^2|X = 0] when setting up the intgration the upper bound as always is given in the definition of f(x,y))
