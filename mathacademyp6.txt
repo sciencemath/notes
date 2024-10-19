@@ -2722,3 +2722,226 @@ find Var[X|Y = 0] given the joint PMF, expected value is μ_X|0 = 13/3
 4 + 27 - 169/9
 279/9 - 169/9
 110/9
+
+===================================================
+
+For continuous random variables X and Y the conditional expectation of X given Y = y is defined as
+E[X|Y = y] = ∫_R xf_X|Y(x|y) dx
+where f_X|Y(x|y) is the conditional probability density function of X given Y
+This definition is similar to that of E[X] we now use the conditional PDF f_X|Y(x|y) instead of the marginal PDF f_X(x) in our integral
+When we select a particular value of y, the conditional expected value of X given Y = y returns a real number if y is not specified i.e. E[X|Y = y] depends on y we have that E[X|Y = y] gives us a function of y
+if X and Y are independent then E[X|Y = y] = E[X] for all y
+Sometimes the notation we use is μ_X|y to denote E[X|Y = y]
+we have an analogous definition for E[Y|X = x]:
+E[Y|X = x] = ∫_R yf_Y|X(y|x) dy
+f_Y|X(y|x) is the conditional probability density function of Y given X
+
+A worked example
+conditional expectation E[X|Y = 1] given that the conditional probability density function f_X|Y(x|1) is given by
+f_X|Y(x|1) = {
+	2(x - 1), 1 <= x <= 2
+	0,        otherwise
+}
+X given Y = y
+∫^∞_-∞ xf_X|Y(x|1) dx
+= ∫^2_1 x * 2(x - 1) dx
+= ∫^2_1 2x(x - 1) dx
+= ∫^2_1 2x^2 - 2x dx
+= [2x^2/3 - x^2]|_1-2
+= ((2(2)^2/3 - (2)^2) - (2(1)^2/3 - (1)^2))
+= (16/3 - 4) - (2/3 - 1)
+= (16/3 - 12/3) - (2/3 - 3/3)
+= 4/3 - (-1/3)
+= 5/3
+
+Calculating a conditional expectation from a conditional PDF
+f_Y|X(y|1) = {
+	3(1 + y^2)/4, 0 <= y <= 1
+	0,            otherwise
+}
+X and Y are continuous find the conditional expected value E[Y|X = 1] given that the conditional probability density function f_Y|X(y|1)
+= ∫^1_0 y * 3(1 + y^2)/4 dy
+= 3/4 ∫^1_0 (y + y^3) dy
+= 3/4 [y^2/2 + y^4/4]|_0-1
+= 3/4(1/2 + 1/4 - 0)
+= 9/16
+
+example:
+conditional probability density function
+f_X|Y(x|1) = {
+	x/4, 1 <= x <= 3
+	0,   otherwise
+}
+find the conditional expected value E[X|Y = 2]
+= ∫^3_1 x * x/4 dx
+= 1/4 ∫^3_1 x^2 dx
+= 1/4 [x^3/3]|_1-3
+= 1/4 (27/3 - 1/3)
+= 1/4 (26/3)
+= 26/12
+= 13/6
+
+example:
+conditional probability density function
+f_Y|X(y|2) = {
+	32y/3, 1/4 <= y <= 1/2
+	0,     otherwise
+}
+find the conditional expected value E[Y|X = 2]
+= ∫^1/2_1/4 y * 32y/3 dy
+= 32/3 ∫^1/2_1/4 y^2 dy
+= 32/3 [y^3/3]|_1/4-1/2
+= 32/3(1/24 - 1/192)
+= 32/9(1/8 - 1/64)
+= 32/9(8/64 - 1/64)
+= 32/9(7/64) = 224/64
+= 7/18
+
+Calculate conditional expectations given joint and marginal PDFs
+joint probability density function and marginal probability density function
+f(x,y) = {
+	y - x, -1 <= x <= 0, 0 <= y <= 1
+	0,     otherwise
+}
+f_Y(y) = {
+	1/2 + y, 0 <= y <= 1
+	0,       otherwise
+}
+fing the conditional expected value E[X|Y = 1/2]
+The conditional density function of X given Y = y
+f_X|Y(x|y) = f(x,y)/f_Y(y)
+= (y - x)/(1/2 + y)
+= 2(y - x)/1 + 2y
+where -1 <= x <= 0, 0 <= y <= 1 outside this domain we have f_X|Y(x|y)
+f_X|Y(x|1/2) = 2((1/2) - x)/(1 + 2(1/2))
+= 1 - 2x/2
+= 1/2 - x
+using the conditional expectation
+∫^0_-1 x (1/2 - x) dx
+= ∫^0_-1 (x/2 - x^2) dx
+= [x^2/4 - x^3/3]|_-1-0
+= 0 - (1/4 + 1/3)
+= -7/12
+
+example:
+(similar to last example)
+Their joint probability density function and the marginal probability density
+f(x,y) = {
+	x + y, 0 <= x <= 1, 0 <= y <= 1
+	0,     otherwise
+}
+f_Y(y) = {
+	1/2 + y, 0 <= y <= 1
+	0,       otherwise
+}
+find the conditional expected value E[X|Y = 1/2]
+f_X|Y(x|y) = f(x,y)/f_Y(y)
+= (x + y)/(1/2 + y)
+= 2(x + y)/1 + 2y
+f_X|Y(x|1/2) = 2((1/2) + x)/(1 + 2(1/2))
+= 1 + 2x/2
+= 1/2 + x
+using the conditional expectation
+∫^1_0 x (1/2 + x) dx
+= ∫^1_0 (x/2 + x^2) dx
+= [x^2/4 + x^3/3]|_0-1
+= (1/4 + 1/3) - (0)
+= 3/12 + 4/12
+= 7/12
+
+example:
+joint probability density function and the marginal probability density function
+f(x,y) = {
+	(y^2 - x^2)/2, 0 <= x <= 1, 1 <= y <= 2
+	0,			   otherwise
+}
+f_X(x) = {
+	7 - 3x^2/6, 0 < x < 1
+	0,          otherwise
+}
+find the conditional expected value E[Y|X = 1]
+f_Y|X(y|x) = f(x,y)/f_X(x)
+= (y^2 - x^2)/2
+= 7 - 3X^2/6 = 7 - x^2/2
+= 6(y^2 - x^2)/2(7 - 3x^2)
+= 3(y^2 - x^2)/(7 - 3x^2)
+f_Y|X(y|1) = 3(y^2 - 1)/4
+using the conditional expectation
+∫^2_1 y 3(y^2 - 1)/4 dy
+= ∫^2_1 (3y^3 - 3y)/4 dy
+= [3y^4/16 - 3y^2/8]|_1-2
+= ((48/16) - (12/8) - (3/16 - 3/8))
+= ((48/16) - (24/16) - (3/16 - 6/16))
+= (24/16) - (-(3/16))
+= 24/16 + 3/16
+= 27/16
+
+Conditional expectation as a function
+joint probability density function and the marginal probability density function
+f(x,y) = {
+	x + y/4, 0 <= y <= x, 0 < x < 2
+	0,       otherwise
+}
+f_X(x) = {
+	3x^2/8, 0 < x < 2
+	0,      otherwise
+}
+find the expression for the conditional expected value E[Y|X = x] for 0 < x < 2
+The conditional density function of Y given X = x
+f_Y|X(y|x) = f(x,y)/f_X(x)
+= ((x + y)/4)/(3x^2/8)
+= 2(x + y)/3x^2
+where 0 <= y <= x, 0 < x < 2 outside this domain f_Y|X(y|x) = 0
+the definition of the conditional expectation E[Y|X = x]
+= ∫^x_0 y * 2(x + y)/3x^2 dy
+= 2/3x^2 ∫^x_0 (xy + y^2) dy
+= 2/3x^2 [xy^2/2 + y^3/3]|_0-x
+= 2/3x^2((x^3/2 + x^3/3) - (0))
+= 2/3x^2 * 5x^3/6
+= 1/3x^2 * 5x^2 * x/3
+= 5x/9
+
+example:
+joint probability density function and the marginal probability density function
+f(x,y) = {
+	xy/4, 0 <= x <= 2, 0 < y < 2
+	0,    otherwise
+}
+f_Y(y) = {
+	y/2, 0 < y < 2
+	0,   otherwise
+}
+find the expression for the conditional expected value E[X|Y = y] for 0 < y < 2
+f_X|Y(x|y) = f(x,y)/f_Y(y)
+= (xy/4)/y/2
+= 2(xy)/4y
+= x/2
+where 0 <= x <= 2, 0 < y < 2
+= ∫^2_0 x * x/2 dx
+= ∫^2_0 x^2/2 dx
+= [x^3/6]|_0-2
+= 8/6
+= 4/3
+
+example:
+joint probability density function and the marginal probability density function
+f(x,y) = {
+	3/2, x^2 <= y <= 1, 0 < x < 1
+	0,   otherwise
+}
+f_X(x) = {
+	3/2(1 - x^2), 0 < x < 1
+	0,            otherwise
+}
+find the expression for the conditional expected value E[Y|X = x] for 0 < x < 1
+(3/2)/(3/2(1 - x^2))
+= 6/6(1 - x^2)
+= 1/(1 - x^2)
+where x^2 <= y <= 1, 0 < x < 1
+= ∫^1_x^2 1/(1 - x^2) dy
+= 1/(1 - x^2) ∫^1_x^2 y dy
+= 1/(1 - x^2) [y^2/2]|_(x^2)-1 dy
+= 1/(1 - x^2) [1/2 - x^4/2]
+= 1/(1 - x^2)(1 - x^4/2)
+= 1(1 + x^2)/2
+= 1 + x^2/2
