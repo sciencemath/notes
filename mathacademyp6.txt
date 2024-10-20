@@ -3989,3 +3989,355 @@ covariance
 = 31/490
 ~= (31/490)/(0.2575)*(0.4389)
 ~= 0.56
+
+===================================================
+
+For a set of random variables X1,...,Xn, the covariance matrix Σ
+Σ = [
+	 Var[X1]   Cov[X1,X2] ... Cov[X1,Xn]
+	Cov[X2,X1]   Var[X2]  ... Cov[X2,Xn]
+	    .           .     .       .
+	    .           .      .      .
+	    .           .       .     .
+	Cov[Xn,X1] Cov[Xn,X2] ...  Var[Xn]
+]
+The ith diagonal elements is Σ_ii = Var[Xi]
+The element in the ith row jth column for i != j is Σ_ij = Cov[Xi,Xj]
+Since Cov[Xi,Xj] = Cov[Xj,Xi] for any pair of random variables Xi, Xj
+theorem:
+The covariance matrix is always symmetric it is a positive semi-definite matrix
+
+determining elements of a covariance matrix
+Σ = [
+	4 2 0
+	a 5 b
+	c 1 2
+]
+the covariance matrix Σ for random variables X1,X2, and X3 is given. find a+b+c
+Cov[X,Y] = Cov[Y,X]
+the covariance matrix is always symmetric (postive semi-definite)
+we can find the missing elements
+a = Σ_21 = Cov[X2,X1] = Cov[X1,X2] = Σ_12 = 2
+b = Σ_23 = Cov[X2,X3] = Cov[X3,X2] = Σ_32 = 1
+c = Σ_31 = Cov[X3,X1] = Cov[X1,X3] = Σ_13 = 0
+a+b+c = 2+1+0 = 3
+
+example:
+Σ = [
+	1 -1
+	a  2
+]
+the covariance matrix Σ, find a
+a = Σ_21 = Cov[X2,X1] = Cov[X1,X2] = Σ_12 = -1
+
+example:
+Σ = [
+	4 -1 1
+	a  5 3
+	b  c 6
+]
+the covariance matrix Σ, find a+b+c
+a = Σ_21 = Cov[X2,X1] = Cov[X1,X2] = Σ_12 = -1
+b = Σ_31 = Cov[X2,X3] = Cov[X3,X2] = Σ_13 = 1
+c = Σ_32 = Cov[X3,X1] = Cov[X1,X3] = Σ_23 = 3
+= 3
+
+finding the covariance matrix given some moments
+E[X] = 4, E[Y] = 3, mixed moment E[XY] = 9, second raw moments E[X^2] = 18 and E[Y^2] = 14 find the covariance matrix
+Σ = [
+	 Var[X] Cov[X,Y]
+	Cov[Y,X] Var[Y]
+]
+Var[X] = E[X^2] - E[X]^2
+= 18 - 4^2
+= 2
+Var[Y] = E[Y^2] - E[Y]^2
+= 14 - 3^2
+= 5
+Cox[X,Y] = E[XY] - E[X] * E[Y]
+= 9 - 4*3
+= -3
+Σ = [
+	 2 -3
+	-3  5
+]
+
+example:
+E[X] = 6, E[Y] = 5, mixed moment E[XY] = 32, and variance Var[X] = 4, Var[Y] = 3, find the covariance matrix
+Σ = [
+	 Var[X] Cov[X,Y]
+	Cov[Y,X] Var[Y]
+] = [
+	4 2
+	2 3
+]
+Cox[X,Y] = E[XY] - E[X] * E[Y]
+= 32 - 6*5
+= 2
+
+example:
+E[X] = 2, E[Y] = 4, mixed moment E[XY] = 10, second raw moments E[X^2] = 9 and E[Y^2] = 20, find the covariance matrix
+Σ = [
+	 Var[X] Cov[X,Y]
+	Cov[Y,X] Var[Y]
+] = [
+	5 2
+	2 4
+]
+Var[X] = E[X^2] - E[X]^2
+= 9 - 2^2
+= 5
+Var[Y] = E[Y^2] - E[Y]^2
+= 20 - 4^2
+= 4
+Cox[X,Y] = E[XY] - E[X] * E[Y]
+= 10 - 2*4
+= 2
+
+finding a covariance matrix given a discrete bivariate distribution
+the joint probability mass function f(x,y)
+f  |Y=1|Y=3|
+X=2|0.3|0.2|
+X=4|0.1|0.4|
+------------
+given: E[X] = 3, E[Y] = 2.2, find the covariance matrix
+first marginal mass for X and Y
+f  |Y=1|Y=3|f_X|
+X=2|0.3|0.2|0.5|
+X=4|0.1|0.4|0.5|
+f_Y|0.4|0.6| 1 |
+----------------
+E[X^2]
+= 2^2*0.5 + 4^2*0.5
+= 10
+Var[X] = E[X^2] - E[X]^2
+= 10 - 3^2
+= 1
+E[Y^2]
+= 1^2*0.4 + 3^2*0.6
+= 5.8
+Var[Y] = E[Y^2] - E[Y]^2
+= 5.8 - 2.2^2
+= 0.96
+E[XY] = 2*1*0.3 + 4*1*0.1 + 2*3*0.2 + 4*3*0.4
+= 7
+Cov[XY] = E[XY] - E[X]*E[Y]
+= 7 - 3*2.2
+= 0.4
+covariance matrix
+Σ = [
+	 Var[X] Cov[X,Y]
+	Cov[Y,X] Var[Y]
+] = [
+	 1   0.4
+	0.4 0.96
+]
+
+example:
+joint PMF
+f  |Y=1|Y=2|
+X=0|0.1|0.1|
+X=1|0.3|0.5|
+------------
+given: E[X] = 0.8, E[Y] = 1.6, find the covariance matrix
+marginal mass for X and Y
+f  |Y=1|Y=2|f_X|
+X=0|0.1|0.1|0.2|
+X=1|0.3|0.5|0.8|
+f_Y|0.4|0.6| 1 |
+----------------
+E[X^2]
+= 0^2*0.2 + 1^2*0.8
+= 0.8
+E[Y^2]
+= 1^2*0.4 + 2^2*0.6
+= 2.8
+Var[X] = E[X^2] - E[X]^2
+= 0.8 - (0.8)^2
+= 0.16
+Var[Y] = E[Y^2] - E[Y]^2
+= 2.8 - (1.6)^2
+= 0.24
+E[XY] = 0*1*0.1 + 0*2*0.1 + 1*1*0.3 + 1*2*0.5
+= 1.3
+Cov[XY] = E[XY] - E[X]*E[Y]
+= 1.3 - 0.8*1.6
+= 0.02
+covariance matrix
+Σ = [
+	 Var[X] Cov[X,Y]
+	Cov[Y,X] Var[Y]
+] = [
+	0.16 0.02
+	0.02 0.24
+]
+
+example:
+joint PMF
+f  | Y=2| Y=4|
+X=0|0.15|0.35|
+X=2| 0.1| 0.4|
+--------------
+given: E[X] = 1, E[Y] = 3.5, find the covariance matrix
+marginal mass totals
+f  | Y=2| Y=4|f_X|
+X=0|0.15|0.35|0.5|
+X=2| 0.1| 0.4|0.5|
+f_Y|0.25|0.75| 1 |
+------------------
+E[X^2]
+= 0^2*0.5 + 2^2*0.5
+= 2
+E[Y^2]
+= 2^2*0.25 + 4^2*0.75
+= 1 + 12
+= 13
+Var[X] = E[X^2] - E[X]^2
+= 2 - (1)^2
+= 1
+Var[Y] = E[Y^2] - E[Y]^2
+= 13 - (3.5)^2
+= 0.75
+E[XY] = 0*2*0.15 + 0*4*0.35 + 2*2*0.1 + 2*4*0.4
+= 0.4 + 3.2
+= 3.6
+Cov[XY] = E[XY] - E[X]*E[Y]
+= 3.6 - 1*3.5
+= 0.1
+Σ = [
+	 Var[X] Cov[X,Y]
+	Cov[Y,X] Var[Y]
+] = [
+	   1  0.1
+	 0.1 0.75
+]
+
+finding a covariance matrix given a continuous bivariate distribution
+joint probability density function
+(many steps, easy to make a mistake)
+f(x,y) = {
+	x + 3/2(y^2), 0 <= x <= 1, 0 <= y <= 1
+	0,            otherwise
+}
+E[X] = 7/12, E[Y] = 5/8, E[XY] = 17/48, find the covariance matrix
+first we find Var[X], we compute E[X^2] using lazy statistician
+E[X^2] = ∫^1_0 ∫^1_0 x^2 * f(x,y) dxdy
+= ∫^1_0 ∫^1_0 x^2(x + 3/2(y^2)) dxdy
+= ∫^1_0 ∫^1_0 x^3 + 3/2(x^2y^2) dxdy
+= ∫^1_0 [x^4/4 + x^3y^2/2]|_0-1 dy
+= ∫^1_0 (1/4 + y^2/2) dy
+= [1/4y + y^3/6]|_0-1
+= 1/4 + 1/6
+= 5/12
+Var[X] = E[X^2] - E[X]^2
+= 5/12 - (7/12)^2
+= 11/144
+E[Y^2] = ∫^1_0 ∫^1_0 y^2 * f(x,y) dxdy
+= ∫^1_0 ∫^1_0 y^2(x + 3/2(y^2)) dxdy
+= ∫^1_0 ∫^1_0 (xy^2 + 3/2(y^4)) dxdy
+= ∫^1_0 [x^2y^2/2 + 3/2xy^4]|_0-1 dy
+= ∫^1_0 (y^2/2 + 3/2y^4) dy
+= [y^3/6 + 3/10y^56]|_0-1
+= 1/6 + 3/10
+= 7/15
+Var[Y] = E[Y^2] - E[Y]^2
+= 7/15 - (5/8)^2
+= 73/960
+Cov[X,Y] = E[XY] - E[X]*E[Y]
+= 17/48 - (7/12)(5/8)
+= -1/96
+Σ = [
+	 Var[X] Cov[X,Y]
+	Cov[Y,X] Var[Y]
+] = [
+	11/144  -1/96
+	 -1/96 73/960
+]
+
+example:
+joint PDF
+f(x,y) = {
+	1/16(xy), 0 <= x <= 2, 0 <= y <= 4
+	0,        otherwise
+}
+given: E[X] = 4/3 and E[Y] = 8/3, find the covariance matrix
+E[X^2] = ∫^4_0 ∫^2_0 x^2 * f(x,y) dxdy
+= ∫^4_0 ∫^2_0 x^2(1/16(xy)) dxdy
+= ∫^4_0 ∫^2_0 x^3y/16 dxdy
+= ∫^4_0 [x^4y/64]|_0-2 dy
+= ∫^4_0 (16y/64) dy
+= [16y^2/128]|_0-4
+= 256/128
+Var[X] = E[X^2] - E[X]^2
+= 2 - (4/3)^2
+= 2 - 16/9
+= 18/9 - 16/9
+= 2/9
+E[Y^2] = ∫^4_0 ∫^2_0 y^2 * f(x,y) dxdy
+= ∫^4_0 ∫^2_0 y^2(1/16(xy)) dxdy
+= ∫^4_0 ∫^2_0 (xy^3/16) dxdy
+= ∫^4_0 [x^2y^3/32]|_0-2 dy
+= ∫^4_0 (4y^3/32) dy
+= [y^4/32]|_0-4
+= 256/32
+= 8
+Var[Y] = E[Y^2] - E[Y]^2
+= 8 - (8/3)^2
+= 72/9 - 64/9
+= 8/9
+S = [0,2] x [0,4]
+f(x,y) = g(x) * h(y)
+g(x) = x/2 and h(y) = y/8
+X and Y are independent Cov[X,Y] = 0
+Σ = [
+	 Var[X] Cov[X,Y]
+	Cov[Y,X] Var[Y]
+] = [
+	2/9 0
+	 0 8/9
+]
+
+example:
+joint PDF
+f(x,y) = {
+	x + y, 0 <= x <= 1, 0 <= y <= 1
+	0,     otherwise
+}
+given: E[X] = E[Y] = 7/12, E[X^2] = 5/12, find the covariance matrix
+Var[X] = E[X^2] - E[X]^2
+= 5/12 - (7/12)^2
+= 60/144 - 49/144
+= 11/144
+E[Y^2] = ∫^1_0 ∫^1_0 y^2 * (x + y) dxdy
+= ∫^1_0 ∫^1_0 y^2x + y^3 dxdy
+= ∫^1_0 [y^2x^2/2 + y^3x]|_0-1 dy
+= ∫^1_0 (y^2/2 + y^3) dy
+= [y^3/6 + y^4/4]|_0-1
+= 1/6 + 1/4 = 2/12 + 3/12
+= 5/12
+Var[Y] = E[Y^2] - E[Y]^2
+= 5/12 - (7/12)^2
+= 5/12 - 49/144
+= 60/144 - 49/144
+= 11/144
+E[XY] = ∫^1_0 ∫^1_0 xy * (x + y) dxdy
+= ∫^1_0 ∫^1_0 xy * (x + y) dxdy
+= ∫^1_0 ∫^1_0 (x^2y + y^2x) dxdy
+= ∫^1_0 [x^3y/3 + y^2x^2/2]|_0-1 dy
+= ∫^1_0 (y/3 + y^2/2) dy
+= [y^2/6 + y^3/6]|_0-1
+= 1/6 + 1/6
+= 1/3
+Cov[X,Y] = E[XY] - E[X]*E[Y]
+= 1/3 - (7/12)(7/12)
+= -1/144
+Σ = [
+	 Var[X] Cov[X,Y]
+	Cov[Y,X] Var[Y]
+] = [
+	11/144 -1/144
+	-1/144 11/144
+] = 1/144[
+	11 -1
+	-1 11
+]
