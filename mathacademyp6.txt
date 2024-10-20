@@ -3353,3 +3353,295 @@ since X and Y are independent (by assumption) f(x,y) = f_X(x) * f_Y(y)
 = ∫^∞_-∞ xf_X(x) dx * ∫^∞_-∞ yf_Y(y) dy
 = E[X] * E[Y]
 again proof for discrete is similar
+
+===================================================
+
+The covariance of two random variables
+We often want to measure the strength of the linear dependence between two random variables one measure that we use for this purpose is covariance
+The covariance between two discrete random variables X and Y
+Cov[X,Y] = E[(X - E[X])(Y - E[Y])]
+(X - E[X]) is the deviation of X from its mean
+(Y - E[Y]) is the deviation of Y from its mean
+the covariance measures the expected value of the product of these deviations
+convariance can be expressed as
+Cov[X,Y] = Σ_(x,y)∈S(x - E[X])(y - E[Y])f(x,y)
+f(x,y) is the joint PMF of X and Y, and S is the joint support
+A positive covariance means that if X increases then Y increase. X and Y are positively correlated
+A negative means that if X increases then Y is likely to decrease we say that X and Y are negatively correlated
+if X and Y and independent then
+Cov[X,Y] = 0
+the reverse does not always hold, two random variables can have zero covariance yet be dependent. This is because covariance measures linear dependence only
+The covariance of a random variable with itself is its variance
+Cov[X,X] = E[(X - E[X])(X - E[X])]
+= E[(X - E[X])^2]
+= Var[X]
+besides checking if two random variables are positively or negatively correlated, the covariance by itself does not tell us very much, if
+Cov[X1,Y1] > Cov[X2,Y2] > 0
+this does not mean that the dependence between X1 and Y1 is somehow stronger than the dependence between X2 and Y2 this is because the covariance does not take the variance of the individual random variables into account
+the correlation coefficient DOES consider the variance of the individual random variables and so can be used to compare the relative strength of the linear dependence between two pairs of random variables
+
+The joint probability mass function f(x,y) for the discrete random variables X and Y with joint support S = S_X x S_Y
+f  | Y=2| Y=5|
+X=1|0.15|0.25|
+X=4|0.45|0.15|
+--------------
+find an expression for the covariance in sigma notation
+The covariance of two discrete random variables X and Y with joint support S
+Cov[X,Y] = Σ_(x,y)∈S(x - E[X])(y - E[Y])f(x,y)
+first find the marginal mass function for X and Y
+f  | Y=2| Y=5|f_X|
+X=1|0.15|0.25|0.4|
+X=4|0.45|0.15|0.6|
+f_Y| 0.6| 0.4| 1 |
+------------------
+now compute E[X] and E[Y]
+E[X] = Σ_x∈S_X(x * f_X(x))
+= 1 * 0.4 + 4 * 0.6
+= 0.4 + 2.4
+= 2.8
+E[Y] = Σ_y∈S_Y(y * f_Y(y))
+= 2 * 0.6 + 5 * 0.4
+= 1.2 + 2
+= 3.2
+applying the covariance formula
+Cov[X,Y] = Σ_(x,y)∈S(x - E[X])(y - E[Y])f(x,y)
+= Σ_(x,y)∈S(x - 2.8)(y - 3.2)f(x,y)
+
+example:
+f  | Y=2| Y=5|
+X=1|0.12| 0.4|
+X=3|0.45| 0.2|
+--------------
+marginal mass
+f  | Y=2| Y=5| f_X|
+X=1|0.12| 0.4|0.52|
+X=3|0.28| 0.2|0.48|
+f_Y| 0.4| 0.6|  1 |
+-------------------
+= 1*0.52 + 3*0.48
+E[X] = 1.96
+= 2*0.4 + 5*0.6
+E[Y] = 3.8
+Cov[X,Y] = Σ_(x,y)∈S(x - 1.96)(y - 3.8)f(x,y)
+
+example:
+the joint probability mass function f(x,y) for the discrete random variables X and Y with joint support S = S_X x S_Y
+f  | Y=0| Y=1|
+X=1|0.15|0.25|
+X=2|0.05|0.15|
+X=3|0.25|0.15|
+--------------
+marginal mass function
+f  | Y=0| Y=1|f_X|
+X=1|0.15|0.25|0.4|
+X=2|0.05|0.15|0.2|
+X=3|0.25|0.15|0.4|
+f_Y|0.45|0.55| 1 |
+------------------
+E[X] = 1*0.4 + 2*0.2 + 3*0.4
+= 2
+E[Y] = 0*0.45 + 1*0.55
+= 0.55
+Cov[X,Y] = Σ_(x,y)∈S(x - 2)(y - 0.55)f(x,y)
+
+example:
+the joint probability mass function f(x,y) for the discrete random variables X and Y
+f  |Y=0|Y=1|
+X=1|0.1|0.5|
+X=2|  0|0.4|
+------------
+marginal mass function for X and Y
+f  |Y=0|Y=1|f_X|
+X=1|0.1|0.5|0.6|
+X=2|  0|0.4|0.4|
+f_Y|0.1|0.9| 1 |
+----------------
+E[X] = 1*0.6 + 2*0.4
+= 1.4
+E[Y] = 0*0.1 + 1*0.9
+= 0.9
+Cov[X,Y] = Σ_(x,y)∈S(x - 1.4)(y - 0.9)f(x,y)
+= (1 - 1.4)(0 - 0.9)f(1,0)
++ (1 - 1.4)(1 - 0.9)f(1,1)
++ (2 - 1.4)(0 - 0.9)f(2,0)
++ (2 - 1.4)(1 - 0.9)f(2,1)
+= (-0.4)(-0.9)(0.1)
++ (-0.4)(0.1)(0.5)
++ (0.6)(-0.9)(0)
++ (0.6)(0.1)(0.4)
+= 0.04
+
+example:
+the joint probability mass function f(x,y) for the discrete random variables X and Y
+f  | Y=0| Y=1|
+X=0|0.28|0.12|
+X=1|0.42|0.18|
+--------------
+calculate the covariance of X and Y
+Hint: it can be shown that P(X = x,Y = y) = P(X = x) * P(Y = y) for all possible values of x and y
+marginal mass function for X and Y
+f  | Y=0| Y=1|f_X|
+X=0|0.28|0.12|0.4|
+X=1|0.42|0.18|0.6|
+f_Y| 0.7| 0.3| 1 |
+------------------
+E[X] = 0*0.4 + 1*0.6
+= 0.6
+E[Y] = 0*0.7 + 1*0.3
+= 0.3
+Cov[X,Y] = Σ_(x,y)∈S(x - 0.6)(y - 0.3)f(x,y)
+= (-0.6)(-0.3)(0.28)
++ (1 - 0.6)(-0.3)(0.42) = (0.4)(-0.3)(0.42)
++ (-0.6)(1 - 0.3)(0.12) = (-0.6)(0.7)(0.12)
++ (1 - 0.6)(1 - 0.3)(0.18) = (0.4)(0.7)(0.18)
+= 0.0504 - 0.0504 - 0.0504 + 0.0504
+(we should've used the hint since X and Y are independent we can assume Cov(X,Y) = 0)
+
+example:
+the joint probability mass function f(x,y) for the discrete random variables X and Y
+f  |Y=1|Y=2|f_X|
+X=0|0.1|0.1|0.2|
+X=1|0.2|0.6|0.8|
+f_Y|0.3|0.7| 1 |
+----------------
+calculate the covariance of X and Y
+E[X] = 0*0.2 + 1*0.8
+= 0.8
+E[Y] = 1*0.3 + 2*0.7
+= 1.7
+Cov[X,Y] = Σ_(x,y)∈S(x - 0.8)(y - 1.7)f(x,y)
+(0 - 0.8)(1 - 1.7)f(x,y) = (-0.8)(-0.7)(0.1)
+(1 - 0.8)(1 - 1.7)f(x,y) = (0.2)(-0.7)(0.2)
+(0 - 0.8)(2 - 1.7)f(x,y) = (-0.8)(0.3)(0.1)
+(1 - 0.8)(2 - 1.7)f(x,y) = (0.2)(0.3)(0.6)
+= 0.056 - 0.028 - 0.024 + 0.036
+= 0.04
+
+A formula for quickly computing covariance
+(because why not? Its a lot of work)
+there is a formula that makes this easier
+Cov[X,Y] = E[XY] - E[X] * E[Y]
+
+Finding the covariance using our new knowledge
+the joint probability mass function f(x,y) for the discrete random variables X and Y
+f  |Y=2|Y=3|
+X=1|0.2|0.2|
+X=4|0.4|0.2|
+------------
+if E[X] = 2.8, E[Y] = 2.4, calculate covariance
+use the rule of the lazy statistician to find E[XY]
+E[XY] = Σ_(x,y)∈S(xy * f(x,y))
+= (1)(2)(0.2) + (1)(3)(0.2) + (4)(2)(0.4) + (4)(3)(0.2)
+= 6.6
+using the covariance formula
+Cov[X,Y] = E[XY] - E[X] * E[Y]
+= 6.6 - (2.8)(2.4)
+= -0.12
+
+example:
+if E[X] = 20, E[Y] = 2, and E[XY] = 44.8 for two random variables X and Y calculate the covariance of X and Y
+44.8 - (20)(2)
+= 4.8
+
+example:
+the joint probability mass function f(x,y) for the discrete random variables X and Y
+f  |Y=2| Y=3| Y=4|
+X=1|0.1|0.05|0.15|
+X=2|0.1|0.35|0.25|
+------------------
+if E[X] = 1.7 and E[Y] = 3.2, calculate the covariance of X and Y
+(1)(2)(0.1) + (1)(3)(0.05) + (1)(4)(0.15) + (2)(2)(0.1) + (2)(3)(0.35) + (2)(4)(0.25)
+= 5.45
+5.45 - (1.7)(3.2)
+= 0.01
+
+Covariance for continuous random variables
+Cov[X,Y] = ∫∫_R^2 (x - E[X])(y - E[Y])f(x,y) dxdy
+just like discrete variables, its easier using 
+Cov[X,Y] = E[XY] - E[X] * E[Y]
+joint probability function
+f(x,y) = {
+	1/2(x + y/2), 0 <= x <= 1, 0 <= y <= 2
+	0,            otherwise
+}
+to compute the covariance of this distribution we first use the rule of the lazy statistician to find E[XY]
+E[XY] = ∫^2_0 ∫^1_0 xyf(x,y) dxdy
+= ∫^2_0 ∫^1_0 xy * 1/2(x + y/2) dxdy
+= ∫^2_0 1/2(y) ∫^1_0 (x^2 + 1/2xy) dxdy
+= ∫^2_0 1/2(y) [x^2 + 1/2xy]|_0-1 dy
+= ∫^2_0 1/2(y) [x^3/3 + 1/4x^2y]|_0-1 dy
+= ∫^2_0 1/2(y)(1/3 + 1/4y) dy
+= ∫^2_0 (1/6y + 1/8y^2) dy
+= [1/12y^2 + 1/24y^3]|_0-2
+= 1/12 * 2^2 + 1/24 * 2^3
+= 1/3 + 1/3
+= 2/3
+E[X] = 7/12, E[Y] = 7/6
+using the covariance formula
+= 2/3 - (7/12)(7/6)
+= -1/72
+
+Joint probability density function
+f(x,y) = {
+	3/5(sqrt(x)y), 0 <= x <= 1, 2 <= y <= 3
+	0,             otherwise
+}
+find the covariance of X and Y
+the joint support of X and Y
+S = [0,1] x [2,3]
+f(x,y) = g(x) * h(x)
+where g(x) = 3/5(sqrt(x)) and h(y) = y
+X and Y are independent then Cov[X,Y] = 0
+
+example:
+joint PDF
+f(x,y) = {
+	e^(-x-y), x > 0, y > 0
+	0,        otherwise
+}
+find the covariance of X and Y
+S = (0,∞) x (0, ∞)
+we can write
+f(x,y) = g(x) * h(y)
+where e^-x and h(y) = e^-y
+X and Y are independent and Cov[X,Y] = 0
+
+The joint probability density function
+f(x,y) = {
+	x + 3/2(y^2), 0 <= x <= 1, 0 <= y <= 1
+	0,            otherwise
+}
+given E[X] = 7/12 and E[Y] = 5/8 calculate the covariance
+= ∫^1_0 ∫^1_0 x^2y + 3/2(xy^3)  dxdy
+(breakup the x's)
+∫^1_0 x^2y dx + 3/2(y^3)∫^1_0 x dx
+∫^1_0 y[x^3/3]|_0-1 dx = y/3
+∫^1_0 x dx = [x^2/2]|_0-1 = 1/2
+= 3/2(y^3) * 1/2 = 3/4y^3
+combining
+= y/3 + 3/4(y^3)
+outer integral
+= ∫^1_0 (y/3 + 3/4(y^3)) dy
+= ∫^1_0 y/3 dy = 1/3[y^2/2]|_0-1 = 1/3 * 1/2 = 1/6
+= ∫^1_0 3/4(y^3) dy = 3/4[y^4/4]|_0-1 = 3/4 * 1/4 = 3/16
+= 1/6 + 3/16
+= 8/48 + 9/48
+= 17/48
+= 17/48 - (7/12)(5/8)
+= 17/48 - 35/96
+= 34/96 - 35/96
+= -1/96
+
+Proof of the covariance formula
+Cov[X,Y] = E[XY] - E[X] * E[Y]
+definition
+Cov[X,Y] = E[(X - E[X])(Y - E[Y])]
+expanding
+Cov[X,Y] = E[XY - X * E[Y] - E[X] * Y + E[X] * E[Y]]
+if a and b are constants
+E[a] = a, E[aX + bY] = a * E[X] + b * E[Y]
+since E[X] and E[Y] are both contants
+Cov[X,Y] = E[XY - X * E[Y] - E[X] * Y + E[X] * E[Y]]
+= E[XY] - E[X * E[Y]] - E[E[X] * Y] + E[E[X] * E[Y]]
+= E[XY] - E[X] * E[Y] - E[X] * E[Y] + E[X] * E[Y]
+= E[XY] - E[X] * E[Y]
