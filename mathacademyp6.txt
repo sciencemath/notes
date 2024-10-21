@@ -4913,3 +4913,99 @@ P(Z > 70) = P(Z > (70 - 59)/sqrt(29))
 = 1 - Φ(2.04)
 ~= 1 - 0.9793
 = 0.0207
+
+===================================================
+
+A set of random variables is said to bbe independent and identically distributed (I.I.D) if the random variables are mutually independent and have the same probability distribution
+sample size n from a population
+X1, X2, ..., Xn
+are often considered to be I.I.D random variables this assumption allows us to simplify the statistical analysis
+Xi ~ N(μ2,σ^2), 1 <= i <= n
+Y = X1 + X2 + ... + Xn
+calculating the mean using properties of expectation
+E[Y] = E[X1 + X2 + ... + Xn]
+= E[X1] + E[X2] + ... + E[Xn]
+= μ + μ + ... + μ
+= nμ
+properties of variance
+Var[Y] = Var[X1 + X2 + ... + Xn]
+= Var[X1] + Var[X2] + ... + Var[Xn]
+= σ^2 + σ^2 + ... + σ^2
+= nσ^2
+Y = X1 + X2 + Xn ~ N(nμ, nσ^2)
+
+Calculating distributions and probabilities with I.I.D normal random variables
+given X1,X2,...,X6 are random I.I.D random variables where
+Xi ~ N(2,3^2), 1 <= i <= 6
+calculate P(10 <= Y <= 14) where Y = X1 + X2 + ... + X6
+Y = X1 + X2 + ... + X6 ~ N(6*2, 6*3^2) = N(12, 54)
+P(10 <= Y <= 14) = P((10 - 12)/sqrt(54) <= Z <= (14 - 12)/sqrt(54))
+= P(-2/sqrt(54) <= Z <= 2/sqrt(54))
+= P(-0.27 <= Z <= 0.27)
+= Φ(0.27) - Φ(-0.27)
+= Φ(0.27) - (1 - Φ(0.27))
+= 2Φ(0.27) - 1
+Φ(0.27) = 0.6064
+P(10 <= Y <= 14) = 2Φ(0.27) - 1 = 0.2128
+
+example:
+X1,X2,...,X20 are I.I.D random variables where
+Xi ~ N(1, 2^2), 1 <= i <= 20
+whats the distribution of Y = X1 + X2 + ... + X20?
+Y ~ N(20*1,20*2^2) = N(20,80)
+
+example:
+X1,X2,...,X20 are I.I.D random variables where
+Xi ~ N(1, 2^2), 1 <= i <= 20
+calculate P(Y <= 21), where Y = X1 + X2 + ... + X20
+Y = N(20,80) P((21 - 20)/sqrt(80))
+= P(Z <= 0.11)
+Φ(0.11)
+= 0.5438
+
+Caclulating distributions and probabilities with I.I.D normal random variables in context
+in barnes and noble each self is filled with 20 books plus one bookend the weight of one book mean 150g and SD 5g the bookend has a mean of 50g and a SD of 2g, what is the probability that it supports a weight of more than 3000g
+Let Xi denote the weight of the ith book and Y denote the weight of the bookend
+Xi ~ N(150,5^2), 1 <= y <= 20
+Y ~ N(50,2^2)
+let the random variable W denote the weight of a randomly selected shelf
+W = X1 + X2 + ... + X20 + Y
+we have that W is normally distributed
+E[W] = 20*150 + 50 = 3050
+Var[W] = 20*5^2 + 2^2 = 504
+W ~ N(3050,504)
+in order to find P(W > 3000), we convert W to a standard normal variable by z-scoring
+P(W > 3000) = P(Z > (3000 - 3050)/sqrt(504))
+~= P(Z > -2.23)
+= P(Z < 2.23)
+= Φ(2.23)
+= 0.9871
+
+example:
+A programming test is composed of 15 problems, the time it takes for a student to solve a problem mean of 6 min and SD of 2 min if one student is randomly selected what is the probability that they will take between 80min and 100min to complete all problems?
+X1,X2,...,X15 1 <= i <= 15
+Y ~ N(6,2)
+W = X1,X2,...,X15 + Y
+E[W] = 15*6 = 90
+Var[W] = 15*2^2 = 60
+W ~ N(90,60)
+P(80 < W < 100) = ((80-90)/sqrt(60) < Z < (100-90)/sqrt(60))
+= P(-1.29 <= Z <= 1.29)
+= Φ(1.29) - Φ(-1.29)
+= Φ(1.29) - (1 - Φ(1.29))
+= 2Φ(01.29) - 1
+~= 0.8030
+
+example:
+There are 10 blueberries in each container. The weight of a blueberry mean of 60g and SD 5g the weight of the carton mean of 30g and SD 2g what is the probability that it weighs less than 653g
+X1,X2,...,X10, 1 <= y <= 10
+Xi ~ N(60,5^2)
+Y ~ N(30,2^2)
+W = X1 + X2 + ... + X10 + Y
+E[W] = 10*60 + 30 = 630
+Var[W] = 10*5^2 + 2^2 = 254
+W ~ N(630,254)
+P(W < 653) = P(Z < (653 - 630)/sqrt(254))
+~= P(Z < 1.44)
+= Φ(1.44)
+~= 0.9251
