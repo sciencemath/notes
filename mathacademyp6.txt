@@ -4746,3 +4746,170 @@ this is the moment-generating function of a normal random variable with distribu
 N(μ1+μ2,σ1^2+σ2^2)
 since any given distribution is characterized by its moment-generating function (no other distribution can have the same moment-generating function) we conclude that
 Y ~ N(μ1 + μ2,σ1^2 + σ2^2)
+
+===================================================
+
+When we form a random variable Y from a sum of mutually independent normally distributed random variables the distribution of Y is also normal.
+theorem:
+if X1,X2,...,Xn are mutually independent normal random varibles
+X1 ~ N(μ1,σ1^2), X2 ~ N(μ2,σ2^2) ..., Xn ~ (μn,σn^2)
+then the random variable
+Y = X1 + X2 + ... + Xn
+is normally distributed where
+Y ~ N(μ1 + μ2 + ... + μn, σ1^2 + σ2^2 + ... + σn^2)
+for example if the random variables
+X1 ~ N(2,3), X2 ~ N(1,4), X3 ~ N(1,1)
+are mutually indenpendent then
+Y = X1 + X2 + X3
+is normally distributed
+distribution of Y, computing its mean and variance
+E[Y] = μ1 + μ2 + μ3
+= 2 + 1 + 1 = 4
+Var[Y] = σ1^2 + σ2^2 + σ3^2
+= 3 + 4 + 1 = 8
+Y = X1 + X2 + X3 ~ N(4,8)
+its important that X1, X2, ... Xn are mutually independent
+
+finding the distribution of a sum of normal random variables
+X1 ~ N(-1,2^2), X2 ~ N(3,3^2), X3 ~ N(4,2)
+are mutually independent what is the distribution of Y = X1+X2+X3
+E[Y] = -1 + 3 + 4 = 6
+Var[Y] = 2^2 + 3^2 + 2 = 15
+Y = X1 + X2 + X3 ~ N(6,15)
+
+example:
+X1 ~ N(2,5), X2 ~ N(-2,2), X3 ~ N(3,1)
+E[Y] = 2 + (-2) + 3 = 3
+Var[Y] = 5 + 2 + 1 = 8
+Y ~ N(3,8)
+
+example:
+X1 ~ N(0,2^2), X2 ~ N(3,5^2), X3 ~ N(-1,7)
+E[Y] = 0 + 3 + (-1) = 2
+Var[Y] = 2^2 + 5^2 + 7 = 36
+Y ~ N(2,36)
+
+Linear combinations of normally distributed random variables
+theorem
+a1,a2,...,an are real constants then the linear combination
+Y = a1X1 + a2X2 + ... + anXn
+is normally distributed where
+Y ~ N(a1μ1 + a2μ2 + ... anμn, a1^2σ1^2 + a2^2σ2^2 + ... + an^2σ2^2n)
+for example, random variables:
+X1 ~ N(2,3), X2 ~ N(1,4), X3 ~ N(1,1)
+are mutually independent then
+Y = 3X1 + 2X2 + 4X3
+is normally distributed
+E[Y] = 3*2 + 2*1 + 4*1 = 12
+Var[Y] = 3^2*3 + 2^2*4 + 4^2*1
+= 9*3 + 4*4 + 16*1 = 59
+Y = 3X1 + 2X2 + 4X3 ~ N(12,59)
+important X1,X2,...Xn are mutually independent, if not their linear combination may not be normally distributed
+
+finding the distribution of a linear combination of normal random variables
+X1 ~ N(-1,3), X2 ~ N(3,3), X3 ~ N(2,1)
+are mutually independent what is distribution Y = X1 - 2X2 - X3
+E[Y] = 1*(-1) + (-2)*3 + (-1)*2 = -9
+Var[Y] = 1^2*3 + (-2)^2*2 + (-1)^2*1 = 12
+Y ~ X1 - 2X2 - X3 ~ N(-9,12)
+
+example:
+X1 ~ N(2,5), X2 ~ N(-2,2), X3 ~ N(3,1)
+Y = X1 - X2 - X3
+E[Y] = 1*2 + (-1)*(-2) + (-1)*3 = 1
+Var[Y] = 1^2*5 + (-1)^2*2 + (-1)^2*1 = 8
+Y ~ N(1,8)
+
+example:
+X1 ~ N(3,4), X2 ~ N(-1,1), X3 ~ N(0,3)
+Y = 2X1 - 3X2 + 4X3
+E[Y] = 2*3 + (-3)*(-1) + 4*0 = 9
+Var[Y] = 2^2*4 + (-3)^2*1 + 4^2*3 = 73
+Y ~ N(9,73)
+
+Calculating probabilities involving linear combinations of normally distributed random variables
+X1 ~ N(4,5), X2 ~ N(-2,2), X3 ~ N(3,1)
+Y = 3X1 - 3X2 - X3 calculate P(|Y| < 3)
+E[Y] = 3*4 + (-3)*(-2) + (-1)*3 = 15
+Var[Y] = 3^2*5 + (-3)^2*2 + (-1)^2*1 = 64
+Y ~ N(15,64)
+P(|Y| < 3) = P(-3 < Y < 3) convert Y to a standard normal random variable by z-scoring
+= P((-3 - 15)/sqrt(64) < Z < (3 - 15)/sqrt(64))
+~= P(-2.25 < Z < -1.5)
+P(|Y| < 3) = Φ(-1.5) - Φ(-2.25)
+~= 0.0668 - 0.0122
+= 0.0546
+
+example:
+X1 ~ N(2,1^2), X2 ~ N(20,5^2), X3 ~ N(6,5)
+Y = 10X1 - 4X2 + 5X3, calculate P(3 < Y < 40)
+E[Y] = 10*2 + (-4)*20 + 5*6 = -30
+Var[Y] 10^2*1^2 + (-4)^2*5^2 + 5^2*5
+= 100 + 400 + 125 = sqrt(625) = 25
+Y ~ N(-30,25)
+P((3 - (-30))/25 < Z < (40 - (-30))/25)
+P(1.32 < Z < 2.8)
+P(3 < Y < 40) = Φ(2.8) - Φ(1.32)
+~= 0.9974 - 0.9066
+~= 0.0908
+
+example:
+X1 ~ N(1,2), X2 ~ N(3,10), X3 ~ N(2,2)
+Y = 6X1 + X2 - 3X3 calculate P(Y > 20)
+E[Y] = 6*1 + 1*3 + (-3)*2 = 3
+Var[Y] = 6^2*2 + 1^2*10 + (-3)^2*2
+= 72 + 10 + 18 = 100
+Y ~ N(3,100)
+P((20 - 3)/10)
+1 - Φ(1.7)
+= 1 - 0.9554
+~= 0.0446
+
+Combinations of normally distributed random variables
+Amazon sells 2 types of galaxy gas, type A and type B, volume per canaster for type A gas is normally distributed with a mean of 1 liter and variance of 0.01liters^2 type B normally distributed with mean of 0.7liters and variance of 0.02liters^2 during inhaling type a quadruples, type B tripes
+single can of type A and 2 cans of type B are randomly selected to inhaled what is the probability the resulting gas is less than 8 liters
+X1 = Type A gas
+X2 and X3 volumes of type B gas
+(a second type B gas because of how the problem is setup)
+X1 ~ N(1,0.01), X2 ~ N(0.7,0.02), X3 ~ N(0.7,0.02)
+Y = 4X1 + 3X2 + 3X3
+E[Y] = 4*1 + 3*0.7 + 3*0.7 = 8.2
+Var[Y] = 4^2*0.01 + 3^2*0.02 + 3^2*0.02 = 0.52
+Y ~ N(8.2, 0.52)
+P(Y < 8) = P(Z < (8 - 8.2)/sqrt(0.52))
+~= P(Z < -0.28)
+~= Φ(-0.28)
+~= 0.3897
+
+example:
+A baseball is made from an outer leather and two large rubber bands the weight of the outer leather is normally distributed with a mean of 80g and variance of 25g^2 while the weight of a rubber band is normally distributed with a mean of 45g and variance of 50g^2
+if one racket is randomly selected what is the probability that it weighs more than 175g
+X1 = outer leather
+X2, X3 = rubber bands
+X1 ~ N(80,25), X2 ~ N(45,50), X3 ~ N(45,50)
+E[Y] = 80 + 45 + 45 = 170
+Var[Y] = 25 + 50 + 50 = 125
+Y ~ N(170,125)
+P(Z > 175) = P(Z > 175-170/sqrt(125))
+~= P(Z > 0.45)
+= 1 - P(Z > 0.45)
+= 1 - Φ(0.45)
+~= 1 - 0.6700
+= 0.3264
+
+example:
+An SAT is calculated by adding the results of science, math, and programming, contributing 50%, 30%, and 20% to the final grade
+The science test mean of 64 SD 8, math mean of 50 SD 10, programming mean of 60 and SD 10, find the probability that a randomly selected student achieves a grade greater than 70
+X1: science, X2: math, X3: programming
+X1 ~ N(64,8), X2 ~ N(50,10), X3 ~ N(60,10)
+0.5X1 + 0.3X2 + 0.2X3
+E[Y] = 0.5*64 + 0.3*50 + 0.2*60 = 59
+Var[Y] = 0.5^2*8^2 + 0.3^2*10^2 + 0.2^2*10^2
+= 0.25*64 + 0.09*10 + 0.04*100 = 29
+Y ~ N(59,29)
+P(Z > 70) = P(Z > (70 - 59)/sqrt(29))
+~= P(Z > 2.04)
+= 1 - P(Z > 2.04)
+= 1 - Φ(2.04)
+~= 1 - 0.9793
+= 0.0207
