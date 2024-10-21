@@ -4343,6 +4343,7 @@ Cov[X,Y] = E[XY] - E[X]*E[Y]
 ]
 
 ===================================================
+
 NOTE: Φ(z) were lookup tables thats how the values were found for them.
 
 Normal approximation of binomial distributions
@@ -4595,3 +4596,153 @@ X ~= N(np,np(1-p))
 the sufficiently large condition on n is taken care of stipulating that np > 5 and n(1 - p) > 5
 when p ~= 0.5 then n ~= 10 is sufficiently large for the normal approximation to be applied
 if p is closer to 0 or one then the distribution of X is not symmetric and we need n to be much larger for the central limit theorem to be valid
+
+===================================================
+
+Cobining two normally distributed random variables
+X1 and X2 be independent normally distributed with
+X1 ~ N(μ1,σ1^2), X2 ~ N(μ2,σ2^2)
+the random variable Y = X1 +/- X2 is normally distributed
+Y = X1 +/- X2 ~ N(μ1 +/- μ2, σ1^2 + σ2^2)
+for example if X1 ~ N(2,3) and X2 ~ N(1,4) are independent
+X1 + X2 ~ N(2 + 1, 3 + 4) ~ N(3,7)
+X1 - X2 ~ N(2 - 1, 3 + 4) ~ N(1,7)
+when computing a sum or difference of normal random variables we have to watch out for
+when we compute the distribution of a difference we substract the means but add the variances
+It is vital to check that X1 and X2 are independent
+
+finding the distribution of a sum or difference of normal random variables if X1 ~ N(2,5) and X2 ~ N(-2,2) are independent then what is the distribution of Y = X1 + X2?
+Y = X1 + X2 ~ N(2+(-2),5+2) ~ N(0,7)
+
+example:
+X1 ~ N(12,9) and X2 ~ N(9,3) are independent then what is the distribution of Y = X1 + X2
+Y = X1 + X2 ~ N(12+9,9+3) ~ N(21,12)
+
+example:
+X1 ~ N(12,5^2) and X2 ~ N(6,3^2) are independent variables what is the distribution of Y = X1 - X2?
+Y = X1 - X2 ~ N(6, 34)
+
+Finding a sum or difference of scaled normal random variables 
+if X1 ~ N(μ1,σ1^2) and X2 ~ N(μ2,σ2^2) are independent random variables and a and b are constants
+aX1 + bX2 ~ N(aμ1 + bμ2, a^2σ1^2 + b^2σ2^2)
+for example if X1 ~ N(2,3) and X2 ~ N(1,4)
+2X1 + 3X2 ~ N(2*2 + 3*1, 2^2 * 3 + 3^2 * 4)
+~ N(4 + 3, 4 * 3 + 9 * 4)
+~ N(7,48)
+2X1 - 3X2 ~ N(2*2 + (-3)*1, 2^2 * 3 + 3^2 * 4)
+~ N(4 - 3, 4*3 + 9*4)
+~ N(1, 48)
+
+finding the distribution of a sum or difference of scaled normal random variables
+X1 ~ N(2,7) and X2 ~ N(5,4) find the distribution of the random variable W = 2X - Y
+~ N(2*2 + (-1)*5, 2^2 * 7 + (-1)^2*4)
+Y ~ N(-1,32)
+
+example:
+X1 ~ N(10,8), X2 ~ N(9,6), what is the distribution of Y = 2X1 + X2
+~ N(2*10 + 9, 2^2*8 + 6)
+~ N(29,38)
+
+example:
+X ~ N(5,10), Y ~ N(6,11) find the distribution of W = 2X - 5Y
+~ N(2*5 + (-5)*6, 2^2*10 + (-5)^2*11)
+~ N(10 + (-30), 40 + 275)
+~ N(-20, 315)
+
+Calculating a probability involving a sum or difference of normally distributed random variables
+X1 ~ N(10,3^2) and X2 ~ N(20,5^2) and Y = 5X1 - 4X2 calculate P(3 < Y < 40)
+Y = 5X1 - 4X2 ~ N(5μ1 - 4μ2, 5^2*σ1^2 + 4^2*σ2^2)
+~ N(5μ1 - 4μ2,25σ1^2 + 16σ2^2)
+~ N(5*10 + (-4)*20,25*3^2 + 16*5^2)
+~ N(-30,625)
+Y is normally distributed with mean μ = -30 and standard deviation σ = sqrt(625) = 25
+We want to find P(3 < Y < 40) we convert Y to a standard normal random variable by z-scoring
+using the z-table
+Φ(1.32) ~= 0.9066
+Φ(2.8) ~= 0.9974
+P(3 < Y < 40) = Φ(2.8) - Φ(1.32)
+~= 0.9974 - 0.9066
+~= 0.09
+
+example:
+X1 ~ N(42,4^2), X2 ~ N(31,3^2), Y = X1 + X2, calculate P(Y >= 80)
+~ N(42 + 31,4^2 + 3^2)
+~ N(73,25)
+μ = 73, σ = sqrt(25) = 5
+80 - 73 / 5
+= P(Z >= 1.4)
+= 1 - P(Z < 1.4)
+= 1 - Φ(1.4)
+= 1 - 0.9192
+~= 0.08
+
+example:
+X1 ~ N(2,7), X2 ~ N(1,4), Y = 2X1 - 3X2, calculate P(-4.6 < Y < 3.48)
+~ N(2*2 + (-3)*1, 2^2*7 + (-3)^2*4)
+~ N(1,64)
+P(-4.6 < Y < 3.48) = P((-4.6 - 1)/8 < Z < (-3.48 - 1)/8) 
+= P(-0.70 < Z < 0.31)
+Φ(0.31) - Φ(-0.70)
+0.6217 - 0.2420
+~= 0.3797
+
+Calculating a probability of a sum or difference in context
+english test results of a group of students are normally distributed with a mean of 67 and a SD of 12. The reults of the same group on a programming test are normally distributed with a mean of 73 and a SD of 9 if one student is randomly selected what is the probability their combined score from both tests is more than 150? both scores are independent
+X = english test, Y programming test results
+P(X + Y > 150)
+X ~ N(67,12^2), Y ~ N(73,9^2)
+X+Y ~ N(67 + 73,12^2 + 9^2)
+~ N(140,225)
+μ = 140, SD = sqrt(225) = 15
+P(X + Y > 150) = P(Z > (150 - 140)/15)
+~= P(Z > 0.67)
+= 1 - P(Z <= 0.67)
+= 1 - Φ(0.67)
+~= 1 - 0.7486
+= 0.2514
+
+example:
+A group of students taking a calculus test are normally distributed with a mean of 75 and a variance of 125, the results of the same group on a trig test are normally distributed with a mean of 62 and a variance of 110, if one student is randomly selected, what is the probability that they scored higher on the calculus test?
+X = calculus test, Y = trig test
+P(X > Y) = P(X - Y > 0)
+X ~ N(75,125), Y ~ N(62,110)
+~ N(75-62,110+125)
+~ N(13,235)
+σ = sqrt(235)
+P(Z > (0 - 13)/sqrt(235))
+~= P(Z > -0.85)
+= 1 - Φ(-0.85)
+~= 1 - 0.1977
+= 0.8023
+the probability the student scored higher calculus test is 0.8023
+
+example:
+Amazon sells galaxy gas in small and large cans. The volume of gass in a small can is normally distributed with a mean of 0.3ltrs and a SD of 0.003ltrs. The volume of gas in a large can is normally distributed with a mean of 0.6ltrs and a SD of 0.008ltrs
+The gas from a small can expands 40 times its gas after inhaling, the gas from large expands 60 times its gas, if one small can and one large can is randomly selected what is the probability the total gas from both cans after inhaling is less than 49ltrs?
+X = small can, Y = large can
+P(X + Y < 49)
+X: μ = 0.3, SD = 0.003
+Y: μ = 0.6, SD = 0.008
+40X + 60Y
+X ~ N(0.3,0.003), Y ~ N(0.6,0.008) the distribution of W = 40X + 60Y
+~ N(40*0.3 + 60*0.6, 40^2*0.003^2 + 60^2*0.008^2)
+~ N(12 + 36, 0.0144 + 0.2304)
+~ N(48, 0.2448)
+P(Z < 49 - 48/sqrt(0.2448))
+P(40X + 60Y < 49) = Φ(2.02)
+~= 0.9783
+
+Let M_X1(t) and M_X2(t) be the moment generating function of X1 and X2
+M_X1(t) = exp(μ1t + 1/2σ1^2t^2)
+M_X2(t) = exp(μ2t + 1/2σ2^2t^2)
+where exp(x) = e^x is the exponential function
+by the mutliplicative property of moment-generating functions and by properties of the exponential function
+M_Y(t) = MX1 + X2(t)
+= MX1(t) * MX2(t)
+= exp(μ1t + 1/2σ1^2t^2) * exp(μ2t + 1/2σ2^2t^2)
+= exp(μ1t + 1/2σ1^2t^2 + μ2t + 1/2σ2^2t^2)
+= exp((μ1 + μ2)t + 1/2(σ1^2 + σ2^2)t^2)
+this is the moment-generating function of a normal random variable with distribution
+N(μ1+μ2,σ1^2+σ2^2)
+since any given distribution is characterized by its moment-generating function (no other distribution can have the same moment-generating function) we conclude that
+Y ~ N(μ1 + μ2,σ1^2 + σ2^2)
