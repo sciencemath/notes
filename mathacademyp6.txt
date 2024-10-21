@@ -4341,3 +4341,257 @@ Cov[X,Y] = E[XY] - E[X]*E[Y]
 	11 -1
 	-1 11
 ]
+
+===================================================
+NOTE: Φ(z) were lookup tables thats how the values were found for them.
+
+Normal approximation of binomial distributions
+suppose the random variable X ~ B(n,p) follows a binomial distribution
+There are certain situations where working with binomial random variables becomes difficult. For example, when the parameter n is large, computing exact probabilities can become porblematic due to the large numbers involved
+under certain conditions we can approximate the discrete random variable X using a continuous normal random variable Y
+Y ~ N(μ, σ^2)
+where μ and σ^2 are calculated using the formulas for the mean and variance of the binomial random variable X
+μ = np, σ^2 = np(1 - p)
+to determine whether a given binomial distribution can be approximated using a normal distribution, we use the following rule of thumb:
+np > 5
+n(1 - p) > 5
+lets consider a few examples of binomial distributions and their corresponding normal approximations
+The case where n = 5, p = 0.2, its straightforward to show that
+μ = 1
+σ^2 = 0.8
+np = 1 < 5
+n(1 - p) = 4 < 5
+since np < 5 the normal distribution N(1,0.8) is not a good approximation B(5,0.3)
+The case where n = 5 and p = 0.5 its straightforward to show
+μ = 2.5
+σ^2 = 1.25
+np = n(1 - p) = 2.5 < 5
+since np = n(1 - p) < 5 the normal distribution N(2.5,1.25) is not a good approximation to B(5,0.5)
+finally the case where n = 20 and p = 0.5 its straightforward to show
+μ = 10
+σ^2 = 5
+np = n(1 - p) = 10 > 5
+since np > 5 and n(1 - p) > 5 the normal distribution N(10,5) is a good approximation to B(20, 0.5)
+We can approximate binomial random variables as normal when np > 5 and n(1-p) > 5 is a consequence of the central limit theorem (CLT)
+
+Identifying situations where a normal approximation is appropriate
+which statements could be approximated using the normal approximation of the binomial distribution
+1. The probability that a basketball player scores at least 2 baskets in a series of 3 free throws if the probability of scoring a basket on each free throw is 0.55
+2. The probability of getting 35 even numbers on 60 rolls of a 6-sided die.
+3. The probability that a fair spinner with three regions, red, green, and blue, lands on green in 5 out of 12 spins
+Given a binomial random variable X ~ B(n,p) if
+np > 5
+n(1-p) > 5
+we can approximate X as a normal random variable Y with mean μ = np and variance σ^2 = np(1-p)
+Y ~ N(np,np(1-p))
+in situation 1, n = 3 and p = 0.55 so
+np = 3 * 0.55
+= 1.65
+!= > 5
+not greater than 5 so we cannot use the normal approximation of the binomial distribution
+in situation 2, n = 60 and p = 1/2
+np = 60*0.5
+= 30
+> 5
+n(1-p) = 60 * (1-0.5)
+= 30
+> 5
+we can use the normal approximation of the binomial distribution
+in situation 3 n = 12 and p = 1/3
+np = 12*1/3
+= 4
+!= > 5
+we cannot use normal approximation of the binomial distribution
+the correct answer is 2 only
+
+example:
+X ~ B(n,p)
+1. The probability that a fair coin lands on heads 40 times out of 100 coin flips:
+n = 100
+np = 0.5
+= 100*0.5
+= 50
+> 5
+n(1-p) = 100 * (1-0.5)
+= 50
+> 5
+this can be approximated using the normal approximation of the binomial distribution
+2. The probability of getting 10 ones on 20 rolls of 6-sided die
+n = 20
+np = (1/6)
+20 * (1/6)
+= 10/3
+!= > 5
+3. The probability of a student getting 4 correct answers on a true/false quiz with 5 questions if the student answers all questions at random
+n = 5
+np = 1/2
+= 5/2
+!= > 5
+1 is the only solution
+
+example:
+X ~ B(n,p)
+1. probability getting 12 defective bulbs in a box containing 20 bulbs if the probability that an individual bulb is defective 0.2
+20 * 0.2
+!= > 5
+2. probability that a soccer player scores 20 of 30 penalties if the probability of scoring each penalty is 0.55
+30*0.55
+16.5
+n(1-p) = 30 * (1-0.55)
+= 13.5 > 5
+3. probability of getting 9 fives on 28 rolls of a 6-sided die
+28 * 1/6
+= 14/3 !> = 5
+2 only works here
+
+using the normal approximation to the binomial distribution
+X ~ B(50,0.6) lets estimate the value of P(X = 33) using normal approximation
+np = 50*0.6
+= 30 > 5
+n(1 - p) = 50*(1 - 0.6)
+= 20 > 5
+we can approximate our binomial random variable X with a normal random variable Y with mean 
+μ = 50 * 0.6 = 30
+σ^2 = 50 * 0.6 * (1 - 0.6) = 12
+we can approximate X by
+Y ~ N(30,12)
+since X is discrete and Y is continuous we need to apply a continuity correction. The required continuity in this case is
+P(X = 33) ~= P(32.5 <= Y <= 33.5)
+to compute this probability we tansform to a standard normal random variable by z-scoring
+P(32.5 <= Y <= 33.5) = P((32.5 - 30)/sqrt(12) <= Z <= (33.5 - 30)/sqrt(12))
+~= P(0.72 <= Z <= 1.01)
+= P(Z <= 1.01) - P(Z < 0.72)
+= P(Z <= 1.01) - P(Z <= 0.72)
+= Φ(1.01) - Φ(0.72)
+using a table of values for the CDF of the standard normal distribution
+Φ(1.01) = 0.8438, Φ(0.72) = 0.7642
+P(32.5 <= Y <= 33.5) = Φ(1.01) - Φ(0.72)
+= 0.8438 - 0.7642
+= 0.0796
+P(X = 33) ~= 0.0796
+
+Rounding errors
+our previous approximation:
+P(X = 33) ~= P(32.5 <= Y <= 33.5) ~= 0.0796
+if we use a software package to evaluate this approximation we might get
+P(X = 33) ~= P(32.5 <= Y <= 33.5) ~= 0.0791
+a difference of around 0.0005
+there is a reason for this discrepancy when we calculated that P(X = 33) ~= P(32.5 <= Y <= 33.5) ~= 0.0796 we rounded our z-value two decimal places and then used a lookup table to find Φ(z) for those rounded values as a reuslt we introduced some small rounding errors
+typically the rounding errors are small 
+
+using a normal approximation to approximate a binomial probability
+In a town 44% of the people have blood type B+ using the normal approximation to the binomial distribution approximate the probability that if 150 people are picked at random then 70 of them will have blood type B+, round 3 decimal
+n = 150, p = 0.44
+np = 150*0.44
+= 66 > 5
+n(1-p) = 150*(1 - 0.44)
+= 84 > 5
+approximate our binomial random variable X with normal random variable Y with mean
+μ = np = (150)(0.44) = 66
+variance
+σ^2 = np(1-p) = (150)(0.44)(1-0.44) = 36.96
+approximate X by Y ~ N(66,36.96)
+now we can approximate the desired probability P(X = 70) using a continuity correction
+P(X = 70) ~= P(69.5 <= Y <= 70.5)
+to compute this probability we transform to a standard normal random variable by z-scoring
+P(69.5 <= Y <= 70.5)
+= P((69.5 - 66)/sqrt(36.96) <= Z <= (70.5 - 66)/sqrt(36.96))
+~= P(0.58 <= Z <= 0.74)
+= P(Z <= 0.74) - P(Z < 0.58)
+= P(Z <= 0.74) - P(Z <= 0.58)
+= Φ(0.74) - Φ(0.58)
+= 0.7704 - 0.7190
+= 0.0514
+P(X = 70) ~= 0.051
+using a software package for the approximation gives a probability of 0.0528
+
+example:
+given that the random variable X ~ B(100,0.4) use the normal approximation to the binomial distribution to approximate P(X = 50), 3 decimals
+μ = np = (100)(0.4) = 40
+σ^2 = np(1-p) = (100)(0.4)(1-0.4) = 24
+P(49.5 <= Y <= 50.5)
+= P((49.5 - 40)/sqrt(24) <= Z <= (50.5 - 40)/sqrt(24))
+~= P(1.94 <= Z <= 2.14)
+= Φ(2.14) - Φ(1.94)
+= 0.9838 - 0.9738 
+P(X = 50) ~= 0.010
+
+example the normal approximation to the binomial distribution, approximate the probability that a student gets 14 correct answers on a true/false quiz with 25 questions if the student answers all questions at random 
+μ = np = (25)(0.5) = 12.5
+σ^2 = np(1-p) = (25)(0.5)(1-0.5) = 6.25
+P(X = 14)
+P(13.5 <= Y <= 15.5)
+= P((13.5 - 12.5)/sqrt(6.25) <= Z <= (14.5 - 12.5)/sqrt(6.25))
+~= P(0.4 <= Z <= 0.8)
+= Φ(0.8) - Φ(0.4)
+= 0.7881 - 0.6554
+P(X = 14) ~= 0.133
+
+Using a normal approximation to approximate a binomial probability over an interval
+an archer practices firing an arrow at a target 50 times. The archer has a 47% chance of hitting the bull's eye on each shot. Using the normal approximation to the binomial distribution, estimate the probability that the archer hits the bull's eye more than 29 times but less than 35 times
+X ~ B(n,p)
+n = 50, p = 0.47
+np = 50*0.47
+= 23.5 > 5
+n(1 - p) = 50 * (1 - 0.47)
+= 26.5 > 5
+μ = np = (50)(0.47) = 23.5
+variance
+σ^2 = np(1 - p) = (50)(0.47)(1 - 0.47) = 12.455
+approximate X by Y ~ N(23.5,12.455)
+we can estimate the desired probability P(29 < X < 35) using a continuity correction
+P(29 < X < 35) = P(30 <= X <= 34)
+~= P(29.5 <= Y <= 34.5)
+tansform to a standard normal variable by z-scoring
+= P((29.5 - 23.5)/sqrt(12.455) <= Z <= (34.5 - 23.5)/sqrt(12.455))
+~= P(1.70 <= Z <= 3.12)
+= Φ(3.12) - Φ(1.70)
+= 0.9991 - 0.9554
+= 0.0437
+P(29 < X < 35) ~= 0.044
+software package: 0.0436
+
+example:
+given that the random variable X ~ B(120,0.41) use the normal approximation to the binomial distribution to approximate P(X < 48)
+μ = np = (120)(0.41) = 49.2
+σ^2 = np(1 - p) = (120)(0.41)(1 - 0.41) = 29.028
+P(X < 48) = P(X <= 47) ~= P(Y <= 47.5)
+P(Z <= (47.5 - 49.2)/sqrt(29.028))
+~= P(Z <= -0.32)
+= Φ(-0.32)
+= 0.3745
+P(X < 48) ~= 0.375
+software package: 0.3762
+
+example:
+43% of users of twitter purchase a verify subscription. Using the normal approximation to the binomial distribution estimate the probability that in a random sample of 200 users, more then 80 but less than 105 of them purchase a digital verify.
+μ = np = (200)(0.43) = 86
+σ^2 = np(1 - p) = (200)(0.43)(1 - 0.43) = 49.02
+P(80 < X < 105) = P(81 <= X <= 104) = P(80.5 <= Y <= 104.5)
+= P((80.5 - 86)/sqrt(49.02) <= Z <= (104.5 - 86)/sqrt(49.02))
+~= P(-0.79 Z <= 2.64)
+= Φ(2.64) - Φ(-0.79)
+= 0.9959 - 0.2177
+= 0.7811
+P(80 < X < 105) ~= 0.781
+software package: 0.7798
+
+The normal approximation as a consequence of the central limit theorem
+if X1,X2,...,Xn are independent and identically distributed (I.I.D) random variables then 
+X = Σ^n_i=1(Xi) ~= N(nμ,nσ^2)
+where n is sufficiently large
+E[Xi] = μ, Var[Xi] = σ^2
+if X ~ B(n,p) then X can be thought of as a sum of n I.I.D Bernoulli random variables
+Xi ~ Bernoulli(p)
+where the PMF of each Xi is given by
+f(x) = {
+	p,     x = 1
+	1 - p, x = 0
+	0,     otherwise
+}
+E[Xi] = μ = p, Var[Xi] = σ^2 = p(1 - p)
+by substituting our values of μ and σ^2 into our normal approximation for X
+X ~= N(np,np(1-p))
+the sufficiently large condition on n is taken care of stipulating that np > 5 and n(1 - p) > 5
+when p ~= 0.5 then n ~= 10 is sufficiently large for the normal approximation to be applied
+if p is closer to 0 or one then the distribution of X is not symmetric and we need n to be much larger for the central limit theorem to be valid
