@@ -5,6 +5,9 @@ Maximum likelihood
 Hypothesis testing
 Confidence Intervals
 
+Note:
+anything with Φ(z) denotes a z-table lookup
+
 --------------------------------------------
 
 In statistics we often want ot use sample data to deduce or infer the values of various population parameters, the two most common population parameters
@@ -450,3 +453,114 @@ E[S^2] = E[n-1/n[X̄^2 - (X̄)^2]]
 = n/n-1 * E[X̄^2 - (X̄)^2]]
 = n/n-1 * n-1/n*σ^2
 = σ^2
+
+===================================================
+
+Sample means from normal populations
+X1,X2,...Xn be a random sample of size n drawn from a normal population N(μ,σ^2)
+X1,X2,...Xn ~ N(μ,σ^2)
+sampling distribution of the sample mean
+X̄ = 1/n Σ^n_i=1(Xi)
+The sum of n independent and identically distributed normal random variables is normally distributed
+Y = Σ^n_i=1(Xi)
+a normally distributed random variable scaled by a constant factor is normally distributed
+X̄ = 1/n * Y
+expected value of the sample mean equals population mean
+E[X̄] = μ
+variance of sample mean
+Var[X̄] = σ^2/n
+altogether
+X̄ ~ N(μ, σ^2/n)
+sample mean X̄ is normally distributed with mean μ and variance σ^2/n
+
+Stating the distribution of the sample mean
+X1,X2,...,X28 ~ N(8,14^2) is a random sample size of n = 28 from a normal population what is the distribution of the sample mean X̄?
+X̄ ~ N(μ, σ^2), 1 <= i <= n
+sample mean X̄ has the distribution
+X̄ ~ N(μ, σ^2/n)
+n = 28, μ = 8, σ = 14
+distribution of the sample mean X̄
+X̄ ~ N(8, 14^2/28)
+~ N(8,7)
+
+example:
+X1,X2,...,X50 ~ N(5,10^2) random sample size n = 50 what is the distribution of the sample mean X̄?
+~ N(5,10^2/50) ~ N(5,2)
+
+example:
+X1,X2,...,X100 ~ N(16,20^2) sample size n = 100 what is the distribution of the sample mean X̄?
+~ N(16,20^2/100) ~ N(16,4)
+
+Calculating a probability involving sample mean
+X1,X2,...,X100 ~ N(-4,20^2) is a random sample of size 100 from a normal population calculate P(-4.3 < X̄ < -3.9)
+sample distribution of the sample mean X̄ is
+X̄ ~ N(-4, 20^2/100)
+~ N(-4,4)
+tansform X into a standard normal random variable by z-scoring
+P(-4.3 < X̄ < -3.9)
+= P((-4.3 - (-4))/sqrt(4) < Z < (-3.9 - (-4))/sqrt(4))
+= P(-0.15 < Z < 0.05)
+= Φ(0.05) - Φ(-0.15)
+Φ(0.05) = 0.5199
+Φ(-0.15) = 0.4404
+0.5199 - 0.4404
+= 0.0795
+
+example:
+X1,X2,...,X50 ~ N(5,10^2) 
+sample size of 50 calculate P(4.8 < X̄ < 5.2)
+X̄ ~ N(5, 10^2/50) ~ N(5,2)
+= P((4.8 - 5)/sqrt(2) < Z < (5.2 - 5)/sqrt(2))
+= P(-0.14 < X̄ < 0.14)
+Φ(0.14) - Φ(-0.14)
+Φ(0.14) = 0.5557
+symmetry of normal distribution
+Φ(-0.14) = 1 - Φ(0.14)
+= 1 - 0.5557
+= 0.4443
+= 0.5557 - 0.4443
+= 0.1114
+
+example:
+X1,X2,...,X36 ~ N(0,18^2) is a random sample size of 36
+calculate P(|X̄| > 0.8)
+~ N(0,18^2/36) ~ N(0,9)
+= 1 - P(|X̄| < 0.8)
+= 1 - P(-0.8 < X̄ < 0.8)
+= 1 - P(-(0.8 - 0)/sqrt(9) < Z < (0.8 - 0)/sqrt(9))
+= 1 - P(-0.27 < Z < 0.27)
+= 1 - (Φ(0.27) - Φ(-0.27))
+= 1 + Φ(0.27) - Φ(-0.27)
+Φ(0.27) = 0.6064
+Φ(-0.27) = 1 - 0.6064
+= 0.3936
+= 1 + 0.3936 - 0.6064
+= 0.7872
+
+Calculating a probability involving a sample mean in context
+blood pressure of adult women in a population that is normally distributed with mean 75mm and SD 10mm. 10 women are selected at random what is the probability that the blod pressure mean for this sample wil be less than 70mm?
+X̄ ~ N(75, 10^2/10) ~ N(75,10)
+P(X̄ < 70)
+= P(Z < (70 - 75)/sqrt(10))
+~= P(Z < -1.58)
+= Φ(-1.58)
+= 0.0571
+
+example:
+IQ scores are normally distributed with a mean of 100 and SD 15, 10 people are selected randomly. What is the probability that the mean score for this sample will be greater than 105?
+X̄ ~ N(100, 15^2/10) ~ N(100,22.5)
+P(X̄ > 105)
+= P(Z > (105 - 100)/sqrt(22.5))
+= 1 - Φ(1.05)
+= 1 - 0.8531
+= 0.1469
+
+example:
+weights of a particular breed of duck are normally distributed with a mean of 7kg and SD 1kg, 4 ducks are randomly selected. What is the probability that the mean for this sample will be more than 6.8kg but less than 7kg?
+P(6.8 < X̄ < 7)
+X̄ ~ N(7, 1^2/4) ~ N(7,0.25)
+= P((6.8 - 7)/sqrt(0.25) < Z < (7 - 7)/sqrt(0.25))
+= P(-0.4 < Z < 0)
+= Φ(0.0) - Φ(-0.4)
+= 0.5000 - 0.3446
+= 0.1554
