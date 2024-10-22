@@ -143,3 +143,142 @@ example:
 Σ^n_i=1(Xi)
 1.34 + 1.24 + 1.42 + 1.28 + 1.39 + 1.44
 = 8.11
+
+===================================================
+
+Lets now find the variance of the sampling distribution of X̄ using the properties of variance for sums of independent variables
+Var[X̄] = Var[1/n*Σ^n_i=1(Xi)]
+= (1/n)^2 * Var[Σ^n_i=1(Xi)]
+= 1/(n^2) * Var[X1 + X2 + ... + Xn]
+= 1/(n^2) * (Var[X1] + Var[X2] + ... + Var[Xn])
+= 1/(n^2) * (σ^2 + σ^2 + ... + σ^2)
+= 1/(n^2) * nσ^2
+= σ^2/n
+Var[X̄] = σ^2/n
+we dont yet know the sampling distribution of X̄. What we do know is that whatever the sampling distribution of X̄ is it has mean μ and variance σ^2/n
+
+finding the variance of a sample mean
+A sample X1,X2 of two pills is drawn from a population the population has pills of two different active ingredient concentrations 30mg/ml and 15mg/ml distributed in the ratio 1:2 calculate Var[X̄]
+E[X̄] = μ, Var[X̄] = σ^2/n
+to compute the population mean and variance, we can consider a population consisting of 1 + 2 = 3 pill concentrations
+30mg/ml + 15mg/ml + 15mg/ml
+μ = 1/3(30 + 2*15)
+= 60/3
+= 20mg/ml
+variance
+σ^2 = 1/3*Σ_i(xi^2 - μ^2)
+= 1/3(30^2 + 2*15^2) - 20^2
+= 1/3(900 + 450) - 400
+= 1/3(1350) - 400
+= 450 - 400
+= 50(mg/ml)^2
+sample size n = 2
+Var[X̄] = σ^2/n = 50/2 = 25(mg/ml)^2
+
+example:
+if X1,X2,...,X100 is a sample size n = 100 mean μ = 30 and variance σ^2 = 9 calculate the value of Var[X̄]
+9/100 = 0.09
+
+example:
+a sample X1,X2 of two nails is drawn from a population, the population has nails of two different lengths 6cm and 12cm distributed in the ratio 3:1 calculate Var[X̄]
+E[X̄] = 1/4(6^2*3 + 12^2) - 7.5^2
+= 1/4(108 + 144) - 7.5^2
+= 63 - 56.25
+= 6.75/2
+= 3.375cm^2
+
+The standard error
+the standard deviation of the sample mean is called the standard error of the sample mean and is denoted SE[X̄]
+SE[X̄] = sqrt(Var[X̄])
+if we have a random sample of size n drawn from a population with mean μ and variance σ^2 then the standard error is
+SE[X̄] = sqrt(σ^2/n) = σ/sqrt(n)
+the population standard deviation σ is often unknown whenever we draw a random sample from a population, we can usually estimate its value by replacing σ with a suitable estimate say s
+SE[X̄] = s/sqrt(n)
+
+finding the standard error
+if X1,X2,...,X200 is a sample size n = 200 drawn from a population with mean μ = 23 and variance σ^2 = 4 calculate the standard error of X̄
+Var[X̄] = 4/200
+= 0.02
+SE[X̄] = sqrt(0.02) ~= 0.14
+
+example:
+X1,X2,...,X100 sample of size n = 100 with mean μ = 30 and variance σ^2 = 9 calculate standard error of X̄
+9/100 = sqrt(0.09)
+SE[X̄] = 0.3
+
+example:
+X1,X2,X3 of three nails is drawn from a population, the population has nails of two different lengths, 5cm and 10cm distributed in the ratio 4:1 calculate the standard error of X̄
+E[X̄] = 1/5(4*5 + 10)
+= 1/5(30)
+= 6
+σ^2 = 1/5(4*5^2 + 10^2) - 6^2
+= 40 - 36
+= 4cm^2
+Var[X̄] = σ^2/n = 4/3cm^2
+SE[X̄] = sqrt(4/3) ~= 1.15cm
+
+The sample mean and large samples
+As the sample size n becomes larger and larger the variance and standard error of X̄ become smaller and smaller it is easy to see that n -> ∞
+Var[X̄] = σ^2/n -> 0
+SE[X̄] = σ/sqrt(n) -> 0
+when the sample size n is large, there is less variance in the sampling distribution of X̄ the larger the sample the more likely it is that X̄ will give good estimates for μ the individual sample elements do not have this property since Var[Xi] = σ^2
+the sample mean X̄ becomes a better estimator for the corresponding population mean μ as the sample size n increases
+
+calculating an appropiate sample size
+X1,X2,...,Xn of n bananas is drawn from a population the population has bananas of two different weights 1.5lbs and 2lb distributed 2:3 determine the smallest sample size required to give a SE fo less than 0.02lb
+E[X̄] = μ
+Var[X̄] = σ^2/n
+SE[X̄] = sqrt(Var[X̄]) = σ/sqrt(n)
+population consisting of 2+3 = 5
+1.5lb, 1.5lb, 2lb, 2lb, 2lb
+population mean
+= 1/5(2*1.5 + 3*2)
+= 1/5(3+6)
+= 9/5
+= 1.8lb
+variance
+= 1/5(2*1.5^2 + 3*2^2) - 1.8^2
+= 1/5(16.5) - 3.24
+= 3.3 - 3.24
+= 0.06lb^2
+SD = σ = sqrt(0.06)
+SE[X̄] = sqrt(0.06/n)
+we require that the standard error is less than 0.02lb
+sqrt(0.06/n) < 0.02
+sqrt(0.06)/sqrt(n) < 0.02
+sqrt(n) > sqrt(0.06)/0.02
+sqrt(n) > sqrt(0.06/0.02^2)
+sqrt(n) > sqrt(0.06/0.0004)
+sqrt(n) > sqrt(150)
+n > 150
+smallest sample size is n = 151
+
+example:
+X1,X2,...,Xn is a sample size n drawn from a population with mean μ = 12 and variance σ^2 = 16 determine the smallest sample size required so that the SE of the mean is less than 0.1
+SD = σ = sqrt(16) = 4
+4/sqrt(n) < 0.1
+sqrt(n) > 4/0.1
+sqrt(n) > 40
+n > 40^2
+n > 1600
+smallest sample size is n = 1601
+
+example:
+X1,X2,...,Xn population of bartenders with two different working hours 38 h/week and 40h/week distributed 3:1 determine the smallest sample size required so that the standard error of the mean is less than 0.5 h/week
+population mean μ
+= 1/4(38*3 + 40)
+= 1/4(154)
+= 38.5
+variance
+= 1/4(38^2*3 + 40^2) - 38.5^2
+= 1/4(5932) - 38.5^2
+= 1483 - 1482.25
+= 0.75
+sqrt(0.75/n) < 0.5
+sqrt(0.75)/sqrt(n) < 0.5
+sqrt(n) > sqrt(0.75)/0.5
+sqrt(n) > sqrt(0.75/0.5^2)
+sqrt(n) > sqrt(0.75/0.25)
+sqrt(n) > sqrt(3)
+n > 3
+smallest sample size n = 4
