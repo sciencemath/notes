@@ -106,3 +106,40 @@ A sample X1,X2 of two nails is drawn from a population, the population has nails
 = 1/4(18 + 12)
 = 1/4(30)
 = 7.5
+
+===================================================
+
+The sample mean is an example of a statistic. A statistic is a random variable computed using values from a sample. Statistics are often used to estimate population parameters, although they also have other uses
+The following statistic could be used as an estimator for the population variance σ^2
+1/n*Σ^n_i=1(Xi - X̄)^2
+an estimator for the population maximum
+max(X1,X2,...,Xn)
+an estimator for the population range
+max(X1,X2,...,Xn) - min(X1,X2,...,Xn)
+an estimator for the population median
+median(X1,X2,...,Xn)
+statistics cannot include any unknown population parameters
+if the population mean μ in unknown then this is not a statistic
+1/n*Σ^n_i=1(Xi - μ)^2
+however if the population parameters μ and σ are both known then this is a statistic
+Σ^n_i=1((Xi - μ)/σ)^2
+statistics are described using observations from a random sample, they are random variables and have a probability distribution. The probability distribution of a statistic is called the sampling distribution of the statistic.
+
+Calculating statistics
+The weights in stones of five randomly selected 24 year olds
+12.5, 11.7, 13.2, 12.8, 12.1
+calculate the value of the statistic Σ^n_i=1(Xi^2) for this particular sample
+Σ^n_i=1(xi^2) = (12.5)^2 + (11.7)^2 + (13.2)^2 + (12.8)^2 + (12.1)^2
+= 156.25 + 136.89 + 174.24 + 163.84 + 146.41
+= 777.63
+
+example:
+25.2, 24.8, 28.9, 27.5, 28.9
+calculate the value of the statistic max(X1,X2,...,Xn) - min(X1,X2,...,Xn)
+28.9 - 24.8 = 4.1
+
+example:
+1.34, 1.24, 1.42, 1.28, 1.39, 1.44
+Σ^n_i=1(Xi)
+1.34 + 1.24 + 1.42 + 1.28 + 1.39 + 1.44
+= 8.11
