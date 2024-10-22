@@ -282,3 +282,171 @@ sqrt(n) > sqrt(0.75/0.25)
 sqrt(n) > sqrt(3)
 n > 3
 smallest sample size n = 4
+
+===================================================
+
+From the definition of the population variance you might expect
+1/n*Σ^n_i=1(Xi - X̄)^2
+is an unbiased estimator for σ^2, it can be shown that it is a biased estimator of σ^2
+E[1/n*Σ^n_i=1(Xi - X̄)^2] != σ^2
+To compute an unbiased estimate of σ^2 we use the sample variance
+S^2 = 1/n-1*Σ^n_i=1(Xi - X̄)^2
+Instead of dividing by n (as with our original biased estimator) we instead divide by n - 1 this is referred to as Bessel's correction it corrects the bias of the original estimator
+we should think of S^2 as a random variable whose value varies according to the particular sample under consideration
+since S^2 is a random variable it has a sampling distribution (probility distribution)
+An alternative formula for a sample variance thats often more convenient in practice:
+S^2 = n/n-1[X̄^2 - (X̄)^2]
+
+Computing an estimate of the population variance
+A random sample of size n = 81 is conducted from a population
+Σ^81_i=1(xi - x̄)^2 = 180
+each xi is a sample observation, compute an unbiased estimate for the population standard deviation
+X1,X2,...Xn is a sequence of random variables representing a random sample of size n drawn from a population with a population mean μ and population variance σ^2 the sample variance S^2
+S^2 = 1/n-1 Σ^n_i=1(Xi - X̄)^2 = n/n-1[X̄^2 - (X̄)^2]
+X̄ is the sample mean
+the sample variance S^2 is an unbiased esitmator of the population variance σ^2
+σ^2 = s^2 denotes an unbiased estimate of σ^2 thats computed from the sample x1,x2,...,xn
+Σ^81_i=1(xi - x̄)^2 = 180 and n = 81
+= 1/n-1 Σ^n_i=1(xi - x̄)^2
+= (1/81 - 1) * 180
+= (1/80) * 180
+= 2.25
+an unbiased estimate of the population variance is σ^2 = 2.25 we take the square root to compute an unbiased estimate of the standard deviation
+σ = sqrt(2.25) = 1.5
+
+example:
+sample size n = 50
+Σ^50_i=1(xi - x̄)^2 = 1176
+compute an unbiased estimate of the variance
+= (1/49) * 1176
+unbiased estimate = 24
+
+compute an unbiased estimate of the standard deviation
+unbiased 
+sample size n = 100
+Σ^100_i=1(xi - x̄)^2 = 1584
+= 1/99 * 1584
+σ^2 = 16
+σ = sqrt(16) = 4
+
+Computing an estimate of the population variance using the alternative formula
+x1,x2,...,x9 is a random sample size n = 9 from a population x̄^2 - (x̄)^2 = 4
+compute an unbiased estimate of the population variance
+= n/n - 1[x̄^2 - (x̄)^2]
+= 9/9-1 * 4
+= 36/8
+= 4.5
+
+example:
+x1,x2,...,x11 sample size 11 x̄^2 - (x̄)^2 = 7
+compute an unbiased estimate of the population variance
+= 11/10 * 7
+= 77/10
+= 7.7
+
+example:
+x1,x2,...,x6 sample size n = 6
+x̄^2 - (x̄)^2 = 3
+compute an unbiased esitmate of the population variance
+= 6/5 * 3
+= 18/5
+= 3.6
+
+Estimating the population variance from sample data
+compute an unbiased estimate of the population variance
+5, 3, 6, 4, 7
+x̄ = 1/5(5 + 3 + 6 + 4 + 7)
+= 25/5
+= 5
+x̄^2 = 1/5(5^2 + 3^2 + 6^2 + 4^2 + 7^2)
+= 135/5
+= 27
+x̄^2 - (x̄)^2 = 27 - 5^2
+= 2
+σ^2 = s^2
+= 5/5-1 * 2
+= 2.5
+unbiased estimate of population variance 2.5
+
+example:
+compute an unbiased estimate of the population variance
+4, 8, 10, 6, 7
+x̄ = 1/5(4 + 8 + 10 + 6 + 7)
+= 1/5(35)
+= 7
+x̄^2 = 1/5(4^2 + 8^2 + 10^2 + 6^2 + 7^2)
+= 265/5
+= 53
+x̄^2 - (x̄)^2 = 53 - 49
+= 4
+σ^2 = s^2
+= 5/5-1 * 4
+= 20/4
+= 5
+
+example:
+compute an unbiased estimate of the population variance
+-10, 20, -30, 40
+x̄ = 1/4(-10 + 20 - 30 + 40)
+= 1/4(20)
+= 5
+x̄^2 = 1/4(-10^2 + 20^2 - 30^2 + 40^2)
+= 1/4(3000)
+= 750
+x̄^2 - (x̄)^2 = 750 - 5^2
+= 725
+σ^2 = s^2
+4/3 * 725
+= 2900/3
+~= 966
+
+Proof of the alternative formula
+S^2 = n/n-1[X̄^2 - (X̄)^2]
+definition
+S^2 = 1/n-1 * Σ^n_i=1(X̄i - X̄)^2
+expaning paranetheses and distributing
+S^2 = 1/n-1 Σ^n_i=1(X̄i^2 - 2XiX̄ + (X̄)^2)
+= 1/n-1[Σ^n_i=1(X̄i^2) - Σ^n_i=1(2XiX̄) + Σ^n_i=1(X̄)^2)]
+= 1/n-1[Σ^n_i=1(X̄i^2) - 2Σ^n_i=1(XiX̄) + (X̄)^2*Σ^n_i=1(1))]
+considering each sum separately
+Σ^n_i=1(X̄i^2) = n * X̄^2 from the definition of the mean of X^2
+Σ^n_i=1(Xi) = n * X̄ from the definition of the mean of X
+Σ^n_i=1(1) = 1 + 1 + ... + 1 = n (n times)
+S^2 = 1/n-1[Σ^n_i=1(X̄i^2) - 2Σ^n_i=1(XiX̄) + (X̄)^2*Σ^n_i=1(1))]
+= 1/n-1[n * X̄^2 - 2X̄*n*X̄ + (X̄)^2*n]
+= n/n-1[X̄^2 - 2(X̄)^2 + (X̄)^2]
+= n/n-1[X̄^2 - (X̄)^2]
+
+Proof that the sample variance is an unbiased estimator
+S^2 is an unbiased estimator of σ^2
+E[S^2] = σ^2
+we'll prove
+E[X̄^2 - (X̄)^2] = n-1/n * σ^2
+X̄^2 - (X̄)^2 is the variance sample
+X̄^2 - (X̄)^2 = 1/n Σ^n_i=1(X̄i - X̄)^2
+the variance of the sample is not the same as the sample variance S^2
+we start by computing the expected difference between σ^2 and the variance of the sample, simplify
+σ^2 - (X̄^2 - (X̄)^2)
+= 1/n Σ^n_i=1(Xi - μ)^2 - 1/n Σ^n_i=1(Xi - X̄)^2
+= 1/n Σ^n_i=1[(Xi - μ)^2 - (Xi - X̄)^2]
+= 1/n Σ^n_i=1[(Xi^2 - 2μXi + μ^2) - (Xi^2 - 2X̄Xi + (X̄)^2)]
+= 1/n Σ^n_i=1[μ^2 - (X̄)^2 + 2X̄Xi - 2μXi]
+compute the expectation, E[Xi] = X̄ and Var[X̄] = σ^2/n
+E[σ^2 - (X̄^2 - (X̄)^2)]
+= E[1/n Σ^n_i=1(μ^2 - (X̄)^2 + 2X̄Xi - 2μXi)]
+= 1/n Σ^n_i=1(μ^2 - (X̄)^2 + 2X̄E[Xi] - 2μE[Xi])
+= 1/n Σ^n_i=1(μ^2 - (X̄)^2 + 2(X̄)^2 - 2μX̄)
+= 1/n Σ^n_i=1((X̄)^2 - 2X̄μ + μ^2)
+= 1/n Σ^n_i=1(X̄ - μ)^2
+= Var[X̄]
+= σ^2/n
+
+E[X̄^2 - (X̄)^2] = E[σ^2 - (X̄^2 - (X̄)^2)]
+= E[σ^2] - E[σ^2 - X̄^2 - (X̄)^2]
+= σ^2 - σ^2/n
+= n-1/n * σ^2
+
+E[S^2] = E[n-1/n[X̄^2 - (X̄)^2]]
+= n/n-1 * E[X̄^2 - (X̄)^2]]
+= n/n-1 * n-1/n*σ^2
+= σ^2
