@@ -1500,6 +1500,187 @@ example:
 = 3*2/1 * 4*3/2 * 5*4/3 * ... * (m(m+1)/m-1)
 (canceling out common terms)
 = 3 * 4 * 5 * ... * m*(m+1)
-= (1 * 2 * 3 * 4 * 5 * ... * m*(m+1))/2
+= (1 * 2 * 3 * 4 * 5 * ... * m * (m+1))/2
 = (m + 1)!/2
 
+===================================================
+
+Logarithmic differentiation is a technique to compute derivatives that are difficult to find using the usual rules of differentiation such as the product, quotient, and chain rules
+y = x^x 
+we want to compute dy/dx
+both the base and the exponent are functions of x
+this means we cannot apply the power rule since the exponent is not a fixed number
+We also cannot apply the rules for differentiating exponentials since the base is not a fixed number
+so instead we'll use logarithmic differentiation
+step 1: we take the natural logarithm of both sides and apply the power rule for logarithms:
+y = x^x
+ln(y) = ln(x^x)
+ln(y) = xln(x)
+step 2: we differentiate both sides of the above equation with respect to x using implicit differentiation and the product rule:
+d/dx(ln(y)) = d/dx(xln(x))
+1/y * dy/dx = d/dx(x) * ln(x) + x * d/dx(ln(x))
+1/y * dy/dx = 1 * ln(x) + x * (1/x)
+1/y * dy/dx = ln(x) + 1
+step 3: now we solve for dy/dx
+dy/dx = y(ln(x) + 1)
+step 4: we substitute back our original expression for y = x^x
+dy/dx = x^x(ln(x) + 1)
+
+Differentiating X raised to the power of a function
+find the derivative of the function y = x^(x^3)
+first take the natural logarithm of both sides
+ln(y) = ln(x^(x^3))
+ln(y) = x^3ln(x)
+next differentiate both sides with respect to x
+d/dx(ln(y)) = d/dx(x^3ln(x))
+1/y * y' = (x^3)' * ln(x) + (x^3) * ln(x)'
+1/y * y' = 3x^2 * ln(x) + x^3 * 1/x
+y'/y = 3x^2ln(x) + x^2
+now we solve for y'
+y' = y(3x^2ln(x) + x^2)
+substitute y = x^(x^3)
+y' = x(^(x^3)+2)(3ln(x) + 1)
+
+example:
+y = x^(2x) its derivative is given by
+y' = 2x^(2x) * g(x)
+find the function g(x)
+
+ln(y) = ln(x^(2x))
+ln(y) = 2xln(x)
+respect to x
+d/dx(ln(y)) = d/dx(2xln(x))
+1/y * y' = (2x)' * ln(x) + 2x * (ln(x))'
+y'/y = 2 * ln(x) + 2x * 1/x
+solve for y'
+y' = y(2ln(x) + 2)
+substitute
+y' = 2x^(2x)(ln(x) + 1)
+g(x) = ln(x) + 1
+(noticed we factored out a 2)
+
+example:
+consider the function y = x^(cos(x)) its derivative is
+dy/dx = x^cos(x - 1) * g(x)
+find the function g(x)
+y = x^(cos(x))
+ln(y) = ln(x^(cos(x)))
+ln(y) = cos(x)ln(x)
+respect to x
+d/dx(ln(y)) = d/dx(cos(x)ln(x))
+1/y * dy/dx = d/dx(cos(x)) * ln(x) + (cos(x)) * d/dx(ln(x))
+1/y * dy/dx = (-sin(x)) * ln(x) + (cos(x)) * 1/x
+1/y * dy/dx = -ln(x)sin(x) + cos(x)/x
+solve for dy/dx
+dy/dx = y(cos(x)/x - ln(x)sin(x))
+substitute y = x^(cos(x))
+(common denominator)
+= x^(cos(x))(cos(x)/x - xln(x)sin(x)/x)
+= x^(cos(x - 1))(cos(x) - xln(x)sin(x))
+g(x) = cos(x) - xln(x)sin(x)
+
+Differentitating a function raised to the power of X
+find the derivative of the function
+y = (x^2 - 1)^x
+first we take the natrual logarithm of both sides
+ln(y) = ln((x^2 - 1)^x)
+ln(y) = xln(x^2 - 1)
+respect to x
+d/dx(ln(y)) = d/dx(xln(x^2 - 1))
+1/y * dy/dx = d/dx(x) * ln(x^2 - 1) + x * d/dx(ln(x^2 - 1))
+1/y * dy/dx = 1 * ln(x^2 - 1) + x * ((1/x^2 - 1) * 2x)
+1/y * dy/dx = ln(x^2 - 1) + (2x^2/x^2 - 1)
+now solve for dy/dx
+dy/dx = y(ln(x^2 - 1) + (2x^2/x^2 - 1))
+substitute
+= (x^2 - 1)^x(ln(x^2 - 1) + (2x^2/x^2 - 1))
+(common denominator)
+= (x^2 - 1)^x((x^2 - 1)ln(x^2 - 1)/(x^2 - 1) + (2x^2/x^2 - 1))
+= (x^2 - 1)^(x-1)((x^2 - 1)ln(x^2 - 1) + 2x^2)
+
+example:
+consider the function y = (2x)^x its derivative is
+y' = (2x)^x * g(x)
+first we take the natrual logarithm of both sides
+ln(y) = ln((2x)^x)
+ln(y) = xln(2x)
+respect to x
+d/dx(ln(y)) = d/dx(xln(2x))
+1/y * dy/dx = d/dx(x) * ln(2x) + x * d/dx(ln(2x))
+1/y * dy/dx = ln(2x) + x * 2 * 1/2x
+1/y * dy/dx = ln(2x) + 1
+substitute
+y' = y(ln(2x) + 1)
+y' = (2x)^x(ln(2x) + 1)
+g(x) = ln(2x) + 1
+
+example:
+consider the function y = (x + 1)^x its derivative is
+y' = (x + 1)^(x-1) * g(x)
+find the function g(x)
+first we take the natrual logarithm of both sides
+ln(y) = ln((x + 1)^x)
+ln(y) = xln(x + 1)
+respect to x
+d/dx(ln(y)) = d/dx(xln(x + 1))
+1/y * dy/dx = d/dx(x) * ln(x + 1) + x * d/dx(ln(x + 1))
+1/y * dy/dx = ln(x + 1) + (x/x + 1)
+substitute
+y' = y(ln(x + 1) + (x/x + 1))
+y' = (x + 1)^x(ln(x + 1)(x + 1)/x + (x/x + 1))
+y' = (x + 1)^(x-1)(ln(x + 1)(x + 1) + (x))
+y' = (x + 1)^(x-1)((x + 1)ln(x + 1) + (x))
+g(x) = (x + 1)ln(x + 1) + x
+
+Differentiating a function raised to the power of a function
+find the derivative of the function
+y = (sin(x))^(cos(x))
+first we take the natrual logarithm of both sides
+ln(y) = ln(sin(x)^(cos(x)))
+ln(y) = cos(x)ln(sin(x))
+respect to x
+d/dx(ln(y)) = d/dx(cos(x)ln(sin(x)))
+1/y * y' = cos(x)' * (ln(sin(x))) + cos(x) * ln(sin(x))'
+1/y * y' = (-sin(x)) * ln(sin(x)) + cos(x) (1/sin(x) * cos(x))
+y'/y = cos(x)cot(x) - sin(x)ln(sin(x))
+solve for y'
+y' = y(cos(x)cot(x) - sin(x)ln(sin(x)))
+substitute
+y' = (sin(x))^(cos(x))(cos(x)cot(x) - sin(x)ln(sin(x)))
+
+example:
+consider the function y = (cos(x)^sin(x)) its derivative is
+y' = (cos(x))^(sin(x)) * g(x)
+find the function g(x)
+first we take the natrual logarithm of both sides
+ln(y) = ln(cos(x))^(sin(x))
+ln(y) = sin(x)ln(cos(x))
+respect to x
+d/dx(ln(y)) = d/dx(sin(x)ln(cos(x)))
+1/y * y' = (sin(x))' * ln((cos(x))) + sin(x) * (ln(cos(x)))'
+1/y * y' = cos(x) * ln((cos(x))) + sin(x) * (1/cos(x) * (-sin(x)))
+y'/y = cos(x)ln(cos(x)) - sin^2(x)/cos(x)
+solve for y'
+y' = y(cos(x)ln(cos(x)) - sin^2(x)/cos(x))
+substitute
+y' = cos(x)^(sin(x))(cos(x)ln(cos(x)) - sin^2(x)/cos(x))
+= cos(x)^(sin(x))(cos(x)ln(cos(x)) - sin(x)tan(x))
+g(x) = cos(x)ln(cos(x)) - sin(x)tan(x)
+
+example:
+find the slope of the tagent to the curve
+y = (x + 1)^(x^2) at x = 1
+first we take the natrual logarithm of both sides
+ln(y) = ln((x + 1)^(x^2))
+ln(y) = x^2ln((x + 1))
+respect to x
+1/y * y' = (x^2)' * ln(x + 1) + (x^2) * ln(x + 1)'
+1/y * y' = 2x * ln(x + 1) + x^2 * 1/x+1
+y'/y = 2x * ln(x + 1) + x^2/x+1
+substitute:
+y' = y(2xln(x + 1) + x^2/x+1)
+y' = (x + 1)^(x^2)(2x * ln(x + 1) + x^2/x+1)
+at x = 1
+y'|_x=1 = (1 + 1)^(1^2)(2(1) * ln(1 + 1) + 1^2/1+1)
+= 2^(1)(2 * ln(2) + 1/2)
+= 4ln(2) + 1
