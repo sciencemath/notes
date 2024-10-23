@@ -807,3 +807,227 @@ z-score this result we get
 = sqrt(n)(X̄ - μ)/σ
 which means that we can express the central limit theorem in the form
 sqrt(n)(X̄ - μ)/σ ~= N(0,1)
+
+===================================================
+
+Sampling proportions from finite populations
+Suppose that a business is about to elect a new CEO, we're interested in determining the proportion p of a company's employees that will vote for "candidate A"
+if a company has N = 50 employees and 30 of them will vote for candidate A then the proportion p is
+p = 30/50 = 0.6
+60% of the company's employees will vote for candidate A
+N is the population size
+p is the population proportion
+the number of employees that will vote for candidate A is
+Np = 50*0.6 = 30
+Lets start by modeling the response from each member of the population as a random variable Xi defined by
+Xi = {
+	1, ith member of the population will vote for candidate A
+	0, otherwise
+}
+for i = 1,...,50
+Calculating the probability that a randomly selected member of the population will vote for candidate A is
+P(Xi = 1) = # of members vote for candidate A/population size
+= Np/N
+= 30/50
+= 0.6
+its important to note that the Xi's are dependent
+P(X2 = 1|X1 = 1) != P(X2 = 1)
+to see why note P(X2 = 1) = 0.6 as before
+P(X2 = 1|X1 = 1)
+= (# of members vote for candidate A) - 1/population size - 1
+= (Np - 1)/(N - 1)
+= (50*0.6 - 1)/(50 - 1)
+= (30 - 1)/49
+= 29/49
+~= 0.592
+!= P(X2 = 1)
+we know that the first member will vote for canadidate A so to compute the conditional probability that the second member will also vote for candidate A we consider a reduced population with N-1 = 49 members of which only 30 - 1 = 29 will vote for candidate A
+
+finding aa conditional probability given a population proportion
+Apple decided to elect a new board member, there are 50 workers and 60% of this worker population will vote for Tim Cook let the random variable Xi be
+Xi = {
+	1, ith member of the population will vote for Tim Cook
+	0, otherwise
+}
+for i = 1,...,50 find P(X2 = 0|X1 = 0)
+we have a population size N = 50 and p = 0.6 represents the proportion of the population that will vote for Tim Cook
+The number of members that will vote for Tim Cook:
+Np = 50(0.6) = 30
+members that will not vote for Tim Cook:
+N(1 - p) = 50(1 - 0.6) = 20
+two members of the population at random, we need to find P(X2 = 0|X1 = 0) the probability that the second member will not vote for Tim Cook given that the first member will also not vote for Tim Cook
+if first member does not vote for Tim Cook
+N - 1 = 50 - 1 = 49 members remaining
+N(1 - p) - 1 = 19 members remaining that will not vote for Tim Cook
+P(X2 = 0|X1 = 0) = (N(1 - p) - 1)/(N - 1) = 19/49
+
+example:
+we have a population size N = 20 where 55% of the population has a particular gene
+Xi = {
+	1, ith member of the population has the gene
+	0, otherwise
+}
+for i = 1,...,20 find P(X2 = 1|X1 = 1)
+0.55(20) = 11 has the gene
+the probability of the second person having the gene given the first person having it: 10/19
+
+example:
+Google decided to elect a new board member, there are 20 workers and 55% of this worker population will vote for Sergey Brin
+Xi = {
+	1, ith member that will vote for Sergey Brin
+	0, otherwise
+}
+for i = 1,...,20. Find P(X2 = 1|X1 = 0)
+0.55(20) = 11 will vote for Sergey Brin
+P(X2 = 1|X1 = 0) = Np/N-1 = 11/19
+
+Independence in large populations
+population of size N = 1000 of which teh proportion p = 0.5 has a particular genetic
+Xi = {
+	1, ith member of the population has the genetic
+	0, otherwise
+}
+for i = 1,...,1000
+Xi's are dependent
+this time since the population size N = 1000 is large we may approximate that the Xi's are independent
+to see why we first note
+P(X2 = 1) = Np/N = 0.5
+computing P(X2 = 1|X1 = 1)
+= (Np - 1)/(N - 1)
+= (1000*0.5 - 1)/)(1000 - 1)
+= 499/999
+~= 0.5
+P(X2 = 1|X1 = 1) ~= P(X2 = 1)
+X1 and X2 are (approximately) independent
+
+The number of sample elements with a genetic
+Xi = {
+	1, ith member of the sample has the genetic
+	0, otherwise
+}
+for i = 1,...,n
+Xi's can be modeled as mutually independent random variables provided that the population size N is significantly larger than the sample size n this typically means that the sample size should be no larger than 5% of the population size
+The population size is much larger than the sample size is true in many cases. For example, the users using the Chrome browser consists of millions of people yet a typical sample from this population might consist of only a few thousand users.
+X = Σ^n_i=1(Xi)
+where Xi ~ Bernoulli(p)
+since the Xi's take the value 1 if the ith element has the genetic or 0 if the ith element doesn't have the genetic, the statistic X can be used to count the number of elements with the genetic. X represents the number of sample elements with the genetic
+Each Xi can be modeled as a Bernoulli random variable Xi ~ Bernoulli(p)
+We're assuming N >> n it follows that X1,X2,...,Xn are (approximately) independent and identically distributed (I.I.D) Bernoulli random variables
+A sum of n I.I.D. Bernoulli random variables with parameter p is a binomial random variable B(n,p)
+process:
+Xi ~ Bernoulli(p)
+		↓
+N >> n
+   		↓
+X1,X2,...,Xn ~= I.I.D
+		↓
+X = Σ^n_i=1(Xi ~= B(n,p))
+using the formulas for the mean and variance of Binomial random variable we have the following approximations
+E[X] = np, Var[X] = np(1 - p)
+
+Properties of sums of bernoulli random variables
+random sample of size n = 360 from a population where 35% of the population has a particular genetic
+Xi = {
+	1, ith member of the sample has the genetic
+	0, otherwise
+}
+where i = 1,...,360
+X = Σ^360_i=1(Xi)
+find approximate values of E[X] and Var[X]
+hint: we may assume that the population size is significantly larger than the sample size
+provided that N >> n the random variables Xi can be considered independent and identically distributed
+Xi ~ Bernoulli(p) 1 <= i <= n
+where p is the proportion of the population that has the genetic
+X = Σ^n_i=1(Xi)
+can be approximated as a binomial random variable X ~= B(n,p)
+E[X] = np, Var[X] = np(1 - p)
+p = 35% = 0.35, n = 360
+X ~= B(360,0.35)
+mean and variance
+E[X] = np
+= 360*0.35
+= 126
+Var[X] = np(1 - p)
+= 360*0.35 * (1 - 0.35)
+= 81.9
+
+example:
+random sample size n = 20 from a population where 55% of the population has a particular genetic
+Xi = {
+	1, ith member of the sample has the genetic
+	0, otherwise
+}
+where i = 1,...,20 approximate sampling distribution of the statistic X = Σ^20_i=1(Xi)
+= B(20, 0.55)
+
+example:
+random sample size n = 20 from a population where 55% of the population has a particular genetic
+Xi = {
+	1, ith member of the sample has the genetic
+	0, otherwise
+}
+where i = 1,...,20 if the statistic is defined as
+X = Σ^20_i=1(Xi)
+find approximate values of E[X], and Var[X]
+E[X] = 20*0.55 = 11, Var[X] = 11 * (1 - 0.55) = 4.95
+
+Mean and variance of sample proportions
+random sample size n where some proportion p of the population has a particular genetic
+Xi = {
+	1, ith member of the sample has the genetic
+	0, otherwise
+}
+for i = 1,...,n
+X = Σ^20_i=1(Xi ~= B(n,p))
+we can form an estimate for the population proportion p
+p̂ = X/n = 1/n Σ^n_i=1(Xi) = X̄
+E[p̂] = E[X/n]
+= 1/n * E[X]
+= 1/n * np
+= p
+Var[p̂] = Var[X/n]
+= 1/n^2 * Var[X]
+= 1/n^2 * np(1 - p)
+= p(1 - p)/n
+E[p̂] = p, Var[p̂] = p(1 - p)/n
+we don't yet know the sampling distribution of p̂
+
+The standard Error
+the standard deviation of p̂ is called the standard error and is denoted SE[p̂]
+SE[p̂] = sqrt(Var[p̂]) = sqrt(p(1 - p)/n)
+if p is unknown we can replace it with its estimate p̂ in the standard error
+SE[p̂] = sqrt(p̂(1 - p̂)/n)
+
+Mean and variance of sample proportions
+in a population of adults with only one computer 42% have an Apple. A random sample of n = 40 adults is taken from the population and asked if they have a windows or an apple.
+What is the mean and variance of p̂ the proportion of adults in the sample that have an Apple
+E[p̂] = 42% = 0.42 and n = 40
+Var[p̂] = 0.42(1 - 0.42)/40
+~= 0.0061
+
+example:
+45% of share holders plans to vote for Steve Jobs in the upcoming Apple's shareholders meeting. A random sample of size n = 20 is taken from the population and asked about their voting preference
+What is the mean and variance of p̂
+
+E[p̂] = 45% = 0.45
+Var[p̂] = 0.45(1 - 0.45)/20 ~= 0.0124
+
+example:
+15% of a particular group of young adults ride skateboards for exercise, a random sample of n = 60 young adults is taken from the population and asked whether they ride a skateboard for exercise
+What is the mean and variance of p̂ who ride skateboards?
+E[p̂] = 0.15
+Var[p̂] = 0.15(1 - 0.15)/60 ~= 0.0021
+
+Proof that a sum of vernoulli random variables is binomial
+X1,X2,...,Xn ~ Bernoulli(p) are independent
+Y = X1,X2,...,Xn ~ B(n,p)
+we will demonstrate why this result is true using moment-generating functions
+Let MX_i(t) be the moment-generating functino Xi for i = 1,2,...,n using a table of known results
+MX_i(t) = 1 - p + pe^t
+By the multiplicative property of moment-generating functions we have that M_Y(t) = MX_1 + X2 + ... + Xn(t)
+= MX_1(t) * MX_2(t) * ... * MX_n(t)
+= (1 - p + pe^t) * (1 - p + pe^t) * ... * (1 - p + pe^t)
+= (1 - p + pe^t)^n
+which is the moment-generating function of a binomial random variable with distribution B(n,p)
+since any given distribution is characterized by its moment-generating function (meaning that no other distribution can have the same moment-generating function)
+Y ~ B(n,p)
