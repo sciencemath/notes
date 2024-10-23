@@ -8,6 +8,9 @@ Confidence Intervals
 Note:
 anything with Φ(z) denotes a z-table lookup
 
+Note:
+using the cumulative distribution function (CDF) is always by convention to format probabilities as P(Z < z) so if we end up with P(z > Z) or P(Z > z) we need to minus one (mirror distribution) (1 - P(Z < z))
+
 --------------------------------------------
 
 In statistics we often want ot use sample data to deduce or infer the values of various population parameters, the two most common population parameters
@@ -1031,3 +1034,166 @@ By the multiplicative property of moment-generating functions we have that M_Y(t
 which is the moment-generating function of a binomial random variable with distribution B(n,p)
 since any given distribution is characterized by its moment-generating function (meaning that no other distribution can have the same moment-generating function)
 Y ~ B(n,p)
+
+===================================================
+
+Point estimates of population proportions
+Xi = {
+	1, ith member of the sample has the characteristic
+	0, otherwise
+}
+Xi ~ Bernoulli(p)
+Lets assume the sample size is <= 5% of the population size X1,X2,...,Xn can be considered to be (approximately) independent and identically distributed which means that 
+X = Σ^n_i=1(Xi ~= B(n,p))
+B(n,p) is a binomial distribution
+E[X] = np, Var[X] = np(1 - p)
+X represents the number of sample members with the characteristic
+assume that np > 5 and n(1 - p) > 5 we can apply the normal approximation of the binomial theorem (i.e. central limit theorem)
+X ~= N(np, np(1 - p))
+we can construct an estimator p̂
+p̂ = X/n
+E[p̂] = p, Var[p̂] = p(1 - p)/n
+since X is approximately normally distributed p̂ is also normally distributed, the sampling distribution is
+p̂ = N(p, p(1 - p)/n)
+we usually don't know p so we can use an estimate to approximate E[p̂] and Var[p̂]
+
+A summary of the sample distribution model
+Suppose we have a population size N in which a proportion p has a particular characteristic. Consider a sample of size n drawn from the population where
+n <= 5% * N (the sample size is smaller than or equal to 5% of the population size)
+np > 5
+n(1 - p) > 5
+then the sampling distribution of the sample proportion p̂ can be approximated as the noramlly distributed random variable
+p̂ ~ N(p, p(1 - p)/n)
+
+Xi ~ Bernoulli(p)
+		↓
+N >> n
+   		↓
+X1,X2,...,Xn ~= I.I.D
+		↓
+X = Σ^n_i=1(Xi ~= B(n,p))
+		↓
+np > 5, n(1 - p) > 5
+		↓
+X ~= N(np, np(1 - p))
+		↓
+p̂ = X/n ~= N(p, p(1 - p)/n)
+
+np > 5 means that at least five members of the sample have the characteristic
+n(1 - p) > 5 means that at least five members of the sample do not have the characteristic
+
+Identifying situations when the CLT for proportions is appropiate
+p̂ ~ N(p, p(1 - p)/n)
+where p is the population proportion?
+1. A sample of 120 apples from a population of 20000 where 75% of the apples weigh more than 50g
+2. A sample of 25 students from a school containing 200 students where 80% of the students study for more than 100 minutes a day
+3. A sample of 45 ubers at a mall given 90% of drivers arrive on time you may assume the population size is significantly larger than the sample size
+situation 1:
+n = 120
+<= 5% * N
+= 0.05 * 20000
+= 1000 ✔
+np = 120(0.75)
+= 90
+> 5 ✔
+n(1 - p) = 120(1 - 0.75)
+= 30
+> 5 ✔
+we can approximate the distribution of p̂ using this
+in situation 2:
+n = 25
+= 0.05 * 200
+= 10
+< 25
+sample size is more than 5% if the population size
+situation 3:
+since we are given that the population is significantly larger than the sample size we can assume the first condition is satisfied
+np = 45(0.9)
+= 40.5
+> 5 ✔
+n(1 - p) = 45(1 - 0.9)
+= 4.5
+!> 5
+
+Finding an approximate probability using the CLT for proportions
+random sample size n = 84 from population where 42% of the population has a particular characteristic find a normal approximation for the probability that more than 50% of the sample has the characteristic, assume that the population size is significantly larger than the sample size.
+n = 84
+population proportion is p = 0.42
+np = 84(0.42) = 35.28 > 5
+n(1 - p) = 84(1 - 0.42) = 48.72 > 5
+~ N(0.42, 0.42(1 - 0.42)/84)
+~ N(0.42, 0.0029)
+P(p̂ > 0.5) = P(Z > (0.5 - 0.42)/sqrt(0.0029))
+= P(Z > 1.49)
+= 1 - P(Z < 1.49)
+= 1 - Φ(1.49)
+Φ(1.49) = 0.9319
+= 1 - 0.9319
+= 0.0681
+
+example:
+a random sample of size n = 100 from a population where 60% of the population has a particular characteristic, find a normal approximation for the probability that between 55% and 65% of the sample have the characteristic
+~ N(0.60, 0.60(1 - 0.60)/100)
+~ N(0.60, 0.0024)
+P(0.55 < p̂ < 0.65)
+= P((0.55 - 0.60)/sqrt(0.0024) < Z < (0.65 - 0.60)/sqrt(0.0024))
+-1.02 < Z < 1.02
+Φ(1.02) - Φ(-1.02)
+
+example:
+a random sample of size n = 80 from a population where 42% of the population has a particular characteristic, find a normal approximation for the probability that more than 35% of the sample has the characteristic.
+~ N(0.42, 0.42(1 - 0.42)/80)
+~ N(0.42, 0.0030)
+P(0.35 > p̂) = P(Z > (0.35 - 0.42)/sqrt(0.0030))
+P(Z > -1.28)
+= 1 - P(Z < -1.28)
+= 1 - Φ(-1.28)
+= 1 - 0.1003
+= 0.8997
+
+Finding an approximate probability using the CLT for proportions applications
+Spotify has a db of 100 million songs, 64 million have a duration of less than 3 minutes, if a user creates a playlist with 128 songs find a normal approximation for the probability that between 64 and 96 (inclusive) songs in the sample have a duration less than 3 minutes. You may assume that the population size is significantly large than the sample size.
+n = 128, poppulation proportion is p = 64000000/100000000 = 0.64
+np = 128(0.64) = 81.92 > 5
+n(1 - p) = 128(1 - 0.64) = 46.08 > 5
+~ N(0.64, 0.64(1 - 0.64)/128)
+~ N(0.64, 0.0018)
+probability between 64 and 96 of the songs in the play list last less than 3 min
+64/128 <= p̂ 96/128
+0.5 <= p̂ <= 0.75
+P(0.5 <= p̂ <= 0.75)
+= P((0.5 - 0.64)/sqrt(0.0018) <= Z <= (0.75 - 0.64)/sqrt(0.0018))
+= P(-3.30 <= Z <= 2.59)
+= P(Z <= 2.59) - P(Z <= -3.30)
+= Φ(2.59) - Φ(-3.30)
+= 0.9952 - 0.0005
+= 0.9947
+
+example:
+38% of households owns a computer. If a town randomly samples 200 households find a normal approximation for the probability that more than 80 of them have a computer.
+n = 200
+np = 200(0.38) = 76 > 5
+n(1 - p) = 200(1 - 0.38) = 124 > 5
+~ N(0.38, 0.38(1 - 0.38)/200)
+~ N(0.38, 0.0011)
+p > 80/200 = 0.4
+(p̂ > 0.4) = P(Z > (0.4 - 0.38)/sqrt(0.0012))
+= P(Z > 0.58)
+= 1 - P(Z < 0.58)
+= 1 - Φ(0.58)
+
+example:
+an online class of 900 students, 432 are female, the admins sample 50 students find a normal approximation for the probability that between 20 and 23 (inclusive) of students in the sample are female
+n = 50, p = 432/900 = 0.48
+np = 50(0.48) = 24 > 5
+n(1 - p) = 50(1 - 0.48) = 26 > 5
+~ N(0.48, 0.48(1 - 0.48)/50)
+~ N(0.48, 0.005)
+20/50 = 0.4, 23/50 = 0.46
+P(0.4 <= p̂ <= 0.46)
+= P((0.4 - 0.48)/sqrt(0.005) <= Z <= (0.46 - 0.48)/sqrt(0.005))
+= P(-1.13 <= Z <= -0.28)
+= P(Z <= -0.28) - P(Z <= -1.13)
+= Φ(-0.28) - Φ(-1.13)
+= 0.3897 - 0.1292
+= 0.2605
