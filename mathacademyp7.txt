@@ -1426,3 +1426,80 @@ B = [
 	74 -9
 	-9  6
 ]
+
+===================================================
+
+Product notation
+summation is usually written using sigma notation
+Σ^4_i=1(2i - 3)
+represents the sum of the first 4 terms of the sequence ai = 2i - 3
+= (2(1) - 3) + (2(2) - 3) + (2(3) - 3) + (2(4) - 3)
+= (-1) + 1 + 3 + 5
+= 8
+similar compact notation for products
+Π^4_i=1(2i - 3)
+represents the product of the first 4 terms of the sequence ai = 2i - 3
+Π^4_i=1(2i - 3)
+= (2(1) - 3) * (2(2) - 3) * (2(3) - 3) * (2(4) - 3)
+= (-1) * 1 * 3 * 5
+= -15
+
+Evaluating a product
+Π^4_k=1(3k-1/6k-1)
+expand the product by multiplying over the index k = (1-4)
+= (3(1)-1/6(1)-1) * (3(2)-1/6(2)-1) * (3(3)-1/6(3)-1) * (3(4)-1/6(4)-1)
+= 2/5 * 5/11 * 8/17 * 11/23
+(before multiplying we can cross cancel the 11s and 5s)
+= 2*8/17*23
+= 16/391
+
+example:
+Π^6_k=2(2i + 1)
+= (2(2) + 1) * (2(3) + 1) * (2(4) + 1) * (2(5) + 1) * (2(6) + 1)
+= 5 * 7 * 9 * 11 * 13
+= 45045
+
+example:
+Π^8_k=5(2k+1/1-2k)
+= (2(5)+1/1-2(5)) * (2(6)+1/1-2(6)) * (2(7)+1/1-2(7)) * (2(8)+1/1-2(8))
+= -11/9 * -13/11 * -15/13 * -17/15
+= (-1)^4 * 17/9
+= 17/9
+
+Writing a product using product notation
+(2 - 3^2) * (2 - 4^2) * (2 - 5^2) * ... * (2 - 12^2)
+we can collapse the given expression using the product notation over the index i from i = 3 to i = 12
+= Π^12_i=3(2 - i^2)
+
+example:
+(2*3^2 - 1) * (2*4^2 - 1) * (2*5^2 - 1) * ... * (2*n^2 - 1)
+= Π^n_i=3(2*(i)^3 - 1)
+
+example:
+1^2/1^3-1 * 2^2/2^3-1 * 3^2/3^3-1 * ... * 10^2/10^3-1
+Π^10_i=1((i)^2/(i)^3 - 1)
+
+Simplifying a product
+express Π^m_n=3(n+1/n-1) as a function of m
+fist expand the product by multiplying over the index n = 3 to n = m
+= 3+1/3-1 * 4+1/4-1 * 5+1/5-1 * 6+1/6-1 * ... * (m-1)+1/(m-1)-1 * m+1/m-1
+= 4/2 * 5/3 * 6/4 * 7/5 * ... * m/m-2 * m+1/m-1
+(canceling out common terms 7=m-2, 6=m-1)
+= m*(m+1)/2*3
+= m*(m+1)/6
+
+example:
+Π^n-1_m=2(2(m) + 2)
+(substituting last term)
+(2m+2) = (2(n-1)+2) = 2n-2+2 = 2n
+= 6 * 8 * 10 * ... * 2n
+
+example:
+Π^m_r=2(r(r + 1)/r - 1)
+= (2(2+1)/2-1) * (3(3+1)/3-1) * (4(4+1)/4-1) * ... * (m(m+1)/m-1)
+= 3*2/1 * 4*3/2 * 5*4/3 * ... * (m(m+1)/m-1)
+(canceling out common terms)
+= 3 * 4 * 5 * ... * m*(m+1)
+= (1 * 2 * 3 * 4 * 5 * ... * m*(m+1))/2
+= (m + 1)!/2
+
