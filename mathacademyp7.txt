@@ -1837,3 +1837,144 @@ C = Π^n_i=1(xi!)
 = 1 * 6 * 6 * 1 * 24
 = 864
 L(θ) = (1/864)(θ^12)(e^(-5θ))
+
+===================================================
+
+NOTE:
+binomial coefficient (n, k) is calculated as follows
+(n
+ k) = n!/k!(n-k)!
+example:
+(5
+ 3) = 5!/3!(5 - 3)! = 5!/3!*2! = 5*4/2*1 = 10
+
+Log-likelihood functions for discrete probability distributions
+if X1,X2,...,Xn are independent and indentically distributed discrete random variables with probability mass function f(x;θ) where θ is an unkown parameter then the likelihood function of a random sample x1,x2,...,xn is
+L(θ) = Π^n_i=1f(xi;θ)
+if: X1,X2,X3,X4,X5,X6
+is an I.I.D random sample with Xi ~ Bernoulli(θ) where θ is the unknown probability of success then the likelihood function of the sample
+x1 = 0, x2 = 1, x3 = 1, x4 = 0, x5 = 1, x6 = 1
+is given by
+L(θ) = θ^4(1 - θ)^2
+The likelihood function contains lots of products which can be cumbersome to make things easier we convert the products into sums by finding the natural logarithm of L(θ)
+l(θ) = ln(L(θ))
+= ln(Π^n_i=1(f(xi;θ)))
+= ln(f(x1;θ) * f(x2;θ) ... f(xn;θ))
+= ln(f(x1;θ)) + ln(f(x2;θ)) + ... + ln(f(xn;θ))
+= Σ^n_i=1(ln(f(xi;θ)))
+This new function l(θ) is called the log-likelihood function of the sample
+the corresponding log-likelihood function
+l(θ) = ln(θ^4(1 - θ)^2)
+= ln(θ^4) + ln((1 - θ)^2)
+= 4ln(θ) + 2ln(1 - θ)
+
+Log-likelihood functions for Bernoulli random variables
+X1,X2,...,X10 is an I.I.D random sample where Xi ~ Bernoulli(θ) with unknown probability of success θ for a particular sample x1,x2,...,x10 you're given that there are 7 successes find the log-likelihood function of the sample.
+we are given a sample of n = 10 independent Bernoulli random variables with unknown parameter θ therefore the probability mass function is
+f(x;θ) = θ^x(1 - θ)^(1 - x), x = 0,1
+l(θ) = Σ^n_i=1ln(θ^(xi)(1 - θ)^(1-xi))
+= Σ^n_i=1(xi)ln(θ^(xi)) + ln((1 - θ)^(1-xi))
+= ln(θ)Σ^n_i=1(xi) + ln(1 - θ)Σ^n_i=1(1 - xi)
+= Sln(θ) + (n - S)ln(1 - θ)
+S = Σ^n_i=1(xi) is the number of successes in the sample
+finally since there are 7 successes in the sample
+l(θ) = 7ln(θ) + (10 - 7)ln(1 - θ)
+= 7ln(θ) + 3ln(1 - θ)
+
+example:
+X1,X2,...,X12 is an I.I.D random sample where Xi ~ Bernoulli(θ) with unknown probability of success θ for a particular sample, x1,x2,...,x12 you're given that there are 5 successes find the log-likelihood function of the sample
+l(θ) = 5ln(θ) + (12 - 5)ln(1 - θ)
+= 5ln(θ) + 7ln(1 - θ)
+
+example:
+X1,X2,...,X20 is an I.I.D random sample where Xi ~ Bernoulli(θ) with unknown probability of success θ for a sample x1,x2,...,x20 you're given that there are 14 successes find the log-likelihood function of the sample
+l(θ) = 14ln(θ) + (20 - 14)ln(1 - θ)
+= 14ln(θ) + 6ln(1 - θ)
+
+Log-Likelihood functions for binomial random variables
+X1,X2,X3 is an I.I.D random sample Xi ~ B(5,θ) with unknown probability of success θ you're given the particular sample
+x1 = 4, x2 = 1, x3 = 1
+find the log-likelihood function of this sample
+Hint: The probability mass function for a binomial random variable is given by
+f(x) = (5,x)θ^x(1 - θ)^(n - x), x = 0,1,...,5
+in our case we are given a sample of n = 3 independent binomial random variables with an unknown probability of success θ and N = 5 as the number of trials, the probability mass function is
+f(x,θ) = (N,x)θ^x(1 - θ)^(N - x), x = 0,1,...,N
+= (5,x)θ^x(1 - θ)^(5 - x), x = 0,1,...,5
+l(θ) = Σ^n_i=1(ln((5,xi)θ^xi(1 - θ)^(5 - xi)))
+= Σ^n_i=1(ln(5,xi) + ln(θ^xi) + ln((1 - θ)^(5 - xi)))
+= Σ^n_i=1(ln(5,xi) + Σ^n_i=1(xiln(θ)) + Σ^n_i=1(5-xi)ln(1 - θ))
+= Σ^n_i=1(ln(5,xi) + ln(θ)Σ^n_i=1(x1) + ln(1 - θ)Σ^n_i=1(5-xi))
+= Σ^n_i=1(ln(5,xi) + Sln(θ) + (5n - S)ln(1 - θ))
+Σ^n_i=1(ln(5,xi) = ln(5,x1) + ln(5,x2) + ln(5,x3))
+= ln(Π^n_i=1(5,xi))
+l(θ) = ln(Π^n_i=1(5,xi)) + Slnθ + (5n - S)ln(1 - θ)
+sample data with n = 3
+Π^n_i=1(5,xi) = (5,4)*(5,1)*(5,1)
+= 5*5*5
+= 125
+S = 4 + 1 + 1 = 6
+substitution
+l(θ) = ln(125) + 6ln(θ) + (5 * 3 - 6)ln(1 - θ)
+= ln(125) + 6ln(θ) + 9ln(1 - θ)
+
+example:
+X1,X2,X3,X4 is an I.I.D random sample with Xi ~ B(3,θ) with unknown probability of success θ you're given the sample
+x1 = 2, x2 = 1, x3 = 2, x4 = 0
+l(θ) = ln(a) + bln(θ) + cln(1 - θ)
+find the value of a + b + c
+Hint: the probability mass function for a binomial random variable is given by
+f(x) = (3,x)θ^x(1 - θ)^(n - x), x = 0,1,2,...,3
+(3,2)*(3,1)*(3,2)*(3,0)
+3*3*3*1 = 27
+2 + 1 + 2 + 0 = 5
+= ln(27) + 5ln(θ) + (3 * 4 - 5)ln(1 - θ)
+= ln(27) + 5ln(θ) + 7ln(1 - θ)
+a + b + c = 39
+
+example:
+X1,X2,X3,X4 is an I.I.D random sample with Xi ~ B(5,θ) with unknown probability of success θ given the sample
+x1 = 5, x2 = 3, x3 = 2, x4 = 1
+ln(θ) = ln(a) + bln(θ) + cln(1 - θ)
+find the value of a + b + c
+(5,5)(5,3)(5,2)(5,1)
+1*10*10*5 = 500
+5+3+2+1 = 11
+substituting
+ln(500) + 11ln(θ) + 9ln(1 - θ)
+500 + 11 + 9 = 520
+
+Log-likelihood functions for Poisson random variables
+X1,X2,X3 is an I.I.D random sample with Xi ~ Po(θ) with unknown rate parameter θ with sample
+x1 = 3, x2 = 4, x3 = 1
+find the log-likelihood function
+In our case we are given a sample of n = 3 independent Poisson random variables with unknown parameter θ the probability mass function is
+f(x,θ) = e^-θ * θ^x/x!
+l(θ) = Σ^n_i=1(ln(e^-θ * θ^x/x!))
+= Σ^n_i=1(ln(e^-θ) + ln(θ^xi) ln(x!))
+= Σ^n_i=1(-θ) + Σ^n_i=1(ln(θ^xi)) - Σ^n_i=1(ln(xi!))
+= Σ^n_i=1(-θ) + Σ^n_i=1(xiln(θ)) - Σ^n_i=1(ln(xi!))
+= -θΣ^n_i=1(1) + ln(θ)Σ^n_i=1(xi) - Σ^n_i=1(ln(xi!))
+= -nθ + lnθΣ^n_i=1(xi) - ln(Π^n_i=1(xi!))
+using the same data with n = 3
+Π^n_i=1(xi!) = 3! * 4! * 1! = 6 * 24 * 1 = 144
+Σ^n_i=1(xi) = 3 + 4 + 1 = 8
+l(θ) = -3θ + 8ln(θ) - ln(144)
+
+example:
+X1,X2,X3,X4 is an I.I.D random sample with Xi ~ Po(θ) with unknown rate parameter θ given the sample
+x1 = 4, x2 = 2, x3 = 1, x4 = 2
+l(θ) = aθ + bln(θ) - lnc
+find the value of a + b + c
+Hint: the probability mass function for a poisson distribution is
+f(x) = θ^xe^-θ/x!, x = 0,1,2,...
+4! * 2! * 1! * 2! = 96
+l(θ) = -4θ + 9ln(θ) - ln(96)
+a + b + c = 101
+
+example:
+X1,X2,X3 is an I.I.D random sample with Xi ~ Po(θ) with unknown rate parameter θ given the sample
+x1 = 3, x2 = 4, x3 = 2
+3! * 4! * 2! = 288
+3+4+2 = 9
+l(θ) = -3θ + 9ln(θ) - ln(288)
+a + b + c = 294
