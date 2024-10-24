@@ -2215,3 +2215,152 @@ what is the value of a + b + c?
 ln(θ) = -4/2(2pi) - 1/2(5.64 - 2θ*(-0.2) + 4θ^2)
 = -2(2pi) - 2.82 - 0.2θ - 2θ^2)
 a + b + c = -2.82 + (-0.2) + (-2) = -5.02
+
+===================================================
+
+Maximum likelihood estimation
+we have a random sample X1,X2,X3 drawn from a population where Xi ~ B(5,θ) where θ is an unknown probability of success, given the data
+x1 = 4, x2 = 1, x3 = 1
+it can be shown that the log-likelihood for this sample is
+l(θ) = ln(125) + 6ln(θ) + 9ln(1 - θ)
+goal is to form an estimate for the unkown θ to do this we find the value of θ that maximizes the probability of getting the observed sample data, we need to maximize the likelihood function L(θ) since the natural logarithm is an increasing function, a value of θ that maximizes the likelihood function L(θ) will also maximize the log-likelihood function l(θ)
+Estimates of an unknown parameter θ by maximizing the likelihood function (or log-likelihood function) are called maximum likelihood estimates, we'll use the θ(hat) notation to denote a max likelihood estimate of θ
+To find the max likelihood estimate of θ we calculate the derivative of the log-likelihood function, set the derivative equal to zero and solve for θ
+first take the derivative of l(θ)
+dl/dθ = d/dθ(ln(125) + 6lin(θ) + 9ln(1 - θ))
+= 6/θ + 9/1-θ * (-1)
+= 6/θ + 9/θ-1
+set the derivative equal to 0 solve for θ
+6/θ + 9/θ-1 = 0
+(distribute each denominator)
+(6(θ - 1) + 9θ)/(θ(θ - 1)) = 0
+6(θ - 1) + 9θ = 0
+15θ - 6 = 0
+15θ = 6
+θ = 6/15
+for this sample the max likelihood estimate of θ is θ(hat) = 6/15
+its easy to check that this is a max of l(θ) by calculating second derivative
+
+Maximum likelihood estimators for discrete probability distributions
+given that the log-likelihood function for a particular sample of independent Bernoulli random variables is
+l(θ) = 3ln(θ) + 4ln(1 - θ)
+what is the max likelihood estimate θ(hat) from this sample?
+In order to find the maximum likelihood estimate of θ we calculate the derivative of the log-likelihood function set the derivative to 0 and solve for θ
+derivative of l(θ)
+dl/dθ = d/dθ(3ln(θ) + 4ln(1 - θ))
+= 3/θ + 4/1-θ * (-1)
+= 3/θ + 4/θ-1
+then set the derivative equal to 0 and solve for θ
+3/θ + 4/θ-1 = 0
+(3(θ - 1) + 4θ)/(θ(θ - 1)) = 0
+3(θ - 1) + 4θ = 0
+7θ - 3 = 0
+7θ = 3
+θ = 3/7
+the max likelihood esitmate of θ is θ(hat) = 3/7
+
+example:
+given that the log-likelihood function for a particular sample of independent Bernoulli random variables is
+l(θ) = 5ln(θ) + ln(1 - θ)
+what is the max likelihood estimate θ(hat) from this sample?
+dl/dθ = d/dθ(5ln(θ) + ln(1 - θ))
+= 5/θ + 1/1-θ * (-1)
+= 5/θ + 1/θ-1
+5/θ + 1/θ-1 = 0
+(5(θ-1) + 1(θ-1))/θ(θ-1)
+5θ - 5 + θ = 0
+6θ = 5
+θ = 5/6
+
+example:
+given the log-liklihood function for a particular sample of independent binomial random variables is
+l(θ) = ln(27) + 5ln(θ) + 7ln(1 - θ)
+what is the max likelihood estimate from this sample?
+dl/dθ = d/dθ(ln(27) + 5ln(θ) + 7ln(1 - θ))
+= 5/θ + 7/(1 - θ) * (-1)
+= 5/θ + 7/(θ - 1)
+5/θ + 7/(θ - 1) = 0
+(5(θ - 1) + 7θ)/θ(θ - 1) = 0
+5θ - 5 + 7θ = 0
+12θ = 5
+θ = 5/12
+max likelihood of θ is 5/12
+
+example:
+given that the log-likelihood for a particular sample of independent Poisson random variables is
+l(θ) = -16θ + 18ln(θ) - ln(2)
+dl/dθ = d/dθ(-16θ + 18ln(θ) - ln(2))
+= -16 + 18/θ
+(-16θ + 18)/θ = 0
+-16θ + 18 = 0
+-16θ = -18
+θ = 18/16
+θ = 9/8
+max likelihood is 9/8
+
+Maximum likelihood estimators for continuous probability distributions
+given that the log-likelihood function for a particular sample of independent normal random variables Xi ~ N(θ,1)
+l(θ) = -6ln(2pi) - 8.4 + 12.1θ - 6θ^2
+what is the maximum likelihood estimate θ for this sample?
+d/dθ = d/dθ(-6ln(2pi) - 8.4 + 12.1θ - 6θ^2)
+= 12.1 - 12θ
+set the derivative equal to 0 and solve θ
+12.1 - 12θ = 0
+12θ = 12.1
+θ ~= 1.008
+max likelihood estimate of θ is ~1.008 (rounded to 3 decimal places)
+
+example:
+given that the log-likelihood function for a particular sample of independent exponential random variables is
+l(θ) = 8ln(θ) - 28.4θ
+what is the max likelihood estimate θ
+d/dθ = d/dθ(8ln(θ) - 28.4θ)
+= 8/θ - 28.4θ
+8/θ - 28.4 = 0
+8/θ = 28.4
+8 = 28.4θ
+θ ~= 2.82
+
+example:
+given that the log-likelihood function for a particular sample of the independent normal random variables
+l(θ) = -6ln(2pi) - 45.3 + 30.2θ - 6θ^2
+ehat is the max likelihood?
+d/dθ = d/dθ(-6ln(2pi) - 45.3 + 30.2θ - 6θ^2)
+= 30.2 - 12θ
+30.2 - 12θ = 0
+12θ = 30.2
+θ ~= 2.517
+
+Deriving a maximum likelihood estimator for Bernoulli Distributions
+lets derivate a general expression for the maximum likelihood estimator for the unknown parameter θ for a set of n independent and identically distributed Bernoulli random variables
+X1,X2,...,Xn is an I.I.D random sample where Xi ~ Bernoulli(θ) with unknown probability of success θ for a particular sample x1,x2,...,xn the log-likelihood function is given
+l(θ) = Sln(θ) + (n - S)ln(1 - θ)
+S = Σ^n_i=1(xi) is the number of successes in the sample
+to compute a general expression for the max likelihood estimate we differentiate l(θ) set the derivative equal to zero solve for θ
+dl/dθ = d/dθ(Sln(θ) + (n - S)ln(1 - θ))
+= S/θ + (n - S)/(1 - θ) * (-1)
+= S/θ + (n - S)/(θ - 1)
+set the derivative to 0 and solve for θ
+S/θ + (n - S)/(θ - 1) = 0
+(S(θ - 1) + (n - S)θ)/θ(θ - 1) = 0
+S(θ - 1) + (n - S)θ = 0
+Sθ - S + nθ - Sθ = 0
+-S + nθ = 0
+nθ - S = 0
+nθ = S
+θ = S/n
+θ = 1/nΣ^n_i=1(xi)
+max likelihood estimate of θ is
+θ(hat) = 1/nΣ^n_i=1(xi)
+which is simply the mean of the sample
+the maximum likelihood estimate for other common distributions can be derived similarly
+
+max likelihood for several common probability distributions. These results can be derived by maximixing the log-likelihood function
+distribution | PMF f(x;θ)
+--------------------------------------------------
+Bernoulli    |θ^x(1-θ)^(1-x)
+Binomial     |(N,x)θ^x(1-θ)^(N-x)
+Poisson	     |θ^xe^-θ/x!
+Geometric    |(1 - θ)^(x-1)θ
+Exponential  |θe^(-θx)
+Normal       |1/θ_2sqrt(2pi)e^(-1/2(x-θ_1/θ_2)^2)
