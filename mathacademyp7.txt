@@ -1978,3 +1978,128 @@ x1 = 3, x2 = 4, x3 = 2
 3+4+2 = 9
 l(θ) = -3θ + 9ln(θ) - ln(288)
 a + b + c = 294
+
+===================================================
+
+Likelihood functions of samples drawn from populations modeled using continuous random variables are defined similarly to discrete variables. The only difference is that we use probability density functions instead of probability mass functions
+if X1,X2,...,Xn are independent and identically distributed continuous random variables with probability density function f(x;θ) then the likelihood function of a random sample x1,x2,...,xn
+L(θ) = P(X1 = x1,X2 = x2,...,Xn = xn) = Π^n_i=1f(xi;θ)
+let X1,X2,X3 be continuous, I.I.D random variables with the following probability density function
+f(x) = θx^(-θ-1), x >= 1
+θ is an unknown parameter, conduct our random sample 
+x1 = 2.5, x2 = 3.2, x3 = 1.2
+compute the likelihood
+L(θ) = Π^n_i=1(θxi^(-θ-1))
+= (θx1^(-θ-1)) * (θx2^(-θ-1)) ... (θxn^(-θ-1))
+= θ^n (x1^(-θ-1)) * (x2^(-θ-1)) ... (xn^(-θ-1))
+= θ^n(x1 * x2 ... xn)^(-θ-1)
+= θ^n(Π^n_i(xi))^(-θ-1)
+our sample n = 3
+Π^n_i(xi) = 2.5 * 3.2 * 1.2 = 9.6
+L(θ) = θ^3(9.6)^(-θ-1)
+
+Likelihood functions for continuous random variables
+X1,X2,X3 be I.I.D. random variables with probability density function
+f(x) = (θ + 1)x^(-θ-2), x >= 1
+where θ is an unknown parameter, find the likelihood of the sample 2.0, 4.5, 5.1
+Π^n_i=1(xi) = 2.5 * 4.5 * 5.1 = 45.9
+n = 3
+L(θ) - (θ + 1)^3(45.9)^(-θ-2)
+
+example:
+X1,X2,...,X15 be I.I.D. random variables with probability density function
+f(x) = θx^(-θ-1), x >= 1
+where θ is an unknown parameter for a particular sample x1,x2,...,x15
+Π^15_i=1(xi) = 40.6
+= θ^15(40.6)^(-θ-1)
+
+example:
+X1,X2,X3 be I.I.D random variables with probability density function
+f(x) = θx^(-θ-1), x >= 1
+where θ is an unknown parameter find the likelihood function of the sample:
+2.1, 3.2, 5.0
+Π^n_i=1(xi) = 2.1 * 3.2 * 5.0 = 33.6
+n = 3
+L(θ) - (θ + 1)^3(33.6)^(-θ-1)
+
+Likelihood functions for exponential random variables
+X1,X2,...X6 is an I.I.D random sample with Xi ~ Exp(θ) and unknown rate parameter θ find the likelihood of the sample
+1.5, 2.0, 1.1, 0.4, 3.3, 2.7
+sample of n = 6 independent exponential random variables with unknown parameter θ for which the probability density function is
+f(x,θ) = θe^(-θx), x >= 0
+calculate the likelihood function
+L(θ) = Π^n_i=1(θe^(-θxi))
+= (θe^(-θx1)) * (θe^(-θx2)) ... (θe^(-θxn))
+= θ^n e^(-θ(x1 + x2 + ... + xn))
+= θ^n e^(-θΣ(xi))
+= θ^n e^(-Sθ)
+= 1.5 + 2.0 + 1.1 + 0.4 + 3.3 + 2.7
+= 11
+L(θ) = θ^6e^(-11θ)
+
+example:
+X1,X2,...X7 is an I.I.D random sample with Xi ~ Exp(θ) and unknown rate parameter θ for a sample x1,x2,...,x7
+Σ^7_i=1(xi) = 18.2
+find the likelihood sample
+Hint: The probability density function for an exponential random variable is given by
+f(x) = θe^(-θx), x >= 0
+= θ^7e^(-18.2θ)
+
+example:
+X1,X2,X3,X4 is an I.I.D random sample with Xi ~ Exp(θ) and unknown rate parameter θ find the likelihood of sample 2.1, 5.0, 4.2, 1.4
+= 12.7
+L(θ) = θ^4e^(-12.7θ)
+
+The normal distibution
+the probability density function of a normally distributed random variable X ~ N(μ,σ^2)
+f(x) = 1/σsqrt(2pi)e^(-1/2(x-μ/σ))^2
+if we set σ = 1 then f(x) simplifies
+f(x) = 1/sqrt(2pi)e^-(x-μ)^2/2
+this is a standard normal random variable whose mean is shifted right by μ units
+finally setting the unknown parameter as θ when discussing likelihood functions is common, following this convention we set μ = θ
+f(x;θ) = 1/sqrt(2pi)e^-(x-θ)^2/2
+
+Likelihood functions for normal random variables
+X1,X2,X3,X4 is an I.I.D random sample with Xi ~ N(θ,1) where θ is an unknown mean find the likelihood function of the sample
+0.4, -0.3, -2.2, -0.4
+sample n = 4 independent normal random variables with unknown mean θ and variance σ^2 = 1 for which the probability density function is
+f(x,θ) = 1/σsqrt(2pi)e^(-1/2(x-θ/σ))^2 = 1/sqrt(2pi)e^-(x-θ)^2/2
+we can calculate the likelihood
+L(θ) = Π^n_i(1/sqrt(2pi)e^-(x-θ)^2/2)
+= (2pi)^(-n/2)e^-Σ(xi-θ)^2/2
+= (2pi)^(-n/2)e^-(Σ(xi^2-2θ)Σ(xi+nθ^2))/2
+= (2pi)^(-n/2)e^-(C - 2Sθ + nθ^2)/2
+S = Σ^n_i=1(xi) and C = Σ^n_i=1(xi^2)
+sample is n = 4
+S = Σ^n_i=1(xi)
+= 0.4 + (-0.3) + (-2.2) + (-0.4)
+= -2.5
+C = Σ^n_i=1(xi^2)
+= (0.4)^2 + (-0.3)^2 + (-2.2)^2 + (-0.4)^2
+= 5.25
+L(θ) = (2pi)^(-4/2)e^-(5.25 - 2(-2.5)θ + 4θ^2)/2
+= 1/4pi^2e^(-2.625 - 2.5θ - 2θ^2)
+
+example:
+X1,X2,...,X12 is an I.I.D random sample with Xi ~ N(θ,1) where θ is an unknown mean for a sample x1,x2,...,x12
+Σ^12_i=1(xi) = 7.4, Σ^12_i=1(xi^2) = 16.8
+given that the likelihood function of the sample is
+L(θ) = 1/64pi^6e^g(θ)
+what is the expression for g(θ)
+Hint: the probability density function for a normal random variable with mean θ and variance 1
+f(x) = 1/sqrt(2pi)e^-((x-θ)^2/2)
+= 1/64pi^6(-8.4 + 7.4θ - 6θ^2)
+g(θ) = -8.4 + 7.4θ - 6θ^2
+
+example:
+X1,X2,X3,X4 is an I.I.D random sample with Xi ~ N(θ,1) where θ is an unknown mean given the likelihood of the sample -1.2, 0.4, 2.2, 0.8
+L(θ) = 1/4pi^2e^(g(θ))
+what is the expression for g(θ)
+S = Σ^n_i=1(xi)
+= (-1.2) + 0.4 + 2.2 + 0.8
+= 2.2
+C = Σ^n_i=1(xi^2) 
+= (-1.2)^2 + 0.4^2 + 2.2^2 + 0.8^2
+= 7.08
+= 1/4pi^2e^-(7.08 - 2(2.2)θ + 4θ^2)/2
+= 1/4pi^2e^(-3.54 + 2.2θ - 2θ^2)
