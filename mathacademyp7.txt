@@ -2533,3 +2533,121 @@ P(X >= 3) = P(X = 3) + P(X = 4) + P(X = 5)
 = 0.0355
 !< 0.025
 the values of X that would cause the null hypothesis to be rejected at a significance level of 2.5% are the values such that X >= 4, the critical value is 4
+
+===================================================
+
+Two-tailed hypothesis tests
+we have a coin that we suspect is unfair we wish to conduct a hypothesis test at the 5% level of significance to determine whether or not our suspicions are correct
+First we define p as the probability that the coin lands on heads
+second form a null hypothesis, states the coin is fair
+H_0 : p = 1/2
+third we form a alt hypothesis, coin is unfair
+H_1 : p != 1/2
+the not equal to symbol is different from the one-tailed cases, we're not specifying whether the coin is biased toward heads or tails. Instead we include the possibility that is biased toward either heads or tails
+In a two-tailed test, the alternative hypothesis always involves a not equal to symbol
+Fourth we must specify a test statistic in this case a suitable test statistic could be
+X = the number of times the coin lands on heads after 10 tosses
+
+Identifying two-tailed alternative hypotheses
+let μ represent the average IQ among a particular population, given the null hypothesis H_0 : μ = 105 which of the following are valid two-tailed alternative hypotheses
+1. H_1 : μ < 105
+2. H_1 : μ > 105
+3. H_1 : μ != 105
+the alternative hypothesis H_1 is what we conclude about the population parameter if our null hypothesis is shown to be wrong.
+A two-tailed alternative hypothesis states that the population parameter is not equal to the value given by the null hypothesis
+here the null hypothesis is H_0 : μ = 105 if this is shown to be wrong then there is one valid two-tailed alternative hypothesis
+H_1 : μ != 105
+correct answer is 3 only
+
+Conducting a two-tailed hypothesis test
+test whether a coin is unfair
+p is the probability that the coin lands on heads when tossed
+we want to check whether the coin is unfair we have the null and alt hypotheses
+H_0 : p = 1/2
+H_1 : p != 1/2
+the significance level is α = 5%
+under the conditions specified in the null hypothesis, the random variable X is a biomial random variable given by
+X ~ B(10,1/2)
+when we select significance level α in a two-tailed test, the convention is to allow α/2 at either tail
+so if α = 5%, α/2 = 2.5% at either tial.
+We conduct our experiment and get 2 heads out of 10 tosses
+if the result X = 2 is statistically significant it will lie in the critical region in the left tail of the probability distribution of f(x)
+we can compute the probability of getting X <= 2 heads under the null hypotheses using binomial distribution
+P(X <= 2) = P(X = 0) + P(X = 1) + P(X = 2)
+= (10,0)(1/2)^0(1/2)^10-0 + (10,1)(1/2)^1(1/2)^10-1 + (10,2)(1/2)^2(1/2)^10-2
+= 1 * (1/2)^10 + 10 * (1/2)^10 + 45 * (1/2)^10
+= 56 * (1/2)^10
+= 0.055
+= 5.5%
+the probability is larger than α/2 = 2.5% this means that our result is not statitically significant, it is likely enough that this event could have occured if the null hypothesis is true
+We should not reject the null hypothesis, concluding the coin is fair
+
+The critical region contains all x-values that are collectively unlikely under the null hypothesis and cause the null hypothesis to be rejected
+For two tailed tests the critical region typically consists of two disjoint sets, there are typically two critical values
+
+Olive Garden changed some of its menu items and thinks this could change the number of customers with the old menu items an average of 7 customers per hour visited. X represents the number of customers that arrive at the restaurant during a randomly selected one hour period. Under the null hypothesis that the number of customers is the same as before what is the critical region of a two tailed test at a significance level of 5%?
+x P(X <= x)
+0 |0.0009|
+1 |0.0073|
+2 |0.0296|
+3 |0.0818|
+4 |0.1730|
+..|  ... |
+10|0.9015|
+11|0.9467|
+12|0.9730|
+13|0.9872|
+14|0.9943|
+..|  ....|
+λ = the average number of customers visiting the restaurant per hour null and alt hypotheses
+H0 : λ = 7
+H1 : λ != 7
+the critical region is set of values of C for which we reject the null hypothesis
+to reject null hypothesis we need to observe an abnormally large or abnormally small value of X
+to reject null at significance 5% we must observe a value x such that P(X <= x) = 0.025 or P(X >= x) = 0.025 ybder the null hypothesis
+left tail
+P(X <= 0) = 0.0009 < 0.025
+P(X <= 1) = 0.0073 < 0.025
+P(X <= 2) = 0.0296 !< 0.025
+right tail
+P(X >= 15) = 1 - P(X <= 14)
+= 1 - 0.9943
+= 0.0057
+< 0.025
+P(X >= 14) = 1 - P(X <= 13)
+= 1 - 0.9872
+= 0.0128
+< 0.025
+P(X >= 13) = 1 - P(X <= 12)
+= 1 - 0.9730
+= 0.0270
+!< 0.025
+the values of X that would cause the null hypotheesis to be rejected at a significance level of 5% are the values such that X <= 1 and X >= 14
+critical region is X <= 1 or X >= 14
+
+Identifying critical values
+Milk bar decides to use a new cake recipe, 55% of customers bought at least one cake with the previous recipe. X represents the number of customers that buy at least one cake with the new recipe in a random sample of 6 customers, under the null hyothesis that the proportion of customers that buy a cake with the new recipe is the same as before, what are the critical values of a two-tailed test at a significance level of 10%
+x        |   0  |   1  |   2  |   3  |   4  |   5  |   6  |
+P(X <= x)|0.0083|0.0692|0.2553|0.5585|0.8364|0.9723|1.0000|
+-----------------------------------------------------------
+Let p be the probability that a randomly selected customer buys at least one cake, we have the following null and alt hypotheses
+H0 : p = 55%
+H1 : p != 55%
+To reject the null hypothesis at a significance level of 10% we must observe a value x such that P(X <= x) = 0.05 or P(X >= x) = 0.05 under the null hypothesis
+left tail
+P(X <= 0) = P(X = 0)
+= 0.0083
+< 0.05
+P(X <= 1) = 0.0692
+!< 0.05
+right tail
+P(X >= 6) = 1 - P(X <= 5)
+= 1 - 0.09723
+= 0.0277
+< 0.05
+P(X >= 5) = 1 - P(X <= 4)
+= 1 - 0.8364
+= 0.1636
+!< 0.05
+the values of X that would cause the null hyopthesis to be rejected at a significance level of 10% are the values X <= 0 and X >= 6
+critical values are 0 and 6
