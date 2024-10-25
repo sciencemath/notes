@@ -2364,3 +2364,172 @@ Poisson	     |θ^xe^-θ/x!
 Geometric    |(1 - θ)^(x-1)θ
 Exponential  |θe^(-θx)
 Normal       |1/θ_2sqrt(2pi)e^(-1/2(x-θ_1/θ_2)^2)
+
+===================================================
+
+Hypothesis testing is a statistical technique used to make inferences about population parameters based on sample data
+we have a coin that we suspect is biased towards landing on heads. We wish to design and conduct a statistical experiment to determine whether or not our suspicions are correct we can use a hypothesis test for this purpose
+we first define the population parameter we're interested in so we define p as the probability that the coin lands on heads when tossed randomly
+next specify hypotheses
+form a null hypothesis the null hypothesis states that the coin is not biased toward landing on heads we write this as
+H_0 : p = 1/2
+next form an alternative hypothesis the alternative hypothesis states that the coin is biased toward landing on heads
+H_1 : p > 1/2
+greater than symbol if the coin is biased towards heads, then the probability that the coin lands on heads must be greater than 1/2
+Test experiment, flip the coin 10 time and count the total number of heads.
+The test statistic is computed from experimental data, the test statistic must provide evidence for or against the population parameter p we wish to test.
+in this case we might define a suitable test statistic as follows
+X = the number of times the coin lands on heads after 10 random tosses.
+we have defined suitable null hypotheses, designed an experiment and specified an appropriate test statistic we can compute using results from the experiment
+To confirm our suspicions we need to collect enough data to reject the null hypothesis in favor of the alternative hypothesis
+The experiment we've designed says that we should toss the coin 10 times and compare the proportion of tosses that land on heads with the value of p given by the null hypothesis
+if the result of the experiment is statistically significant, it is unlikely to have happened purley by chance under the assumptions laid out by the null hypothesis then we reject the null hypothesis in favor of the alt hypothesis and conclude the coin is biased
+Otherwise if there is insufficient statistical evidence we fail to reject the null hypothesis
+Since the alternative hypothesis involves an inequality we call this a one-tailed hypothesis test.
+
+The types of population parameters that we might make inferences about using hypothesis tests
+A population mean μ for example the average IQ score among a certain population
+A population variance σ^2 for example the variance of the IQ scores amount a certain population
+A population proportion (or probability) p. For example the probability that a coin lands on heads when tossed randomly
+A population average rate λ for example the average number of sales per hour made through a particular e-commerce website
+
+Identifying null and alternative hypothesis
+Tesla produces cars with a mean battery efficiency of 35mpb. This year Tesla released a new model and some customers believe that the new model is ueses less battery, they wish to prove this claim with a hypothesis test let μ represent the mean fuel efficiency of the new model. Describe null and alt hypotheses that the customer could use.
+The null hypothesis H_0 is the hypothesis we assume to be correct unless proven otherwise it is our default assumption
+The alt hypothesis H_1 is what we conclude about the population parameter if our null hypothesis is shown to be wrong.
+We assume that the mean battery life is the same as before μ = 35
+if it turns out that this is wrong then we conclude that the new model's mean battery efficiency has declined that is the number of miles per battery has decreased
+the null hypothesis is H_0 : μ = 35mpb
+alt is H_1 : μ < 35mpb
+
+example:
+A casino has a 6-sided die and a gambler suspects it is biased towards landing on 1, let p represents the probability that the die lands on 1, which of the following could be the null hypothesis?
+H_0 : p = 1/6
+
+example:
+previous same question but what is the alt?
+H_1 : p > 1/6
+
+Significance levels in hypothesis testing
+we defines p as the probability that a coin lands on heads when tossed randomly
+we want ot check whether the coin is biased toward landing on heads we have the following null and alternative hypotheses
+H_0 : p = 1/2
+H_1 : p > 1/2
+the test statistic is X = the number of times the coin lands on heads after 10 tosses
+we conduct our experiment and get 9 heads out of 10 tosses intuitively 9 heads from 10 tosses would suggest that the coin is biased toward landing on heads, but we do have enough statistical evidence to conclude that the coin is biased?
+Whether we have a statistically significant result we need to figure out whether the probability of getting 9 from 10 tosses is small enough to conclude that the coin is biased.
+we must first quantify what we mean when we say a probability is small enough so we set a threshold for the experiment called a significance level often denoted α the significance level specifies a probability that would lead to a statistically significant result for this experiment say
+α = 5%
+under the conditions specified in the null hypothesis the random variable X is a binomial random variable
+X ~ B(10,1/2)
+we can compute the probability of getting X >= 9 heads under the null hypothesis using our knowledge of the binomial distribution
+P(X >= 9) = P(X = 9) + P(X = 10)
+= (10,9)(1/2)^9(1/2)^10-9 + (10,10)(1/2)^10(1/2)^10-10
+= 10 * (1/2)^10 + 1 * (1/2)^10
+= 11 * (1/2)^10
+= 0.0107
+= 1.07%
+This probability is smaller than our significance level of 5% this means that our result is statistically significant in other words it is unlikely that this event could have occured if the null hypothesis is true.
+Therefore we should reject the null hypothesis and conclude that the coin is biased.
+
+Critical regions and critical values
+The significance level α referes not just to a single probability but to all x-values within the critical region. The critical region contains all x-values that are collectively unlikely under the null hypothesis and therefore cause the null hypothesis to be rejected.
+consider random variable X
+X ~ B(10,1/2)
+Getting 8-10 heads out of 10 tosses causes us to reject the null hypothesis its easy to show
+P(X >= 8) = 4.4% < α and P(X >= 10) = 0.1% < α
+however x = 7 does not lie in the critical region
+P(X >= 7) = 11.72% > α
+the critical region for this hypothesis test at the 5% significance level is x ∈ {8,9,10}
+the value x = 8 is called the critical value since it lies on the boundary between the critical region and the region where we do not reject H_0
+So the idea behind the significance level α = 5% is that the sum of all probabilities inside the critical region is less than 5%
+α = 5% is a common significance level other common values include α = 10% and α = 1% selecting a different significance level will generally change the critical region
+The good choice of significance level depends on the experiment but as a rule of thumb α = 5% is deemed unlikely while α = 1% is very unlikely
+
+Identifying a critical region
+An Olive Garden suspects that the average number of customers per hour has decreased since the opening of Red Lobster, before the opening of Red Lobster 8 customers per hour visted Olive Garden, let X represent the number of customers arriving at Olive Garden in a randomly selected one hour period. Under the null hypothesis that the average number of customers is the same as before, what is the critical region of a one-tailed test at a significance level of 5%?
+x        |   0  |   1  |   2  |   3  |   4  |   5  |   6  |
+P(X <= x)|0.0003|0.0030|0.0138|0.0424|0.0996|0.1912|0.3134|
+-----------------------------------------------------------
+let λ be the average number of customers per hour that visit the restaurant then we have the null and alt hypotheses
+H_0 : λ = 8
+H_1 : λ < 8
+the critical region is the set of values of X for which we reject the null hypothesis
+this is a one sided test where the restaurant owner wishes to conclude that the average number of customers has decreased this would correspond to observing an abnormally small value of X
+to reject the null hypothesis at a significance level of 5% we must observe a value x such that P(X <= x) = 0.05 under the null hypothesis
+P(X <= 0) = 0.0003 < 0.05
+P(X <= 1) = 0.0030 < 0.05
+P(X <= 2) = 0.0138 < 0.05
+P(X <= 3) = 0.0424 < 0.05
+P(X <= 4) = 0.0996 !< 0.05
+the values of X that would cause the null hypothesis to be rejected at a significance level of 5% are 0,1,2, and 3
+the critical region is X <= 3
+
+Identifying a critical region
+A KFC manager things that the average number of customers per hour has decreased since the opening of a competing restaurant, before the competing restaurant opened 10 customers per hour visited KFC Let X represent the number of customers during one hour. Under the null hypothesis that the average number of customers is the same as before what is the critical region of a one-tailed test at a significance level of 1%
+x        |  15  |  16  |  17  |  18  |  19  |  20  |
+P(X <= x)|0.9513|0.9730|0.9857|0.9928|0.9965|0.9984|
+-----------------------------------------------------
+λ = be the average number of customers per hour, null and alt hypotheses
+H_0 : λ = 10
+H_1 : λ > 10
+the critical region is the set of values of X for which we reject the null hypothesis
+this is a one sided test where the manager wishes to conclude that the number of customers has increased this would correspond to observing an abnormally large value of X
+To reject the null at 1% we must observe a value x such that P(X >= x) = 0.01 under the null hypothesis
+under the table we have
+P(X >= 19) = 1 - P(X <= 18)
+= 1 - 0.9928
+= 0.0072
+< 0.01
+P(X >= 18) = 1 - P(X <= 17)
+= 1 - 0.9857
+= 0.0143
+!< 0.01
+So the values of X that would cause the null hypothesis to be rejected at a significance level of 1% are 19 or more
+critical region is X >= 19
+
+A casino has 6 sided dice a gambler suspects it is biased towards landing on 1, X represents the number of times the die lands on 1 when rolled a total of 5 times, under the null hypothesis that the die is fair what is the critical region of a one tailed test at a significance level of 5%?
+x       |  0   |   1  |   2  |   3  |   4  |   5  |
+P(X = x)|0.4019|0.4019|0.1608|0.0322|0.0032|0.0001|
+---------------------------------------------------
+H_0 : p = 1/6
+H_1 : p > 1/6
+to reject the null hypothesis at a significance level of 5% we must observe a value x such taht P(X >= x) = 0.05 under the null hypothesis
+P(X >= 5) = P(X = 5)
+= 0.0001
+< 0.05
+P(X >= 4) = P(X = 4) + P(X = 5)
+= 0.0032 + 0.0001
+= 0.0033
+< 0.05
+P(X >= 3) = P(X = 3) + P(X = 4) + P(X = 5)
+= 0.0322 + 0.0032 + 0.0001
+= 0.0355
+< 0.05
+P(X >= 2) = P(X = 2) + P(X = 3) + P(X = 4) + P(X = 5)
+= 0.1608 + 0.0322 + 0.0032 + 0.0001
+= 0.1963
+!< 0.05
+the values of X that would cause the null hypothesis to be rejected at a significance level of 5% are 3,4,5
+critical region is X >= 3
+
+Identifying a critical value
+A casino dealer has a 6 sided die and a craps gambler suspects it is biased towards landing on 1 let X represent the number of times the die lands on 1 when rolled a total of 5 times under the null hypothesis that the die is fair what is the critical value of a one-tailed test at a significance level of 2.5%
+x       |  0   |   1  |   2  |   3  |   4  |   5  |
+P(X = x)|0.4019|0.4019|0.1608|0.0322|0.0032|0.0001|
+---------------------------------------------------
+H_0 : p = 1/6
+H_1 : p > 1/6
+to reject the null hypothesis at a significance level of 2.5% we must observe a value x such that P(X >= x) = 0.025 under the null hypothesis
+P(X >= 5) = P(X = 5)
+= 0.0001
+< 0.025
+P(X >= 4) = P(X = 4) + P(X = 5)
+= 0.0032 + 0.0001
+= 0.0033
+< 0.025
+P(X >= 3) = P(X = 3) + P(X = 4) + P(X = 5)
+= 0.0322 + 0.0032 + 0.0001
+= 0.0355
+!< 0.025
+the values of X that would cause the null hypothesis to be rejected at a significance level of 2.5% are the values such that X >= 4, the critical value is 4
