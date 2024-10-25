@@ -2651,3 +2651,51 @@ P(X >= 5) = 1 - P(X <= 4)
 !< 0.05
 the values of X that would cause the null hyopthesis to be rejected at a significance level of 10% are the values X <= 0 and X >= 6
 critical values are 0 and 6
+
+===================================================
+
+In statistical hypothesis testing
+A type 1 error occurs if we reject the null hypothesis even though its true type 1 errors are also known as false-positive
+A type 2 error occurs if we do not reject the null even though its false type 2 errors are also known as false-negatives
+         | H0 is true | H0 is false|
+Accept H0|     ✔      |type 2 error|
+Reject H0|type 1 error|     ✔      |
+------------------------------------
+For example, we have the following null and alt hypotheses regarding a population mean μ
+H0 : μ = 2.5
+H1 : μ != 2.5
+a type 1 error would occur if we reject H0 when μ = 2.5
+a type 2 error would occur if we accept H0 when μ != 2.5
+
+Identifying type 1 errors
+given the following null and alternative hypotheses which of the following would be type 1 errors?
+H0 : μ = 3.5
+H1 : μ < 3.5
+1. Accept H0 when μ < 3.5
+2. Accept H0 when μ = 3.5
+3. Reject H0 when μ = 3.5
+type 1 occurs when we reject the null H0 even though it is true.
+1. is type 2 error, 2. is not an error,
+the only correct answer is 3. 
+
+Type 1 errors in modeling contexts
+Larry Page wants to test whether a new feature in google is more effective than the old feature. What would be an example of a type 1 error in this context? For the null hypothesis you should assume that the new feature is as effective as the older one
+A type 1 error occurs when we reject the null hypothesis H0 even though it is true
+in this case the null hypothesis is that the new feature is as effective as the older one
+A type 1 error would consist of Larry Page concluding that the new feature is more effective when it is as effective as the older feature.
+
+Identifying type 2 errors
+given the following null and alternative hypotheses which of the following would be type 2 errors?
+H0 : μ = 100
+H1 : μ < 100
+1. Accept H0 when μ < 100
+2. Reject H0 when μ < 100
+3. Reject H0 when μ = 100
+A type 2 error occurs when we accept the null hypothesis H0 even though it is false
+1. this is a type 2 error, 2. is not an error, 3. is a type 1 error
+
+Type 2 error modeling contexts
+An SAT admin whats to test whether students score higher under a new SAT format than under the existing one. What would be an example of a type 2 error in this context? For the null hypothesis should assume that the students score is the same under the new format format as the existing one.
+A type 2 error occurs when we accept the null hypothesis H0 even though it is false
+in this case the null hypothesis is that students score the same under both formats
+A type 2 error would consist of the administrator concluding that the students score is the same under the new format when they in fact scored higher
