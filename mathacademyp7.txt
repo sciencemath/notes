@@ -2699,3 +2699,193 @@ An SAT admin whats to test whether students score higher under a new SAT format 
 A type 2 error occurs when we accept the null hypothesis H0 even though it is false
 in this case the null hypothesis is that students score the same under both formats
 A type 2 error would consist of the administrator concluding that the students score is the same under the new format when they in fact scored higher
+
+===================================================
+
+NOTE:
+when testing alt hypothesis with μ < x we should consider left tail
+and vise versa for one-tail.
+
+NOTE:
+insufficient evidence means we accept the null hypothesis and is NOT within the critical areas (left or right tails).
+
+Hypothesis tests for one mean: known variance
+Suppose the scores on a particular math test are normally distributed with mean μ = 69 points and SD σ = 14 points after changing some test criteria the test admins suspect that the mean score is now greater than 69 points, they decide to carry out a hypothesis at the 5% significance level, they sample 30 test results and found taht the sample mean was x̄ = 75 points.
+is there sufficient evidence to conclude that the mean score is now greater than 69 points?
+First we'll write down the null and alt hypotheses and establish the critical region of the test
+Second we'll compute the test statistic and determine whether the result is statistically significant
+The population is normally distributed, therefore the distribution of the sample mean is also normal
+X̄ ~ N(μ, σ^2/n)
+and we have
+(X̄ - μ)/(σ/sqrt(n)) ~ N(0,1)
+X̄ = the sample mean
+μ = the population mean
+σ^2 = population variance
+n = sample size
+H0 : μ = 69 is the null hypothesis
+H1 : μ > 69 is the alt (one-tailed) hypothesis
+to find the critical region for this test at the α = 5% level of significance we need to find a particular value zp of Z
+P(Z >= zp) = α = 0.05
+we can use the following percentage points table
+p |0.100|0.050|0.025|0.010|0.005|
+zp|1.282|1.645|1.960|2.326|2.576|
+---------------------------------
+P(Z > 1.645) = 0.05
+z0.05 = 1.645 is our critical value
+Z > 1.645 the critical region
+out of a sample of 30 tests, the mean of the sample was 75 points therefore we have the following sample data
+x̄ = 75, n = 30
+assuming the null hypothesis is true, μ = 69 and σ = 14 we can compute the test statisitc as follows
+z = (x̄ - μ)/(σ/sqrt(n))
+= (75 - 69)/(14/sqrt(30))
+= 2.347
+if we assume that the population mean is μ = 69 the null hypothesis is true getting a sample mean of x̄ = 75 or more has a probability that is smaller than 0.05 = 5% our significance level.
+we have a statistically significant result and reject the null hypothesis
+there is sufficient evidence that at the 5% level of significance we have μ > 69
+
+To conduct a one-tailed hypothesis test for the population mean with known population variance
+step 1: check the conditions
+The population variance σ^2 must be known
+The distribtion must be normal (or the sample size must be sufficiently large)
+step 2: define the test
+pick a significance level (%)
+state the null and alternative hypotheses
+H0 : μ = μ0
+H1 : μ > μ0 for a right-tailed test or H1 : μ < μ0 for a left-tailed test
+μ0 is the value of μ under the null hypothesis
+step 3: compute the test statistic
+assuming the null hypothesis compute the test statistic
+z = (x̄ - μ)/(σ/sqrt(n))
+compute the critical value using the standard normal distribution and write down the critical region
+step 4: interpret the result:
+reject the null hypothesis if the test statistic z lies inside the critical region, we say there is sufficient evidence to reject the null hypothesis at the given significance level
+dont reject the null hypothesis if the test statistic z lies outside the critical region, we say that there is insufficient evidence to reject the null hypothesis at the given significance level
+
+Testing a hypothesis given a normal population: one-tailed tests
+consider a sample of size n = 45 from a normal population with a SD σ = 7 we wish to carry out a hypothesis test at a 5% significance level to determine whether there is sufficient evidence that the population mean μ is smaller than 18
+given that the mean of the sample is x̄ = 17 which of the following statments are true?
+1. The one-tailed critical region for the test statistic is approximately Z <= -2.576
+2. At the 5% level of significance there is insufficient evidence that μ < 18
+3. At the 5% level of significance there is sufficient evidence that μ < 18
+Hint: given a random variable Z ~ N(0,1) the table shows the z-scores zp such that P(Z >= zp) = p for some particular values of p
+p |0.100|0.050|0.025|0.010|0.005|
+zp|1.282|1.645|1.960|2.326|2.576|
+---------------------------------
+H0 : μ = 18 is the null hypothesis
+H1 : μ < 18 is the alt (one-tailed) hypothesis
+assuming the null hypothesis (i.e. μ = 18)
+we compute the test statistic
+z = (x̄ - μ)/(σ/sqrt(n))
+= (17 - 18)/(7/sqrt(45))
+~= -0.958
+statement 1 is false according to the table the 5% one-tailed value is z ~= 1.645
+since the alt hypothesis is μ < 18 we must consider the left tail we do this using the symmetry of the normal distibution so our critical region is
+Z <= -1.645
+statement 2 is true, while statement 3 is false our test statistic (-0.958) does not lie in the critical region
+so we do not reject the null hypothesis H0
+we conclude: there is insufficient evidence that at the 5% level of significance we have μ < 18
+the only correct answer is 2
+
+example:
+consider sample of size n = 60 from a normal population with a SD σ = 4 we wish to carry out a hypothesis test at 1% significance level to determine whether there is sufficient evidence that the population mean μ is larger than 31
+given that the sample mean is x̄ = 33, which statements are true
+1. the one-tailed critical region for the test statistic is approximately Z >= 2.326
+2. at the 1% level of significance there is insufficient evidence that μ > 31
+3. at the 1% level of significance there is sufficient evidence that μ > 31
+= (33 - 31)/(4/sqrt(60))
+= 2*sqrt(60)/4
+= 3.87
+statement one is true 1% ~= 2.326 (from the table above)
+since alt is μ > 31 we must consider right tail critical region is
+Z >= 2.326
+statement 2 is false, while statement 3 is true. our test statistic 3.873 lies in the critical region. (lower than 1%)
+so we reject the null hypothesis H0 there is sufficient evidence at the 1% level of significance we have μ > 31
+
+example:
+Consider a sample of size n = 20 from a normal population with SD σ = 5 we wish to carray out a hypothesis that at a 1% significance level to determine whether there is sufficient evidence that the population mean μ is smaller than 50
+given that the sample mean x̄ = 49, which of the following statements is true?
+1. the one-tailed critical region for the test statistic is approximately Z <= -2.326
+2. at the 1% level significance there is insufficient evidence that μ < 50
+3. at the 1% level significance there is sufficient evidence that μ < 50
+= (49 - 50)/(5/sqrt(20))
+= -0.894
+statement 1 is true account to the table the 1% one-tailed critical value is z ~= 2.326
+since the alt hypothesis is μ < 50 we must consider the left tail, we do this by symmetry of the normal distribution, our critical region is Z <= -2.326
+statement 2 is true while 3 is false our test statistic is -0.894 does not lie in the critical region (IT IS NOT LOWER THAN THE LEFT TAIL OF Z = INSUFFICENT outside the bounds)
+we do not reject the null hypothesis H0 we conclude
+there is insufficient evidence that at the 1% level of significance we have μ < 50
+
+Two-tailed hypothesis tests
+to conduct a two-tailed hypothesis test for the population mean with known population variance we proceed similarly to the one-tailed case. its similar to the one-tailed case the only differences
+the alt hypothesis will be H1 : μ != μ0
+We compute the critical value and write down the critical region by considering both tails of the distribution if the significance level is α then we allow α/2 at either tail.
+
+Testing a hypothesis given a normal population: two-tailed tests
+Consider a sample of size n = 50 from a normal population with a SD σ = 12 we wish to carry out a hypothesis test at the 10% level of significance to determine whether there is sufficient evidence that the population mean μ does not equal 26
+given that the mean of the sample x̄ = 25 which of the following statements are true?
+1. The two-tailed critical region for the test statistic is approximately Z <= - 1.645 or Z >= 1.645
+2. At the 10% level of significance there is insufficient evidence that μ != 26
+3. At the 10% level of significance there is sufficient evidence that μ != 26
+(same table as before)
+p |0.100|0.050|0.025|0.010|0.005|
+zp|1.282|1.645|1.960|2.326|2.576|
+---------------------------------
+H0 : μ = 26 is the null hypothesis
+H1 : μ != 26 is the alternative (two-tailed) hypothesis
+assuming the null computing the statistic
+z = (x̄ - μ)/(σ/sqrt(n))
+= (25 - 26)/(12/sqrt(52))
+~= -0.589
+statement 1 is true, according to the table the 5% two-tailed critical value the same as the 10%/2 = 5%, z ~= 1.645
+since both tails our critical region is
+Z <= -1.645 or Z >= 1.645
+statement 2 is true, while statement 3 is false our test statistic -0.589 does not lie in the critical region (non-critical between the Z values)
+so we do not reject the null hypothesis H0 as a result we conclude there is insfficient evidence that at the 10% level of significance we have μ != 26 therefore correct answer is 1 and 2 only
+
+Large samples
+We've assumed that the underlying population is normally distributed, if we have sufficiently large sample according to the central limit theorem we can use
+(X̄ - μ)/(σ/sqrt(n)) ~= N(0,1)
+sufficiently large means that n >= 30
+even through we might not know the underlying distribution we can still use the following formula for the test statistic:
+z = (x̄ - μ)/(σ/sqrt(n))
+
+Testing a hypothesis for a large sample
+Consider a sample of size n = 250 from a population with a SD σ = 7 we wish to carry out a hypothesis test at the 2.5% significance level to determine whether there is a sufficient evidence that a population mean μ is smaller than 10
+given that the mean of the sample is x̄ = 9, which of the following is true?
+1. The critical region for the test statistic is approximately Z <= -2.576
+2. At the 2.5% level of significance there is insufficient evidence that μ < 10
+3. At the 2.5% level of significance there is sufficient evidence that μ < 10
+H0 : μ = 10 is the null hypothesis
+H1 : μ < 10 is the alternative (one-tailed) hypothesis
+(9 - 10)/(7/sqrt(250))
+~= -2.259
+statement 1 is false 2.5% (one-tailed) critical calue is ~= 1.960
+p |0.100|0.050|0.025|0.010|0.005|
+zp|1.282|1.645|1.960|2.326|2.576|
+---------------------------------
+since the alt is μ < 10 we must consider the left tail so our critical region is Z <= -1.960
+statement 2 is false while 3 is true our test statistic -2.259 lies in the critical region, so we reject the null hypothesis H0 so we conclude that there is sufficient evidence that at the 2.5% level of significance we have μ < 10
+the only correct answer is 3
+
+Applications of hypothesis testing
+Ben and Jerrys claims that the weight of the vanilla flavor has population mean μ = 50g and population SD σ = 5, an qa team member selected 150 ice cream containers of vanilla ice cream and found that their mean weight is 49.3g. They wish to carry out a hypothesis test to determine whether there is sufficient to challenge the manufacturer's claim
+using a 5% significance level to determine whether there is sufficient evidence that the population mean μ does not equal 50g determine which of the following statements are true
+1. The critical region for the test statistic is approximately Z <= -1.645 or Z >= 1.645
+2. at the 5% level of significance there is insufficient evidence that μ != 5g
+3. at the 5% level of significance there is sufficient evidence that μ != 50g
+H0 : μ = 50 is the null hypothesis
+H1 : μ != 50 is the alt (two-tailed) hypothesis
+we have
+x̄ = 49.3g, n = 150, σ = 5g
+z = (x̄ - μ)/(σ/sqrt(n))
+= (49.3 - 50)/(5/sqrt(150))
+= -1.715
+statement 1 is false according to the table 5% of two tails critical value the same as the 5%/2 = 2.5% z ~= 1.960
+p |0.100|0.050|0.025|0.010|0.005|
+zp|1.282|1.645|1.960|2.326|2.576|
+---------------------------------
+Since we are considering both tails our critical region is
+Z <= -1.960 or Z >= 1.960
+statement 2 is true while statement 3 is false out test statistic -1.715 does not lie in the critical region.
+we can't reject the null hypothesis H0, there is insufficient evidence that at the 5% level of significance we have μ != 50
+correct answer is 2 only
