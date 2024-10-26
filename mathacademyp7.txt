@@ -3192,3 +3192,105 @@ critical region is
 Z <= -1.645 or Z >= 1.645
 statement 2 is true while 3 is false, our test statistic (-0.802) does not lie in the critical region, so we can reject the null hypothesis, there is insufficient evidence that at 10% level of significance μx != μy
 correct answer is 1 and 2
+
+===================================================
+
+Confidence intervals for one mean: known population variance
+We conduct a random sample of size n = 10 from a normal population with the unknown population mean μ and known population variance σ^2 = 9 after processing our results we compute the mean of this sample using the usual methods
+x̄ = 12
+this is an unbiased estimate of the population mean μ. However this is not enough data to know regarding its reliability.
+For this reason its more helpful to give a range of possible values for μ, in other words instead of reporting a single esitmate x̄ we might insteead report a so-called confidence interval which is an interval of the form
+(x̄ - E, x̄ + E)
+x̄ is our estimate of population mean
+E is some margin of error
+we need to give some indication regarding the reliability of our confidence interval with this in mind we will construct a 95% confidence interval for the population mean μ.
+
+Constructing confidence intervals
+The population is normally distributed, therefore the sample mean X̄ is also normally distributed
+X̄ ~ N(μ, σ^2/n)
+by tansforming X̄ to a standard normal random variable
+Z = (X̄ - μ)/(σ/sqrt(n)) ~ N(0,1)
+we wish to find a z-interval that we're 95% confident that the random variable Z lies within this interval, to help with the notation we define α since we're computing a 95% confidence interval
+α = 1 - 0.95 = 0.05 => α/2 = 0.025
+α/2 is precisely the area bounded by each tail that we're excluding from our confidence interval, the critical values at the endpoints of our interval as +/-z_α/2
+P(Z > z_0.025) = P(Z < -z_0.025) = 0.025
+using a percentage points table for the standard normal distribution we find that z_0.025 ~= 1.96
+P(Z > 1.96) = P(Z < -1.96) = 0.025
+or simply
+P(-1.96 < Z < 1.96) = 0.95
+there is a 95% probability that our random variable Z will lie in the interval (-1.96,1.96)
+we solve the inequality inside the parentheses of the last probability statement for the population mean μ
+-1.96 < Z < 1.96
+-1.96 < (x̄ - μ)/(σ/sqrt(n)) < 1.96
+-1.96 * σ/sqrt(n) < (x̄ - μ) < 1.96 * σ/sqrt(n)
+-x̄ - 1.96 * σ/sqrt(n) < -μ < -x̄ + 1.96 * σ/sqrt(n)
+x̄ + 1.96 * σ/sqrt(n) > μ > x̄ - 1.96 * σ/sqrt(n)
+x̄ - 1.96 * σ/sqrt(n) < μ < x̄ + 1.96 * σ/sqrt(n)
+A 95% confidence interval for the population mean μ is
+(x̄ - 1.96 * σ/sqrt(n), x̄ + 1.96 * σ/sqrt(n))
+substituting
+n = 10, x̄ = 12, σ = 3
+95% confidence interval for μ
+(12 - 1.859, 12 + 1.859)
+
+Confidence intervals for normal populations with known population variance
+we have a random sample of size n from a normal population with the unknown population mean μ and known population variance σ^2 then for a given value α between 0 and 1 a [100(1 - α)]% confidence interval for the population mean μ
+(x̄ - z_a/2 * σ/sqrt(n), x̄ + z_a/2 * σ/sqrt(n))
+P(Z > z_a/2) = α/2 and Z ~ N(0,1)
+the endpoints of our confidence interval are called confidence limits
+x̄ +/- z_a/2 * σ/sqrt(n)
+x̄ = estimate of population mean
+σ/sqrt(n) = standard error of the mean
+z_a/2  = corresponding z-score
+E = z_a/2 * σ/sqrt(n) is the margin of error
+confidence interval can be written as follows:
+(x̄ - [margin of error], x̄ + [margin of error])
+(x̄ - [z-score] * [standard error], x̄ + [z-score] * [standard error])
+(x̄ - z_a/2 * σ/sqrt(n), x̄ + z_a/2 * σ/sqrt(n))
+computing a confidence interval amount to finding the corresponding confidence limits
+
+Finding confidence intervals from normal populations
+consider a sample of size n = 9 from a normal population with SD σ = 2 given that the mean of the sample is x̄ = -5, find a 90% confidence interval for the population mean μ of the distribution
+Hint: use the face that P(Z > 1.645) = 0.05, where Z ~ N(0,1)
+given a value α between 0 and 1 the corresponding [100(1 - α)]% confidence interval for the population mean μ of the original distribution
+x̄ +/- z_a/2 * σ/sqrt(n)
+where P(Z > z_a/2) = α/2 and Z ~ N(0,1)
+90% confidence interval
+α = 1 - 0.9 - 0.1 => α/2 = 0.05
+were given that P(Z > 1.645) = 0.05
+z_a/2 = z_0.05 = 1.645
+therefore a 90% confidence interval for the population mean μ
+-5 +/- 1.645 * 2/sqrt(9)
+= -5 +/- 1.097
+
+Interpreting confidence intervals
+its important to be able to interpret confidence intervals correctly Imagine we conduct several independent random samples from a population. The mean of the sample will be different for each sample some values of x̄ might lie close to the population mean μ and some could lie further away.
+If we contruct 90% confidence intervals one for each sample then approximately 90% of theseintervals will contain the population mean μ
+
+Finding confidence intervals from large samples
+Consider a sample of size n = 196 from a population with SD σ = 7 given that the mean of the sample is x̄ = 24 find a 95% confidence interval for the population mean μ of the distribution
+Hint: Use P(Z > 1.96) = 0.025 where Z ~ N(0,1)
+sample size n = 196 >= 30 sufficiently large
+finding a 95% confidence interval
+α = 1 - 0.95 = 0.05 => α/2 = 0.025
+P(Z > 1.96) = 0.025
+z_a/2 = z_0.025 = 1.96
+the 95% condfidence interval for the population mean μ
+24 +/- 1.96 * 7/sqrt(196)
+24 +/- 0.98
+
+Finding confidence intervals: applications
+The daily percentage return of Apple stock has a population SD σ = 5% a sample of 90 randomly selected trading days was examined and it was found that the mean daily return of the stock over these days was 7.5% find a 90% confidence interval for the mean daily percentage return μ of the entire population of trading days 
+p |0.100|0.050|0.025|0.010|0.005|
+zp|1.282|1.645|1.960|2.326|2.576|
+---------------------------------
+we don't know the distribution of the population, the sample size n = 90 >= 30 is sufficiently large
+x̄ = 7.5, n = 90, σ = 5
+we are interested finding a 90% confidence interval
+α = 1 - 0.9 = 0.1 => α/2 = 0.05
+from the table z_0.05 = 1.645
+90% confidence interval for the population mean μ
+7.5 +/- 1.645 * 5/sqrt(90)
+7.5 +/- 0.867
+
+(rest of these examples are just looking up percentage table with the confidence percentage e.g. α = 1 - 0.99 = 0.01 => α/2 = 0.005, and substituting in all the values given)
