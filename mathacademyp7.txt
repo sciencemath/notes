@@ -2897,6 +2897,7 @@ some of the exercises were long to write, and just be confusing to read later (l
 
 NOTE:
 when to use one-tail, its when we are testing the sample mean > or < in the alternative, two-tail if alt !=
+(< left tail) (> right tail)
 
 Always having the variance (σ^2) when conducting a hypothesis test is often unrealistic its doubtful that we'll know the population variance yet not know the population mean.
 A more realistic situation is that σ^2 is unknown and we must estimate it from the sample data
@@ -3053,3 +3054,141 @@ statement 2 is true while statement 3 is false our test statistic (-1.054) does 
 so we can't reject the null hypothesis H0 as a result there is insufficient evidence that at the 10% level of significance we have μ < 189
 correct answer is 2 only.
 
+===================================================
+
+NOTE:
+Most of the examples, we just have to plug in values and use the formula and reasoned about the values obtained.
+
+There are cases where we need to use the hypothesis tests to show a statistically significant difference between two population means in cases where the population variances are known 
+We have two normally distributed populations X and Y where
+X ~ N(μx,σx^2), Y ~ N(μy,σy^2)
+if we conduct a random smaple of size nx from the first population and a second independent random sample of size ny from the second population
+X̄ ~ N(μx,σx^2/nx), Ȳ(μy,σy^2/ny)
+where X̄ and Ȳ are sample means
+we know that the sum or difference of two independent norally distributed random variables is also normal, using our usual results for subtracting means and variances
+X̄ - Ȳ ~ N(μx - μy, σx^2/nx + σy^2/ny)
+this means the the random variable Z is
+Z = (X̄ - Ȳ - (μx - μy))/(sqrt(σx^2/nx + σy^2/ny))
+follows a normal distribution N(0,1)
+
+Independent vs Dependent samples
+We assume that samples from two populations X and Y are independent two samples are independent if they are not directly related or connected
+The selection or outcome of one sample does not influence the selection or outcome of the other
+the individuals or data points within each sample are not paired or matched in any way, and there is no inherent relationship between the observartions in the two groups
+Independent Samples
+A pharmaceutical company wants to test the effectiveness of a new drug for treating high blood pressure, so they recruit 100 participants with high blood pressure, 50 of whom are randomly assigned to receive the new drug (the treament group) and 50 to receive a placebo (the control group) the blood pressure of participants in both groups is measured after a certain period
+in this case, the treatment and control groups represent independent samples as the outcomes in one group are not influenced by the outcomes in the other group and participants are not paired or matched in any way
+Dependent Samples
+The pharmaceutical company wants to test the effectiveness of the high blood pressure drug, they recruit 50 participants all of whom have high blood pressure each participant's blood pressure is measured before starting the drug treatment (baseline measurement). Then all participants receive the new drug for a certain period and their blood pressure is measured again after completing the treatment (post-treatment measurement)
+The two samples (basline and post-treatment measurements) represents dependent samples. This is because the samples are collected from the same group of participants at two different points in time, and each participant's post-treatment blood pressure is related to their baseline blood pressure.
+
+The null and alternative hypotheses
+A factory has two machines, machine X and machine Y that independently produce table tennis balls. The diameters of the balls made by the machines are known to be normally distributed with SD of σx = 0.25mm and σy = 0.3mm
+Engineers want to know whether the population mean diameter μx of balls produced by machine X is larger than the population mean diameter μy of balls made by machine Y they decide to conduct a hypothesis test at the 5% significant level.
+The engineer sample 14 balls produced by machine X and 16 balls made by machine Y and found that their mean are 40.2mm and 39.9mm respectively is there sufficient evidence that μx > μy based on data from this sample?
+The populations are normally distributed and the sample are independent therefore the distribution of the difference of sample means is also normal
+X̄ - Ȳ ~ N((μx - μy), (σx^2/nx + σy^2/ny))
+H0 : μx = μy is the null hypothesis
+H1 : μx > μy is the alt (one-tailed) hypothesis
+α = 5%
+find the critical region
+P(Z >= zp) = α = 0.05
+p |0.100|0.050|0.025|0.010|0.005|
+zp|1.282|1.645|1.960|2.326|2.576|
+---------------------------------
+P(Z > 1.645) = 0.05
+Z_0.05 = 1.645 is our critical value
+Z >= 1.645 the critical region
+sample data
+x̄ = 40.2,  ȳ = 39.9
+nx = 14,   ny = 16
+σx = 0.25, σy = 0.3
+assuming the null hypothesis μx = μy test statistic
+z = (x̄ - ȳ - (μx - μy))/(sqrt(σx^2/nx + σy^2/ny))
+= (40.2 - 39.9 - (0))/(sqrt(0.25^2/14 + 0.3^2/16))
+~= 2.987
+if we assume μx = μy (null is true) getting two samples where the means differ by x̄ - ȳ = 0.3mm or more has a probability that is smaller than 0.05 = 5% our significance level our significance level
+we have a statistically significant result and reject the null hypothesis
+in conclusion there is sufficient evidence that at the 5% level of significance we have μx > μy
+
+Testing a hypothesis given two normal populations: one-tailed test
+consider two independent samples of sizes nx = 35 and ny = 15 from normal populations X and Y with SD σx = 2 and σy = 3 testing the hypothesis test at the 5% significance level to determine whether there is sufficient evidence that the population mean μx of X is smaller than the population mean μy of Y
+the sample means are x̄ = 6 and ȳ = 7 which statements are true
+1. the 5% one-tailed critical region for the test statistic is approximately Z <= -1.960
+2. at the 5% level of significance there is insufficient evidence that μx < μy
+3. at the 5% level of significance there is sufficient evidence that μx < μy
+p |0.100|0.050|0.025|0.010|0.005|
+zp|1.282|1.645|1.960|2.326|2.576|
+---------------------------------
+H0 : μx = μy is the null hypothesis
+H1 : μx < μy is the alt one-tailed hypothesis
+assuming null
+z = (x̄ - ȳ - (μx - μy))/(sqrt(σx^2/nx + σy^2/ny))
+= (6 - 7 - (0))/(sqrt(2^2/35 + 3^2/15))
+~= -1.183
+statement 1 is false according to the table, the 5% one-tailed critical value is z ~= 1.645
+since the hypothesis is μx < μy we must consider the left tail we do this using the symmetry of the normal distribution so the critical region is
+Z <= -1.645
+statement 2 is true while statement 3 is false -1.183 is above the table at 0.05 being at -1.645 so it does not lie in the critical region we do not reject the null hypothesis H0 there is insufficient evidence that at the 5% level of significance we have μx < μy
+
+Testing a hypothesis given two normal populations: two-tailed tests
+consider two independent samples of sizes nx = 12 and ny = 15 from normal population X and Y with SD σx = 2 and σy = 4, test the hypothesis at 10% significance level to determine whether there is sufficient evidence that the population mean μx of X is not equal to the population mean μy of Y
+sample means are x̄ = 25 and ȳ = 24 which statements are true?
+1. the 10% two-tailed critical region for the test staatistic is approximately Z <= -1.645 or Z >= 1.645
+2. at the 10% level of significance there is insufficient evidence that μx != μy
+3. at the 10% level of significance there is sufficient evidence that μx != μy
+p |0.100|0.050|0.025|0.010|0.005|
+zp|1.282|1.645|1.960|2.326|2.576|
+---------------------------------
+H0 : μx = μy null hypothesis
+H1 : μx != μy alt two-tailed hypothesis
+z = (x̄ - ȳ - (μx - μy))/(sqrt(σx^2/nx + σy^2/ny))
+= (25 - 24 - (0))/(sqrt(2^2/12 + 4^2/15))
+~= 0.845
+statement 1 is true, according to the table the 10% two-tailed critical value (same as 10%/2 = 5%) is z ~= 1.645
+critical region is Z <= -1.645 or Z >= 1.645
+statement 2 is true, while statement 3 is false our test statistic 0.845 does not lie in the critical region
+reject the null hypothesis H0, there is insufficient evidence that at the 10% level of significance we have μx != μy
+correct statements are 1 and 2 only.
+
+Sufficiently large means that nx >= 30 and ny >= 30
+
+Testing a hypothesis given two large samples
+Consider independent two samples of sizes nx = 82 and ny = 71 from populations X and Y with SD σx = 12 and σy = 9 we want to carry out hypothesis test at 5% significance level to determine whether there is sufficient evidence that the population mean μx of X is smaller than the population mean μy of Y
+given that the sample means x̄ = 12 ȳ = 17
+1. the 5% critical region for the test statistic is approximately Z <= -1.645
+2. At the 5% level of significance there is insufficient evidence that μx < μy
+3. At the 5% level of significance there sufficient evidence that μx < μy
+samples are independent and nx = 82 > 30, ny = 71 >= 30
+H0 : μx = μy null hypothesis
+H1 : μx < μy alt one-tailed hypothesis
+z = (x̄ - ȳ - (μx - μy))/(sqrt(σx^2/nx + σy^2/ny))
+= (12 - 17 - (0))/(sqrt(12^2/82 + 9^2/71))
+~= -2.938
+statement 1 is true according to the table the 5% one-tailed critical value is z ~= 1.645
+since at is μx < μy we must consider the left tail using the symmetry of the normal distribution so our critical region is
+Z <= -1.645
+statement 2 is false, while statement 3 is true, test statistic (-2.938) lies in the critical region so we reject the null hypothesis H0 there is sufficient evidence that at the 5% level of significance we have μx < μy
+correct answer is 1 and 3 only.
+
+Applications of hypothesis testing
+Previous studies show that the scores of men and women on a particular test have SD of 17 and 14 points. Scientists want to determine whether the population mean μx for men is the same as the population mean μy for women, hypothesis test at 10% significance level
+given that the scientists sampled 150 men and 125 women found that their mean scores on the test are 99.7 points and 101.2 points
+1. the 10% critical region for the test statistic is approximately Z <= -1.645 or Z >= 1.645
+2. the 10% level of significance there is insufficient evidence that μx != μy
+3. the 10% level of significance there is sufficient evidence that μx != μy
+p |0.100|0.050|0.025|0.010|0.005|
+zp|1.282|1.645|1.960|2.326|2.576|
+---------------------------------
+samples are independent nx = 150 >= 30, and ny = 125 >= 30 are sufficienlty large
+H0 : μx = μy null hypothesis
+H1 : μx != μy alt two-tailed hypothesis
+we have
+x̄ = 99.7, ȳ = 101.2, nx = 150, ny = 125, σx = 17, σy = 14
+= (99.7 - 101.2 - (0))/(sqrt(17^2/150 + 14^2/125))
+~= -0.802
+statement 1 is true, according to the table, 10% two-tailed critical value (10% / 2 = 5%) for the z-score ~= 1.645
+critical region is
+Z <= -1.645 or Z >= 1.645
+statement 2 is true while 3 is false, our test statistic (-0.802) does not lie in the critical region, so we can reject the null hypothesis, there is insufficient evidence that at 10% level of significance μx != μy
+correct answer is 1 and 2
