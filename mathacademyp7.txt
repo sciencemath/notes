@@ -2889,3 +2889,167 @@ Z <= -1.960 or Z >= 1.960
 statement 2 is true while statement 3 is false out test statistic -1.715 does not lie in the critical region.
 we can't reject the null hypothesis H0, there is insufficient evidence that at the 5% level of significance we have μ != 50
 correct answer is 2 only
+
+===================================================
+
+NOTE:
+some of the exercises were long to write, and just be confusing to read later (less is more sometimes), most of the time I just used the formula below and reasoned about the given statements. 
+
+NOTE:
+when to use one-tail, its when we are testing the sample mean > or < in the alternative, two-tail if alt !=
+
+Always having the variance (σ^2) when conducting a hypothesis test is often unrealistic its doubtful that we'll know the population variance yet not know the population mean.
+A more realistic situation is that σ^2 is unknown and we must estimate it from the sample data
+to compute an unbiased estimate of the population variance σ^2 we use the sample variance S^2 given by
+S^2 = 1/n-1Σ^n_i=1(Xi - X̄)^2
+Xi is a sample element, X̄ sample mean, n sample size
+it can be shown that the random variable
+(X̄ - μ)/(S/sqrt(n)) ~ T_n-1
+T_n-1 is a student's t-distribution with n - 1 degrees of freedom
+if the variance is unknown we use the t-distribution instead of a normal distribution when conducting our hypothesis test other than that the process is the same as before
+
+Describing the null and alternative hypotheses
+Suppose the waiting time to get a popeyes chicken sandwhich is normally distributed the team lead target is that the mean waiting time should be no longer than 10 minutes after some changes to their processes the team lead now believe that the mean waiting time is longer than 10 minutes and decide to conduct a hypothesis test at the 1% significance level.
+The team lead samples 18 customers and found that their mean waiting time is x̄ = 11min the sample SD is s = 1.5min, is there sufficient evidence to conclude that the mean waiting time is greater than 10min? we are told that the population is normally distributed however we do not know the population variance σ^2 therefore we will use the fact that the random variable
+(X̄ - μ)/(S/sqrt(n))
+follows a student's t-distribution with n - 1 degrees of freedom
+H0 : μ = 10min is the null hypothesis
+H1 : μ > 10min is the alternative (one-tailed) hypothesis
+the critical region contains all t-values that are collectively unlikely under the null hypothesis and therefore cause the null to be rejected
+Let T be a t-distributed random variable with k = 18 - 1 = 17 degrees of freedom to find the critical region for this test at the α = 1% level of significance we need to find a particular value t_17,0.01
+P(T > t_17,0.01) = α = 0.01
+k\p|0.100|0.050|0.025|0.010|0.005|
+15 |1.341|1.753|2.131|2.602|2.947|
+16 |1.337|1.746|2.120|2.583|2.921|
+17 |1.333|1.740|2.110|2.567|2.898|
+----------------------------------
+P(T > 2.567) = 0.01
+t_17,0.01 = 2.567 is our critical value
+T >= 2.567 the critical region
+(from our table)
+
+Computing the test statistic
+we have the following critical region at the 1% significance level
+we're told that out of a sample of 18 customers the mean of the sample was 11 minutes and the variance was 1.5min
+x̄ = 11min, s = 1.5min, n = 18
+assuming the null hypothesis
+t = (x̄ - μ)/(s/sqrt(n))
+= (11 - 10)/(1.5/sqrt(18))
+~= 2.828
+our test statistic 2.828 lies in the critical region
+(which is higher than 1% at 2.567)
+if we assume that the population mean is μ = 10min (the null is true) getting a sample with a mean of x̄ = 11min or more has a probability that is smaller than 0.01 = 1% our significance level
+Therefore we have a statistically sigificant result and reject the null hypothesis
+in conclusion there is sufficient evidence that at the 1% level of significance we have μ > 10min
+
+Testing a hypothesis given a normal population on tailed tests
+consider a sample of size n = 6 from a normal population we want to test at 5% significance level to determine whether there is sufficient evidence that the population mean μ is smaller than 2
+the mean of the sample is x̄ = 0 and the sample SD is s = 4 which statements are true?
+1. The one-tailed critical region for the test statistic is approximately T <= -2.015
+2. At the 5% level of significance there is insufficient evidence that μ < 2
+3. At the 5% level of significance there is sufficient that μ < 2
+k\p|0.100|0.050|0.025|0.010|0.005|
+15 |1.533|2.132|2.776|3.747|4.604|
+16 |1.476|2.015|2.571|3.365|4.032|
+17 |1.440|1.943|2.447|3.143|3.707|
+----------------------------------
+we are told that the population is normally distributed but we do not know the population variance σ
+H0 : μ = 2 is the null hypothesis
+H1 : μ < 2 is the alt (one-tailed) hypothesis
+compute test statistic:
+= (0 - 2)/(4/sqrt(6))
+~= -1.225
+statement 1 is true, according to the table 5% one tailed critical value for a t-distributed random variable with
+n - 1 = 6 - 1 = 5
+degrees of freedom 5 and 5%
+t = 2.015
+since the alt hypothesis is μ < 2 we must consider the left tail so critical region is
+T <= -2.015
+statement 2 is true while statement 3 is false our test statistic (-1.225) does not lie in the critical region
+we do not reject the null hypothesis H0 as a result we conclude
+that there is insufficient evidence that at the 5% level of significance we have μ < 2
+correct answer is 1 and 2 only
+
+A Two-tailed hypothesis test
+To conduct a two tail with known population variance we proceed similarly to the one-tailed case
+the alternative hypothesis will be H1 : μ != μ0
+we compute the critical value and write down the critical region by considering both tails of the distribution, if the significance level is α so α/2 at either tail
+
+Testing a hypothesis given a normal population two-tailed tests
+Consider a sample of size n = 17 from a normal population, we wish to carry out a hypothesis test at the 5% level of significance to determine whether there is sufficent evidence that the population mean μ does not equal 5
+given that the mean of the sample is x̄ = 7 and the sample SD s = 5 which statements are true?
+1. The two-tailed critical region for the test statistic is approximately T <= -1.746 or T >= 1.746
+2. At the 5% level of significance there is insufficient evidence that μ != 5
+3. At the 5% level of significance there is sufficient evidence that μ != 5 
+k\p|0.100|0.050|0.025|0.010|0.005|
+16 |1.337|1.746|2.120|2.583|2.921|
+17 |1.333|1.740|2.110|2.567|2.898|
+18 |1.330|1.734|2.101|2.552|2.878|
+----------------------------------
+H0 : μ = 5 is the null hypothesis
+H1 : μ != 5 is the alternative (two-tailed) hypothesis
+(7 - 5)/(5/sqrt(17))
+~= 1.649
+statement 1 is false according to the table the 5% two-tailed critical value (the same as the 5%/2 = 2.5%) for a t-distributed random variable n - 1 = 17 - 1 = 16
+degrees of freedom (16 and 2.5%)
+since we are considering both tails our critical ragion is
+T <= -2.120 or T >= 2.120
+statement 2 is true while statement 3 is false, our test statistic (1.649) does not lie in the critical region
+we do not reject the null hypothesis H0, there is insufficient evidence that at the 5% level of significance we have μ != 5
+
+Large samples
+we can still use the same formula since n is sufficiently large σ^2 can be approximated as S^2
+(X̄ - μ)/(S/sqrt(n))
+typically "sufficiently large" means that n >= 30
+
+Testing a hypothesis for a large sample
+consider a sample of size n = 70 from a population we wish to carry out a hypothesis test at the 10% significance level whether there is sufficient evidence that the population mean μ is smaller than 24
+given that the mean of the sample x̄ = 23 and the sample standard deviation is s = 5 which of the statements are true?
+1. The critical region for the test statisitc is approximately T <= 1.294
+2. At the 10% level of significance there is insufficient evidence that μ < 24
+3. At the 10% level of significance there is sufficient evidence that μ < 24
+k\p|0.100|0.050|0.025|0.010|0.005|
+69 |1.294|1.667|1.995|2.382|2.649|
+70 |1.294|1.667|1.994|2.381|2.648|
+71 |1.294|1.667|1.994|2.380|2.647|
+----------------------------------
+We do not know the distribution of the population nor do we know the population variance σ^2 the sample size n = 70 >= 30 is sufficiently large
+H0 : μ = 24 is the null hypothesis
+H1 : μ < 24 is the alt (one-tailed) hypothesis
+= (23 - 24)/(5/sqrt(70))
+~= -1.673
+statement 1 is true, according to the table the 10% one-tailed critical calue for a t-distributed random variable with
+n - 1 = 70 - 1 = 69
+degrees of freedom (69, 10%) is t ~= 1.294
+since the alternative hypothesis is μ < 24 we must consider the left tail so the critical region
+T <= -1.294
+statement 2 is false, while statement 3 is true our test statistic (-1.673) lies in the critical region
+So we reject the null hypothesis H0 we conclude there is sufficient evidence that at the 10% level of significance we have μ < 24
+therefore the correct statements is 1 and 3 only
+
+Applications of Hypothesis testing
+A pharmaceutical company used a large group of people to test a new drug designed to reduce cholesterol levels. The mean cholesterol level for the group before teh treatment was μ = 189 milligrams per decliter(mg/dL)
+After treatment a scientist sampled 40 people from the group and found that the cholesterol levels of those sampled had a mean of 187 mg/dL and a SD of s = 12mg/dL the scientist wishes to conduct a hypothesis test to determine whether sufficient evidence exists to claim that the drug works.
+By carrying out the hypothesis test at a 10% significance level to determine whether there is sufficient evidence that the population mean μ is smaller than 189mg/dL determine which of the following statements are true
+1. the critical region for the test statistic is approximately T <= -1.304
+2. At the 10% level of significance there is insufficient evidence that μ < 189mg/dL
+3. At the 10% level of significance there is sufficient evidence that μ < 189mg/dL
+k\p|0.100|0.050|0.025|0.010|0.005|
+39 |1.304|1.685|2.023|2.426|2.708|
+40 |1.303|1.684|2.021|2.423|2.704|
+41 |1.303|1.683|2.020|2.421|2.701|
+----------------------------------
+H0 : μ = 189 is the null hypothesis
+H1 : μ < 189 is the alt (one-tailed) hypothesis
+x̄ = 187mg/dL, n = 40, s = 12mg/dL
+(187 - 189)/(12/sqrt(40))
+~= -1.054
+statement 1 is false according to the table the 10% one-tailed critical value for a t-distributed random variable with
+n - 1 = 40 - 1 = 39
+degrees of freedom (39,10%)
+t ~= 1.304
+since the alt hypothesis is μ < 189 we must consider the left tail so our critical region is T <= -1.304
+statement 2 is true while statement 3 is false our test statistic (-1.054) does not lie in the critical region
+so we can't reject the null hypothesis H0 as a result there is insufficient evidence that at the 10% level of significance we have μ < 189
+correct answer is 2 only.
+
