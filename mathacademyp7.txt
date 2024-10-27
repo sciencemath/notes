@@ -3494,3 +3494,155 @@ Z_0.025 = 1.960
 0.52 +/- 1.96 * sqrt(0.52(1 - 0.52)/1500)
 0.52 +/- 0.025
 
+===================================================
+
+Confidence intervals for two means known and unequal population variances
+Two groups are independent if they are not directly related or connected
+the selection or outcome of one group does not influence the selection or outcome of the other
+the individuals or data points within each group are not paired or matched in any way, and there is no inherent relationship between the observations in the two groups
+Suppose MIT wants to test the effectiveness of a new exam format MIT believes that students perform better under the new format. To assess this belief they could conduct independent or dependent samples.
+Independent Samples
+MIT randomly selects 100 students, 50 of whom are randomly assigned to sit the exam under the new format (the experiment group) and 50 to take the exam under the traditional format (the control group). Both groups take their respective exams and the results are compared.
+in this case the experimental and control group represents independent samples, as the outcomes in one group are not influenced by the outcomes in the other group and the students are not paired or matched in any way
+Dependent Samples
+MIT randomly selects 50 students, first each student sits the exam under the traditional format, and the results are recorded (baseline measurement). Then all students take the exam under the new format and their performance is measured again (post-experiment measuerment).
+The two groups (baseline and post-experiment measurements) represents dependent samples. This is because the data is collected from teh same set of students and each student's post-experiment performance is related to their baseline performance.
+
+Sampling distributions of the difference of two means.
+We have two normally distributed populations X and Y where
+X ~ N(μx,σx^2), Y ~ N(μy,σy^2)
+if we conduct a random sample of size nx from the first population and a second, independent random sample of size ny from the second population then we know that
+X̄ ~ N(μx, σx^2/nx), Ȳ ~ N(μy, σy^2/ny)
+X̄ and Ȳ are the sample means
+We know that the sum or difference of two independent normally distributed random variables is also normal. using our usual results for subtracting means and variances
+X̄ - Ȳ ~ N(μx - μy, σx^2/nx + σy^2/ny)
+this means that the random variable Z is
+Z = (X̄ - Ȳ - (μx - μy))/sqrt(σx^2/nx + σy^2/ny)
+following a standard normal distribution N(0,1)
+
+Confidence intervals
+suppose we draw two independent random samples of sizes nx = 10 and ny = 15 from two normally distibuted population X and Y with unknown population means μx and μy but known population variances σx^2 = 9 and σy^2 = 10
+after processing our results we find the means of these samples
+x̄ = 14, ȳ = 11
+these are unbiased point estimates of the corresponding population means μx and μy
+compute the difference
+x̄ - ȳ = 14 - 11 = 3
+point estimate difference
+μx - μy
+however instead of reporting a single estimate x̄ - ȳ its often helpful to give a confidence interval of the form
+((x̄ - ȳ) - e, (x̄ - ȳ) + e)
+e is some margin of error
+
+Constructing confidence intervals
+the samples are independent and the populations are normally distributed the difference of sample means is also normally distributed
+Z = (X̄ - Ȳ - (μx - μy))/sqrt(σx^2/nx + σy^2/ny) ~ N(0,1)
+α = 1 - 0.95 = 0.05 => α/2 = 0.025
+uising a percentage points table for the standard normal distribution we find that z_0.025 ~= 1.96
+P(-1.96 < Z < 1.96) = 0.95
+95% probability that our random variable X will lie in the interval (-1.96,1.96)
+solving for the difference μx - μy
+(X̄ - Ȳ) - 1.96 * sqrt(σx^2/nx + σy^2/ny) < μx - μy < (X̄ - Ȳ) + 1.96 * sqrt(σx^2/nx + σy^2/ny)
+a 95% confidence interval for the difference
+((X̄ - Ȳ) - 1.96 * sqrt(σx^2/nx + σy^2/ny), (X̄ - Ȳ) + 1.96 * sqrt(σx^2/nx + σy^2/ny))
+substituting our values
+nx = 10, ny = 15, x̄ = 14, ȳ = 11, σx^2 = 9, σy^2 = 10
+(3 - 2.453, 3 + 2.453)
+
+Suppose we have independent random samples of sizes nx and ny from normal populations with unknown population means μx and μy and known population variances σx^2 and σy^2
+for a given value α between 0 adn 1 a confidence interval for the difference μx - μy between the population means given by
+((X̄ - Ȳ) - z_α/2 * sqrt(σx^2/nx + σy^2/ny),(X̄ - Ȳ) + z_α/2 * sqrt(σx^2/nx + σy^2/ny))
+P(Z > z_α/2) = α/2 and Z ~ N(0,1)
+the condidence limits (i.e. endpoints of our itnerval)
+(X̄ - Ȳ) +/- z_α/2 * sqrt(σx^2/nx + σy^2/ny)
+X̄ - Ȳ = is an estimator of the difference of the population means
+sqrt(σx^2/nx + σy^2/ny) = is the standard error
+z_α/2 = is the corresponding z-score
+E = z_α/2 * sqrt(σx^2/nx + σy^2/ny) is the margin of error
+our confidence interval can be written as
+((X̄ - Ȳ) - [margin of error], (X̄ - Ȳ) + [margin of error])
+((X̄ - Ȳ) - [z-score] * [standard error], (X̄ - Ȳ) + [z-score] * [standard of error])
+((X̄ - Ȳ) - z_α/2 * sqrt(σx^2/nx + σy^2/ny), (X̄ - Ȳ) + z_α/2 * sqrt(σx^2/nx + σy^2/ny))
+
+Finding confidence interval given two normal populations
+a sample of size n1 = 29 from a normal population with SD σ1 = 7 and a sample size n2 = 23 from a normal population with SD σ2 = 9 given that the samples are independent and the sample means are x̄1 = 15 and x̄2 = 9 find a 95% confidence interval for the difference μx - μy between the corresponding population means
+Hint: use the fact that P(Z > 1.96) = 0.025
+the samples are independent 
+both populations are normally distributed
+both population variances are known
+given a value α between 0 and 1 the corresponding [100(1 - α)]% confidence interval for the difference μx - μy between the corresponding population means can be written as
+(X̄1 - X̄2) +/- E
+E = z_α/2 * sqrt(σx^2/nx + σy^2/ny) is the margin of error
+X̄1 and X̄2 are the sample means μ1 and μ2 are the population means σ1^2 and σ2^2 are the population variances n1 and n2 are the sample sizes
+P(Z > z_α/2) = α/2 and Z ~ N(0,1)
+construct the confidence interval
+Step 1: find the point estimate
+x̄1 - x̄2 = 15 - 9 = 6
+Step 2: find the margin of error, since we are interested in finding a 95% confidence interval we have
+α = 1 - 0.95 = 0.05 => α/2 = 0.025
+we are given that P(Z > 1.96) = 0.025
+z_α/2 = z_0.025 = 1.96
+now compute the margin of error
+E = 1.96 * sqrt(7^2/29 + 9^2/23) ~= 4.474
+Step 3: construct the 95% confidence interval for the difference between the population means
+6 +/- 4.474
+
+Finding confidence intervals given two large samples
+consider a sample of size n1 = 68 from a population with SD σ1 = 6 and a sample of size n2 = 35 from a population with SD σ2 = 5 given that the samples are independent and the sample means are x̄1 = 18 and x̄2 = 15 find a 90% confidence interval for the difference μ1 - μ2 between the corresponding population means
+Hint: use the fact that P(Z > 1.645) = 0.05 where Z ~ N(0,1)
+samples are independent
+both sample sizes are sufficiently large > 30
+both population variances are known
+As a result given a value α between 0 and 1 the corresponding [100(1 - α)]% confidence interval for the difference μ1 - μ2 between the population means can be written as
+(X̄1 - X̄2) +/- E
+where
+E = z_α/2 * sqrt(σx^2/nx + σy^2/ny) is the margin of error
+X̄1 and X̄2 are the sample means μ1 and μ2 are the population means σ1^2 and σ2^2 are the population variances n1 and n2 are the sample sizes
+P(Z > z_α/2) = α/2 and Z ~ N(0,1)
+Step 1: find the point estimate:
+x̄1 - x̄2 = 18 - 15 = 3
+Step 2: Find the margin of error since we are interested in finding a 90% confidence interval
+α = 1 - 0.9 = 0.1 => α/2 = 0.05
+we are given that P(Z > 1.645) = 0.05
+z_α/2 = z_0.05 = 1.645
+we can compute the margin of error
+E = 1.645 * sqrt(6^2/65 + 5^2/35) ~= 1.835
+Step 3: Construct 90% confidence interval for the difference between the population means
+3 +/- 1.835
+
+Interpreting confidence intervals
+A confidence interval for the difference μx - μy between the population means can be interpreted in the following ways
+if all values within the confidence interval are positive this suggests that μx - μy > 0 in other words
+μx > μy
+we should carry out a statistical hypothesis test to formally verify this claim
+if all values within the confidence interval are negative this suggests that μx - μy < 0 in other words
+μx < μy
+we should conduct a statistical hypothesis test to verify this claim
+if the confidence interval contains zero, then there is insufficient evidence of a statistically significant difference between the two means we conclude
+μx ~= μy
+
+Applications of confidence intervals
+The diameters of balls for bearings produced by machines X and Y have SD of σx = 0.2mm and σy = 0.3mm engineers want to know whether the population mean μx for the diameter of balls produced by machine X is larger than the population mean μy for the diameter of balls produced by machine Y they construct 99% confidence interval for the difference between the population means
+given that the engineers sampled 100 balls produced by machine X and 150 balls made by machine Y and found that their mean diameters are 10.05mm and 10.01mm which statements are true?
+1. The endpoints of the 99% confidence interval for the difference between the population mean are approximately 0.04 +/- 0.081
+2. All values contained within the 99% confidence interval are positive
+3. the confidence interval data suggests that μx > μy
+p |0.100|0.050|0.025|0.010|0.005|
+zp|1.282|1.645|1.960|2.326|2.576|
+---------------------------------
+the samples are independent
+both sample sizes are sufficiently large >= 30
+both population variances are known
+step 1: find the point estimate
+x̄1 - x̄2 = 10.05 - 10.01 = 0.04
+step 2: find the margin of error since we are interested in finding a 99% confidence interval we have
+α = 1 - 0.99 = 0.01 => α/2 = 0.005
+from the points table of normal distribution z_0.05 = 2.576
+compute margin of error
+E = 2.576 * sqrt(0.2^2/100 + 0.3^2/150) ~= 0.081
+step 3: construct the confidence interval
+0.04 +/- 0.081
+statement 1 is true, the end-points of our confidence interval are 0.04 +/- 0.081
+statement 2 is false, the confidence interval contains zero
+(0.04 - 0.081, 0.04 + 0.081) = (-0.041, 0.121)
+statement 3 is false, since the confidence interval contains zero it remains possible that μx = μy
+the correct answer is 1 only
