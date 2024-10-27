@@ -3791,3 +3791,180 @@ a = 1 - 0.05 = 0.95
 a = 46.776 (from a lookup table)
 (0.25 * sqrt(65 - 1)/sqrt(83.675), (0.25 * sqrt(65 - 1)/sqrt(46.776)))
 = (0.219, 0.292)
+
+===================================================
+
+Confidence intervals for slope parameters in linear regression
+suppose we conduct a random sample of n of paired observations (xi,yi) drawn from a population
+(x1,y1), (x2,y2), ..., (xn,yn)
+we can calculate the linear regression line for this data
+y = ^β0 + ^β1x
+our estimates for the slope parameter β1 and intercept parameter β0
+^β1 = Sxy/Sxx, ^β0 = ȳ - ^β1x̄
+where x̄ and ȳ are the mean values of x1 and y1 and the quantities Sxx and Sxy are given by
+Sxx = Σ^n_i=1(xi - x̄)^2, Sxy = Σ^n_i=1(xi - x̄)(yi - ȳ)
+^β0 and ^β1 as estimates, if we were to conduct a census on the population we'd be able to calculate the true regression equation for the data that considers every population member.
+y = β0 + β1x (true regression line)
+the regession equation y = ^β0 + ^β1x is an estimate of the true regression equation y = β0 + β1x
+^β1 is an estimate of the true slope parameter β1
+^β0 is an estimate of the true intercept parameter β0
+
+Given a value α between 0 and 1 the corresponding [100(100 - α)]% confidence interval for the slope β1 of our model can be written as
+^β1 +/- t_n-2,α/2 * SE[^β1]
+^β1 is our point estimate for the slop, computed by fitting the data points from our sample.
+P(T > t_n-2,α/2) = α/2 where T has a student's t-distribution with n - 2 degrees of freedom
+SE[^β1] is the standard error of ^β1 given by
+SE[^β1] = sqrt(MSE/Sxx)
+MSE is the mean squared error 1of the model
+MSE = 1/n-2 * Σ^n_i=1(yi - ^yi)^2
+^yi is the esitmate of yi given by our regression model
+Sxx is the sum of square formula
+Sxx = Σ^n_i=1(xi - x̄)^2
+Each data point in the sample has some residual (i.e. error) associated with it. The error of our regression model at the data point (xi,yi) is given by
+(yi - ^yi)
+the expression Σ^n_i=1(yi - ^yi)^2 gives the sum of the squared residuals of our regression model
+Even considering the entire population the data points will not fall on a perfectly straight line, so errors are present even in the true regression model. These errors have some (unknown) variance σ^2
+MSE is an unbiased estimator of σ^2
+
+Finding confidence intervals for slope parameters
+let ^y = ^β0 + ^β1x = 1.6 + 0.7x be the regression line fitted using a sample (x1,y1), ..., (x8,y8) of n = 8 paired observations. Assuming that all conditions for the simple regression model are satisfied the mean square error of the model is 1.25 and Sxx = Σ^n_i=1(xi - x̄)^2 = 42 find a 90% confidence interval for the slope of the regression line
+Hint: use the fact that P(T > 1.943) = 0.05 where T has student's t-distribution with 6 degrees of freedom, the standard error for ^β1
+SE[^β1] = sqrt(MSE/Sxx)
+y = β0 + β1x is the regression line that best fits the population
+^y = ^β0 + ^β1x is the estimate of the true regression line given by the data in our sample.
+^y = ^β0 + ^β1x = 1.6 + 0.7x
+we are told that all assumptions for a simple regression model are held. So, given a value α between 0 and 1 the corresponding [100(1 - α)]% confidence interval for the slope β1 of our model can be written as ^β1 of our model can be written as
+^β1 +/- t_n-2,α/2 * SE[^β1]
+Step 1: find the point estimate from the regression equation ^y = 1.6 + 0.7x our point estimate is
+^β1 = 0.7
+step 2: find the margin of error. Since we are interested in finding a 90% confidence interval we have
+α = 1 - 0.9 = 0.1 => α/2 = 0.05
+we are given that P(T > 1.943) = 0.05 as a result
+t_n-2,α/2 = t_6,0.05 = 1.943
+we can compute the margin of error
+t_n-2,α/2 * SE[^β1] = 1.943 * sqrt(1.25/42) ~= 0.3
+step 3: determine the limits of the confidence interval
+^β1 +/- t_n-2,α/2 * SE[^β1] = 0.7 +/- 0.3
+
+example:
+^y = ^β0 + ^β1x = 3.5 + 5x be the regression line fitted using a sample (x1,y1), ..., (x20,y20), n = 20 paired observation, MSE of the model is 8 Sxx = Σ^n_i=1(xi - x̄)^2 = 24 find 95% confidence interval for the slope of the regression line
+Hint: Use the fact that P(T > 2.101) = 0.025 where T has a students t-distribution with 18 degrees of freedom
+SE[^β1] = sqrt(MSE/Sxx)
+2.101 * sqrt(8/24) ~= 1.213
+= 5 +/- 1.2
+
+example:
+^y = ^β0 + ^β1x = -3.1 + 2x be the regression line fitted using a sample (x1,y1), ..., (x12,y12), n = 12 paired observations, the mean square error of the model is 0.95 and Sxx = Σ^n_i=1(xi - x̄)^2 = 143 find a 95% confidence interval for the slope of the regression line
+Hint: use the face that P(T > 2.228) = 0.025
+2.228 * sqrt(0.95/143)
+= 2 +/- 0.2
+
+Finding confidence intervals in context
+hours  (x)| 4 | 4.5 | 5.5 | 6 |
+grades (y)| 62|  65 | 77  | 81|
+the number of hours each of four students spent studying for a biology exam and the grades they finally obtained on the exam. The corresponding fitted linear regression line using this sample is ^y = 21.3 + 10x assuming that all conditions for the simple regression model are satisfied x̄ = 5, MSE = 1.375 find a 90% confidence interval for the slope of the regression line.
+Hint: use the fact that P(T > 2.92) = 0.05 where T has a student's t-distribution with 2 degrees of freedom also the standard error for the slope is
+SE[^β1] = sqrt(MSE/Sxx)
+^y = ^β0 + ^β1x = 21.3 + 10x
+Step 1: find the point estimate, from the regression equation ^y = 21.3 + 10x our point estimate is
+^β1 = 10
+Step 2: find the margin of error
+since we are interested in finding a 90% confidence interval
+α = 1 - 0.9 = 0.1 => α/2 = 0.05
+P(T > 2.92) = 0.05
+t_n-2,α/2 = t_2,0.05 = 2.92
+computing Sxx
+Σ^n_i=1(xi - x̄)^2 = (4 - 5)^2 + (4.5 - 5)^2 + (5.5 - 5)^2 + (6 - 5)^2
+= 1 + 0.25 + 0.25 + 1
+= 2.5
+compute the margin of error
+t_n-2,α/2 * SE[^β1] = 2.92 * sqrt(1.375/2.5) ~= 2.2
+Step 3: determine the limits of the confidence intervall
+^β1 +/- t_n-2,α/2 * SE[^β1] = 10 +/- 2.2
+
+example:
+Age    (x) | 3 | 5 | 7 | 9 |
+height (y) |95 |106|115|125|
+^y = 80.6 + 5x
+x̄ = 6
+MSE = 0.35
+find a 95% confidence interval for the slope of the regression line
+P(T > 4.303) = 0.025
+Σ^n_i=1(xi - x̄)^2 = (3 - 6)^2 + (5 - 6)^2 + (7 - 6)^2 + (9 - 6)^2
+= 20
+4.303 * sqrt(0.35/20)
+= 5 +/- 0.6
+
+example:
+production   (x) | 24 | 27 | 30 | 31 |
+price per kg (y) |  2 | 1.6| 1.4| 1.4|
+^y = 4 - 0.1x
+x̄ = 28
+MSE = 0.007
+find a 90% confidence interval for the slope of the regression line
+P(T > 2.92) = 0.05
+Σ^n_i=1(xi - x̄)^2 = (24 - 28)^2 + (27 - 28)^2 + (30 - 28)^2 + (31 - 28)^2
+= 30
+2.92 * sqrt(0.007/30)
+= -0.1 +/- 0.04
+
+Deriving an expression for the confidence interval
+we'll now derive out expression for the confidence interval for our slope parameter estimate ^β1
+suppose we conduct a random sample of n of paried observations (xi,yi)
+(x1,y1), (x2,y2), ..., (xn,yn)
+lets assume that our "global" regression line (i.e. the line that best fits the entire population) is given by
+y = β0 + β1x
+for each i = 1,2,...,n
+yi = β0 + β1xi + εi
+where we assume that the error terms εi are I.I.D
+εi ~ N(0,σ^2)
+this means that each yi is a normally distributed random variable with
+yi ~ N(β0 + β1xi, σ^2)
+it can be shown that
+E[^β1] = β1, Var[^β1] = σ^2/Sxx
+we can express the distribution of ^β1
+^β1 ~ N(β1, σ^2/Sxx)
+we do not know σ^2 the variance of the error terms, it can be shown that the mean squared error
+MSE = 1/n-2 * Σ^n_i=1(yi - ^yi)^2
+is an unbiased estimator of σ^2
+Our estimate of the standard error ^β1
+SE[^β1] = sqrt(MSE/Sxx)
+since this is an estimate of the standard error
+((^β1 - β1)/SE[^β1])
+follows a student's t-distribution with n - 2 degrees of freedom
+given a value α between 0 and 1 the corresponding [100(1-α)]% confidence interval for the slope β1 of our model can be written as
+^β1 +/- t_n-2,α/2 * SE[^β1]
+
+expectation and variance of slope parameter estimates
+lets derive these
+E[^β1] = β1, Var[^β1] = σ^2/Sxx
+Sxy = Σ^n_i=1(xi - x̄)yi
+we can show this is true using some straightforward manipulation of the summation
+Sxy = Σ^n_i=1(xi - x̄)(yi - ȳ)
+= Σ^n_i=1(xi - x̄)yi - Σ^n_i=1(xi - x̄)ȳ
+= Σ^n_i=1(xi - x̄)yi - ȳΣ^n_i=1(xi - x̄)
+= Σ^n_i=1(xi - x̄)yi - ȳΣ^n_i=1(xi) + ȳΣ^n_i=1(x̄)
+= Σ^n_i=1(xi - x̄)yi - ȳΣ^n_i=1(xi) + ȳnx̄
+= Σ^n_i=1(xi - x̄)yi - ȳΣ^n_i=1(xi) + ȳΣ^n_i=1(xi)
+= Σ^n_i=1(xi - x̄)yi
+using our result for Sxy
+^β1 = Sxy/Sxx = Σ^n_i=1(kiyi)
+ki = (xi - x̄/Sxx)
+Σ^n_i=1(ki) = 0
+Σ^n_i=1(kixi) = 1
+Σ^n_i=1(ki^2) = 1/Sxx
+now we compute the mean and variance of ^β1
+mean
+E[^β1] = E[Σ^n_i=1(kiyi)]
+= Σ^n_i=1(ki)E[yi]
+= Σ^n_i=1(ki)(β0 + β1xi)
+= β0 Σ^n_i=1(ki) + β1 Σ^n_i=1(k1xi)
+= β0 * 0 + β1 * 1
+= β1
+variance:
+Var[^β1] = Var[Σ^n_i=1(kiyi)]
+= Σ^n_i=1(ki^2)Var[yi]
+= Σ^n_i=1(ki^2) * σ^2
+= σ^2 * Σ^n_i=1(ki^2)
+= σ^2/Sxx
+^β1 ~ N(β1, σ^2/Sxx)
