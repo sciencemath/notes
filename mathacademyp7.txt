@@ -3968,3 +3968,157 @@ Var[^β1] = Var[Σ^n_i=1(kiyi)]
 = σ^2 * Σ^n_i=1(ki^2)
 = σ^2/Sxx
 ^β1 ~ N(β1, σ^2/Sxx)
+
+===================================================
+
+Confidence intervals for intercept parameters in linear regression
+suppose we conduct a random sample of n of paired observations (xi,yi) drawn from a population
+(x1,y1), (x2,y2), ..., (xn,yn)
+calculating linear regression line
+y = ^β0 + ^β1x
+our estimates for the slope parameter ^β1 and intercept parameter ^β0
+^β1 = Sxy/Sxx, ^β0 = ȳ - ^β1x̄
+Sxx = Σ^n_i=1(xi - x̄)^2, Sxy = Σ^n_i=1(xi - x̄)(yi - ȳ)
+
+Given a value α between 0 and 1 the corresponding [100(1 - α)]% confidence interval for the slope β0 of our model can be written as
+^β0 +/- t_n-2,α/2 * SE[^β0]
+^β0 is our point estimate for the intercept computed using the data points from our sample
+P(T > t_n-2,α/2) = α/2 where T has a student's t-distribution with n - 2 degrees of freedom
+SE[^β0] is the standard error of ^β0
+SE[^β0] = sqrt(MSE * (1/n + x̄^2/Sxx))
+MSE is the mean squared error of the model
+MSE = 1/n-2 Σ^n_i=1(yi - ^yi)^2
+where ^yi is the estimate of yi given by our regression model
+Sxx is the usual sum of squares formula
+Sxx = Σ^n_i=1(xi - x̄)^2
+Each data point in the sample has some residual (i.e. error) associated with it. The error of our regression model at the data point (xi,yi) is given by
+(yi - ^yi)
+the expression Σ^n_i=1(yi - ^yi)^2 gives the sum of the squared residuals of our regression model
+even considering the entire population the data points will not fall on a perfectly straight line, thus errors are present even in the true regession model, these errors have some (unknown) variance σ^2
+it can be shown that the MSE is an unbiased estimator of σ^2
+
+Finding confidence intervals for intercept parameters
+let ^y = ^β0 + ^β1x = 1.6 + 0.7x be the regression line fitted using a sample (x1,y1), ..., (x8,y8) n = 8 observations, x̄ = 2.4 the MSE is 1.25 and Sxx = Σ^n_i=1(xi - x̄)^2 = 42 find a 90% confidence interval for the y-intercept of the regrssion line
+Hint: use the fact that P(T > 1.943) = 0.05 where T has a student's t-distribution with 6 degrees of freedom, standard error for ^β0 is
+SE[^β0] = sqrt(MSE * (1/n + x̄^2/Sxx))
+Step 1: find the point estimate from the regression equation ^y = 1.6 + 0.7x our point estimate is
+^β0 = 1.6
+Step 2: find the margin of error. Since we are interested in finding a 90% confidence interval
+α = 1 - 0.90 = 0.1 => α/2 = 0.05
+we are given that P(T > 1.943) = 0.05
+t_n-2,α/2 = t_6,0.05 = 1.943
+computing the margin of error
+t_n-2,α/2 * SE[^β0] = 1.943 * sqrt(1.25 * (1/8 + 2.4^2/42)) ~= 1.1
+Step 3: determine the limits of the confidence interval
+^β0 +/- t_n-2,α/2 * SE[^β0] = 1.6 +/- 1.1
+
+example:
+^y = ^β0 + ^β1x = 3.5 + 5x using a sample (x1,y1), ..., (x20,y20) n = 20 paired observations, x̄ = 2 the MSE of the model is 8 Sxx = Σ^n_i=1(xi - x̄)^2 = 24 find a 95% confidence interval for the y-intercept of the regression line
+Hint: use the fact that P(T > 2.101) = 0.025 where T has a student's t-distribution with 18 degrees of freedom, also the standard error for ^β0
+SE[^β0] = sqrt(MSE * (1/n + x̄^2/Sxx))
+2.101 * sqrt(8 * (1/20 + 2^2/24)) ~= 2.8
+= 3.5 +/- 2.8
+
+example:
+^y = ^β0 + ^β1x = 1.5 + 3.8x using a sample (x1,y1), ..., (x18,y18) n = 18 paired observations, x̄ = 2.4, MSE = 2.53 Sxx = Σ^n_i=1(xi - x̄)^2 = 484 find a 90% confidence interval for the y-intercept of the regression line
+Hint: use the fact that P(T > 1.746) = 0.05 where T has a student's t-distribution with 16 degrees of freedom
+1.746 * sqrt(2.53 * (1/18 + 2.4^2/484)) ~= 0.721
+= 1.5 +/- 0.7
+
+finding confidence intervals in context:
+hours  (x)| 4 | 4.5 | 5.5 | 6 |
+grades (y)| 62|  65 | 77  | 81|
+number of hours each student spent studying for a math exam and the grades they obtained on the exam. The corresponding fitted linear regression line using this sample is ^y = 21.3 + 10x, x̄ = 5 and MSE = 1.375, find a 90% confidence interval for the slope of the regression line
+hint: use the fact that P(T > 2.920) = 0.05 where T has a student's t-distribution with 2 degrees of freedom
+SE[^β0] = sqrt(MSE * (1/n + x̄^2/Sxx))
+Step 1: find the point estimate from the regression equation ^y = 21.3 + 10x our point estimate is
+^β0 = 21.3
+Step 2: find the margin of error
+since we are interested in finding a 90% confidence interval
+α = 1 - 0.90 = 0.1 => α/2 = 0.05
+we are given that P(T > 2.920) = 0.05
+t_n-2,α/2 = t_2,0.005 = 2.920
+computing Sxx
+Σ^n_i=1(xi - x̄)^2 = (4 - 5)^2 + (4.5 - 5)^2 + (5.5 - 5)^2 + (6 - 5)^2
+= 1 + 0.25 + 0.25 + 1
+= 2.5
+now we can compute the margin of error
+t_n-2,α/2 * SE[^β0] = 2.920 * sqrt(1.375 * (1/4 + 5^2/2.5)) ~= 11.0
+determine the limits of the confidence interval
+^β0 +/- t_n-2,α/2 * SE[^β0] = 21.3 +/- 11.0
+
+example:
+Age    (x) | 3 | 5 | 7 | 9 |
+height (y) |95 |106|115|125|
+^y = 80.8 + 4.7x, x̄ = 6, MSE = 10.1
+find 95% confidence interval for the y-intercept of the regression line
+hint: use the fact that P(T > 4.303) = 0.025 with 2 degrees
+Σ^n_i=1(xi - x̄)^2 = (3 - 6)^2 + (5 - 6)^2 + (7 - 6)^2 + (9 - 6)^2
+= 20
+4.303 * sqrt(10.1 * (1/4 + 6^2/20)) ~= 19.6
+= 80.8 +/- 19.6
+
+example:
+hours  (x)| 2 |  3 |  4 | 5 |
+grades (y)| 75| 82 | 90 | 91|
+^y = 64.9 + 5.6x, x̄ = 3.5, MSE = 6.1
+find a 90% confidence interval for the y-intercept of the regression line
+hint: use the fact that P(T > 2.920) = 0.05 where T has a student's t-distribution with 2 degrees of freedom.
+Σ^n_i=1(xi - x̄)^2 = (2 - 3.5)^2 + (3 - 3.5)^2 + (4 - 3.5)^2 + (5 - 3.5)^2
+= 2.25 + 0.25 + 0.25 + 2.25
+= 5
+2.920 * sqrt(6.1 * (1/4 + 3.5^2/5)) ~= 11.9
+= 64.9 +/- 11.9
+
+Deriving an expession for the confidence interval
+intercept parameter estimate ^β0
+suppose we conduct a random sample of n of paired observations (xi,yi)
+(x1,y1), (x2,y2), ..., (xn,yn)
+lets assume that our "global" regression line (i.e. the line that best fits the entire population)
+y = β0 + β1x
+for each i = 1,2,...,n
+yi = β0 + β1x + εi
+Where we assume that the error terms εi are I.I.D
+εi ~ N(0,σ^2)
+this means that each yi is normally distributed random variable
+yi ~ N(β0 + β1x,σ^2)
+E[^β0] = β0, Var[^β0] = σ^2(1/n + x̄^2/Sxx)
+the distribution of ^β0
+^β0 ~ N(β0, σ^2(1/n + x̄^2/Sxx))
+we do not know σ^2 the variance of the error terms it can be shown that the mean squared error
+MSE = 1/n-2 Σ^n_i=1(yi - ^yi)^2
+is an unbiased estimator of σ^2
+our estimate of the standard error of ^β0
+SE[^β0] = sqrt(MSE * (1/n + x̄^2/Sxx))
+since this is an estimate of the standard error it can be shown that the random variable
+(^β0 - β0/SE[^β0])
+follows a student's t-distribution with n - 2 degrees of freedom
+
+Expectation and variance of intercept parameter estimates
+Sxy = Σ^n_i=1(xi - x̄)yi
+recall that
+^β0 = ȳ - β1x̄
+we can rewrite our expression for ^β0
+^β0 = ȳ - β1x̄
+= 1/n Σ^n_i=1(yi) - Sxy/Sxx * x̄
+= 1/n Σ^n_i=1(yi) - Σ^n_i=1(xi - x̄)yi/Sxx * x̄
+= 1/n Σ^n_i=1(yi) - Σ^n_i=1(kiyix̄)
+= 1/n Σ^n_i=1(yi) - x̄Σ^n_i=1(kiyi)
+we can now compute E[^β0] and Var[^β0]
+for the mean
+E[^β0] = 1/n E[Σ_i(yi)] - x̄E[Σ_i(kiyi)]
+= 1/n Σ_i(E[yi]) - x̄Σ_i(E[kiyi])
+= 1/n Σ_i(β0 + β1xi) - x̄Σ_i(ki(β0 + β1xi))
+= 1/n Σ_i(β0 + β1xi) - x̄[β0Σ_i(ki) + β1Σ_i(kixi)]
+= 1/n Σ_i(β0 + β1xi) - x̄[β0(0) + β1(1)]
+= 1/n Σ_i(β0 + β1xi) - x̄β1
+= β0/n Σ_i(1) + β1/n Σ_i(xi - x̄β1)
+= β0/n * n + x̄β1 - x̄β1
+= β0
+variance:
+Var[^β0] = 1/n^2 Var[Σ_i(yi)] + x̄^2Var[Σ_i(kiyi)]
+= 1/n^2 Σ_i(Var[yi]) + x̄^2 Σ_i(ki^2Var[yi])
+= 1/n^2(nσ^2) + x̄^2 Σ_i(ki^2σ^2)
+= 1/n^2(nσ^2) + x̄^2σ^2 * 1/Sxx
+= σ^2(1/n + x̄^2/Sxx)
+^β0 ~ N(β0, σ^2(1/n + x̄^2/Sxx))
