@@ -3646,3 +3646,148 @@ statement 2 is false, the confidence interval contains zero
 (0.04 - 0.081, 0.04 + 0.081) = (-0.041, 0.121)
 statement 3 is false, since the confidence interval contains zero it remains possible that μx = μy
 the correct answer is 1 only
+
+===================================================
+
+Confidence intervals for variances
+consider a random sample X1,X2,...,Xn of size n, sample variance
+S^2 = 1/n-1 * Σ^n_i=1(Xi - X̄)^2
+is an unbiased estimate of the population variance σ^2
+The distribution of S^2 is difficult to find, if the random sample is taken from a normally distributed population
+Xi ~ N(μ, σ^2), i = 1,2,...,n
+the sampeling distribution of the random variable
+(n - 1)S^2/σ^2
+follows a chi-square χ^2(n - 1) with n - 1 degrees of freedom
+
+Confidence intervals for variance
+A sample size of n = 26 is drawn from a normal population with unknown variance σ^2 after processing our results we compute an unbiased estimate of the variance in the usual way and get
+s^2 = 4
+this is an unbiased point estimate of the population variance σ^2, it is unsatisfactory because we have to information regarding its reliability
+Its often more helpful to report a confidence interval for σ^2 in this case a confidence interval is an interval of the form
+(s^2 - E, s^2 + E)
+s^2 is our estimate of the population variance
+E is some margin of error
+We need to give some indication regarding the reliability of our confidence interval, so we can construct a 95% confidence interval for the population variance σ^2
+
+Constructing a confidence interval
+sample data from our normally distributed population
+s^2 = 4, n = 26
+we define a new random variable X
+X = (n - 1)S^2/σ^2
+then we have
+X ~ χ^2(25)
+where χ(25) denotes a chi-square distribution with 25 degrees of freedom
+a and b are the endpoints
+P(X < a) = P(X > b) = 0.025
+P(a < X < b) = 0.95
+to obtain an expression for the required confidence interval we solve this inequality for the population variance σ^2, using our definition for X
+a < (n - 1)S^2/σ^2 < b
+1/b < σ^2/(n - 1)S^2 < 1/a
+(n - 1)S^2/b < σ^2 < (n - 1)S^2/a
+replacing S^2 with the point estimate s^2 we reach the following expression for our confidence interval
+(n - 1)s^2/b < σ^2 < (n - 1)s^2/a  (__r__)
+using a percentage points table for a χ^2(25) distribution
+a ~= 13.120, b ~= 40.646
+substituting our values for a,b,n = 26, and s^2 = 4 into (__r__) we obtain that our 95% confidence interval for σ^2 is
+(2.460,7.622)
+
+General result
+Suppose we have a random sample size n from a normal population with unknown variance σ^2 for a given value α between 0 and 1 a [100(1 - α)]% confidence interval for the population variance σ^2 is given by
+((n - 1)s^2/b, (n - 1)s^2/a)
+where P(X < a) = P(X > b) = α/2 and X ~ χ^2(n - 1) has a chi-square distribution with n - 1 degrees of freedom
+by taking the square roots in our formula above the corresponding confidence interval for the population SD σ can be written as
+(s * sqrt(n - 1)/sqrt(b))/(s * sqrt(n - 1)/sqrt(a))
+
+Finding a confidence interval for the population variance
+Consider a sample of size n = 32 from a normal population given that the sample variance is s^2 = 2.56 find a 95% confidence interval for the population variance σ^2
+Hint: use the fact that P(X > 28.232) = 0.025 and P(X < 17.539) = 0.025 where X ~ χ^2(31) has a chi-square distribution with 31 degrees of freedom
+the population is normally distributed but we do not know the population variance σ^2 in cases like this the ranom variable
+(n - 1)S^2/σ^2
+follows a chi-square distribution χ^2(n - 1) with n - 1 degrees of freedom
+n is the sample size
+S^2 is the sample variance
+σ^2 is the population variance
+given a value α between 0 and 1 the corresponding [100(1 - α)]% confidence interval for the population variance
+((n-1)s^2/b,(n-1)s^2/a)
+where P(X > b) = α/2, P(X < a) = α/2, and X ~ χ^(n - 1)
+n = 32, s^2 = 2.56
+we are interested in 95% confidence interval
+α = 1 - 0.95 = 0.05 => α/2 = 0.025
+we are given that P(X > 48.232) = 0.025 and P(X < 17.539) = 0.025
+b = 48.232, a = 17.539
+therefore a 95% confidence interval for the population variance σ^2
+((32 - 1) * 2.56/48.232, (32 - 1) * 2.56/17.539)
+= (1.645, 4.525)
+
+example:
+Consider a sample of size n = 25 from a normal population given s^2 = 2 find 95% confidence interval for the population variance σ^2
+Hint: use the fact that P(X > 39.364) = 0.025 and P(X < 12.401) = 0.025 where X ~ χ^2(24) has chi-square distribution with 24 degrees of freedom
+((25 - 1) * 2/39.364, (25 - 1) * 2/12.401)
+= (1.219, 3.871)
+
+example:
+given: n = 9, s^2 = 4,
+P(X > 21.955) = 0.005, P(X < 1.344) = 0.005, X ~ χ^2(8)
+find a 99% confidence interval for the population variance σ^2
+((9 - 1) * 4/21.955, (9 - 1) * 4/1.344)
+= (1.458, 23.810)
+
+Finding a confidence interval for the population SD
+sample size n = 37 normal population, given that the sample SD is s = 1.5 find a 95% confidence interval for the population SD σ of the distribution
+Hint: P(X > 54.437) = 0.025 and P(X < 21.336) = 0.025 where X ~ χ^2(36) has a chi-square distribution with 36 degrees freedom
+n = 37, s = 1.5
+we are interested in finding a 95% confidence interval
+α = 1 - 0.95 = 0.05 => α/2 = 0.025
+b = 54.437, a = 39.336
+a 95% confidence interval for the population SD α
+(1.5 * sqrt(37 - 1)/sqrt(54.437), 1.5 * sqrt(37 - 1)/sqrt(21.336))
+= (1.220, 1.948)
+
+example:
+n = 120, s = 3
+find a 99% confidence interval for the population SD σ
+Hint: P(X > 162.481) = 0.005, P(X < 83.018) = 0.005 where X ~ χ^2(119)
+(3 * sqrt(120 - 1)/sqrt(162.481), 3 * sqrt(120 - 1)/sqrt(83.018))
+= (2.567, 3.592)
+
+example:
+n = 82, s = 2.5
+find a 90% confidence interval
+Hint: P(X > 103.010) = 0.05 and P(X < 61.261) = 0.05 where X ~ χ^2(81)
+(2.5 * sqrt(82 - 1)/sqrt(103.010), 2.5 * sqrt(82 - 1)/sqrt(61.261))
+= (2.217, 2.875)
+
+Finding Confidence intervals: applications
+A sample of 30 college students was surveyed on the number of hours they spent playing video games last week. The SD was 2.56h, assuming the number of hours playing video games is normally distributed among the population under consideration find a 95% confidence interval for the population SD corresponding to all students in this school
+n = 30, s = 2.56
+α = 1 - 0.95 = 0.05 => α/2 = 0.025
+v = n - 1 = 30 - 1 = 29 degrees
+looking up on a table we get b = 45.722 (using 0.025 and 29 degrees)
+P(X > a) = 1 - P(X < a)
+= 1 - 0.025 = 0.975
+a = 16.047 (using 0.975 and 29 degrees)
+95% confidence interval for the population SD σ
+(2.56 * sqrt(30 - 1)/sqrt(45.722), (2.56 * sqrt(30 - 1)/sqrt(16.047)))
+= (2.039, 3.441)
+
+example:
+n = 100, s = 1.5
+find 90% confidence interval for the population SD in the entire state
+α = 1 - 0.90 = 0.1 => α/2 = 0.05
+v = n - 1 = 100 - 1 = 99 degrees
+b = 123.225 (from a lookup table)
+a = 1 - 0.05 = 0.95
+a = 77.046 (from a lookup table)
+(1.5 * sqrt(100 - 1)/sqrt(123.225), (1.5 * sqrt(100 - 1)/sqrt(77.046)))
+= (1.345, 1.700)
+
+example:
+n = 65, s = 0.25
+find a 90% confidence interval
+α = 1 - 0.90 = 0.1 => α/2 = 0.05
+v = n - 1 = 65 - 1 = 64 degrees
+b = 83.675 (from a lookup table)
+a = 1 - 0.05 = 0.95
+a = 46.776 (from a lookup table)
+(0.25 * sqrt(65 - 1)/sqrt(83.675), (0.25 * sqrt(65 - 1)/sqrt(46.776)))
+= (0.219, 0.292)
