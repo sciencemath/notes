@@ -3294,3 +3294,203 @@ from the table z_0.05 = 1.645
 7.5 +/- 0.867
 
 (rest of these examples are just looking up percentage table with the confidence percentage e.g. α = 1 - 0.99 = 0.01 => α/2 = 0.005, and substituting in all the values given)
+
+===================================================
+
+If σ^2 is unknown we must estimate it using the sample data to estimate the population variance σ^2 we use the sample variance S^2
+S^2 = 1/n-1 Σ^n_i=1(Xi - X̄)^2
+(X̄ - μ)/(S/sqrt(n)) ~ T_n-1
+where T_n-1 is student's t-distribution with n - 1 degrees of freedom
+
+Constructing confidence intervals
+suppose we have a random sample of size n = 9 drawn from a normal population. The sample mean is x̄ = 30 and the sample SD is s = 3.3 we wish to compute a 95% confidence interval for the population mean μ a confidence interval is an interval of the form
+(x̄ - E, x̄ + E)
+x̄ is an estimate of the population mean
+E is the margin of error
+we wish to find a t-interval that we're 95% confident that the random variable T lies within
+we define our parameter α
+α = 1 - 0.95 = 0.05 => α/2 = 0.025
+α/2 is precisely the area bounded by each tail that we're excluding from our confidence interval.
+P(T > t_8,0.025) = P(T < -t_8,0.025) = 0.025
+using a table of values for the t-distribution we find that t_8,0.025 ~= 2.306
+P(T > 2.306) = P(T < -2.306) = 0.025
+more simply
+P(-2.306 < T < 2.306) = 0.95
+95% probability that our random variable T will lie in the interval (-2.306,2.306)
+Similar to the case where σ^2 was known we find the appropriate confidence interval by solving the inequality inside the parentheses of the last probability statement for the population mean μ
+-2.306 < T < 2.306
+-2.306 < (x̄ - μ)/(s/sqrt(n)) < 2.306
+-2.306 * s/sqrt(n) < x̄ - μ < 2.306 * s/sqrt(n)
+-x̄ - 2.306 * s/sqrt(n) < -μ < -x̄ + 2.306 * s/sqrt(n)
+x̄ + 2.306 * s/sqrt(n) > μ > x̄ - 2.306 * s/sqrt(n)
+x̄ - 2.306 * s/sqrt(n) < μ < x̄ + 2.306 * s/sqrt(n)
+a 95% confidence interval for the population mean μ is given by
+(x̄ - 2.306 * s/sqrt(n), x̄ + 2.306 * s/sqrt(n))
+substituting values
+n = 9, x̄ = 30, s = 3.3
+we obtain that our 95% confidence interval for μ is
+(30 - 2.537, 30 + 2.537)
+confidence interval using confidence limits
+30 +/- 2.537
+
+Confidence intervals for normal populations with unknown population variance
+suppose we have a random sample of size n from a normal population with the unknown population mean μ and sample variance s^2 for a given value α between 0 and 1 a [100(1 - α)]% confidence interval for the population mean μ
+(x̄ - t_n-1,a/2 * s/sqrt(n), x̄ + t_n-1,a/2 * s/sqrt(n))
+where P(T > t_n-1,a/2) = α/2 and T ~ T_n-2
+the endpoints of our confidence interval are called confidence limits are given by
+x̄ +/- t_n-1,a/2 * s/sqrt(n)
+x̄ - population mean
+s/sqrt(n) - standard error of the mean
+t_n-1,a/2 - corresponding t-score
+E = t_n-1,a/2 * s/sqrt(n) is the margin of error
+our confidence interval
+(x̄ - [margin of error], x̄ + [margin of error])
+(x̄ - [t-score] * [standard error], x̄ + [t-score] * [standard error])
+(x̄ - t_n-1,a/2 * s/sqrt(n), x̄ + t_n-1,a/2 * s/sqrt(n))
+notice that the expression for the confidence interval is very similar to when the population variance was known. The only difference is that we now use the t-scores instead of z-scores and the sample SD s instead of the population SD σ
+
+Finding confidence intervals from normal populations
+A sample of size n = 9 from a normal population given the sample mean is 50 and the sample SD is 1.5 find a 99% confidence interval for the population mean μ of the distribution
+Hint: Use the fact that P(T > 3.355) = 0.005 where T has a student's t-distribution with 8 degrees of freedom
+we do not know the population variance σ^2 but the population is normally distributed 
+(X̄ - μ)/(S/sqrt(n))
+x̄ = 50, n = 9, s = 1.5
+we are interested in finding a 99% confidence interval
+α = 1 - 0.99 = 0.01 => α/2 = 0.005
+given P(T > 3.355) = 0.005
+t_n-1,α/2 t_8,0.005 = 3.355
+a 99% confidence interval for the population mean μ
+50 +/- 3.355 * 1.5/sqrt(9)
+50 +/- 1.678
+
+For large samples if the population is not normally distributed then the sample size n must be sufficiently large for this approximation to apply typically n >= 30 is sufficient
+
+Finding confidence intervals from large samples
+consider a sample of size n = 100 from a population. Given that the sample mean is 30 and the sample SD is 8 find a 90% confidence interval for the population mean μ of the distribution
+Hint: P(T > 1.66) = 0.05 where T has a student's t-distribution with 99 degrees of freedom
+n = 100 >= 30 sufficiently large
+x̄ = 30, n = 100, s = 8
+find a 90% confidence interval
+α = 1 - 0.9 = 0.1 => α/2 = 0.05
+given P(T > 1.66) = 0.05
+t_n-1,α/2 = t_99,0,05 = 1.66
+90% confidence interval for the population mean μ
+30 +/- 1.66 * 8/sqrt(100)
+= 30 +/- 1.328
+
+Finding Confidence intervals: applications
+a tire manufacturer measures the stopping distance of a new tire model from 60mph on a standard test car. A sample of 81 stopping distances yielded a sample mean of 132ft with a sample SD of 5.4ft find a 95% confidence interval for the mean stopping distance μ of these tires
+Hint: given a random variable T that has a student's t-distribution T_k with k defgrees of freedom the table shows the t-scores such that P(T > t_k,p) = p for some particular values of k and p
+k\p|0.100|0.050|0.025|0.010|0.005|
+79 |1.292|1.664|1.990|2.374|2.640|
+80 |1.292|1.664|1.990|2.374|2.639|
+81 |1.292|1.664|1.990|2.373|2.638|
+----------------------------------
+sample size n = 81 >= 30 is sufficiently large
+x̄ = 132ft, n = 81, s = 5.4ft
+finding a 95% confidence interval
+α = 1 - 0.95 = 0.05 => α/2 = 0.025
+we also need to find the t-score value t_80,0.025 P(T > t_80,0.025) = 0.025 where T has a student's t-distribution with n - 1 = 81 - 1 = 80 degrees of freedom.
+t_80,0.025 = 1.990
+the 95% confidence interval for the population mean μis
+132 +/- 1.99 * 5.4/sqrt(81)ft
+= 132 +/- 1.194ft
+
+===================================================
+
+How to construct a condifence interval for the proportion of the population whose members have a particular characteristic
+Let p represent the proportion of the United States voting population that will vote for candidate A in the next presidential election
+We conduct a random sample of size n = 40 from out population after processing our results we find the the proportion p̂ of sample members that plan to vote for candidate A is given by
+p̂ = 0.3
+estimate of population proportion p
+the quantity that we're really interested in is p the proportion of the entire voting population that will vote for candidate A. We want to get an idea of how accurate our estimate is, we wish to construct a confidence interval
+(p̂ - E, p̂ + E)
+where E is some margin of error
+constructing a 95% confidence interval for the population proportion p
+the first thing to do is to establish the sampling distribution of p(hat)
+since the United States has around 240 million registered voters, the sample size n = 40 is less than 10% of the population size, provided certain conditions are met the following can be applied
+p̂ ~ N(p, (p(1 - p))/n)
+lets check that our usual conditions hold in this case (where we use p̂ as an estimate for p)
+np̂ = 40 * 0.3
+= 12
+> 5
+n(1 - p̂) = 40 * (1 - 0.3)
+= 28
+> 5
+since all three conditions hold the approximation is applicable
+by transforming p̂ to a standard normal random variable
+Z = (p̂ - p)/sqrt(p̂(1 - p̂)/n) ~ N(0,1)
+95% confidence interval
+α = 1 - 0.95 = 0.05 => α/2 = 0.025
+α/2 is the area bounded by eachg tail we're exluding from our confidence interval.
+P(Z > z_0.025) = P(Z < -z_0.025) = 0.025
+using a percentage points table for the standard normal distribution we find that z_0.025 ~= 1.96
+P(Z > 1.96) = P(Z < -1.96) = 0.025
+= P(-1.96 < Z < 1.96) = 0.95
+there is a 95% probability that our random variable Z will lie in the interval (-1.96,1.96)
+-1.96 < Z < 1.96
+-1.96 < (p̂ - p)/sqrt(p̂(1 - p̂)/n) < 1.96
+-1.96 * sqrt(p̂(1 - p̂)/n) < p̂ - p < 1.96 * sqrt(p̂(1 - p̂)/n)
+-p̂ - 1.96 * sqrt(p̂(1 - p̂)/n) < -p < -p̂ + 1.96 * sqrt(p̂(1 - p̂)/n)
+p̂ + 1.96 * sqrt(p̂(1 - p̂)/n) > p > p̂ - 1.96 * sqrt(p̂(1 - p̂)/n)
+p̂ - 1.96 * sqrt(p̂(1 - p̂)/n) < p < p̂ + 1.96 * sqrt(p̂(1 - p̂)/n)
+a 95% confidence interval for the population proportion p̂
+(p̂ - 1.96 * sqrt(p̂(1 - p̂)/n), p̂ + 1.96 * sqrt(p̂(1 - p̂)/n))
+substituting
+n = 40, p̂ = 0.3
+95% confidence interval for p
+(0.3 - 0.142, 0.3 + 0.142)
+simplifies
+(0.158,0.442)
+
+Confidence intervals for proportions
+Suppose we have a random sample size n from a sufficiently large population with sample proportion p̂ 
+np̂ > 5
+n(1 - p̂) > 5
+then for a given value α between 0 and 1 and a [100(1 - α)]% confidence interval for the population proportion p is
+(p̂ - z_α/2 * sqrt(p̂(1 - p̂)/n), p̂ + z_α/2 * sqrt(p̂(1 - p̂)/n))
+the endpoints of our confidence interval are the confidence limits
+p̂ +/- z_α/2 * sqrt(p̂(1 - p̂)/n)
+p̂ - is the sample proportion
+p - is the population proportion
+n - is the sample size
+z_α/2 - is the corresponding z-score
+E = z_α/2 * sqrt(p̂(1 - p̂)/n is the margin of error
+confidence interval can be written as follows
+(p̂ - [margin of error], p̂ + [margin of error])
+(p̂ - [z-score] * [standard error], p̂ + [z-score] * [standard error])
+(p̂ - z_α/2 * sqrt(p̂(1 - p̂)/n), p̂ + z_α/2 * sqrt(p̂(1 - p̂)/n))
+
+finding confidence intervals for population proportions
+consider a sample of size n = 100 from a large population where some individuals have a particular characteristic, given that the proportion of those in the sample with the characterisitc is p̂ = 0.64 find a 90% confidence interval for the population proportion p of individuals having this characteristic
+Hint: use the fact that P(Z > 1.645) = 0.05 where Z ~ N(0,1)
+n = 100, and p̂ = 0.64
+np̂ = 100 * 0.64 = 64 > 5
+n(1 - p̂) = 100 * (1 - 0.64) = 36 > 5
+α = 1 - 0.9 = 0.1 => α/2 = 0.05
+we are given that P(Z > 1.645) = 0.05
+z_α/2 = z_0.05 = 1.645
+90% confidence interval for the population proportion p
+0.64 +/- 1.645 * sqrt(0.64(1 - 0.64)/100)
+0.64 +/- 0.079
+
+Finding confidence intervals for population proportions in context
+A survery of a random sample of 1500 US households reveals that 780 of them own at least one horse. Find a 95% confidence interval for the proportion of all U.S. households that own at least one horse.
+p |0.100|0.050|0.025|0.010|0.005|
+zp|1.282|1.645|1.960|2.326|2.576|
+---------------------------------
+interpreting the data
+the population consists of all U.S. households
+some of the households surveyed own at least one horse some dont
+size of the random sample is n = 1500
+the proportion of households in the sample that own at least one horse
+p̂ = 780/1500 = 0.52
+np̂ = 1500 * 0.52 = 780 > 5
+n(1 - p̂) = 1500 * (1 - 0.52) = 720 > 5
+95% confidence interval
+α = 1 - 0.95 = 0.05 => α/2 = 0.025
+from the percentage points table of the normal distribution we obtain
+Z_0.025 = 1.960
+0.52 +/- 1.96 * sqrt(0.52(1 - 0.52)/1500)
+0.52 +/- 0.025
+
