@@ -1,0 +1,395 @@
+LAB workbooks in a different repo (just notes on lab here)
+(using datagrip)
+
+Lecture 1
+Complex data types and Cumulation
+--------------------------------------------
+
+Dimensions are attributes of an entity (e.g. user's bday, fav food)
+some may identify an entity (user's ID)
+Dimensions can be slow changing (e.g. time dependent)
+Dimensions can be fixed, like your bday, a phone manufacture
+
+Knowing your customer for data (how is your data being used)
+- Data analysts / data scientists
+should be easy to query, this is probabily flat
+- Other data engineers
+should be compact and might be harder to query, nested types are ok
+- ML models
+depends on the model and how its trained
+- Customers
+should be very easy to interpret (good annotations)
+
+OLTP vs OLAP vs Master data
+OLTP (online transaction processing)
+optimizes for low-latency, low-volume queries. (3rd normal form)
+MySQL, Postegres, performing a lot of joins to get the data we want, looks at one user (already filtered to one entity)
+OLAP (online analytical processing)
+optimizes for large volume, GROUPBY queries, minimizes, JOINS
+looks at the entire dataset or a subset 
+Master data
+optimizes for completeness of entity definitions, deduped
+(sites in the middle of OLTP and OLAP)
+
+OLTP & OLAP is a continuum
+Production db snapshots -> master data -> OLAP cubes -> metrics
+Master data should be one table with all the joins of the transactions so were not using 40 different joins on a query.
+OLAP cubes: slice and dice (flatten the data, can have multiple rows per entity, data scientists/analystis like this) can easily do GROUP BY methods on this
+metrics: distill the data from all tables
+
+Cumulative Table design
+Core Components consists of: 
+- 2 dataframes (yesterday and today)
+- FULL OUTER JOIN the two data frames together
+- COALESCE values to keep everything around
+- Hang onto all of history
+Usage:
+- Growth analytics @ Facebook (dim_all_users)
+- state transition tracking
+(if a user is active yesterday but not today they are considered "churned", but if not active yesterday but active today "resurrected", theres lots of transitions we can classify here from yesterday to today, another one is "new" modeling patterns)
+some filtering can occur because the data is bigger each day (maybe users that haven't logged in 180 days/deleted users)
+cumulative output of today will become yesterdays input
+strengths:
+- historical analysis without shuffle
+- easy transition analysis
+drawbacks:
+- can only be backfilled sequentially
+- handing PII data can be a mess since deleted/inactive users get carried forward
+
+Compactness vs usability tradeoffs
+Most usable tales:
+- have no complex data types
+- easily can be manipulated with WHERE and GROUP BY
+Most compact tables (not human readable):
+- compressed so small they can't be queired directly until decoded
+(this can be useful because Network I/O is slow! AirBnB does this for pricing/availability sends down compact data and decodes on the app)
+Middle-ground tables:
+- use complex data types (array, map, struct), making querying trickier but also compacting more.
+
+When would you use compact vs usability tables?
+Most compact:
+- online systems where latency and data volumns matter
+Middle:
+- upstream staging/master data where most consumers are data engineers
+Most usable:
+- when analytics is the main consumer (they are less technical)
+
+Struct vs Array vs Map
+Struct
+- keys are rigidly defined (compression is good)
+- values can be any type
+Map
+- keys are loosely defined (compression is ok)
+- values all have to be same type
+Array
+- Ordinal
+- List of values that all have to be the same type
+
+Temporal Cardinality, explosions of dimensions
+- when you add temporal aspect to your dimensions and the cardinality increases by at least 1 order of magnitude
+example:
+airbnb has ~6 million listings, if we want to know the nightly pricing and available of each night for the next year thats 365 * 6 million or about ~2 billion nights
+Should this be a dataset of:
+- listing level with an array of nights?
+- listing night level with 2 billion rows?
+if you do the sorting, Parquet will keep these two about the same size
+(encoding will remove duplicated rows)
+
+Run length encoding can be very useful for duplicates (be careful spark may mix up ordering after a join), you could re-sort this but sorting should only be done once. We should instead explode out the data that different between rows.
+
+LAB1
+This will show the advantages of cumulative data, and how we can create queries/CTEs to high performant operations, and to easily/powerful way to aggregate the data.
+--------------------------------------------
+
+We need to dedup the table so the differences between rows are the season stats/year so we will make a new type (ignoring age):
+SELECT * FROM player_seasons;
+CREATE TYPE season_stats AS (
+                                season INTEGER,
+                                gp INTEGER,
+                                pts REAL,
+                                reb REAL,
+                                ast REAL
+                            );
+
+now we can create a new table that should represent the data with our new type
+CREATE TABLE players (
+    player_name TEXT,
+    height TEXT,
+    college TEXT,
+    country TEXT,
+    draft_year TEXT,
+    draft_round TEXT,
+    draft_number TEXT,
+    season_stats season_stats[],
+    current_season INTEGER,
+    PRIMARY KEY(player_name, current_season)
+)
+next we can create a CTE (common table expression) to combine the two tables where the player_name matches:
+
+WITH yesterday AS (
+    SELECT * FROM players
+             WHERE current_season = 1995
+),
+    today AS (
+        SELECT * FROM player_seasons
+                 WHERE season = 1996
+    )
+SELECT * FROM today t FULL OUTER JOIN yesterday y
+    ON t.player_name = y.player_name
+
+
+This becomes our "seed query", since our minimum season is 1996, so this is really NULL, but this won't be the case as we accumulate more and more.
+WITH yesterday AS (
+    SELECT * FROM players
+             WHERE current_season = 1995
+),
+
+We can COALESCE if the values don't change
+SELECT
+        COALESCE(t.player_name, y.player_name) AS player_name,
+        COALESCE(t.height, y.height) AS height,
+        COALESCE(t.college, y.college) AS college,
+        COALESCE(t.draft_year, y.draft_year) AS draft_year,
+        COALESCE(t.draft_round, y.draft_round) AS draft_round,
+        COALESCE(t.draft_number, y.draft_number) AS draft_number
+    FROM today t FULL OUTER JOIN yesterday y
+    ON t.player_name = y.player_name
+
+After Coalescing we can cocatenate todays with yesterdays season stats:
+CASE WHEN y.season_stats IS NULL
+            THEN ARRAY[ROW(
+                    t.season,
+                    t.gp,
+                    t.pts,
+                    t.reb,
+                    t.ast
+                )::season_stats]
+        WHEN t.season IS NOT NULLL THEN y.season_stats || ARRAY[ROW(
+                t.season,
+                t.gp,
+                t.pts,
+                t.reb,
+                t.ast
+            )::season_stats]
+        ELSE y.season_stats
+        END as season_stats,
+        COALESCE(t.season, y.current_season + 1) as current_season
+
+|| is concatenation
+:: we can cast it to the season_stats type
+
+WHEN t.season IS NOT NULLL THEN y.season_stats ||
+this is so we don't keep adding data in case the player has been retired
+
+ELSE y.season_stats
+so we dont add a bunch of NULLs
+
+use current season otherwise use yesterdays + 1
+COALESCE(t.season, y.current_season + 1)
+
+We can INSERT our new data into our players table:
+INSERT INTO players
+WITH yesterday AS (
+    SELECT * FROM players
+             WHERE current_season = 1995
+),
+    today AS (
+        SELECT * FROM player_seasons
+                 WHERE season = 1996
+    )
+SELECT
+        COALESCE(t.player_name, y.player_name) AS player_name,
+        COALESCE(t.height, y.height) AS height,
+        COALESCE(t.college, y.college) AS college,
+        COALESCE(t.country, y.country) AS country,
+        COALESCE(t.draft_year, y.draft_year) AS draft_year,
+        COALESCE(t.draft_round, y.draft_round) AS draft_round,
+        COALESCE(t.draft_number, y.draft_number) AS draft_number,
+        CASE WHEN y.season_stats IS NULL
+            THEN ARRAY[ROW(
+                    t.season,
+                    t.gp,
+                    t.pts,
+                    t.reb,
+                    t.ast
+                )::season_stats]
+        WHEN t.season IS NOT NULL THEN y.season_stats || ARRAY[ROW(
+                t.season,
+                t.gp,
+                t.pts,
+                t.reb,
+                t.ast
+            )::season_stats]
+        ELSE y.season_stats
+        END as season_stats,
+        COALESCE(t.season, y.current_season + 1) as current_season
+    FROM today t FULL OUTER JOIN yesterday y
+    ON t.player_name = y.player_name;
+
+We run this query and the main column to focus on is the season_stats:
+first stat from A.C. Green:
+{(1996,83,7.2,7.9,0.8)}
+Next we increase WHERE current_season = 1995, and WHERE season = 1996 by one WHERE current_season = 1996, and WHERE season = 1997, and re-run query:
+SELECT * FROM players WHERE current_season = 1997;
+{(1996,83,7.2,7.9,0.8),(1997,82,7.3,8.1,1.5)}
+We do this a few times until and current_season = 2000 season = 2001
+
+SELECT * FROM players WHERE current_season = 2001
+(example from A.C. Green)
+{(1996,83,7.2,7.9,0.8),(1997,82,7.3,8.1,1.5),(1998,50,4.9,4.6,0.5),(1999,82,5,5.9,1),(2000,82,4.5,3.8,0.5)}
+
+Theres a gap in Michael Jordan:
+{(1996,82,29.6,5.9,4.3),(1997,82,28.7,5.8,3.5),(2001,60,22.9,5.7,5.2)}
+
+You can do some powerful stuff with the new table we can view these as 3 seperate records for Michael Jordan (UNNEST):
+SELECT player_name,
+	UNNEST(season_stats)::season_stats AS season_stats
+FROM players
+WHERE current_season = 2001
+AND player_name = 'Michael Jordan'
+
+With UNNEST the sorting will stay intack
+
+we can wrap this in a CTE and perform actions on the CTE
+WITH unnested AS (
+	... (above query)
+)
+This uses the unnested and puts them in there corresponding columns
+SELECT player_name
+	(season_stats::season_stats).*
+FROM unnested
+
+This allows us to go back and forth between viewing the data compact and unraveling and we don't need to use so many joins we can use the CTE we've created.
+
+Next we create a scoring system:
+CREATE TYPE scoring_class AS ENUM ('star', 'good', 'average', 'bad');
+DROP players, and re-create it with two new fields:
+scoring_class scoring_class,
+years_since_last_season INTEGER,
+We can add to our cumlative query:
+
+Scoring (ELSE y.scoring_class it just pulls from previous year if none this year):
+CASE
+    WHEN t.season IS NOT NULL THEN
+        CASE WHEN t.pts > 20 THEN 'star'
+            WHEN t.pts > 15 THEN 'good'
+            WHEN t.pts > 10 THEN 'average'
+        ELSE 'bad'
+    END::scoring_class
+    ELSE y.scoring_class
+END,
+
+last season (how many years off a player has had like Michael Jordan in 2000)
+CASE WHEN t.season IS NOT NULL THEN 0
+	ELSE y.years_since_last_season + 1
+END AS years_since_last_season
+
+We can aggregrate some data say we want to know whose made the biggest improvement in pts from their first season to their last season:
+SELECT
+    player_name,
+    (season_stats[1]::season_stats).pts AS first_season,
+    (season_stats[CARDINALITY(season_stats)]::season_stats).pts AS latest_season
+FROM players
+WHERE current_season = 2001
+
+SELECT
+    player_name,
+    (season_stats[CARDINALITY(season_stats)]::season_stats).pts/ 
+    CASE WHEN (season_stats[1]::season_stats).pts = 0 THEN 1 ELSE (season_stats[1]::season_stats).pts END,
+    latest_season
+FROM players
+WHERE current_season = 2001
+
+COMPLETE DUMP of the queries ran (commented out some just to save in case I needed to run them again)
+
+-- SELECT * FROM player_seasons;
+-- CREATE TYPE season_stats AS (
+--                                 season INTEGER,
+--                                 gp INTEGER,
+--                                 pts REAL,
+--                                 reb REAL,
+--                                 ast REAL
+--                             )
+-- CREATE TYPE scoring_class AS ENUM ('star', 'good', 'average', 'bad');
+-- DROP TABLE players;
+-- CREATE TABLE players (
+--     player_name TEXT,
+--     height TEXT,
+--     college TEXT,
+--     country TEXT,
+--     draft_year TEXT,
+--     draft_round TEXT,
+--     draft_number TEXT,
+--     season_stats season_stats[],
+--     scoring_class scoring_class,
+--     years_since_last_season INTEGER,
+--     current_season INTEGER,
+--     PRIMARY KEY(player_name, current_season)
+-- );
+-- SELECT MIN(season) FROM player_seasons;
+INSERT INTO players
+WITH yesterday AS (
+    SELECT * FROM players
+             WHERE current_season = 2000
+),
+    today AS (
+        SELECT * FROM player_seasons
+                 WHERE season = 2001
+    )
+SELECT
+        COALESCE(t.player_name, y.player_name) AS player_name,
+        COALESCE(t.height, y.height) AS height,
+        COALESCE(t.college, y.college) AS college,
+        COALESCE(t.country, y.country) AS country,
+        COALESCE(t.draft_year, y.draft_year) AS draft_year,
+        COALESCE(t.draft_round, y.draft_round) AS draft_round,
+        COALESCE(t.draft_number, y.draft_number) AS draft_number,
+        CASE WHEN y.season_stats IS NULL
+            THEN ARRAY[ROW(
+                    t.season,
+                    t.gp,
+                    t.pts,
+                    t.reb,
+                    t.ast
+                )::season_stats]
+        WHEN t.season IS NOT NULL THEN y.season_stats || ARRAY[ROW(
+                t.season,
+                t.gp,
+                t.pts,
+                t.reb,
+                t.ast
+            )::season_stats]
+        ELSE y.season_stats
+        END as season_stats,
+        CASE
+            WHEN t.season IS NOT NULL THEN
+                CASE WHEN t.pts > 20 THEN 'star'
+                    WHEN t.pts > 15 THEN 'good'
+                    WHEN t.pts > 10 THEN 'average'
+                ELSE 'bad'
+            END::scoring_class
+            ELSE y.scoring_class
+        END,
+        CASE WHEN t.season IS NOT NULL THEN 0
+            ELSE y.years_since_last_season + 1
+        END AS years_since_last_season,
+        COALESCE(t.season, y.current_season + 1) as current_season
+    FROM today t FULL OUTER JOIN yesterday y
+    ON t.player_name = y.player_name;
+
+-- SELECT player_name,
+--        UNNEST(season_stats)::season_stats AS season_stats
+-- FROM players
+-- WHERE current_season = 2001
+--   AND player_name = 'Michael Jordan'
+
+-- SELECT * FROM players WHERE current_season = 2001;
+
+SELECT
+    player_name,
+    (season_stats[CARDINALITY(season_stats)]::season_stats).pts/
+    CASE WHEN (season_stats[1]::season_stats).pts = 0 THEN 1 ELSE (season_stats[1]::season_stats).pts END
+FROM players
+WHERE current_season = 2001
+AND scoring_class = 'star'
+-- ORDER BY 2 DESC
