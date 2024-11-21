@@ -393,3 +393,105 @@ FROM players
 WHERE current_season = 2001
 AND scoring_class = 'star'
 -- ORDER BY 2 DESC
+
+Lecture 2
+Slowly Changing Dimensions and Idempotency
+--------------------------------------------
+
+Idempotent:
+denoting an element of a set which is unchanged in value when multiplied or otherwise operated on by itself 
+
+pipelines should product the same result
+regardless of the day
+regardless of how many times
+regardless of the hour
+
+If you have data that not idempotent the data will be inconsistent
+(which is bad!)
+
+What can make a pipeline not idempotent?
+- INERT INTO without TRUNCATE
+	use MERGE or INSERT OVERWRITE everytime!
+- Using Start_date > without a corresponding end_date <
+- Not using a full set of partition sensors
+	pipeline might run when there is no/partial data
+- Not using depends_on_past for cumulative pipelines
+(INERT INTO without TRUNCATE if you run this twice you have twice the amount of data, you'll duplicate the data, youll VIOLATE a idemotent rule)
+MERGE will notice that data matches and won't do anything
+INSERT OVERWRITE just overwrites the data
+If you have a date greater than yesterday and you run the pipline today fine but you run the pipline tomorrow you'll have an extra day of data etc. violates the when clause of idempotentency.
+Not using a full set of partition sensors: could happen when you don't have all the data at that moment (i.e. runs at different times in different all data input might not be ready)
+depends_on_past (sequencial processing). This happens when you need to use cumulative pipeline and cannot run parallel processing say because yesterdays data is not ready yet (backfill and production behavior of the pipeline should be the same)
+
+More causes that could make a pipleline not idempotent
+- Relying on the "latest" partition of a not properly modeled SCD table
+	SCD (slowly changing dimensions) if you have a properly modeled SCD table and your backfilling (not in production) that is the only exception
+- Relying on the "latest" partition of anything else
+if you have a non idempotent pipeline that introduces a bug because it gives the incorrect data (inconsistent data) and you have a cumalitve pipeline that depends on that data then it just carrys those bugs forward everyday
+
+The pains of not having idempotent pipelines
+- Backfilling causes inconsistencies between the old and restated data
+- Very hard to troubleshoot bugs
+- Unit testing cannot replicate the production behavior
+- silent failures
+
+Should you model as Slowly Changing dimensions?
+- what are the options here?
+	latest snapshot
+	daily/monthly/yearly
+	SCD
+SCD: a way to collapse daily snapshots, based on whether the data changed day over day.
+
+Why do dimentions change?
+- Someone decides they hate Windows and want MacOS now
+- Someone decides to move to another country
+- you're fav food over time
+etc
+
+How can you model dimensions that change?
+- Singular snapshots
+	Becareful since these are not idempotent
+- Daily partitioned snapshots
+- SCD types 1,2,3
+Dont backfill data with only latest snapshot of dimensions, which might not be correct for the older values because you might need the old dimensions of the data and not the new version
+
+Types of SCD
+Type 0
+	- Aren't actually slowly changing (eye color)
+	(no temporal component, data doesn't change)
+Type 1
+	Only care about the latest value
+	- NEVER use this type because it makes your pipelines not idempontent anymore
+	(when your dealing with daily online transactions this might be okay, but not for a consumer such as for data analytics)
+Type 2
+	- You care about what the value was from start_date to end_date
+	- Current values usually have either an end_date that is:
+		NULL
+		Far into the future (9999-12-31)
+	- Hard to use
+		Since theres more than 1 row per dimension, you need to be careful about filtering on time
+	- The only type of SCD that is purley idempotent
+Type 3
+	- You only care about "original" and "current"
+		Benfits: you only have 1 row per dimension
+		Drawbacks: you lose the history in between original and current
+		is this idempotent: partially (which means its not)
+
+Which types are idempotent?
+	- Type 0 and Type 2 and idempotent
+		type 0 values are unchanging
+		type 2 need to be careful how start_date and end_date is used
+	- Type 1 is not idempotent
+		if the data is backfilled you'll get the dimension as it is now not as it was then.
+	- Type 2 isn't idempotent
+		if you backfill with this dataset, its impossible to know when to pick original vs current
+
+SCD2 (slowly changing dimensions type 2) Loading
+	- Load the entire history in one query
+		inefficient but nimble
+		1 query and you're done
+	- Incrementally load the data after the previous SCD is generated
+		has the same "depends_on_past" constraint
+		efficient but cumbersome
+
+Its good to make your data small and effecient and you can spend a lot of time doing this but whats the value? Sometimes its important to work on new things!
