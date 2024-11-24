@@ -294,3 +294,125 @@ Fact data is usually 10-100x the volume of dimensional data
 	- Reddit has 2B active uisers and sent 50B notifications every day
 Fact data can need a lot of context for effective analysis
 Duplicates in facts are more common than in dimensional data
+
+How does fact modeling work?
+Normalization vs Denormalization
+	- Normalized facts don't have any dimensional attributes, just IDs to join to get that information
+	- Denormalized facts bring in some dimensional attributes for quicker analyusis at the cost of more storage
+Both normalized and denormalized facts are important, theres trade offs for both
+Fact data and raw logs are not the same thing
+	- Raw logs
+		ugly schemas designed for online systems that make data analysis sad
+		potentially contains duplicates and other errors
+		usually have shorter retention
+	- Fact data
+		nice column names
+		quality guarantees like uniqueness, not null, etc
+		Longer retention
+A good data engineer can make raw logs into clean effecient fact data
+Who, What, Where, When, and How
+	- "Who" fields are usually pushed out as IDs (this user clicked this button, we only hold the user_id not the entire user object)
+	- "Where" fields
+		most likely modeled out like Who with "IDs" to join, but more likely to bring in dimensions, especially if they're high cardinality like "device_id"
+	- "How" fields
+		similar to "Where", "She used an iphone to make this click"
+	- "What" fields are fundamentally part of the nature of the fact
+		notifications: "GENERATED","SENT","CLICKED","DELIVERED",
+		a transaction, a like, a post, a step (think atomic)
+	- "When" fields are fundamentally part of the nature of the fact
+		mostly an "event_timestamp", "event_data"
+A lot of companies are moving to client side logging rather than server side logging. Theres high fidelity on a client device you get all the interactions that the user takes not just the user web requests.
+	- Fact datasets should have quality guarantees
+		otherwise analysis would just go to the raw logs
+	- Fact data should generally be smaller than raw logs
+	- Fact data should parse out hard-to-understand columns
+"What" and "When" should always be not NULL and most of the time "Who"
+
+Broadcast joins:
+A broadcast join is a type of join used in distributed systems where a smaller dataset is broadcast to all worker nodes, allowing each node to join it with the larger dataset locally. It is most effective when one of the datasets is small enough to fit into memory on each node. This technique minimizes the need for shuffling data across the network and can lead to significant performance improvements in certain scenarios.
+
+When should you model in dimensions?
+imagine a company wanting to upgrade to IPv6 and you already have a lot of network request data being logged and broadcast joined on IPv4, you know that upgrading to IPv6 will cause issues with broadcast join or even a shuffle join. Instead in this case it makes sense to add additional dimension field with each network request to rid the join entirely. Each microservice adopts a "sidecar proxy" that enabled logging of app they were (dimension).
+This can be a large oranizational effort to solve/implement the solution.
+
+How does logging fit into fact data?
+	- Logging brings in all the critical context for your fact data
+		usually done in collaboration with online system engineers
+	- Don't log everything
+		Log only what you really need
+	- Logging should conform to values specified by the online teams
+		Thrift is what is used at Airbnb and Netflix for this.
+should have a shared schema between teams
+
+Options when working with high volume fact data
+	- Sampling
+		doesn't work for all use cases, works best for metric-driven use-cases where imprecision isn't an issue (law of large numbers)
+	- Bucketing
+		Fact data can be bucketed by one of the important dimensions (usually user)
+		Bucket joins can be much faster than shuffle joins
+		sorted-merge bucket (SMB) joins can do joins without suffle at all!
+
+How long should you hold onto fact data?
+	- High volumes make fact data more costly to hold onto a long time
+	- An approach:
+		any fact tables <10TBs retention didn't matter much
+			- anonymization of facts usually happened after 60-90 days though and the data would be moved to a new table with PII stripped
+		any face tables >100TBs very short retention (~14 days or less)
+What is the ROI on holding onto this data?
+
+Deduplication of fact data
+	- Facts can often by duplicated
+		You can click a notification multiple times
+	- How do you pick the right window for deduplication?
+		No duplicates in an hour? a day? a week?
+		looking at distributions of duplicates is a good idea
+	- Intraday deduping options
+		streaming
+		microbatch
+Does it make sense to have this duplicate (prob not)
+
+Streaming to deduplicate facts
+	- Streaming allows you to capture most duplicates efficiently
+		windowing matters (usually duplicates happen closely in time)
+	- Entire day duplicates can be harder for streaming becasue it needs to hold onto a big window of memory
+	- Large memory of duplicates usually happen within a short time of first event
+	- 15-hourly windows are a sweet spot
+
+Hourly Microbatch Dedupe
+Used to reduce landing time of daily tables that dedupe slowly
+	- Dedupe each hour with a GROUP BY
+	- Use SUM and COUNT to aggregate duplicates use COLLECT_LIST to collect metadata about duplicates that might be different
+	STEP 1:
+		SELECT
+			product_id,
+			event_type,
+			MIN(event_timestamp_epoch) AS min_event_timestamp_epoch,
+			MAX(event_timestamp_epoch) AS max_event_timestamp_epoch,
+			MAP_FROM_ARRAYS(
+				COLLECT_LIST(event_location)
+				COLLECT_LIST(event_timestamp_epoch)
+			) AS event locations
+		FROM event_source
+		GROUP BY product_id, event_type
+Ran every hourly
+	STEP 2:
+	- dedupe bewteen hours with FULL OUTER JOIN like branches of a tree
+	- use left.value + right.value to keep duplicates aggregation correctly counting or CONCAT to build a continuous list
+		WITH earlier AS (
+			SELECT * FROM hourly_deduped_source
+			WHERE {ds_str} AND hour = {earlier_hour} AND product_name = {product_name}
+		), later AS (
+			SELECT * FROM hourly_deduped_source
+			WHERE {ds_str} AND hour = {later_hour} AND product_name = {product_name}
+		)
+		SELECT,
+			COALESCE(e.product_id, l.product_id) AS product_id,
+			COALESCE(e.event_type, l.event_type) AS event_type,
+			COALESCE(e.min_event_timestamp_epoch, l.min_event_timestamp_epoch) AS min_event_timestamp_epoch,
+			COALESCE(e.max_event_timestamp_epoch, l.max_event_timestamp_epoch) AS max_event_timestamp_epoch,
+			CONCAT(e.event_locations, l.event_locations) AS event_locations
+		FROM earlier e
+			FULL OUTER JOIN later l
+				ON e.product_id = l.product_id
+				AND e.event_type = l.event_type
+This dedupes hourly, then merges every 2 hours, @ end of the day you have your final merged data (daily micobatch)
