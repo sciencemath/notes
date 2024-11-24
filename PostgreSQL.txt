@@ -1,0 +1,60 @@
+Misaligned columns affect your indexes too, potentially increasing both disk usage and memory consumption. Keeping indexes aligned can therefore have a significant impact on database performance and resource efficiency.
+
+
+CREATE TABLE table1 (int4_1 INTEGER, int8_2 BIGINT, int4_3 INTEGER);
+CREATE INDEX int_4_int_8_int_4 ON table1 (int4_1, int8_2, int4_3);
+
+-- The second table has a better alignment: (int4, int4, int8)
+CREATE TABLE table2 (int4_1 INTEGER, int4_2 INTEGER, int8_3 BIGINT);
+CREATE INDEX int_4_int_4_int_8 ON table2 (int4_1, int4_2, int8_3);
+
+-- Add 10_000_000 entries to each table
+INSERT INTO table1 (int4_1, int8_2, int4_3) SELECT gs AS int4_1, gs AS int8_2, gs AS int4_3 FROM GENERATE_SERIES(1, 10000000) AS gs;
+INSERT INTO table2 (int4_1, int4_2, int8_3) SELECT gs AS int4_1, gs AS int4_2, gs AS int8_3 FROM GENERATE_SERIES(1, 10000000) AS gs;
+
+-- The first table uses more disk space than the second one
+SELECT
+  pg_size_pretty(pg_relation_size('table1')) AS table_1_size,
+  pg_size_pretty(pg_relation_size('table2')) AS table_2_size;
+
+ table_1_size | table_2_size
+--------------+--------------
+ 498 MB       | 422 MB
+
+-- The first index uses more disk (and memory) than the second one
+SELECT
+  indexrelid::regclass AS index_name,
+  pg_size_pretty(pg_relation_size(indexrelid::regclass)) AS index_size
+FROM
+  pg_stat_user_indexes;
+
+    index_name     | index_size
+-------------------+------------
+ int_4_int_8_int_4 | 386 MB
+ int_4_int_4_int_8 | 300 MB
+
+ start with larger data types like int8, float8 and timestamp, and place smaller types at the end. This will naturally align your table.
+
+MVCC: Multi-Version Concurrency Control
+Creates a version chain via a singly linked-list that goes in one direction to reduce storage and maintenance overhead. The DBMS has to decide what order to use: newest-to-oldest (N2O) order or oldest-to-newest (O2N). For the N2O order, each tuple version points to its previous version and the version chains head is always the latest version. For the O2N order, each tuple version points to its new version, and the head is the oldest tuple version.
+
+The O2N approach avoids the need for the DBMS to update indexes to point to a newer version of the tuple each time it’s modified. It may take longer for the DBMS to find the latest version during query processing, potentially traversing a long version chain. Most DBMSs, including Oracle and MySQL, implement N2O. But PostgreSQL stands alone in using O2N.
+
+Problems with PostgreSQL
+Version copying:
+With the append-only storage scheme in MVCC, if a query updates a tuple, the DBMS copies all its columns into the new version no matter if the query updates a single or all of its columns, append-only MVCC results in massive data duplication and increased storage requirements. 
+
+Table Bloat:
+PostgreSQLs autovacuum will eventually remove dead tuples, write-heavy workloads can cause them to accumulate faster than the vacuum can catch up, resulting in continuous database growth.
+
+When the DBMS truncates the last page due to the absence of any tuple, other pages remain on disk. The allocated space is still there (storage space or RDS from Amazon). VACUUM FULL resolves this issue but can hurt query performance and time consuming operation.
+
+Secondary Index Maintenance:
+PostgreSQL modifys all of a tables indexes for each update has several performance implications.
+
+Incurs additional I/O to traverse each index and insert the new entries. Accessing an index introduces lock/latch contention in both the index and the DBMS’s internal data structures (e.g., buffer pool’s page table). PostgreSQL does this maintenance work for all a table’s indexes, even if queries are never going to use them
+
+Vacuum Management:
+Making sure that PostgreSQL’s autovacuum is running as best as possible is difficult due to its complexity, it may get blocked by long-running transactions, which can result in the accumulation of more dead tuples and stale statistics. 
+
+
