@@ -1194,3 +1194,197 @@ SELECT dim_player_name,
 FROM fct_game_details
     GROUP BY 1,2
 ORDER BY 6 DESC
+
+
+LAB 5
+Datalist date type
+--------------------------------------------
+We first want to setup a cumulative table for our dates
+CREATE TABLE users_cumulated (
+    user_id BIGINT,
+    dates_active DATE[],
+    date DATE,
+    PRIMARY KEY (user_id, date)
+)
+dates_active will be past dates indicating whether a user was active that day, date is current date
+
+We have a t as today and y as yesterday, we can retrieve one day by:
+COALESCE(t.date_active, y.date + INTERVAL '1 day') AS date
+
+To accumulate dates:
+CASE WHEN y.dates_active IS NULL
+    THEN ARRAY[t.date_active]
+    ELSE ARRAY[t.date_active] || y.dates_active
+END AS dates_active,
+
+but we add:
+WHEN t.date_active IS NULL THEN y.dates_active
+after the THEN because we don't want to keep accumulating a NULL list
+
+Here is the accumlative dates final, if theres already an array in place concat that with yesterdays dates_active
+CASE WHEN y.dates_active IS NULL
+    THEN ARRAY[t.date_active]
+    WHEN t.date_active IS NULL THEN y.dates_active
+    ELSE ARRAY[t.date_active] || y.dates_active
+END AS dates_active,
+
+we keep running INSERT INTO and change yesterdays from users_cumulated date by 1 day:
+WHERE date = DATE('2023-01-01')
+and we must change today as well from events:
+DATE(CAST(event_time AS TIMESTAMP)) = DATE('2023-01-02')
+then we can look at the dates_active for these two dates (yesterday and todays):
+SELECT * FROM users_cumulated
+WHERE date = DATE('2023-01-02')
+if there are two days in days_active that user was active 2 days, same for one day.
+
+Do this 30 times by changing the dates then we can see all activity for the whole month:
+SELECT * FROM users_cumulated
+WHERE date = DATE('2023-01-31') 
+
+@> is contains
+SELECT '{"name": "Mathias", "age": 30}'::jsonb @> '{"name": "Mathias"}'::jsonb;
+will return true
+SELECT '{1,2,3,4}'::int[] @> '{2,3}'::int[];
+will return true
+
+When we turn the dates into bits the left most bit is the most recent.
+
+We can generate series with a builtin function:
+SELECT * FROM generate_series(DATE('2023-01-01'), DATE('2023-01-31'), INTERVAL '1 day')
+
+CROSS JOIN
+will make every combination for what your joining simple example:
+|id|color|             |id| size |     |color|size  |
+| 1| red |  CROSS JOIN | 1| small|     |red  |small |
+| 2| blue|			   | 2|medium|  =  |red  |medium|
+| 3|green|			   | 3|large |     |red  |large |
+----------             -----------     |blue |small |
+                                       |blue |medium|
+                                       |blue |large |
+                                       |green|small |
+                                       |green|medium|
+                                       |green|large |
+                                       --------------
+In our case we CROSS JOIN with our generated series (looking at just one user for clarity):
+SELECT *
+FROM users CROSS JOIN series
+WHERE user_id = '137925124111668560'
+Notice every row has been duplicated but the series_date is different as it pertains all 31 days.
+
+We can now put the @> operator to use, now we can see which active_dates are in the series date:
+SELECT dates_active @> ARRAY [DATE(series_date)]
+
+get the days between the current date from the 31st and the series date 1st:
+date - DATE(series_date)
+
+Convert days that were active into a power of 2's (binary format):
+POW(2, 32 - (date - DATE(series_date)))
+This way when we sum them up we can get the history of the ones and zeros
+
+Then this can be CASTed as BIT(32) and CAST the POW as BIGINT:
+CASE WHEN
+    dates_active @> ARRAY [DATE(series_date)]
+THEN CAST(POW(2, 32 - (date - DATE(series_date))) AS BIGINT)
+    ELSE 0
+END AS placeholder_int_value,
+
+We can now use the BIT(32) on our placeholder_int_value:
+CAST(CAST(SUM(placeholder_int_value) AS BIGINT) AS BIT(32))
+with this we can see that the 1's correspond to dates they were active and 0 not active
+
+How many days active from our bit column:
+BIT_COUNT(CAST(CAST(SUM(placeholder_int_value) AS BIGINT) AS BIT(32)))
+
+See if a user was active in the last 7 days we can & gate our values (both values have to be 1's to output a 1 otherwise 0)
+CAST('11111110000000000000000000000000' AS BIT(32)) &
+	CAST(CAST(SUM(placeholder_int_value) AS BIGINT) AS BIT(32))
+
+Then we can output more readable values by wrapping it
+BIT_COUNT(CAST('11111110000000000000000000000000' AS BIT(32)) &
+	CAST(CAST(SUM(placeholder_int_value) AS BIGINT) AS BIT(32))) > 0 
+		AS dim_is_weekly_active
+You can also do some other operations with this to further your understanding of the data such as daily active:
+Get our business questions answered by using binary!
+daily active:
+BIT_COUNT(CAST('10000000000000000000000000000000' AS BIT(32)) &
+          CAST(CAST(SUM(placeholder_int_value) AS BIGINT) AS BIT(32))) > 0
+    AS dim_is_daily_active
+
+SQL DUMP console 1
+
+-- DROP TABLE users_cumulated
+INSERT INTO users_cumulated
+WITH yesterday AS (
+    SELECT
+        *
+    FROM users_cumulated
+    WHERE date = DATE('2023-01-30')
+), today AS (
+    SELECT
+        CAST(user_id AS TEXT) AS user_id,
+        DATE(CAST(event_time AS TIMESTAMP)) AS date_active
+    FROM events
+    WHERE
+        DATE(CAST(event_time AS TIMESTAMP)) = DATE('2023-01-31')
+        AND user_id IS NOT NULL
+        GROUP BY user_id, DATE(CAST(event_time AS TIMESTAMP))
+)
+
+SELECT
+    COALESCE(t.user_id, y.user_id) AS user_id,
+    CASE WHEN y.dates_active IS NULL
+        THEN ARRAY[t.date_active]
+        WHEN t.date_active IS NULL THEN y.dates_active
+        ELSE ARRAY[t.date_active] || y.dates_active
+    END AS dates_active,
+    COALESCE(t.date_active, y.date + INTERVAL '1 day') AS date
+    FROM today t
+    FULL OUTER JOIN yesterday y
+ON t.user_id = y.user_id
+
+SELECT * FROM generate_series(DATE('2023-01-01'), DATE('2023-01-31'), INTERVAL '1 day')
+
+SELECT * FROM users_cumulated
+WHERE date = DATE('2023-01-31')
+
+-- CREATE TABLE users_cumulated (
+--     user_id TEXT,
+--     dates_active DATE[],
+--     date DATE,
+--     PRIMARY KEY (user_id, date)
+-- )
+
+SQL DUMP console 2
+
+WITH users AS (
+    SELECT * FROM users_cumulated
+    WHERE date = DATE('2023-01-31')
+), series AS (
+    SELECT *
+    FROM generate_series(DATE('2023-01-01'), DATE('2023-01-31'), INTERVAL '1 day') AS series_date
+), place_holder_ints AS (
+    SELECT
+        CASE WHEN
+            dates_active @> ARRAY [DATE(series_date)]
+        THEN CAST(POW(2, 32 - (date - DATE(series_date))) AS BIGINT)
+            ELSE 0
+        END AS placeholder_int_value,
+        *
+    FROM users CROSS JOIN series
+)
+SELECT
+    user_id,
+    CAST(CAST(SUM(placeholder_int_value) AS BIGINT) AS BIT(32)),
+    BIT_COUNT(CAST(CAST(SUM(placeholder_int_value) AS BIGINT) AS BIT(32))) > 0
+        AS dim_is_monthly_active,
+    BIT_COUNT(CAST('11111110000000000000000000000000' AS BIT(32)) &
+              CAST(CAST(SUM(placeholder_int_value) AS BIGINT) AS BIT(32))) > 0
+        AS dim_is_weekly_active,
+    BIT_COUNT(CAST('10000000000000000000000000000000' AS BIT(32)) &
+              CAST(CAST(SUM(placeholder_int_value) AS BIGINT) AS BIT(32))) > 0
+        AS dim_is_daily_active
+FROM place_holder_ints
+GROUP BY user_id
+
+-- SELECT * FROM users_cumulated
+-- WHERE date = DATE('2023-01-31')
