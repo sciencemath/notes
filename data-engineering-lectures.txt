@@ -280,7 +280,7 @@ usually the model looks like:
 
 
 Lecture 4
-Facts
+Factual data
 --------------------------------------------
 What is a fact? (an action)
 A fact is something that happened or occurred
@@ -416,3 +416,72 @@ Ran every hourly
 				ON e.product_id = l.product_id
 				AND e.event_type = l.event_type
 This dedupes hourly, then merges every 2 hours, @ end of the day you have your final merged data (daily micobatch)
+
+
+Lecture 5
+Blurry line between fact and dimension
+--------------------------------------------
+Is it a fact or a dimension
+- Did a user log in today?
+	The log in event would be a fact that informs the dim_is_active dimension
+	VS the state "dim_is_activated" which is something that is state-driven, not activity driven
+- You can aggregate facts and turn them into dimensions
+	is this person a "high engager"? a "low engager"?
+		think scoring_class from lecture 1
+	CASE WHEN to bucketize aggregated facts can be very useful to reduce the cardinality
+Be careful not to have high cardinality! Rarely if ever you'll have one entity in a bucket, losses normaility (predictive power) should usually be formed by statistical distributions
+
+Properties of Facts vs dimensions
+- Dimensions
+	- usually show up in GROUP BY when doing analytics
+	- can be "high cardinality" or "low cardinality" depending
+	- generally come from a snapshot of state
+- Facts
+	- usually aggregated when doing analytics by things like SUM, AVG, COUNT
+	almost always higher volume than dimentions, although some fact sources are low-volume, think "rare events"
+	- gernerally come from events and logs
+"CDC" change data capture (extreme blurry line between the two) model a state change of a dimension as a fact, and re-create your dimensions at any one moment in time based on the stack of changes that has happened.
+
+A blurry example
+Is the price of a night on Airbnb a fact or a dimension
+the host can set price which sounds like an event
+it can easily be SUM, AVG, COUNT'd like regular facts
+Prices on AirBnB are doubles, therefore ectremely high cardinality
+The fact in this case would be the host changing the setting that impacted the price, think a fact has to be logged, a dimension comes from the state of things, price being derived from settings is a dimension.
+Since price is a state it becomes a dimension (but feels like a fact)
+
+Boolean / Existence based
+Fact/Dimensions
+- dim_is_active, dim_bought_something, etc
+	These are usually on the daily/hour grain
+- dim_has_ever_booked, dim_ever_active, dim_ever_labeled_fake
+	These "ever" dimensions look to see if there has "ever" been a log and once it flips one way, it never goes back
+	Interesting, simple and powerful features for machine learning
+		An Airbnb host with active listings who has never been booked looks sketchier and sketchier over time
+- "Days since" dimensions (e.g. days_since_last_active, days_since_signup)
+	Very common in retention analytical patterns
+	look up J curves
+
+Categorical Fact/Dimensions
+- Scoring class in week 1
+	A dimension that is derived from fact data
+- Often calculated with CASE WHEN logic and "bucketizing"
+	Example: Airbnb superhost <- you have to look at a bunch of columns
+Once these are set they are hard to change
+
+Should you use dimensions or facts to analyze users?
+- Is the "dim_is_activated" state or "dim_is_active" logs a better metric?
+	Great data science question because it depends
+- It's the difference between "signups" and "growth" in some perspectives
+
+The exteremly efficent date list data structure
+- Read Max Sung's write up: https://www.linkedin.com/pulse/datelist-int-efficient-data-structure-user-growth-max-sung/
+- extremely efficient way to manage user growth
+- imagine a cumulated schema like `users_cumulated`
+	user_id
+	date
+	dates_active - an array of all the recent days that a user was active
+- You can turn that into a structure:
+	| user_id |   date   |  datelist_int |
+	|    32   |2023-01-01|100000010000001|
+	where the 1s in the integer represent activity for 2023-01-01 bit position (zero indexed) ones reprsents days so: 2023-01-01 active next one represents 7 days in past 2022-12-24. A cumulative table design otherwise we would have 30 days of data and that can get expensive. This is good compression.
