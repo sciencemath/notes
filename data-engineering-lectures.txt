@@ -485,3 +485,80 @@ The exteremly efficent date list data structure
 	| user_id |   date   |  datelist_int |
 	|    32   |2023-01-01|100000010000001|
 	where the 1s in the integer represent activity for 2023-01-01 bit position (zero indexed) ones reprsents days so: 2023-01-01 active next one represents 7 days in past 2022-12-24. A cumulative table design otherwise we would have 30 days of data and that can get expensive. This is good compression.
+
+
+Lecture 6
+Reducing shuffle with reduced facts
+--------------------------------------------
+Why should shuffle be minimized?
+- Big data leverages parallelism as much as it can
+- Some steps are inherently less "parallelizable" than others
+
+What types of queries aare highly parallelizable
+Extremely parallel
+	- SELECT, FROM, WHERE
+Kinda parallel
+	- GROUP BY, JOIN, HAVING
+Painfully not parallel
+	- ORDER BY (bad at end of query (by itself) not as a window function)
+All shuffle is:
+Move all the data from a specific key onto a specific machine
+If we have a row of data on each machine and we use ORDER BY it all has to go through one machine to see if its global sorted (opposite of parallel) this is bad for data with millions of records
+Shuffle partition default is 200 records
+
+How do you make GROUP BY more efficient?
+- Give GROUP BY some buckets and guarantees (modulus grouping)
+- REDUCE THE DATA VOLUME AS MUCH AS POSSIBLE!
+if we use buckets we don't need to use GROUP BY (without shuffle)
+
+Reduced fact data modeling gives you superpowers
+- Fact data often has this schema
+	user_id, event_time, action, date_partition
+	very high volume, 1 row per event
+- Daily aggregate often has this schema
+	user_id, action_cnt, date_partition
+	medium sized volume, 1 row per user per day
+- Reduced fact take this one step futher
+	user_id, action_cnt array, month_start_partition / year_start_partition
+	low volume, 1 row per user per month/year
+Minimize the amount of shuffling by always using reduced
+
+Example fact data:
+user_id |    event_time  | action |   date   | other_properties           |
+   3    |2024-07-08T11:00| like   |2024-07-08|{"os":"Andorid","post": 141}|
+   3    |2024-07-09T09:33| comment|2024-07-09|{"os":"iphone","post": 111} |
+   3    |2024-07-10T03:33| comment|2024-07-10| {"os":"Andorid","post": 2} |
+This data is great for asking very specific questions, very granular. But caution you can only ask for recent or a small window of time of data because the data is high volume causing your queries to be really slow, they might not even run (out of memory).
+
+Example Daily Aggregated data:
+user_id |  metric_name  |     date   | value |
+   3    |  likes_given  | 2023-07-08 |   34  |
+   3    |  likes_given  | 2023-07-09 |   1   |
+   3    |  likes_given  | 2023-07-10 |   3   |
+2 partitions is date and metric_name
+We can do better, we can make this smaller
+
+Example Long-Array Metrics:
+user_id |  metric_name  |     date   |         value_array        |
+   3    |  likes_given  | 2023-07-01 |[6,4,2,4,2,4,5,5,3,2,2,2,1] |
+   3    |  likes_given  | 2023-08-01 |[2,4,2,4,1,1,1,5,3,4,2,3,4] |
+   3    |  likes_given  | 2023-09-01 |[18,4,3,3,1,2,4,5,3,4,2,1,5]|
+One row per month (note this is not a monthly aggregate)
+The date is an index
+position of the array is also the day
+user 3 gave 6 likes on July 1st, 1 like on July 31st.
+
+How reduced fact data modeling gives you superpowers
+- Daily dates are stored as an offset of month_start / year_start
+	first index is for date month_start + zero days
+	last index is for date month_start + array_length - 1
+- Dimensional joins get weird if you want things to stay performant
+	SCD accuracy becomes the same as month_start or year_start
+		you give up 100% accurate SCD tracking for massively increased performance
+	Pick snapshots in time (month start or month end or both) and treat the dimensions as fixed.
+- Impact of analysis
+	multi-year analyses took hours instead of weeks
+	unlocked "decades-long slow burn" analyses at Facebook
+- Allowed for fast correlation analysis between user-level metrics and dimensions
+
+RCA (root cause analyses)
