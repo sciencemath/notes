@@ -1388,3 +1388,157 @@ GROUP BY user_id
 
 -- SELECT * FROM users_cumulated
 -- WHERE date = DATE('2023-01-31')
+
+
+LAB 6
+Building reduced facts
+--------------------------------------------
+Creating our metrics
+CREATE TABLE array_metrics (
+    user_id NUMERIC,
+    month_start DATE,
+    metric_name TEXT,
+    metric_array REAL[],
+    PRIMARY KEY (user_id, month_start, metric_name)
+)
+
+Get our daily aggregate (lets use jan 1st for now)
+WITH daily_aggregate AS (
+    SELECT
+        user_id,
+        DATE(event_time) AS date,
+        COUNT(1) AS num_site_hits
+    FROM events
+    WHERE DATE(event_time) = DATE('2023-01-01')
+    AND user_id IS NOT NULL
+    GROUP BY user_id, DATE(event_time)
+)
+SELECT * FROM daily_aggregate
+
+we can build yesterdays data:
+, yesterday_array AS (
+    SELECT * FROM array_metrics
+    WHERE month_start = DATE('2023-01-01')
+)
+
+Theres a built in function to just use the first of the month:
+DATE_TRUNC('month', da.date)
+if da.date = '2024-11-15' this would return '2024-11-01'
+
+if we need to insert new rows into a table, but if a conflict occurs (i.e., the row already exists based on certain unique constraints), it can update the existing row instead.
+ON CONFLICT (user_id, month_start, metric_name)
+DO
+    UPDATE SET metric_array = EXCLUDED.metric_array;
+if a conflict occurs (a row with existing values)
+the metric_array of that row will be updated to the value from the insert attempt, updating the metrics for that user and month.
+
+Creating our metric array:
+CASE WHEN ya.metric_array IS NOT NULL THEN
+    ya.metric_array || ARRAY[COALESCE(da.num_site_hits, 0)]
+WHEN ya.metric_array IS NULL THEN ARRAY_FILL(0, ARRAY[date - DATE(DATE_TRUNC('month', date))]) || ARRAY[COALESCE(da.num_site_hits, 0)]
+END AS metric_array
+
+if a user signs up on the 3rd day of the month we need a way to fill in our metric array with 0's at the beginning because the start of the array will denote the 1st of month 2nd item in array the 2nd day of the month etc.
+ARRAY_FILL(0, ARRAY[COALESCE(date - DATE(DATE_TRUNC('month', date)), 0)])
+
+We need to wrap this in a date because DATE_TRUNC returns a timestamp:
+DATE(DATE_TRUNC('month', date)
+
+If we run an insert twice by changing:
+WHERE DATE(event_time) = DATE('2023-01-02')
+we will have two days of data and if a user didn't sign up till the 2nd we will have the metric array start with a 0
+
+We can prove that all users have at least 2 items (from running our insert twice on 2 days) in their metric_array by running a query:
+SELECT cardinality(metric_array), COUNT(1)
+    FROM array_metrics
+GROUP BY 1
+
+Get total sum for all days (in this case we ran the day query above 3 times)
+SELECT
+    metric_name,
+    month_start,
+    ARRAY[SUM(metric_array[1]),
+          SUM(metric_array[2]),
+          SUM(metric_array[3])
+        ] AS summed_array
+    FROM array_metrics
+GROUP BY metric_name, month_start 
+
+We only explode the array after everything has been aggregated
+Monthly -> Daily aggregates
+(index - 1 postgres likes to index starting at 1)
+this will put our aggregated data (array) into the array into individual rows calculating the individual day total
+SELECT
+    metric_name,
+    month_start + CAST(CAST(index - 1 AS TEXT) || ' day' AS INTERVAL),
+    elem AS value
+    FROM agg
+    CROSS JOIN UNNEST(agg.summed_array)
+        WITH ORDINALITY AS a(elem, index)
+
+This will help us bring in other data if needed.
+
+Complete LAB 6 DUMP:
+Console 1:
+-- CREATE TABLE array_metrics (
+--     user_id NUMERIC,
+--     month_start DATE,
+--     metric_name TEXT,
+--     metric_array REAL[],
+--     PRIMARY KEY (user_id, month_start, metric_name)
+-- )
+
+-- DELETE FROM array_metrics
+-- SELECT * FROM array_metrics;
+-- SELECT cardinality(metric_array), COUNT(1)
+--     FROM array_metrics
+-- GROUP BY 1
+
+INSERT INTO array_metrics
+WITH daily_aggregate AS (
+    SELECT
+        user_id,
+        DATE(event_time) AS date,
+        COUNT(1) AS num_site_hits
+    FROM events
+    WHERE DATE(event_time) = DATE('2023-01-03')
+    AND user_id IS NOT NULL
+    GROUP BY user_id, DATE(event_time)
+), yesterday_array AS (
+    SELECT * FROM array_metrics
+    WHERE month_start = DATE('2023-01-01')
+)
+SELECT
+    COALESCE(da.user_id, ya.user_id) AS user_id,
+    COALESCE(ya.month_start, DATE_TRUNC('month', da.date)) AS month_start,
+    'site_hits' AS metric_name,
+    CASE WHEN ya.metric_array IS NOT NULL THEN
+        ya.metric_array || ARRAY[COALESCE(da.num_site_hits, 0)]
+    WHEN ya.metric_array IS NULL THEN ARRAY_FILL(0, ARRAY[date - DATE(DATE_TRUNC('month', date))]) || ARRAY[COALESCE(da.num_site_hits, 0)]
+    END AS metric_array
+FROM daily_aggregate da
+    FULL OUTER JOIN yesterday_array ya ON
+da.user_id = ya.user_id
+ON CONFLICT (user_id, month_start, metric_name)
+DO
+    UPDATE SET metric_array = EXCLUDED.metric_array;
+
+Console 2:
+WITH agg AS (
+    SELECT
+        metric_name,
+        month_start,
+        ARRAY[SUM(metric_array[1]),
+            SUM(metric_array[2]),
+            SUM(metric_array[3])
+            ] AS summed_array
+    FROM array_metrics
+    GROUP BY metric_name, month_start
+)
+SELECT
+    metric_name,
+    month_start + CAST(CAST(index - 1 AS TEXT) || ' day' AS INTERVAL),
+    elem AS value
+    FROM agg
+    CROSS JOIN UNNEST(agg.summed_array)
+        WITH ORDINALITY AS a(elem, index)
