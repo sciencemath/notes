@@ -57,4 +57,15 @@ Incurs additional I/O to traverse each index and insert the new entries. Accessi
 Vacuum Management:
 Making sure that PostgreSQL’s autovacuum is running as best as possible is difficult due to its complexity, it may get blocked by long-running transactions, which can result in the accumulation of more dead tuples and stale statistics. 
 
+WHEN SWITCHING DB to POSTEGRES and dumping SQLite data for Django a few things to keep in mind:
+kept getting key errors I had to pass two important flags:
+python -Xutf8 --natural-foreign --natural-primary -e contenttypes manage.py dumpdata --indent=2 --output=mysite_data.json
+specifically: --natural-foreign, and --natural-primary
+
+The PostgreSQL search engine removes stop words, such as “a,” “the,” “on,” and “of.”
+
+
+
+
+
 
