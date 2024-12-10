@@ -1542,3 +1542,72 @@ SELECT
     FROM agg
     CROSS JOIN UNNEST(agg.summed_array)
         WITH ORDINALITY AS a(elem, index)
+
+
+LAB 7
+Spark + Iceburg
+--------------------------------------------
+Reason why this is getOrCreate (camelcase instead of snakecase) has
+to do with this running on the JVM and calling methods on a python wrapper.
+
+lit here means literal value so when we do:
+df.join(df, lit(1) == lit(1)) it will crash because its a cross join with all the data
+this is why we never really want to run collect(), but instead .take(), show()
+
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import expr, col, lit
+
+# Build a session
+spark = SparkSession.builder.appName("Jupyter").getOrCreate()
+
+df = spark.read.option("header", "true") \
+		.csv("/home/iceberg/data/events.csv") \
+		.withColumn("event_date", expr("DATE_TRUNC('day', event_time)"))
+# df.show()
+
+# .collect() can cause out of memory errors depending on how much data
+# df.join(df, lit(1) == lit(1)).collect()
+
+# use take() or show() or some form of data that aggregated already avoid using collect()
+# df.join(df, lit(1) == lit(1)).take(5)
+
+split up partitions by event_date: repartition(10, col("event_date")
+.sortWithinPartitions() and .sort() is different and very different at scale.
+.sort() sorts on a global scale where as .sortWithinPartitions() will sort within our 10 local partitions, global sort is slow
+
+To get a better at the two different sorts we can use .explain()
+IMPORTANT: from the plan we look at the most indented event first and work upwards (explain)
+
+Whenever we see exchange in a query plan think of shuffle. (more exchanges the slower the query, especially over 20GB)
+
+sorted = df.repartition(10, col("event_date")) \
+			.sortWithinPartitions(col("event_date"), col("host"), col("browser_family")) \
+			.withColumn("event_time", col("event_time").cast("timestamp"))
+
+sorted_global = df.repartition(10, col("event_date")) \
+			.sort(col("event_date"), col("host"), col("browser_family")) \
+			.withColumn("event_time", col("event_time").cast("timestamp"))
+
+sorted.explain()
+sorted_global.explain()
+
+project = select when viewing an explain()
+exchange in this case is the repartition
+
+when you do a global sort you have to pass the data through 1 executor, almost never use .sort()
+
+when your sorting data you want to write out your lowest cardinality first for instance:
+.sortWithinPartitions(col("event_date"), col("browser_family"), col("host"))
+event_date has ~100 records
+
+Comparing table sizes
+SELECT SUM(file_size_in_bytes) AS size, COUNT(1) AS num_files
+FROM table_name.files
+
+UNION ALL
+
+SELECT SUM(file_size_in_bytes) AS size, COUNT(1) AS num_files
+FROM table_name.files
+
+.files is meta information about your tables
+you can get better compression with the run length encoding and shrink your data down.
