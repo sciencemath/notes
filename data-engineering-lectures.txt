@@ -720,3 +720,199 @@ Spark output datasets
 	- This is the execution date of the pipeline
 	- In big tech this is called "ds partitioning" (Data Structure Partitioning)
 By partitioning the data based on certain criteria (like geographical location or date ranges), you can distribute the data across several servers, enabling more efficient querying and better resource utilization.
+
+
+Lecture 8
+Advanced Apache Spark
+--------------------------------------------
+
+Spark Server vs Spark Notebooks
+- Spark Server (Airbnb)
+	- Every run is fresh, things get uncached automatically
+	- Nice for testing
+	- can be slower but better
+	- CLI
+- Notebook (Netflix)
+	- Make sure to call .unpersist() <- (we want to know how data will run in prod without cache)
+	- Start and Stop manually
+
+Caching and Temporary Views
+- Temporary views (similar to CTEs)
+	- Always get recomputed unlessed cached
+	- passing around the result sets will always call the query unless .cache is applied
+- Caching
+	- Storage levels
+		- MEMORY_ONLY
+		- DISK_ONLY
+		- MEMORY_AND_DISK (the default)
+	- Caching really only is good if it fits into memory
+		- Otherwise there's probably a staging table in your pipeline your missing!
+	- In notebooks
+		- Call unpersist when you're done otherwise you'll have dead cache data
+Matrialize view and caching to disk is very similar but you shoudln't use dish at all when caching it should all fit in memory (unless an edge case).
+Caching the dataframe to disk (never the right answer) and writing it out in a table is the same thing
+
+Caching vs Broadcast
+- Caching
+	- Stores pre-computed values for re-use
+	- Stays partitioned
+- Broadcast Join (generally ~2GB or smaller)
+	- Small data that gets cached and shipped in entirely to each executor 
+Both puts data into memory
+An example of caching when dealing with big data
+100GB we want to cache but its in 200 partitions, each executor is going to get 2GB and will have 4 tasks and each task will have 500MB cached
+
+Broadcast JOIN optimization
+- Broadcast JOINs prevent Shuffle
+	- GOOD!
+- The threshold is set
+	- spark.sql.autoBroadcastJoinThreshold (defualt is 10MB can crank this up ~2GB+)
+- You can explicity wrap a dataset with broadcast(df)
+Most important opimization in spark, it gets triggered automatically when it can
+Small is a rule of thumb
+Small data set you don't have to split it up, nor shuffle
+Its almost always better to use .broadcast(df) because you state this explicitly
+
+UDFs (user defined functions)
+PySpark quirks vs Scala
+Apache Arrow optimizations in recent versions of Spark have helped PySpark
+UDFs become more inline with Scala Spark UDFs
+Dataset API allows you to not even need UDFs, you can use pure Scala functions instead
+allows for complex logic and processing
+Scala serialize -> Python Deserializing -> Python Logic -> Python serializing -> Scala deserialize
+Scala spark gives you more performat UDAFs (user defined aggregate functions, very rare)
+Scala spark gives you DataSetAPI over python
+Scala compiles to JAVA byte code
+BUT Scala is a learning curve and more people and jobs are using PySpark
+
+DataFrame vs Dataset vs SparkSQL
+Dataset is Scala only
+Dataframe vs SparkSQL
+	- DataFrame is more suited for pipelines that are more hardend and less likely to experience change
+	- SparkSQL is better for pipelines that are used in collaboration with data scientists
+	- Dataset is best for pipelines that require unit and integration tests
+SparkSQL is lowest bar for entry, if your looking to change things quickly
+Dataset allows you to create mock data more easily, handles null better (enforces quality control)
+Use dataframe if your using PySpark, ScalaSpark Dataset API
+
+Parquet
+- An amazing file format
+	- Run-length encoding allows for powerful compression
+- Don't use global .sort()
+	- Painful, slow, annoying
+- Use .sortWithinPartitions
+	- Parallizable = good distribution
+
+Spark Tuning
+- Executor Memory
+	- Don't just set to 16GBs and call it a day, wastes a lot
+- Driver Memory
+	- Only needs to be bumped up if:
+		- You're calling df.collect()
+		- Have a very complex job
+- Shuffle Partitions
+	- Default is 200
+	- Aim for ~100 MBs per partition to get the right sized output datasets
+- AQE (adaptive query execution)
+	- Helps with skewed datasets, wasteful if the dataset isnt skewed
+How do you pick the right number of partitions?
+If your data is uniform you want between 100-200MB per partition
+
+
+Lecture 9
+Unit/Integration testing Spark pipelines
+--------------------------------------------
+Where can you catch quality bugs?
+- In development (best case) never surfaced to anyone
+- In production, but not showing up in tables (still good)
+- In production, production tables (terrible and destroys trust)
+^ can go unnoticed for a period of time
+
+How do you catch bugs in dev?
+- Unit tests and integration tests of your pipelines
+Such as UDFs or a spark lookup you want to write tests especially if they call a library (your not in control of third party libraries that may change)
+Make sure to have a linter to make code more readable!
+
+How do you catch bugs in production?
+- Use the write-audit-publish pattern
+write your data to a test or a stage table that has your same schema as your production table. Then you run your quality checks if they pass then you move your staging data into prod
+
+Whats the worst situation?
+- Data analyst finds bugs in production
+- Ruins trust
+- Ruins mood
+- Nobody wins
+
+Software engineering has higher quality standards than data engineering
+- Risks
+	- Server going down bigger impact than pipeline delay
+	- Frontend being non-responsive stops the business too
+- Maturation
+	- Software engineering is a more mature field
+	- Test-driven development and behavior-driven development are new in data engineering
+- Talent
+	- Data engineers come from a much more diverse background than SWEs
+
+How will data engineering become riskier
+- Data delays impact machine learning
+	- Every day that notification ML was behind resulted in a ~10% drop in effectiveness and click through rates (as data gets stale)
+- Data quality bugs impact experimentation
+- As trust rises in data, risk rises too
+What is the consequence of something breaking ande how to midigate that
+We need to hold ourselfs to a higher standard because people rely on us more we have more responsibility. we have to build things that have provable quality constraints
+
+Why do most organizations miss the mark on data engineering quality?
+- When juniors start their first job
+	- they don't write data quality check or unit tests their first months on the job
+- What's happening here?
+	- Data analytics doesn't have a culture of automated excellence
+	- "The chart looks weird" is enough for an alarming number of analytics organizations
+Data analytics are about answering questions quickly and software engineers build things that last
+You can have both for data!
+
+The tradeoff between business velocity and sustainability
+- Business wants answers fast
+- Engineers don't want to die from a mountain of tech debt
+- Who Wins?
+- Depends on the strength of your engineering leaaders and how much you push back
+	- don't let other people burn you out, push back if needed!
+- Don't cut corners to go faster in a more sustainable fashion (unless maybe its a one off)
+We're not answering questions, we're building highways and roads.
+
+Data Engineering is Engineering!
+
+Data engineering capability standards will increase over time
+- Latency
+	- Solved with streaming pipelines and microbatch pipelines
+- Quality
+	- Solved with best practices and frameworks like Great Expectations
+- Completeness
+	- Solved with communication with domain experts
+- Ease-of-access and usability
+	- Solved by data products and proper data modeling
+This creates value over time
+
+How to do data engineering with a software engineering mindset
+- Code is 90% read by humans and 10% executed by machines
+- Silent failures are your enemy
+- Loud failures are your friend
+	- Fail the pipeline when bad data is introduced
+	- Loud failures are accomplished by testing and CI/CD
+The more readable your code is the better.
+Throw an error if you run across a loud failure (could be bad parsing)
+
+How to do data engineering with a software engineering mindset
+- Dry code and YAGNI principles
+	- SQL and DRY are very combative (SQL is hard to encapsulate)
+- Design documents are your friend
+- Care about efficiency
+	- Data structures and algorthims
+	- understanding JOIN and shuffle
+YAGNI (your aren't gonna need it)
+
+Should data engineers learn software engieering best practices
+(the reverse should be true for myself)
+- Short answer, YES
+- LLMs and other things will make the analytics and SQL layer of data engineering job more susceptible to automation
+- If you don't wnat to learn these things
+	- GO INTO ANALYTICS ENGINEERING
