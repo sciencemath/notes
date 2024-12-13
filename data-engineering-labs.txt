@@ -1771,3 +1771,177 @@ Disables broadcast join
 spark.conf.set("spark.sql.autoBroadcastJoinThreshold", "-1")
 then we can compare bucketing joins and broadcast joins (no shuffle from buckets)
 (sort, merge, join within the bucket not the partition)
+
+
+LAB 9
+Testing Apache Spark jobs
+--------------------------------------------
+We usually want to isolate the function that transforms the data in some way:
+In this case we want to isolate `do_player_scd_transformation` and test this.
+
+def do_player_scd_transformation(spark, dataframe):
+    dataframe.createOrReplaceTempView("players")
+    return spark.sql(query)
+
+def main():
+	spark = SparkSession.builder \
+	  .master("local") \
+	  .appName("players_scd") \
+	  .getOrCreate()
+	output_df = do_player_scd_transformation(spark, spark.table("players"))
+	output_df.write.mode("overwrite").insertInto("players_scd")
+
+
+importing our function and creating mock data to test:
+Every test has to be prefixed with `test_`
+
+from ..jobs.players_scd_job import do_player_scd_transformation
+
+PlayerSeason = namedtuple("PlayerSeason", "player_name current_season scoring_class")
+PlayerScd = namedtuple("PlayerScd", "player_name scoring_class start_date end_date")
+
+def test_scd_generation(spark):
+    source_data = [
+        PlayerSeason("Michael Jordan", 2001, 'Good'),
+        PlayerSeason("Michael Jordan", 2002, 'Good'),
+        PlayerSeason("Michael Jordan", 2003, 'Bad'),
+        PlayerSeason("Someone Else", 2003, 'Bad')
+    ]
+    source_df = spark.createDataFrame(source_data)
+    actual_df = do_player_scd_transformation(spark, source_df)
+
+    expected_data = [
+        PlayerScd("Michael Jordan", 'Good', 2001, 2002),
+        PlayerScd("Michael Jordan", 'Bad', 2003, 2003),
+        PlayerScd("Someone Else", 'Bad', 2003, 2003)
+    ]
+    expected_df = spark.createDataFrame(expected_data)
+    assert_df_equality(actual_df, expected_df)
+
+You have your `/src/jobs` that run your queries then `/src/tests` that run tests for your jobs
+lets test teams instead of players the same way, the way the data is setup will differ but same concept:
+
+jobs:
+def do_team_vertex_transformation(spark, dataframe):
+    dataframe.createOrReplaceTempView("teams")
+    return spark.sql(query)
+
+test:
+from chispa.dataframe_comparer import *
+
+from ..jobs.team_vertex_job import do_team_vertex_transformation
+from collections import namedtuple
+
+TeamVertex = namedtuple("TeamVertex", "identifier type properties")
+Team = namedtuple("Team", "team_id abbreviation nickname city arena yearfounded")
+
+
+def test_vertex_generation(spark):
+    input_data = [
+        Team(1, "GSW", "Warriors", "San Francisco", "Chase Center", 1900),
+        Team(1, "GSW", "Bad Warriors", "San Francisco", "Chase Center", 1900),
+    ]
+
+    input_dataframe = spark.createDataFrame(input_data)
+    actual_df = do_team_vertex_transformation(spark, input_dataframe)
+    expected_output = [
+        TeamVertex(
+            identifier=1,
+            type='team',
+            properties={
+                'abbreviation': 'GSW',
+                'nickname': 'Warriors',
+                'city': 'San Francisco',
+                'arena': 'Chase Center',
+                'year_founded': '1900'
+            }
+        )
+    ]
+    expected_df = spark.createDataFrame(expected_output)
+    assert_df_equality(actual_df, expected_df, ignore_nullable=True)
+
+Here we're simply testing duplicates: input_data vs expected_output should match!
+Difference here in teams we have ignore_nullable=True
+
+
+Lecture 10
+User growth pipeline
+--------------------------------------------
+MemoryAllocation is a new startup that wants to measure its website and user growth
+The goal of this pipeline is to answer the following questions:
+
+- How many people are going to https://memoryallocation.com on a daily bases
+	- What is the geographical and device breakdown of that traffic?
+	- Where are these people coming from? Linkedin? Substack?
+- How many people are signing up with an account on https://memoryallocation.com/signup
+each day
+	- What percentage of traffic is converting to signing up?
+- How many people are purchasing boot camps and courses at https://memoryallocation.com/bootcamp
+	- What percentage of signups convert to paying customers?
+
+isGuardrail: a problem to a business thats bad.
+
+Business Metrics (could be more):
+| Metric Name 			 | Definition 						   | isGuardrail |
+------------------------------------------------------------------------------
+|signup_conversion_rate  |COUNT(signups) / COUNT(website_hits) | YES         |
+|purchase_conversion_rate|COUNT(purchases) / COUNT(signups)    | YES         |
+|traffic_breakdown       |COUNT(website_hits) GROUP BY referrer| NO          |
+
+`signup_conversion_rate` is a guardrail because that means theres something wrong with the landing page (if the number goes down).
+`purchase_conversion_rate` is a guardrail means that theres something wrong with the checkout page (if the number goes down)
+`traffic_breakdown` is NOT a guardrail because it doesn't matter where the user comes from whether I do an A/B test
+
+Flow Diagram
+(we would use a tool like lucidchart to visualize this)
+this shows the process we need to answer the question above
+data -> IP enrichments -> UserAgent Enrichment -> core_fct_website_events -> core_agg_website_events
+
+Schemas
+core.fct_website_events this table is the list of all events for memoryalloction.com and includes IP enrichment and user agent enrichment for country and device specific information
+The unique identifier for this table is `logged_out_user_id` and `event_timestamp`
+(sometimes we think of something we need afterwards and we simply add it)
+| Column Name | Column Type | Column Comment |
+----------------------------------------------
+|user_id     | BIGINT      | is nullable for logged out events, user who generated this event
+|logged_out_user_id | BIGINT | This column is a hash of IP address and device info
+|dim_hostname| STRING      | What is the host associated with this event
+|dim_country | STRING      | the country associated with the IP address of the request
+|dim_device_brand | STRING | Device brand associated with this request
+|dim_action_type | STRING  | Enumerated actions user took (signup, watch video, etc)
+|event_timestamp | TIMESTAMP | UTC timestamp for when this event occured
+|other_properties | STRING | other valid properties that are part of this request
+|ds          | STRING      | Partition column for this table 
+
+partition column is usually the last column
+murmur3 hash algorithm designed for speed and its non-crytographic
+
+`core_agg_website_events`: aggrefated view of all website events
+| Column Name     | Column Type | Column Comment            |
+|dim_action_type  | STRING      |enumerated action type     |
+|dim_country	  | STRING      |The IP country             |
+|dim_device_brand | STRING      |Device brand (iphone)      |
+|event_hour       | INTEGER     |hour this event took place |
+|m_total_events   | BIGINT      |total num of events for this slice |
+|aggregation_level| STRING      |how this agg table is GROUPED (values) |
+|ds               | STRING      |This is the date partition for this table |
+
+`aggregation_level` values include:
+`dim_action_type` `dim_action_type_dim_country_dim_device_brand_event_hour`
+all the different ways these can be grouped
+
+Qaulity Checks (first table):
+	- Not null checks on (dim_hostname, dim_action_type, event_timestamp, dim_country, logged_out_user_id)
+	`dim_device_brand` could be NULL because of bots 
+	- Make sure no duplicates on Primary Key
+	- `dim_hostname` is well formatted (i.e. https://www.chatgpt.com/)
+	- Row count check
+		- GROUP ON `dim_hostname` and check week-over-week counts for domains (www.memoryallocation.com)
+	- Enumeration check on `dim_action_type` (should be signup, purchase, login, etc)
+
+Qaulity Checks (second table):
+(we've already checked for null from first table)
+	- Row count checks
+		- overall rollup should have more data than any other rollup
+		- `event_hour` should look like its old seasonal pattern
+		- `m_total_events` > some min number

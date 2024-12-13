@@ -916,3 +916,105 @@ Should data engineers learn software engieering best practices
 - LLMs and other things will make the analytics and SQL layer of data engineering job more susceptible to automation
 - If you don't wnat to learn these things
 	- GO INTO ANALYTICS ENGINEERING
+
+
+Lecture 10
+Build a Gold Pipeline the MIDAS Process
+--------------------------------------------
+think about trust:
+Are the datasets your creating having the important impact to the business?
+Is it answering important business questions?
+Build good data documentation (should be the first step could discover things along the way)
+
+What does data quality mean?
+- DISCOVERABLE
+- Misunderstood / incomplete definitions of data quality
+	- Black Swan events
+- There aren't any NULLs or duplicates
+- There is business value being derived from the data
+- The data is easy to use
+- The data arrives in a timely manner
+	- Have an agreed upon arival time
+Every single data pipeline we write is linked to cost or/and revenue.
+All revenue is sometimes not a clear path
+Remember naming convention! columns prefix with m (metric) dim (dimension)
+
+Data Quality is data trust + data impact
+
+How do you build high trust in data sets?
+- Before you start coding, LEAN INTO EMPATHY!
+- A spec review of the pipeline design
+	- Never review your own spec have someone else do it (fresh eyes)
+- Clarify the business impact BEFORE coding
+	- great for performance reviews
+- Ask downstream stakeholders about all current and future needs
+- Follow the Airbnb MIDAS process
+ask stakeholders: if cost and time wasn't an objection what data would you want?
+
+Airbnb MIDAS process
+(9 steps)
+1) Design Spec - this is the pipeline we are going to build this is how
+2) Spec Review (locked) - tech review from a data architect and stakeholder
+3) Build & Backfill Pipeline - Not all of history just one month
+4) SQL Validation - Needs to happen by someone who isn't you (analytics engineer)
+5) Minerva Validation - someone looking at the metrics
+6) Data Review + Code Review (locked)
+7) Minerva Migration - migrate the metrics
+8) Minerva review (locked) - looked at by the staff data scientist
+9) Launch PSA - We've created the dataset!
+
+Why all this upfront work?
+- Pre-build stakeholder buy-in dramatically increases data trust
+- They feel like they have skin in the game
+- Prevents painful backfills when you miss a requirement
+Loop people in the process so they feel included
+all communication is properly convayed
+backfilling is painful
+
+When should you do this heavy process?
+- Are important decisions being made on this data?
+- Is this data not going to change much over the next year?
+Sometimes not doing the heavy process you can deliver more value
+
+What is in a good design spec?
+- Description (why are you building this?)
+- Flow Diagrams (could use something like lucidchart)
+- Schemas (DDL statements, create table statements)
+- Quality checks
+- Metric definitions
+- Example queries
+
+What does a good schema look like?
+- Good names (fct, dim, scd, or agg in the table name)
+- Column comments on every column
+- Follow the naming conventions your company chooses
+- If they don't have naming conventions, there's a spot for huge impact
+
+Quality checks
+- Basic checks
+	- Not NULL, no duplicates, enum values are all valid
+- Intermediate checks
+	- Row count looks good, week-over-week row count cut by dimensions looks good
+	- Are buiness rules enforced?
+- Advanced checks
+	- Seasonality adjusted row counts look good
+
+Dimensional Quality Checks
+- Dimensional tables usually:
+	- Grow or are flat day-over-day -> table is growing check is very common
+	- Don't grow sharply (percent difference from last week should be small)
+	- Have complex relationships that should be checked -> think foreign keys in relational world
+
+Fact Quality Checks
+- Fact tables usually:
+	- Have a seasonality to them (week-over-week is much better than day-over-day)
+	- Affected by holidays (Xmas, New Years false positive a lot)
+	- Can grow and shrink (table is growing is not a good check here)
+	- More prone to duplicates (deduplicate is a must)
+	- More prone to NULLs and other row-level quality issues
+	- Have references to entities that should exist (similar to FK checks in relational)
+
+These data quality checks could help the business in ways you least expect!
+
+Fact Data Quality checks
+- If you're using Presto, use APPROX_COUNT_DISTINCT instead of COUNT(DISTINCT) for deduped checks its 99.9% the same but dramatically more efficient
