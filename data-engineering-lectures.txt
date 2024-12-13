@@ -1018,3 +1018,84 @@ These data quality checks could help the business in ways you least expect!
 
 Fact Data Quality checks
 - If you're using Presto, use APPROX_COUNT_DISTINCT instead of COUNT(DISTINCT) for deduped checks its 99.9% the same but dramatically more efficient
+
+
+Lecture 11
+WAP vs Signal for Data Quality
+--------------------------------------------
+What causes bad data?
+- Logging errors (more for fact data)
+	someone could change the schema of the logs, and it doesn't match table schema,
+	or a dev could implement wrong behavior on a site.
+- Snapshotting errors (more for dimensional data)
+	happens rarely if at all, missing dimensions, missing users
+- Production data quality issues
+- Schema evolution issues
+- Pipeline mistakes making it into production
+	errors in JOIN or CASE WHEN etc, when you don't follow the contract process
+- Non-idempotent pipelines and backfill errors
+- Not thorough enough validation
+Integrations can also break your validation due to you having no control of what the third party does!
+
+Validation best practices
+- Backfill a small amount of data (~1 month)
+- Have someone else check all your assumptions
+- Produce a validation report
+	- Duplicates
+	- Nulls
+	- Violations of business rules
+	- Time series / volume
+
+Writing to Production is a Contract
+- You checked the data the best you could
+- The components of the contract:
+	- Schema
+	- Quality checks
+	- How data shows up in production
+
+Two flavors of the contact
+- WAP (write-audit-publish)
+- Signal table
+
+WAP                                     yes
+Pipeline->staging table->qaility pass? /--->exchange stag&prod partitions->prod table->down pipe
+									   \--->is the check blocking^->manully troubleshoot DQ issue
+									    no                     (yes->)(no^)
+Writes to a staging table, should have same schema as production then run quality checks, if they passed move the data from stag to prod.
+Blocking quality check very serious data quality issue you have to troubleshoot.
+non-blocking check data weirdness fire an alert if non-blocking publish anyways.
+
+Signal table (simplier pattern)
+How its different is that there is no staging table:
+Pipline->prod table->quality pass->publish signal table
+                        ^- no fire alert
+The downstream pipeline needs to wait on the signal table not the prod table
+Does not catar to AdHoc quieres very well, everyone uses production table not the signal table so the prod could have bad data.
+
+WAP vs Signal Table (different contracts)
+PROS WAP:
+	- Downstream pipelines can intuitively depend on the prod table directly
+	- No chance of production data getting written without passing the audits
+CONS WAP:
+	- Partition exchange can be something that delays the pipeline by several minutes. More likely to miss SLA
+PROS Signal Tables:
+	- Data lands in just 1 spot and never has to be moved
+	- More likely to hit SLA, data lands sooner
+CONS Signal Tables:
+	- Non-intuitive for your downstream users. What if they forget that you have a signal table? Higher likelihood of propagating DQ errors because of this non-intuitive design Adhoc queries
+	- may return results from data that has failed audits
+(Seems like we would always use WAP)
+
+What happens when these contracts are violated?
+- Bad data propagation (one of the worst issues)
+- if you have no downstream dependencies, not a big issue
+- if you have a lot, BIG ISSUE
+	lots of downstream dependencies (similar to a tree for output data)
+As you create datasets that are more critical and more used you need to follow these contracts so you can publish data with confidence!
+If you don't follow these contracts for big companies it could end up costing a lot of $ with bad data/pipeline
+
+Bad metric definitions can cause bad data as well
+- The more different data points and dimensions your metric depends on, the more prone it is to error.
+	- Knowing the engagement per qualified minute of Ethiopian children who use 7 year old iphone devices on xmas day is going to be a "noisy" metric
+when coming up with metrics it should be broad (i.e. female iphone users in USA)
+be careful not to be so narrow it could mess with your thresholds, also be careful with dimensional cuts
