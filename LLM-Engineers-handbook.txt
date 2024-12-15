@@ -1,0 +1,95 @@
+FTI architecture
+Feature Training and Inference
+
+Feature Pipeline
+Takes raw data as input, processes it, and outputs the features and labels required by the model for training or inference, saved to a feature store
+
+Training Pipeline
+Takes the features and labels from the features stored as input and outputs a train model or models and puts them into a model registry
+
+Inference Pipeline
+Takes as input the features and labels from the feature store and trained model from the model registry to make predictions
+
+Benefits of FTI:
+- Just three components easy to understand
+- Each component can be written into its own tech stack, so we can adapt them to specific needs, allows us to pick the best tools for the job.
+- There is a transparent interface between the three components, each one can be developed by a different team
+- every component can be monitored and deployed independently.
+
+RAG (retrieval-augmented generation)
+With any RAG-based system, one of the central peices of the infrastructure is a vector DB
+
+LLM encapsulates and automates all the following steps:
+- Data collection
+- Data preprocessing
+- Data storage, versioning, and retrieval
+- LLM fine-tuning
+- RAG
+- Content generation evaluation
+The key is to be data-centric and architecture model-agnostic so we can use different models on specific data.
+
+run `pyenv local 3.11.8` then pyenv will always know to use that python version it creates a `.python-version` file
+
+Poetry is a dependency and vitrual environment manager.
+it saves all its requirements in `pyproject.toml`
+creates a .lock file just like node package manager.
+had used venv before but lacks the dependency management option
+
+Poe the Poet is a plugin on top of Poetry
+helps you define and run tasks within your Python project, simplifying automation and script execution.
+Just like how we have commands in package.json example:
+
+we've defined:
+[tool.poe.tasks]
+test = "pytest"
+
+then run:
+`poetry poe test`
+
+ZenML acts as the bridge between ML and MLOps. It handles transitioning from exploratory research in Jupyter notebooks to a production-ready ML environment.
+ZenML’s main features are orchestrating ML pipelines, storing and versioning ML pipelines as outputs, and attaching metadata to artifacts for better observability.
+
+An orchestrator is a system that automates, schedules, and coordinates all your ML pipelines.
+
+ZenML works as an orchestrator via piplelines and steps, example:
+
+from zenml import pipeline
+from steps.etl import crawl_links, get_or_create_user
+@pipeline
+def digital_data_etl(user_full_name: str, links: list[str]) -> None:
+	user = get_or_create_user(user_full_name)
+	crawl_links(user=user, links=links)
+
+To integrate ZenML with your code you have to write modular code, where each function does one thing (makes it easy to use `@step` decorators):
+
+from loguru import logger
+from typing_extensions import Annotated
+from zenml import step
+from llm_engineering.application import utils
+from llm_engineering.domain.documents import UserDocument
+
+@step
+def get_or_create_user(user_full_name: str) -> Annotated[UserDocument, "user"]:
+    logger.info(f"Getting or creating user: {user_full_name}")
+    first_name, last_name = utils.split_user_full_name(user_full_name)
+    user = UserDocument.get_or_create(first_name=first_name, last_name=last_name)
+    return user
+
+Have a directory of steps alongside pipelines on the root so we can swap orchestrators if needed to use a REST API
+
+In MLOps, an artifact is any file(s) produced during the machine learning lifecycle, such as datasets, trained models, checkpoints, or logs. We can transform anything into an artifact.
+
+For web scraping its good to keep a config folder and a specific .yaml file that have all the URLs associated to (in this case) all posts/code from the same person. 
+
+Keeping everything in pipeline config .yaml files is ideal
+
+We can use Comet to track metrics and visualize them, track different config between experiements
+
+Opik: prompt monitoring
+Qdrant: vector database
+
+SageMaker provides a comprehensive platform for building, training, and deploying machine learning models vs Amazon Bedrock which is just pretrained models accessed directly through an API an "out-of-box" solution.
+Even SageMaker isn’t fully customizable. If you want complete control over your deployment use EKS AWS Kubernetes self-managed service.
+
+We use an ETL pipline to extract data, transforming and cleaning data into a suitable format for storage and analysis, and load into our warehouse or db.
+
