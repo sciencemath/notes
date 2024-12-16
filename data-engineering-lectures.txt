@@ -1178,7 +1178,41 @@ The structure of a streaming pipeline
 	- Kafka, RabbitMQ (queues - data in motion) (Kafka usually scales better, rabbit has more compleex routing i.e. message broker pub/sub)
 - Enriched dimensional sources (i.e. side inputs)
 - The compute engine
-	- Flink
+	- Flink (windowing, out-of-order events, watermarking, etc)
 	- Spark Structured Streaming
 - These engines make sense of the incoming streams of data
 
+The structure of a streaming pipeline
+- The destination, also called "the sink"
+- Common sinks
+	- Another Kafka topic
+	- Iceberg
+	- Postgres
+your data lands in real time in Kafka, flink picks it up, then it is put in a "sink"
+Iceberg lets you append new data to partitions instead of overwrite (streaming events coming in)
+
+Streaming challenges
+- Out of order events
+- Late arriving data
+- Recovering from failures
+The more you wait to fix your streaming data pipeline the more and more data will be behind
+
+Out of order events
+- How does Flink deal with out-of-order events?
+	- Watermarking
+There are no events that are newer than the watermark.
+The watermark looks at the event time at the events coming in, then you could have a buffer/threshold of say 20seconds which anything within 20seconds could be out of order but 21sec is not out of order, flink will fix that order in the window automatically for you.
+
+Recovering from failures
+- Flink manages this in a few ways
+- Offsets
+	- Earliest offset (read in everything in Kafka)
+	- Latest offset (only read new data after the job starts)
+	- Specific timestamp (maybe like when it failed)
+- Checkpoints (n number of seconds)
+- Savepoints
+Checkpoints are internal to Flink, Savepoints are agnostic
+
+Late-arriving data
+- How late is too late?
+- Batch handles this mostly by waiting, although batch has issues around midnight UTC too
