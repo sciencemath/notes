@@ -1864,7 +1864,7 @@ Here we're simply testing duplicates: input_data vs expected_output should match
 Difference here in teams we have ignore_nullable=True
 
 
-Lecture 10
+LAB 10
 User growth pipeline
 --------------------------------------------
 MemoryAllocation is a new startup that wants to measure its website and user growth
@@ -1945,3 +1945,154 @@ Qaulity Checks (second table):
 		- overall rollup should have more data than any other rollup
 		- `event_hour` should look like its old seasonal pattern
 		- `m_total_events` > some min number
+
+
+Lecture 11
+Real-time data pipelines with Kafka and Flink
+--------------------------------------------
+A ScalarFunction takes one column or one row and returns one column or one row, here we get user location based on our ip_address:
+(we needed to setup an API KEY at https://api.ip2location.io)
+
+class GetLocation(ScalarFunction):
+  def eval(self, ip_address):
+    url = "https://api.ip2location.io"
+    response = requests.get(url, params={
+        'ip': ip_address,
+        'key': os.environ.get("IP_CODING_KEY")
+    })
+
+    if response.status_code != 200:
+        # Return empty dict if request failed
+        return json.dumps({})
+
+    data = json.loads(response.text)
+
+    # Extract the country and state from the response
+    # This might change depending on the actual response structure
+    country = data.get('country_code', '')
+    state = data.get('region_name', '')
+    city = data.get('city_name', '')
+    return json.dumps({'country': country, 'state': state, 'city': city})
+
+get_location = udf(GetLocation(), result_type=DataTypes.STRING())
+
+As part of a SQL query at the end you can have a window event that will fix the order of events within a 15 second window:
+
+WATERMARK FOR event_timestamp AS event_timestamp - INTERVAL '15' SECOND
+
+flink needs to read from a connector (could be from different sources but in our case we'll read from a kafka connector):
+
+CREATE TABLE {table_name} (
+    url VARCHAR,
+    referrer VARCHAR,
+    user_agent VARCHAR,
+    host VARCHAR,
+    ip VARCHAR,
+    headers VARCHAR,
+    event_time VARCHAR,
+    event_timestamp AS TO_TIMESTAMP(event_time, '{pattern}')
+) WITH (
+    'connector' = 'kafka',
+    'properties.bootstrap.servers' = '{os.environ.get('KAFKA_URL')}',
+    'topic' = '{os.environ.get('KAFKA_TOPIC')}',
+    'properties.group.id' = '{os.environ.get('KAFKA_GROUP')}',
+    'properties.security.protocol' = 'SASL_SSL',
+    'properties.sasl.mechanism' = 'PLAIN',
+    'properties.sasl.jaas.config' = 'org.apache.flink.kafka.shaded.org.apache.kafka.common.security.plain.PlainLoginModule required username=\"{kafka_key}\" password=\"{kafka_secret}\";',
+    'scan.startup.mode' = 'latest-offset',
+    'properties.auto.offset.reset' = 'latest',
+    'format' = 'json'
+);
+A KAFKA_TOPIC and a db table are similar
+
+sink to potegres:
+table_name = 'processed_events'
+
+CREATE TABLE {table_name} (
+    ip VARCHAR,
+    event_timestamp TIMESTAMP(3),
+    referrer VARCHAR,
+    host VARCHAR,
+    url VARCHAR,
+    geodata VARCHAR
+) WITH (
+    'connector' = 'jdbc',
+    'url' = '{os.environ.get("POSTGRES_URL")}',
+    'table-name' = '{table_name}',
+    'username' = '{os.environ.get("POSTGRES_USER", "postgres")}',
+    'password' = '{os.environ.get("POSTGRES_PASSWORD", "postgres")}',
+    'driver' = 'org.postgresql.Driver'
+);
+This is required:
+'driver' = 'org.postgresql.Driver'
+This doesn't create a table this just makes flink be aware of the schema
+
+Kafka sink:
+def create_processed_events_sink_kafka(t_env):
+    table_name = "process_events_kafka"
+    kafka_key = os.environ.get("KAFKA_WEB_TRAFFIC_KEY", "")
+    kafka_secret = os.environ.get("KAFKA_WEB_TRAFFIC_SECRET", "")
+    sasl_config = f'org.apache.kafka.common.security.plain.PlainLoginModule required username="{kafka_key}" password="{kafka_secret}";'
+    sink_ddl = f"""
+        CREATE TABLE {table_name} (
+            ip VARCHAR,
+            event_timestamp VARCHAR,
+            referrer VARCHAR,
+            host VARCHAR,
+            url VARCHAR,
+            geodata VARCHAR
+        ) WITH (
+            'connector' = 'kafka',
+            'properties.bootstrap.servers' = '{os.environ.get('KAFKA_URL')}',
+            'topic' = '{os.environ.get('KAFKA_GROUP').split('.')[0] + '.' + table_name}',
+            'properties.ssl.endpoint.identification.algorithm' = '',
+            'properties.group.id' = '{os.environ.get('KAFKA_GROUP')}',
+            'properties.security.protocol' = 'SASL_SSL',
+            'properties.sasl.jaas.config' = '{sasl_config}',
+            'format' = 'json'
+        );
+        """
+    print(sink_ddl)
+    t_env.execute_sql(sink_ddl)
+    return table_name
+
+Creating the Kafka table and writing it to postgres table:
+try:
+	# Create Kafka table
+	source_table = create_events_source_kafka(t_env)
+	postgres_sink = create_processed_events_sink_postgres(t_env)
+	print('loading into postgres')
+	t_env.execute_sql(
+	    f"""
+	            INSERT INTO {postgres_sink}
+	            SELECT
+	                ip,
+	                event_timestamp,
+	                referrer,
+	                host,
+	                url,
+	                get_location(ip) as geodata
+	            FROM {source_table}
+	            """
+	).wait()
+	except Exception as e:
+	print("Writing records from Kafka to JDBC failed:", str(e))
+
+The .wait() will make the job run continously
+
+run `make up` and `make job` to locally get your jobs running @ http://localhost:8081
+
+INSERT statements in our SQL fire the number of job(s) when we run `make jobs`
+
+These two properties:
+'scan.startup.mode' = 'latest-offset',
+'properties.auto.offset.reset' = 'latest',
+
+Latest:
+Use when you only care about new data arriving in Kafka and want to ignore historical data.
+Common for real-time stream processing where historical data is irrelevant.
+
+Earliest:
+Use when you need to process all historical data available in the topic, followed by real-time data.
+
+Kafka can have a high throughput syncs

@@ -1216,3 +1216,88 @@ Checkpoints are internal to Flink, Savepoints are agnostic
 Late-arriving data
 - How late is too late?
 - Batch handles this mostly by waiting, although batch has issues around midnight UTC too
+
+
+Lecture 13
+Real-time Data Complete flow w/ websockets
+--------------------------------------------
+The big competing architectures (very important should research more)
+- Lambda architecture
+- Kappa architecture
+
+Lambda Architecture
+- Optimizes for latency and correctness
+- Eats a bit of pain in complexity
+- Double the code base
+- Easier to insert data quality checks on the batch side
+You can have a streaming pipeline and a batch pipeline in case the streaming pipeline fails
+The pain here is the double code (but we're trying to be correct and realiable with the double pipelines)
+
+Kappa Architecture
+- Pros
+	- Least complex
+	- Great latency wins
+- Can be painful when you need to read a lot of history
+	- You need to read things sequentially
+- Delta Lake, Iceberg, Hudi are making this architecture much more viable
+You don't need both streaming and batching, you can just use streaming.
+Flink can switch from both modes
+Flink is more suited reading from Kafka
+Kafka all the data is in a line so backfilling can be painful
+Iceberg can have partition data and appends more data vs Kafka
+
+Flink UDFs (custom transformations)
+UDFs generally speaking won't perform as well as builted-in functions
+- Use UDFs for custom transformations, integrations, etc
+- Python UDFs are going to be even less performant since Flink isn't native Python
+
+Flink Windows
+- Data-driven windows (window stays open until you see n number of events)
+	- Count
+- Time-Driven Windows
+	- Tumbling
+	- Sliding
+	- Session
+
+Flink windows (count)
+- Window stays open until N number of events occur
+- Useful for funnels that have predictable number of events
+- Can specify a timeout since not everybody will finish the funnel
+SQL you get partitionBy
+in Flink you get keyBy
+The number of events may never come, so you should specify a timeout.
+
+Flink Windows Tumbling
+- Fixed size
+- No overlap
+- Similar to hourly data
+- Great for chunking data
+
+Flink Windows Sliding
+- Has overlap
+- Captures more windows
+- Good for finding "peak-use" windows
+- Good at handling "across midnight" exceptions in batch
+You get more duplicates because the windows overlap
+learn how to manage so your not over counting
+Can be useful finding peak uses, for example if you have a lot of data at 4:30 and 5:30 you have a window every hour 4-5 then 5-6 you would have a "peak" window from 4:30-5:30
+You can have an edge case where users are interacting in a short time period say around midnight UTC what 4 minutes before and 4 minutes after, this is where sliding windows can help you.
+tumbling windows are more common, sliding is good for a specific use case.
+
+Flink Windows Sessions
+- Variable length
+- Based on activity
+- Used to determine "normal" activity
+user specific, specify a gap.
+this you can determine how users are using your app begining and end of their session.
+
+Allowed lateness vs Watermarking
+- Watermarks
+	- defines when the computational window will execute
+	- Helps define ordering of events that arrive out-of-order
+	- Handles idleness
+- Allowed Lateness
+	- Usually set to 0
+	- Allows for reprocessing of events that fall within the late window
+	- CAUTION: will generate/merge with other records
+Allowed Lateness it will reprocess data that might have already been flushed, you might get another window because it will read data from a window that has been closed reading this event and closing it again.
