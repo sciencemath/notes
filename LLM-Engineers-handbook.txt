@@ -93,3 +93,214 @@ Even SageMaker isn’t fully customizable. If you want complete control over you
 
 We use an ETL pipline to extract data, transforming and cleaning data into a suitable format for storage and analysis, and load into our warehouse or db.
 
+ETL and the feature pipeline strictly communicate trough the Mongo data warehouse. Feature will read and the ETL process will write acting independently.
+
+using MongoDB as a data warehouse is uncommon, but we're using it for a small amount of data and its fine for our unstrucutred data (internet web articles), for production or dealing with tons of data we would use Snowflake or BigQuery
+
+Our crawling logic/step:
+===========================================================
+from urllib.parse import urlparse
+from loguru import logger
+from tqdm import tqdm
+from typing_extensions import Annotated
+from zenml import get_step_context, step
+from llm_engineering.application.crawlers.dispatcher import CrawlerDispatcher
+from llm_engineering.domain.documents import UserDocument
+
+@step
+def crawl_links(user: UserDocument, links: list[str]) -> Annotated[list[str], "crawled_links"]:
+    dispatcher = CrawlerDispatcher.build().register_linkedin().register_medium().register_github()
+    logger.info(f"Starting to crawl {len(links)} link(s).")
+    metadata = {}
+    successfull_crawls = 0
+    for link in tqdm(links):
+        successfull_crawl, crawled_domain = _crawl_link(dispatcher, link, user)
+        successfull_crawls += successfull_crawl
+        metadata = _add_to_metadata(metadata, crawled_domain, successfull_crawl)
+        step_context = get_step_context()
+    step_context.add_output_metadata(output_name="crawled_links", metadata=metadata)
+    logger.info(f"Successfully crawled {successfull_crawls} / {len(links)} links.")
+    return links
+
+def _crawl_link(dispatcher: CrawlerDispatcher, link: str, user: UserDocument) -> tuple[bool, str]:
+    crawler = dispatcher.get_crawler(link)
+    crawler_domain = urlparse(link).netloc
+    try:
+        crawler.extract(link=link, user=user)
+        return (True, crawler_domain)
+    except Exception as e:
+        logger.error(f"An error occurred while crawling: {e!s}")
+        return (False, crawler_domain)
+
+def _add_to_metadata(metadata: dict, domain: str, successfull_crawl: bool) -> dict:
+	if domain not in metadata:
+	    metadata[domain] = {}
+	metadata[domain]["successful"] = metadata.get(domain, {}).get("successful", 0) + successfull_crawl
+	metadata[domain]["total"] = metadata.get(domain, {}).get("total", 0) + 1
+	return metadata
+===========================================================
+CrawlerDispatcher:
+===========================================================
+import re
+from urllib.parse import urlparse
+from loguru import logger
+from .base import BaseCrawler
+from .custom_article import CustomArticleCrawler
+from .github import GithubCrawler
+from .linkedin import LinkedInCrawler
+from .medium import MediumCrawler
+
+class CrawlerDispatcher:
+    def __init__(self) -> None:
+        self._crawlers = {}
+
+    @classmethod
+    def build(cls) -> "CrawlerDispatcher":
+        dispatcher = cls()
+        return dispatcher
+
+    # CrawlerDispatcher.build().register_linkedin().register_medium()
+    def register_medium(self) -> "CrawlerDispatcher":
+        self.register("https://medium.com", MediumCrawler)
+        return self
+    def register_linkedin(self) -> "CrawlerDispatcher":
+        self.register("https://linkedin.com", LinkedInCrawler)
+        return self
+    def register_github(self) -> "CrawlerDispatcher":
+        self.register("https://github.com", GithubCrawler)
+        return self
+
+
+    def register(self, domain: str, crawler: type[BaseCrawler]) -> None:
+        parsed_domain = urlparse(domain)
+        domain = parsed_domain.netloc
+        self._crawlers[r"https://(www\.)?{}/*".format(re.escape(domain))] = crawler
+
+
+    def get_crawler(self, url: str) -> BaseCrawler:
+        for pattern, crawler in self._crawlers.items():
+            if re.match(pattern, url):
+                return crawler()
+        else:
+            logger.warning(f"No crawler found for {url}. Defaulting to CustomArticleCrawler.")
+            return CustomArticleCrawler()
+===========================================================
+BaseCrawler
+===========================================================
+from abc import ABC, abstractmethod
+class BaseCrawler(ABC):
+    model: type[NoSQLBaseDocument]
+    @abstractmethod
+    def extract(self, link: str, **kwargs) -> None: ...
+
+Selenium can programmatically control various browsers such as Chrome, Firefox, or Brave.
+we can use this tool to login, scroll websites, click on different elements etc
+===========================================================
+BaseSeleniumCrawler
+===========================================================
+import time
+from tempfile import mkdtemp
+import chromedriver_autoinstaller
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from llm_engineering.domain.documents import NoSQLBaseDocument
+# Check if the current version of chromedriver exists
+# and if it doesn't exist, download it automatically,
+# then add chromedriver to path
+chromedriver_autoinstaller.install()
+
+class BaseSeleniumCrawler(BaseCrawler, ABC):
+    def __init__(self, scroll_limit: int = 5) -> None:
+        options = webdriver.ChromeOptions()
+       
+        options.add_argument("--no-sandbox")
+        options.add_argument("--headless=new")
+        options.add_argument("--disable-dev-shm-usage")
+        options.add_argument("--log-level=3")
+        options.add_argument("--disable-popup-blocking")
+        options.add_argument("--disable-notifications")
+        options.add_argument("--disable-extensions")
+        options.add_argument("--disable-background-networking")
+        options.add_argument("--ignore-certificate-errors")
+        options.add_argument(f"--user-data-dir={mkdtemp()}")
+        options.add_argument(f"--data-path={mkdtemp()}")
+        options.add_argument(f"--disk-cache-dir={mkdtemp()}")
+        options.add_argument("--remote-debugging-port=9226")
+
+        self.set_extra_driver_options(options)
+        self.scroll_limit = scroll_limit
+        self.driver = webdriver.Chrome(
+            options=options,
+        )
+
+    # placeholders
+    def set_extra_driver_options(self, options: Options) -> None:
+        pass
+    def login(self) -> None:
+        pass
+
+    def scroll_page(self) -> None:
+        """Scroll through the LinkedIn page based on the scroll limit."""
+        current_scroll = 0
+        last_height = self.driver.execute_script("return document.body.scrollHeight")
+        while True:
+            self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            time.sleep(5)
+            new_height = self.driver.execute_script("return document.body.scrollHeight")
+            if new_height == last_height or (self.scroll_limit and current_scroll >= self.scroll_limit):
+                break
+            last_height = new_height
+            current_scroll += 1
+
+===========================================================
+next we can look at the concrete crawlers, in our case theres three
+GitHubCrawler(BaseCrawler)
+CustomArticleCrawler(BaseCrawler)
+MediumCrawler(BaseSeleniumCrawler)
+
+We don't have to log in to GitHub through the browser, as we can leverage Git clone functionality. this means no Selenium functionality. 
+
+
+GithubCrawler
+===========================================================
+class GithubCrawler(BaseCrawler):
+    model = RepositoryDocument
+    def __init__(self, ignore=(".git", ".toml", ".lock", ".png")) -> None:
+        super().__init__()
+        self._ignore = ignore
+
+    def extract(self, link: str, **kwargs) -> None:
+    	old_model = self.model.find(link=link)
+    	if old_model is not None:
+        	logger.info(f"Repository already exists in the database: {link}")
+        	return
+        logger.info(f"Starting scrapping GitHub repository: {link}")
+    	repo_name = link.rstrip("/").split("/")[-1]
+    	local_temp = tempfile.mkdtemp()
+
+	    try:
+        	os.chdir(local_temp)
+        	subprocess.run(["git", "clone", link])
+        	repo_path = os.path.join(local_temp, os.listdir(local_temp)[0])
+	        tree = {}
+	        for root, _, files in os.walk(repo_path):
+	            dir = root.replace(repo_path, "").lstrip("/")
+	            if dir.startswith(self._ignore):
+	                continue
+	            for file in files:
+	                if file.endswith(self._ignore):
+	                    continue
+	                file_path = os.path.join(dir, file)
+	                with open(os.path.join(root, file), "r", errors="ignore") as f:
+	                    tree[file_path] = f.read().replace(" ", "")
+
+	        user = kwargs["user"]
+	        instance = self.model(
+	            content=tree,
+	            name=repo_name,
+	            link=link,
+	            platform="github",
+	            author_id=user.id,
+	            author_full_name=user.full_name,
+	        )
+	        instance.save()

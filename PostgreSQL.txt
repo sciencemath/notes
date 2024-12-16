@@ -64,8 +64,4 @@ specifically: --natural-foreign, and --natural-primary
 
 The PostgreSQL search engine removes stop words, such as “a,” “the,” “on,” and “of.”
 
-
-
-
-
-
+`FOR UPDATE SKIP LOCKED` locks rows for processing data (job queuing)

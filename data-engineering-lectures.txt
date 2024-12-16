@@ -1099,3 +1099,86 @@ Bad metric definitions can cause bad data as well
 	- Knowing the engagement per qualified minute of Ethiopian children who use 7 year old iphone devices on xmas day is going to be a "noisy" metric
 when coming up with metrics it should be broad (i.e. female iphone users in USA)
 be careful not to be so narrow it could mess with your thresholds, also be careful with dimensional cuts
+
+Lecture 12
+Real-time Data Pipelines with Kafka and Flink
+--------------------------------------------
+What is a streaming pipeline?
+- Streaming pipelines process data in a low-latency way
+~1min - 30min when the data is generated to when it is processed
+intra day means its going to run more than once a day
+
+What's the difference between streaming, near real-time and real-time?
+- Streaming (or continuous)
+	- Data is processed as it is generated
+	- Example: Apache Flink
+- Near real-time
+	- Data is processed in small/micro batches every few minutes
+	- Example: Spark Structured Streaming (eventually this will support streaming)
+Real-time and streaming are often synonymous but not always!
+Less technical people might think real-time and batch are synonymous
+Understand the latency requirements and not take your stakeholders word
+(Streaming requirements happens less than 1/10 times, just understand that this concept means different things to different people)
+
+What does real-time mean from stakeholders?
+- It rarely means streaming
+- It usually means low-latency or predictable refresh rate
+You and stakeholders can have an SLA discussion (service level agreement) ask when do you want the data to refresh (usually they want data to refresh hours after midnight)
+
+Should you use streaming?
+- Considerations
+	- Skills on the team
+	- What is the incremental benefit
+	- Homogeneity of your pipelines
+	- The tradeoff between daily batch, hourly bath, microbatch, and streaming
+	- How should data quality be inserted (batch pipelines have easier DQ paths)
+
+Streaming-only use cases
+- KEY: Low latency makes or breaks the use case
+	- Detecting fraud, preventing bad behavior (don't let bad actors go on a spending spree!)
+	- High-frequency trading
+	- live event processing (sport analytics)
+Should be somewhat obvious when to use streaming
+
+Gray-area use cases (micro-batch may work too)
+- Data that is served to customers
+- Reducing the latency of upstream master data
+	- Notifications dataset had an 9 hour after midnight latency
+	- micro batch cut it to an hour
+
+No-go Streaming use cases (use batch)
+- Ask the question
+	- What is the incremental benefit of reduced latency?
+- Analysts complaining that the data isn't up-to-date
+	- Yesterday's data by 9am is good enough for most analytical use cases
+sometimes it could be a waste of your time to reduce the latency.
+a business shouldn't focus on noise and wait for a signal its like looking at min to min stock changes which could waste time when it reality should just look at day open and day close
+If someone from data analytics complains the data is not up to date just tell them what would be different if it was up to date (most of the time it would be nothing).
+
+How are streaming pipelines different from batch pipelines?
+- Streaming pipelines run 24/7, batch pipelines run for a small percentage of the day (maybe 5 mintues out of the day not even 1% of the day)
+- Streaming pipelines are much more software engineering oriented
+	- They act a lot more like servers than DAGs
+- Streaming pipelines need to be treated as such and have more unit test and integration test coverage like servers
+
+The lower the latency the higher the engineering complexity
+
+The streaming -> batch continuum
+- Real time is a myth (network latency)
+	- You'll have seconds of latency just for the event generation -> Kafka -> Flink -> sink
+- Pipelines can be broken into 4 categories
+	- Daily batch
+	- Hourly batch (near real-time)
+	- Microbatch (near real-time)
+	- continuous processing (real-time)
+Even with streaming it might take minutes to know that you've been hacked
+
+The structure of a streaming pipeline
+- The sources
+	- Kafka, RabbitMQ (queues - data in motion) (Kafka usually scales better, rabbit has more compleex routing i.e. message broker pub/sub)
+- Enriched dimensional sources (i.e. side inputs)
+- The compute engine
+	- Flink
+	- Spark Structured Streaming
+- These engines make sense of the incoming streams of data
+
