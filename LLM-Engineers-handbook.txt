@@ -262,6 +262,7 @@ We don't have to log in to GitHub through the browser, as we can leverage Git cl
 
 
 GithubCrawler
+
 ===========================================================
 class GithubCrawler(BaseCrawler):
     model = RepositoryDocument
@@ -281,6 +282,10 @@ class GithubCrawler(BaseCrawler):
 	    try:
         	os.chdir(local_temp)
         	subprocess.run(["git", "clone", link])
+
+        	# walks dir tree, skipping any ignore patterns
+        	# removes spaces
+
         	repo_path = os.path.join(local_temp, os.listdir(local_temp)[0])
 	        tree = {}
 	        for root, _, files in os.walk(repo_path):
@@ -293,7 +298,8 @@ class GithubCrawler(BaseCrawler):
 	                file_path = os.path.join(dir, file)
 	                with open(os.path.join(root, file), "r", errors="ignore") as f:
 	                    tree[file_path] = f.read().replace(" ", "")
-
+	        # creates a new instance of RepositoryDocument model
+	        # then saved to MongoDB
 	        user = kwargs["user"]
 	        instance = self.model(
 	            content=tree,
@@ -304,3 +310,303 @@ class GithubCrawler(BaseCrawler):
 	            author_full_name=user.full_name,
 	        )
 	        instance.save()
+	    # clean up the temp directory
+	    except Exception:
+	        raise
+	    finally:
+	        shutil.rmtree(local_temp)
+	    logger.info(f"Finished scrapping GitHub repository: {link}")
+===========================================================
+CustomArticleCrawler
+This will use AsyncHtmlLoader and Html2TextTransformer
+both from the langchain community
+
+some developers avoid using LangChain in production
+
+===========================================================
+from urllib.parse import urlparse
+from langchain_community.document_loaders import AsyncHtmlLoader
+from langchain_community.document_transformers.html2text import Html2TextTransformer
+from loguru import logger
+from llm_engineering.domain.documents import ArticleDocument
+from .base import BaseCrawler
+
+class CustomArticleCrawler(BaseCrawler):
+    model = ArticleDocument
+    def extract(self, link: str, **kwargs) -> None:
+        old_model = self.model.find(link=link)
+        if old_model is not None:
+            logger.info(f"Article already exists in the database: {link}")
+            return
+        # here we use both
+        # AsyncHtmlLoader, and Html2TextTransformer
+        # we are not in control is extracted and parsed
+        # fallback where we don’t have anything custom implemented
+
+	    logger.info(f"Starting scrapping article: {link}")
+	    loader = AsyncHtmlLoader([link])
+	    docs = loader.load()
+	    html2text = Html2TextTransformer()
+	    docs_transformed = html2text.transform_documents(docs)
+	    doc_transformed = docs_transformed[0]
+	    # page content and meta data
+        content = {
+            "Title": doc_transformed.metadata.get("title"),
+            "Subtitle": doc_transformed.metadata.get("description"),
+            "Content": doc_transformed.page_content,
+            "language": doc_transformed.metadata.get("language"),
+        }
+
+        # This parses URL to determine the platform (domain) 
+        # from which article was scrapped
+
+        parsed_url = urlparse(link)
+        platform = parsed_url.netloc
+
+        # Next save everything to MongoDB
+
+        user = kwargs["user"]
+        instance = self.model(
+            content=content,
+            link=link,
+            platform=platform,
+            author_id=user.id,
+            author_full_name=user.full_name,
+        )
+        instance.save()
+        logger.info(f"Finished scrapping custom article: {link}")       
+===========================================================
+MediumCrawler
+
+NOTE: since we use extract and a conditional at the beginnning
+for each of these crawlers this should be abstracted out as well.
+===========================================================
+from bs4 import BeautifulSoup
+from loguru import logger
+from llm_engineering.domain.documents import ArticleDocument
+from .base import BaseSeleniumCrawler
+class MediumCrawler(BaseSeleniumCrawler):
+    model = ArticleDocument
+
+    def set_extra_driver_options(self, options) -> None:
+    	options.add_argument(r"--profile-directory=Profile 2")
+
+    def extract(self, link: str, **kwargs) -> None:
+	    old_model = self.model.find(link=link)
+	    if old_model is not None:
+	        logger.info(f"Article already exists in the database: {link}")
+	        return
+	    logger.info(f"Starting scrapping Medium article: {link}")
+	    self.driver.get(link)
+	    self.scroll_page()
+	    # The only crawler using BeautifulSoup
+        soup = BeautifulSoup(self.driver.page_source, "html.parser")
+        title = soup.find_all("h1", class_="pw-post-title")
+        subtitle = soup.find_all("h2", class_="pw-subtitle-paragraph")
+        data = {
+            "Title": title[0].string if title else None,
+            "Subtitle": subtitle[0].string if subtitle else None,
+            "Content": soup.get_text(),
+        }
+
+        # save to DB
+
+        self.driver.close()
+        user = kwargs["user"]
+        instance = self.model(
+            platform="medium",
+            content=data,
+            link=link,
+            author_id=user.id,
+            author_full_name=user.full_name,
+        )
+        instance.save()
+        logger.info(f"Successfully scraped and saved article: {link}")
+
+Linked in is a bit longer then the other two scrapers as it uses Beautiful soup
+does a bulk_insert for all posts, logins() the user, find elements based on classes which in fact may change over time but the same idea applies for scrapping setting up model and saving
+
+Since LLM core features is scrapping there are two other popular scrapping data:
+Scrapy: https://github.com/scrapy/scrapy
+Crawl4Ai: https://github.com/unclecode/crawl4ai
+ORMs:
+FastAPI SQLModel: https://github.com/fastapi/sqlmodel
+SQLAlchemy: https://www.sqlalchemy.org/
+
+It is best practice to structure data in classes instead of dictionaries, each item is more verbose, reducing run errors. 
+
+ODM pattern is similar to ORM but instead it simply works with NoSQL
+
+===========================================================
+NoSQLBaseDocument
+
+Nothing special in these methods just a wrapper for
+DB management, the class methods here are self explaintory
+similar to mongoengine
+===========================================================
+import uuid
+from abc import ABC
+from typing import Generic, Type, TypeVar
+from loguru import logger
+from pydantic import UUID4, BaseModel, Field
+from pymongo import errors
+from llm_engineering.domain.exceptions import ImproperlyConfigured
+from llm_engineering.infrastructure.db.mongo import connection
+from llm_engineering.settings import settings
+
+_database = connection.get_database(settings.DATABASE_NAME)
+T = TypeVar("T", bound="NoSQLBaseDocument")
+
+# id field is defined as a UUID4, with a default factory generating a unique UUID
+class NoSQLBaseDocument(BaseModel, Generic[T], ABC):
+	id: UUID4 = Field(default_factory=uuid.uuid4)
+	def __eq__(self, value: object) -> bool:
+	    if not isinstance(value, self.__class__):
+	        return False
+	    return self.id == value.id
+	def __hash__(self) -> int:
+	    return hash(self.id)
+
+	# The from_mongo() and to_mongo()
+	# are what it says mongoDB->class, dictionary->mongoDB
+	@classmethod
+	def from_mongo(cls: Type[T], data: dict) -> T:
+	    if not data:
+	        raise ValueError("Data is empty.")
+	    id = data.pop("_id")
+	    return cls(**dict(data, id=id))
+	def to_mongo(self: T, **kwargs) -> dict:
+	    exclude_unset = kwargs.pop("exclude_unset", False)
+	    by_alias = kwargs.pop("by_alias", True)
+	    parsed = self.model_dump(exclude_unset=exclude_unset, by_alias=by_alias, **kwargs)
+	    if "_id" not in parsed and "id" in parsed:
+	        parsed["_id"] = str(parsed.pop("id"))
+	    for key, value in parsed.items():
+	        if isinstance(value, uuid.UUID):
+	            parsed[key] = str(value)
+	    return parsed
+
+	def save(self: T, **kwargs) -> T | None:
+	    collection = _database[self.get_collection_name()]
+	    try:
+	        collection.insert_one(self.to_mongo(**kwargs))
+	        return self
+	    except errors.WriteError:
+	        logger.exception("Failed to insert document.")
+	        return None
+
+	@classmethod
+	def get_or_create(cls: Type[T], **filter_options) -> T:
+	    collection = _database[cls.get_collection_name()]
+	    try:
+	        instance = collection.find_one(filter_options)
+	        if instance:
+	            return cls.from_mongo(instance)
+	        new_instance = cls(**filter_options)
+	        new_instance = new_instance.save()
+	        return new_instance
+	    except errors.OperationFailure:
+	        logger.exception(f"Failed to retrieve document with filter options: {filter_options}")
+	        raise
+
+	@classmethod
+	def bulk_insert(cls: Type[T], documents: list[T], **kwargs) -> bool:
+	    collection = _database[cls.get_collection_name()]
+	    try:
+	        collection.insert_many([doc.to_mongo(**kwargs) for doc in documents])
+	        return True
+	    except (errors.WriteError, errors.BulkWriteError):
+	logger.error(f"Failed to insert documents of type {cls.__name__}")
+	        return False
+
+	@classmethod
+	def find(cls: Type[T], **filter_options) -> T | None:
+	    collection = _database[cls.get_collection_name()]
+	    try:
+	        instance = collection.find_one(filter_options)
+	        if instance:
+	            return cls.from_mongo(instance)
+	        return None
+	    except errors.OperationFailure:
+	        logger.error("Failed to retrieve document.")
+	        return None
+
+	@classmethod
+	def bulk_find(cls: Type[T], **filter_options) -> list[T]:
+	    collection = _database[cls.get_collection_name()]
+	    try:
+	        instances = collection.find(filter_options)
+	        return [document for instance in instances if (document := cls.from_mongo(instance)) is not None]
+	    except errors.OperationFailure:
+	        logger.error("Failed to retrieve document.")
+	        return []
+
+	@classmethod
+	def get_collection_name(cls: Type[T]) -> str:
+	    if not hasattr(cls, "Settings") or not hasattr(cls.Settings, "name"):
+	        raise ImproperlyConfigured(
+	            "Document should define an Settings configuration class with the name of the collection."
+	        )
+	    return cls.Settings.name
+
+=========================================================
+Lastly concrete classes that define our data categories
+=========================================================
+from abc import ABC
+from typing import Optional
+from pydantic import UUID4, Field
+from .base import NoSQLBaseDocument
+from .types import DataCategory
+from enum import StrEnum
+
+class DataCategory(StrEnum):
+    PROMPT = "prompt"
+    QUERIES = "queries"
+    INSTRUCT_DATASET_SAMPLES = "instruct_dataset_samples"
+    INSTRUCT_DATASET = "instruct_dataset"
+    PREFERENCE_DATASET_SAMPLES = "preference_dataset_samples"
+    PREFERENCE_DATASET = "preference_dataset"
+    POSTS = "posts"
+    ARTICLES = "articles"
+	REPOSITORIES = "repositories"
+
+class Document(NoSQLBaseDocument, ABC):
+    content: dict
+    platform: str
+    author_id: UUID4 = Field(alias="author_id")
+    author_full_name: str = Field(alias="author_full_name")
+
+class RepositoryDocument(Document):
+    name: str
+    link: str
+    class Settings:
+        name = DataCategory.REPOSITORIES
+class PostDocument(Document):
+    image: Optional[str] = None
+    link: str | None = None
+    class Settings:
+        name = DataCategory.POSTS
+class ArticleDocument(Document):
+    link: str
+    class Settings:
+        name = DataCategory.ARTICLES
+
+class UserDocument(NoSQLBaseDocument):
+    first_name: str
+    last_name: str
+    class Settings:
+        name = "users"
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
+
+-------------------------------------------------------------------------------
+You often want to use the LLM on data it wasn’t trained on
+Retrieval augmented generation (RAG)
+- used to inject custom data into the LLM to perform a given action
+- fine tuning LLM is highly costly, RAG bypasses need for constant fine-tuning
+- summarize, reformulate, and extract the injected data
+
+Retrieval: Search for relevant data
+Augmented: Add data as context to the prompt
+Generation: Augmented prompt with an LLM for generation
