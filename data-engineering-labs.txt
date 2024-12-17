@@ -2096,3 +2096,73 @@ Earliest:
 Use when you need to process all historical data available in the topic, followed by real-time data.
 
 Kafka can have a high throughput syncs
+
+
+Lecture 12
+Real-time data pipelines with Kafka and Flink
+--------------------------------------------
+Standard setup:
+
+env = StreamExecutionEnvironment.get_execution_environment()
+env.enable_checkpointing(10)
+env.set_parallelism(3)
+
+# Set up the table environment
+settings = EnvironmentSettings.new_instance().in_streaming_mode().build()
+t_env = StreamTableEnvironment.create(env, environment_settings=settings)
+
+to use Flink window tumble:
+t_env.from_path(source_table)\
+     .window(
+		Tumble.over(lit(5).minutes).on(col("window_timestamp")).alias("w")
+	)
+then we can key on `w` window, and host (5 min chunks)
+	.group_by(
+            col("w"),
+            col("host")
+        )
+        .select(
+                col("w").start.alias("event_hour"),
+                col("host"),
+                col("host").count.alias("num_hits")
+        ) \
+        .execute_insert(aggregated_table)
+
+Insert into sink table with referrer:
+t_env.from_path(source_table).window(
+    Tumble.over(lit(5).minutes).on(col("window_timestamp")).alias("w")
+).group_by(
+    col("w"),
+    col("host"),
+    col("referrer")
+) \
+    .select(
+    col("w").start.alias("event_hour"),
+    col("host"),
+    col("referrer"),
+    col("host").count.alias("num_hits")
+) \
+    .execute_insert(aggregated_sink_table) \
+    .wait()
+
+SQL statement (looking at live events)
+had to debug why I wasn't getting this and I had Brew running Postgres and Docker had to stop my brew process.
+CREATE TABLE IF NOT EXISTS processed_events
+(
+    ip              VARCHAR,
+    event_timestamp TIMESTAMP(3),
+    referrer    VARCHAR,
+    host VARCHAR,
+    url VARCHAR,
+    geodata VARCHAR
+)
+SELECT * FROM processed_events
+
+You cant window without a watermark 
+
+Spark defaults to 200 tasks, and Flink default is 1 (streaming)
+
+You don't want a job to run every 5min in Spark, it takes 3 min to startup and more than 5 min to run groupby, then you have the startup and teardown costs.
+
+if you have a group by longer periods than an hour or more Spark is fine (batch), but a Tumble Window would be good for 5 min
+
