@@ -610,3 +610,217 @@ Retrieval augmented generation (RAG)
 Retrieval: Search for relevant data
 Augmented: Add data as context to the prompt
 Generation: Augmented prompt with an LLM for generation
+
+LLM is bound to the data it was trained on (parameterized knowledge)
+GPT-4o trained data up to Oct 2023, RAG overcomes these limits and provides access to external or latest data and prevents hallucinations.
+
+RAG Solves:
+Hallucinations (could tell us something that isn't true)
+Old or private information (new data is generated every second!)
+
+RAG system (3 modules):
+Ingestion pipeline: batch or streaming pipeline to populate vectorDB
+Retrieval pipeline: queries vector DB and retrieves relevant users input
+Generation pipeline: uses retrieved data to augment the prompt and LLM to generate answers
+
+ingestion pipeline (constantly updating)
+user input->retrieval->generation->LLM->answer
+
+Ingestion pipeline
+---------------------------------------
+gets data from many sources then cleans, chunks, and embeds
+loads the embedded chunks into a vector DB
+
+first data extraction, from DB APIs or webpages
+second cleaning layer, depending on your data cleaning varies such as invalid/unwanted characters 
+third chunking, splits cleaned documents into smaller ones. ensure it doesn't exceed the models input max size.
+fourth embedding, takes the chunks content and project it into a dense vector packed with semantic value.
+fifth loading, takes embedded chunks along with metadata the embedding is used as an index to query similar chnks. metadata is used to access the information added to augment the prompt
+
+Retrieval pipeline
+---------------------------------------
+take user input (text, image, audio) embed it and query vector DB for similar vectors
+project users input into the same vector space as the embeddings used as an index in the vector DB. We can then find the top K's most similar entried by comparing embeddings from the vector storage with the user's input vector. These entries then serve as content to augment the prompt that is passed to the LLM to generate the answer
+
+distance formula cosine distance is popular (others Euclidean, Manhatten)
+1 - cos(θ) = 1 - (A ⋅ B)/(||A||⋅||B||)
+ranges from -1 (opposite directions) to 1 (same direction), 0 (orthogonal)
+distance between two vectors depends on data and embedding model used.
+To avoid training-serving skew you must clean, chunk and embed the users input using the same functions, models, and hyperparameters, input and embeddings must be in the same vector space.
+
+Generation pipeline
+---------------------------------------
+Last step take users input retrieve data, pass to LLM, generate answer. Usually all the prompt engineering is done at the prompt template level.
+The final prompt populated with user's query and retrieved context
+
+As the prompt templates evolve, each change should be tracked and versioned using machine learning operations (MLOps) best practices.
+could use git or prompt management tools like LangFuse etc.
+
+Emedddings is like a map where words with similar meanings are clustered together with numerical represenation encoded as vectors in continuous vector space.
+Could be used in words, images or recommendation systems.
+
+NLP (natrual language processing) embeddings translate words into vectors where semantically similar words are positioned close in vector space.
+
+embeddings have more than 2 or 3 dimensions usually 64 to 2048 you must project them again to 2D or 3D.
+t-SNE or UMAP uses transform high-dimensional reduction keeping geometrical properties between points, making it easier to visualize, interpret, and process while minimizing the loss of important information.
+embeddings encode any categorical variable and you can feed it to an ML model.
+
+One-hot can lead to a high-dimensional feature space if the categorical variable has many unique values, making the method impractical.
+
+Feature hashing (hash trick) maps categories into a fixed number of bins or buckets. risk of collisions, where different categories might map to the same bin, leading to a loss of information. It's also difficult to understand the relationship between the original categories and the hashed features.
+
+Embedding your input reduces the size of its dimension and condenses all of its semantic meaning into a dense vector. Similar to techniques of a CNN
+
+====================================================
+example using Sentence Transformers Python package
+(also in hugging face)
+====================================================
+from sentence_transformers import SentenceTransformer
+model = SentenceTransformer("all-MiniLM-L6-v2")
+sentences = [
+"The cat sits outside waiting for a mouse.",
+"I am going swimming.",
+"The cat is swimming."
+]
+embeddings = model.encode(sentences)
+print(embeddings.shape)
+# Output: [3, 384]
+similarities = model.similarity(embeddings, embeddings)
+print(similarities)
+# Output:
+# tensor([[ 1.0000, -0.0389, 0.2692],
+# [-0.0389, 1.0000, 0.3837],
+# [ 0.2692, 0.3837, 1.0000]])
+#
+# similarities[0, 0] = The similarity between the first sentence and itself.
+# similarities[0, 1] = The similarity between the first and second sentence.
+# similarities[2, 1] = The similarity between the third and second sentence.
+====================================================
+you can pick between best-performing model or one with smallest memory footprint, descisions should be based on requirements, best to experiment
+
+Models like CLIP, lets you embed a piece of text and an image in the same vector. This allows you to find similar images using sentence as input and vice versa
+example:
+====================================================
+from io import BytesIO
+import requests
+from PIL import Image
+from sentence_transformers import SentenceTransformer
+
+response = requests.get(
+"https://i.etsystatic.com/9632921/r/il/a3e46a/3070971627/il_1588xN.3070971627_5jbv.jpg"
+)
+image = Image.open(BytesIO(response.content))
+model = SentenceTransformer("clip-ViT-B-32")
+img_emb = model.encode(image)
+text_emb = model.encode(
+	[
+		"A crazy cat smiling.",
+		"A white and brown cat with a yellow bandana.",
+		"A man eating in the garden."
+	]
+)
+
+print(text_emb.shape)
+# Output: (3, 512)
+similarity_scores = model.similarity(img_emb, text_emb)
+print(similarity_scores)
+# Output: tensor([[0.3068, 0.3300, 0.1719]])
+
+====================================================
+
+A Vector db look for the closest neighbors of the query vector, it uses approximate nearest neighbor (ANN) algorithms using only approximations of the top matches for a given input query works well enough trade-off between accuracy and latency
+
+workflow of a vector DB
+1. indexing vectors, vectors are indexed using data structures optimized for high-dimensional data.
+	- Hierarchiacal navigable small world (HNSW)
+		- multi-layer graph where each node represents a set of vectors.
+	- random projection
+		reduces high-dimensonility of vectors by projecting into a lower dimensional space using a random matrix
+	- product quantization (PQ)
+		- dividing vectors into smaller sub-vectors and then quantizing these sub-vectors into representative codes.
+	- locality-sensitive hashing (LSH)
+		- maps similar vectors into buckets, fast approximate nearest neighbor searches by focusing on a subset of the data
+2. querying for similarity (distance formulas)
+3. post-processing results: refine accuracy, most relevant vectors are returned
+
+Vector DB share common characteristics of a standard DB
+- Sharding and replication
+- Monitoring
+- Access Control
+- Backups
+
+There are some limitiations in the vanilla RAG framework, we can improve this with an advanced RAG in these stages:
+- Pre-retrieval index optimizations as well as query optimization
+- Retrieval improving the embedding models and metadata filtering
+- Post-retrieval filter out noise from retrieved documents and compress the prompt before feeding it to an LLM
+
+Pre-retrieval
+-----------------------------
+- Data indexing cleaning or chunking modules to preprocess data for better indexing
+- Query Optimization, algorithm performed directly on users's query before embedding it and retrieving chunks from vector DB
+
+improve better preprocessing and structuring data:
+- Sliding window
+	- overlap between text chunks, ensuring important context near chunk bondaries is reatined, legal documents, scientific papers, customer support logs, medical records, critical information spans multiple sections. (maintains context)
+- Enhance data granularity 
+	- removing irrelevant details, factual accuracy, updating outdated information
+- Metadata
+	- dates, URLs, chapter markers (filter)
+- Optimizing index structures
+	- chunk sizes and multi-indexing strategies
+- Small-to-big
+	- decouples chunks for retrieval and context used in prompt for final answer generation, uses small sequence of text to compute the embedding while preserving the sequence and a wider window around it in the metadata, smaller chunks enhances the retrievals accuracy, the larger context adds more context info to the LLM
+We do this to reduce the noise, or the text could contain multiple topics
+- Query routing
+	- Natural language is used to route queries if user input has multiple categories
+- Query rewriting (reformulating question to match indexed information better)
+	- Paraphrasing (e.g. "are there a lot of people that die from snakes?" could be written as "How many people die each year from snakes")
+	- Synonym substitution less common words with synonyms to broaden the search (e.g. "gleeful" to "hppy")
+	- Sub-queries break down long queries to mroe focused sub-queries
+- Hypothetical document embeddings (HyDE) LLM creates hypotheticals, both original query and LLMs response are fed into retrieval stage
+- Query expansion adding terms or concepts resulting in different perspectives for example you could search for "Zelda" but also include "Nintendo" or "Master Sword"
+- Self-Query unstructured queries to structured ones
+
+You'll have to experiment with each of these because it depends on your data
+
+Retrieval
+-----------------------------
+- imporving the embedding models
+- Leveraging the DB's filter and search features
+both enhance the vector search step by finding similarity between query and indexed data
+
+Instructor Models: (instead of fine-tuning the embedding model)
+Tailoring your embedding network to your data using such a model can be a good option fine-tuning a model consumes more computing and human resources.
+
+====================================================
+from InstructorEmbedding import INSTRUCTOR
+
+model = INSTRUCTOR("hkunlp/instructor-base")
+sentence = "RAG Fundamentals First"
+instruction = "Represent the title of an article about AI:"
+embeddings = model.encode([[instruction, sentence]])
+
+print(embeddings.shape)
+# Output: (1, 768)
+====================================================
+python3 -m venv instructor_venv && source instructor_venv/bin/activate
+pip install sentence-transformers==2.2.2 InstructorEmbedding==1.0.1
+
+classic filter and search DB filters
+
+- Hybrid search A vector and keyword-based search blend, you have an alpha that controls weight between the two methods, two independent searches, later normalized and unified.
+- Filtered vector search, metadata index to filter for specific keywords within metadata.
+
+
+Post-Retrieval
+-----------------------------
+This step is to limit irrelevant information, or the context can be too large which can distract the LLM
+- Prompt compression eliminate unnecessary details
+- re-ranking use a cross-encoder ML model to give a matching score between the user's input and every retrieved chunk. Retrieved items are sorted based on this score. its costly to do this initial retrieval step.
+
+Any RAG system is split into two independent components
+- The ingestion pipeline
+	- raw data, cleans, chunks, embeds, loads into vector DB
+- The inference pipeline
+	- queries vector db for relevant context generates by leveraging an LLM
+
