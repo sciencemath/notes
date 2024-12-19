@@ -1456,4 +1456,538 @@ class EmbeddingModelSingleton(metaclass=SingletonMeta):
         if to_list:
             embeddings = embeddings.tolist()
         return embeddings
------------------------------
+----------------------------------------------------------
+Supervised Fine-Tuning (SFT)
+refines the model's capabilities using carefully curated pairs of instructions and corresponding answers. This teaches the model to understand and follow a specific chat format transforming it into a conversation, the model adapts its broad knowledge base to excel in targeted tasks or specialized domains.
+
+Shapes LLMs behavior to align with specific goals.
+
+Instruction datasets are defined as pairs of instructions and answers.
+
+Here is an example from the SlimOrca dataset, with "system" and "instruction":
+System
+You are a helpful assistant, who always provide explanation. Think like you are answering to a five year old.
+
+Instruction
+Concepts: building, shop, town
+Write a sentence that includes all these words.
+
+Output
+In our little town, there is a shop inside a big building where people go to buy their favorite toys and candies.
+
+Once we have enough samples we only keep the high-quality:
+- Accuracy
+	- making sure responses are factually accurate
+	- relevant to instructions
+	- unlike FOX, CNBC, any media, we on the other hand want to be trustworthy
+- Diversity
+	- span different topics
+	- contexts
+	- writing styles
+- Complexity
+	- multi-step reasoning
+	- complex real world problems
+
+Hugging Face Hub contains numerous instruction datasets
+The quality of the data is a crucial factor, and a high number of samples is always desirable.
+
+Two types of finetunes: general-purpose, domain specific
+Some fields, like medicine or law, may require as much data as general-purpose fine-tuning due to their vast technical corpora.
+
+task specific models: collecting examples of the desired task from existing datasets or creating new ones.
+
+Domain specific models: requires collaboration with subject matter experts to gather and validate relevant texts, research papers, technical documents, and other domain specific content.
+
+few shot prompting: providing a few examples of the desired task within the input prompt.
+
+Sometimes a blury line between task/domain models
+
+rule based filtering relies on explicit predefined rules to filter data
+- length filtering setting thresholds for length of responses in the dataset
+	this can vary significantly depending on task/domain
+- keyword exclusion focuses on content rather than their structure
+	filter inappropriate content, low quality terms (profanities, spam, off topic).
+- Format checking structured data follow specific formatting to maintain consistency
+	code samples that are syntactiaclly correct and follow a specific style
+
+Predefined rules may lack the nuance required to capture full complexity of language and context could remove valid but unusual samples, rules need to always be reviewed because of the nature of data and quality standards evolve
+
+Data deduplication
+----------------------------------------------------------
+issues with duplicates or near-duplicates:
+	- Overfitting
+	- Biased performance
+	- Inefficient training
+	- Inflated evaluation metrics
+
+Exact deduplication removes identifical sample through
+	- data normalization
+	- hash generation
+	- duplicate remove
+
+Fuzzy deduplication is MinHash deduplication (most popular)
+generates compact representations or signatures for each data item, transforms data items into sets of shingles, applies multiple hash functions then selects the min has values to form signature vectors. These signatures are compared using similarity measures like Jaccard similarity to find near-duplicates
+
+Semantic similarity
+focuses on meaning of text for dedup, words -> vector representations using natural language processing, Word2Vec, GloVe, and FastText, words -> dense vectors
+
+Context-aware representations like BERT, sentence transformers, or cross-encoders can generate embedding for entire sentences or documents. dedup can be performed by comparing similarity between vectors (cosine distance). Clustering techniques may be applied to group similar vectors (K-means and others).
+
+Data decontamination
+----------------------------------------------------------
+Preventing overfitting or memorization of test data by ensuring that the training dataset does not contain identicals or highly similar to those in the evaluation or test sets.
+
+Remove similar training samples that are similar to evaluation samples could involve using MinHash or computing scores based on n-grames or embeddings
+
+Add your evaluation set to the instruction dataset during the data deduplication stage. Automatically add your evaluation sets in the data deduplication stage to fully automate this process.
+
+----------------------------------------------------------
+LLM-as-a-judge strategy involves prompting LLMs to evaluate the quality of each sample. Example:
+
+====================================================
+Instruction
+You are a data quality evaluator. Your goal is to assess an instruction and its corresponding answer, determining how effectively the answer addresses the given task.
+In your evaluation, you will provide feedback detailing the strengths and weaknesses of the answer, followed by a score on a scale of 1 to 4.
+A score of 1 means that the answer is terrible and irrelevant to the instruction.
+A score of 2 means that the answer is not helpful and misses important aspects of the instruction.
+A score of 3 means that the answer is helpful but could be improved in terms of relevance, accuracy, and depth.
+A score of 4 means that the answer is excellent and fully addresses the task.
+Provide your evaluation as follows:
+Feedback: (strengths and weaknesses you find relevant)
+Score: (number between 1 and 4)
+====================================================
+LLM-as-a-judge is known to have several biases
+- Position bias in comparative scoring
+	Favors first answer, randomize the order of answers A and B
+- Favors long answers
+	length normalizations can be applied
+- intra-model favoritism
+	- prefer models from the same family
+Using multiple LLMs as a jury reduced bias and improve consistency.
+Reward models are another way to re-purpose LLMs for data quality take an instruction and answer pair and return a score as output. Score could be multiple scores helpfulness, correctness, coherence, complexity etc.
+
+Hugging Face is a good resource for comparing different reward models.
+
+Classifiers or encoder-only models can be trained to perform data quality evaluation.
+At smaller scale, encoder-only models are still valuable to filter out outliers or as part of an automated data pipeline, which requires faster processing.
+
+Manual dataset exploration, is time consuming (important step). It reveals errors and inconsistencies that automated processes might miss, including formatting issues, data entry mistakes, incoherent reasoning, and factual inaccuracies.
+
+Argilla A collaborative platform for manual data quality evaluation and exploration.
+
+Statisitcal analysis reveals vocab diversity, potential biases, concept representation. Utilizes natrual language processing libraries for tokenization and analysis of large text volumes. Visualization tools such as matplotlib or Seaborn uses histograms and word clouds.
+
+Topic clustering reveals patterns
+
+Synthetic data generation using LLMs offers a more efficient and scalable alternative than crowdsourcing. Process begins with preparation of a set of carefully designed promprts (taxonomy).
+Useful for addressing biases and gaps in existing datasets. its possible to create more balanced and inclusive datasets that represent a wider range of perspectives, topics, and language styles.
+
+Data augmentation
+---------------------------------------------------------
+In-depth evolving enchancing the complexity of existing instructions
+	- Constraints
+		introducing additional requirements or limitations to the original instruction
+	- Deepening
+		finds more deep questions, requiring more comprehensive repsonses
+	- Concretizing
+		replaces general concepts with more specific ones, adding detail to the instructtion
+	- Increasing reasoning steps
+		explicity requires multiple-step reasoning promoting more complex problem solving
+	- Complicated input
+		adding more complex data formats or structures to the instruction code snippets, JSON, LaTeX
+
+In-breadth evolving expands the diversity of the instruction dataset
+
+UltraFeedback method focused on answer quality instead of instruction quality. 
+
+LLMs are not reliable when it comes to producing structured output.
+Structured generation is an effective method to force an LLM to follow a predefined template, such as JSON, pydantic classes, or regular expressions.
+
+synthetic data pipeline
+====================================================
+openai==1.37.1 (interact with model)
+datasets==2.20.0 (format it into a Hugging Face compatible)
+tqdm==4.66.4 (visualize)
+====================================================
+import concurrent.futures
+import json
+import random
+import re
+from concurrent.futures import ThreadPoolExecutor
+from typing import List, Tuple
+from datasets import Dataset
+from openai import OpenAI
+from pydantic import BaseModel, Field
+from tqdm.auto import tqdm
+
+def load_articles_from_json(file_path: str) -> Dataset:
+    with open(file_path, "r") as file:
+        data = json.load(file)
+    return Dataset.from_dict(
+        {
+            "id": [item["id"] for item in data["artifact_data"]],
+            "content": [item["content"] for item in data["artifact_data"]],
+            "platform": [item["platform"] for item in data["artifact_data"]],
+            "author_id": [item["author_id"] for item in data["artifact_data"]],
+            "author_full_name": [item["author_full_name"] for item in data["artifact_data"]],
+            "link": [item["link"] for item in data["artifact_data"]],
+        }
+    )
+
+def clean_text(text):
+    text = re.sub(r"[^\w\s.,!?']", " ", text)
+    text = re.sub(r"\s+", " ", text)
+    return text.strip()
+
+def extract_substrings(dataset: Dataset, min_length: int = 1000, max_length: int = 2000) -> List[str]:
+    extracts = []
+    sentence_pattern = r"(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?|\!)\s"
+    for article in dataset["content"]:
+        cleaned_article = clean_text(article)
+        sentences = re.split(sentence_pattern, cleaned_article)
+        current_chunk = ""
+        for sentence in sentences:
+            sentence = sentence.strip()
+            if not sentence:
+                continue
+            if len(current_chunk) + len(sentence) <= max_length:
+                current_chunk += sentence + " "
+            else:
+                if len(current_chunk) >= min_length:
+                    extracts.append(current_chunk.strip())
+                current_chunk = sentence + " "
+        if len(current_chunk) >= min_length:
+            extracts.append(current_chunk.strip())
+    return extracts
+====================================================
+instruction-answer pairs
+
+InstructionAnswerSet
+====================================================
+class InstructionAnswerSet:
+    def __init__(self, pairs: List[Tuple[str, str]]):
+        self.pairs = pairs
+
+    @classmethod
+    def from_json(cls, json_str: str) -> 'InstructionAnswerSet':
+        data = json.loads(json_str)
+        pairs = [(pair['instruction'], pair['answer'])
+                 for pair in data['instruction_answer_pairs']]
+        return cls(pairs)
+
+    def __iter__(self):
+        return iter(self.pairs)
+====================================================
+
+generate five instruction and answer pairs for each extract
+
+====================================================
+def generate_instruction_answer_pairs(
+    extract: str, client: OpenAI
+) -> List[Tuple[str, str]]:
+    prompt = f"""Based on the following extract, generate five instruction-answer pairs. Each instruction \
+must ask to write about a specific topic contained in the context. each answer \
+must provide a relevant paragraph based on the information found in the \
+context. Only use concepts from the context to generate the instructions. \
+Instructions must never explicitly mention a context, a system, a course, or an extract. \
+Instructions must be self-contained and general. \
+Answers must imitate the writing style of the context. \
+Example instruction: Explain the concept of an LLM Twin. \
+Example answer: An LLM Twin is essentially an AI character that mimics your writing style, personality, and voice. \
+It's designed to write just like you by incorporating these elements into a language model. \
+The idea is to create a digital replica of your writing habits using advanced AI techniques. \
+Provide your response in JSON format with the following structure:
+{{
+    "instruction_answer_pairs": [
+        {{"instruction": "...", "answer": "..."}},
+        ...
+    ]
+}}
+Extract:
+{extract}
+"""
+====================================================
+
+System prompt
+
+parsed using the InstructionAnswerSet class
+====================================================
+completion = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {
+        	"role": "system",
+        	"content": "You are a helpful assistant who \
+        	generates instruction-answer pairs based on the given context. \
+        	Provide your response in JSON format.",
+        },
+        {
+        	"role": "user",
+        	"content": prompt
+    	},
+    ],
+    response_format={"type": "json_object"},
+    max_tokens=1200,
+    temperature=0.7,
+)
+# Parse the structured output
+result = InstructionAnswerSet.from_json(completion.choices[0].message.content)
+# Convert to list of tuples
+return result.pairs
+====================================================
+
+Creating create_instruction_dataset() to automate the process!
+extracts substrings from the input dataset
+
+====================================================
+def create_instruction_dataset(
+    dataset: Dataset, client: OpenAI, num_workers: int = 4
+) -> Dataset:
+    extracts = extract_substrings(dataset)
+    instruction_answer_pairs = []
+    with concurrent.futures.ThreadPoolExecutor(max_workers=num_workers) as executor:
+        futures = [executor.submit(generate_instruction_answer_pairs, extract, client)
+            for extract in extracts
+        ]
+        for future in tqdm(concurrent.futures.as_completed(futures), total=len(futures)
+        ):
+            instruction_answer_pairs.extend(future.result())
+    instructions, answers = zip(*instruction_answer_pairs)
+    return Dataset.from_dict(
+        {"instruction": list(instructions), "output": list(answers)}
+    )
+====================================================
+
+orchestrate the pipeline, loads raw data, creates instruction
+dataset, splits into training and testing sets pushes to Hugging Face Hub
+
+====================================================
+def main(dataset_id: str) -> Dataset:
+    client = OpenAI()
+    # 1. Load the raw data
+    raw_dataset = load_articles_from_json("cleaned_documents.json")
+    print("Raw dataset:")
+    print(raw_dataset.to_pandas())
+    # 2. Create instructiondataset
+instruction_dataset = create_instruction_dataset(raw_dataset, client)
+    print("Instruction dataset:")
+    print(instruction_dataset.to_pandas())
+    # 3. Train/test split and export
+    filtered_dataset = instruction_dataset.train_test_split(test_size=0.1)
+    filtered_dataset.push_to_hub("MemoryOverflow/llmtwin")
+    return filtered_dataset
+Dataset({
+    features: ['instruction', 'output'],
+    num_rows: 3335
+})
+====================================================
+Hugging Face Hub provides a convenient dataset viewer
+Instruction  |  Output
+
+SFT consists of re-training pre-trained models on a smaller dataset composed of pairs of instructions and answers. 
+	- Low-Rank Adaptation (LoRA)
+	- Quantization-aware Low-Rand Adaptation (QLoRA)
+
+Instead of building applications around a chatbot, fine-tuning allows developers to create more diverse interactions with LLMs, like tool analytics, moderation, and additional context. 
+
+Everything has limitations
+fine-tuning also has limitations
+ - knowledge that is too distant from what has been learned in the pre-training set (such as an unknown or rare language) can be difficult to learn effectively.
+
+fine-tuning a model on new knowledge could result in more frequent hallucinations
+
+Chat templates offer a unified way to present the instructions and answers to the model. Special tokens to identify the beginning and the end of a message, and author of the message. Base models are not designed to follow instructions so you can choose any template. Not recommended to fine-tune an instruct model
+
+example:
+====================================================
+<|im_start|>system
+You are a helpful assistant, who always provide explanation. Think like you are answering to a nine year old.<|im_end|>
+<|im_start|>user
+Concepts: cat, bed, play
+Write a sentence that includes all these words.<|im_end|>
+<|im_start|>assistant
+Before bed I like to play with my cat.<|im_end|>
+====================================================
+Now understands that the next tokens should be an answer relevant to the user instruction and guided by the system prompt.
+This is how fine-tuned models acquire instruction following capabilities.
+
+issue with chat templates:
+Whitespace and line break is very important. Adding or removing any character would result in a wrong tokenization, which negatively impacts the performance of the model. Use something like Jinja. different types of templates
+	- Alpaca
+	- ChatML
+	- Llama3
+	- Phi-3
+	- Gemma
+
+Full fine-tuning
+---------------------------------------------------------
+Re-training every parameter in the base model.
+SFT uses next-token prediction as its training objective.
+This method often provides the best results but requires significant computational resources.
+
+Memory = Parameters + Gradients + Optimizer States + Activations
+
+- Paramters
+	Learnable weights and biases within a neural network
+- Gradients
+	Partial derivatives of the loss function with respect to each model parameter
+	minimize loss
+	computed for each parameter backwards propagation
+- Optimizer States
+	Additional values maintained by optimization algorithms (Adam or AdamW)
+- Activations
+	outputs of each layer during foward pass
+	kept in memory to compute gradients in backward pass
+
+How to reduce memory usuage during LLM fine-tuning?
+- Model parallelism (adds some overhead)
+- Gradient accumlation (enables larger batch sizes)
+- Optimizers like 8-bit Adam
+- Activation checkpointing (trades computation for memory)
+
+Full fine-tuning directly modifies the pre-training weights, which makes it destructive by nature. If training doesn’t behave as expected, it might erase previous knowledge and skills "catastrophic forgetting."
+
+LoRA (fine-tuning)
+---------------------------------------------------------
+Enabling fine-tuning of LLMs with significanlty reduced computational resources.
+trainable low-rank matrices that modify behavior of the model without changing original parameters
+- Dramatically reduced memory during training
+- faster fine-tuning
+- preservation of pre-trained model weights (non-descructive)
+- ability to switch between tasks efficiently by swapping LoRA weights
+
+W' = W + BA
+W is original weight matrix
+B and A are LoRA matrices
+W' effective weight matrix used during inference
+
+A and B are chosen to have the same shape as W but with lower rank
+this rank is denoted as r
+original W remains frozen, and only A and B are updated
+
+Hyperparameters:
+- Rank (r)
+	size of LoRA matrices common to start r=8
+- Alpha (a)
+	requires experimentation, this is a scaling factor a/r. Its common to set this valuie twice the value of r
+
+Can add a drop out layer between 0 - 0.1 as an optional regularization factor
+
+LoRA is primarily focused on query (Q) and value (V) in the transformer layers
+additional targets:
+- Key (K) matrices in attention layers
+- Output projection layers (O)
+- Feed-forward or multi-layer perceptron (MLP) between attention layers
+- linear output layers
+
+LoRA could produce better results than full-tuning
+LoRAX multiple-LoRA serving
+A feature supported by Hugging Face's Text Generation Inference (TGI) and Nvidia Inference Microservices (NM)
+
+QLoRA (fine-tuning)
+---------------------------------------------------------
+fine-tune models on relatively small, widely available GPUs
+
+quantizing the base model parameters to a custom 4-bit NormalFloat (NF4) data type
+QLoRA indroduces small, trainable low-rank matrices (adapters) to specific layers
+only these adapters are updating during training.
+double quantization, quantizes the quantization constants
+uses page optimizer to manage memory spikes during training Nvidia's unified memory feature
+
+significant memory saves compared to LoRA
+usually benefical when memory constraints are a primary concern
+
+Difference between the two should be on the specific requirements of the project, available hardware, memory usage, speed, performance.
+
+Learning rate and scheduler
+---------------------------------------------------------
+A hyperparameter, it controls how much the model's parameters are updated during training, ranges from small values: 1e-6 to 1e-3 a common starting point is 1e-5, if learning rate to low it may get stuck, to high it might diverge
+
+Using a learning rate schedule often leads to faster convergence and better performance than using a fixed learning rate.
+
+Learning rate schedule adjusts learning rate throughout the training process, start with higher learning rate then gradually decreases in later stages, two common types of schedulers:
+- Linear
+	decreases the learning rate steadily over time
+- Cosine
+	decresing slowly at first then more rapid toward end of training
+both have same level of performance
+
+Warmup and Decay:
+During the initial stages, the model is far from optimal. A small or gradually increasing learning rate helps the model explore the solution space without instability.
+
+Later in training, the model is closer to an optimal solution. A smaller learning rate allows for more precise adjustments to the parameters.
+
+(LR: Learning Rate)
+Warmup:
+for 5% of training steps learning rate increases linearly:
+LR = (stepnumber/warmupsteps) x initial LR
+
+Decay:
+remaining 95% the learning rate descreases following a chosen schedule (e.g. exponential decay):
+LR = initial LR x exp(-(stepnumber - warmupsteps/decay constant))
+
+used in large-scale pretraining (e.g. transformers)
+finetuning on specific tasks or datasets
+
+Batch size
+---------------------------------------------------------
+Number of samples processed before the model's weights are updated
+range from 1-32 common values 1,2,4,8 or 16 larger batch sizes lead to more stable gradient estimates and can improve training speed, as they provide a better approximation of the true gradient of the entire dataset, requires more memory.
+
+gradient accumulation can be used to mitigate memory constraints from larger batch sizes. Performs multiple forward and backward passes with smaller mini-batches, accumulating the gradients. More accumulation steps allow for larger effective batch sizes but increase the time required for each update.
+
+Effective Batch Size = Batch Size x #GPUs x Gradient Accumulation Steps
+say your using 2 GPUs, each processing a batch of 4 samples, with 4 gradient accumulation steps you get 4 * 2 * 4 = 32 samples
+
+Max length and packing
+---------------------------------------------------------
+longest input the model can process, this is set between 512 and 4096 tokens but can go up to 128,000+ max length of 2,048 tokens is common, RAG applications can go up to 8,192+
+
+Longer input are truncated, this can happen to the left or right
+
+Packing combines multiple smaller smaples into a single batch, increasing the amount of data processed in each iteration. If max sequence length is 1024 tokens but many of your samples are only 200-300 tokens long packing allows you to fit 3-4 samples into each batch slot. This improves training efficiency.
+
+Packing requires careful implementation to ensure that model attention doesn't cross between packed samples. This can be mitigated by attention masks from attending to toakes from different sampels within the same packed sequence
+
+Number of Epochs
+---------------------------------------------------------
+Number of complete passes through the entire training dataset.
+LLM fine-tuning range 1-10 epochs, too few underfit, to much overfit.
+this will depend on model, datasize, complexity
+
+Optimizers
+---------------------------------------------------------
+Adjusts the model's parameters to minimize the loss function,
+for LLM AdamW (Adaptive Moment Estimation with Weight Decay) is highly recommended
+combines adaptive learning rates with weight decay
+
+AdaFactor is designed for memory efficency, it may not always match AdamW performance
+if max performace is needed the non-quantized adamw_torch optimizer may be the best.
+
+Weight decay
+---------------------------------------------------------
+You'll have to experiment with values but this works by adding a penalty for large weights to the loss function, encouraging the model to learn simpler, more generalizable features. Can improve performance on unseen data. 0.01 to 0.1
+
+Gradient checkpointing
+---------------------------------------------------------
+Reduces memory consumption during training by storing a subset of intermediate activations by forward pass. its standard that all intermediate activations are retained in memory to facilitate gradient calculation during the backward pass.
+
+selectively saving activation at specific layers within the network, if not saved they are re-computed during the backward pass for gradient computation. Has a trade-off between computation time and memory usage.
+
+It may increase overall computation but reduces memory
+
+---------------------------------------------------------
+
+To select the most relevant LLM, we need to consider:
+- License
+- Budget
+- Performance
+
+Specialized tools and libraries to fine-tune models:
+- TRL (popular)
+	Hugging Face to train LLMs using SFT and perference alignment
+- Axolotl
+	fine-tune LLM with reusable YAML config files
+- Unsloth
+	uses custom kernels to speed up training (2-5x) and reduce memory by 80%
+	only available for single-GPU settings.
