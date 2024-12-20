@@ -1991,3 +1991,300 @@ Specialized tools and libraries to fine-tune models:
 - Unsloth
 	uses custom kernels to speed up training (2-5x) and reduce memory by 80%
 	only available for single-GPU settings.
+
+====================================================
+Using Unsloth
+====================================================
+import os
+import torch
+from trl import SFTTrainer
+from datasets import load_dataset, concatenate_datasets
+from transformers import TrainingArguments, TextStreamerfrom unsloth import FastLanguageModel, is_bfloat16_supported
+
+max_seq_length = 2048
+model, tokenizer = FastLanguageModel.from_pretrained(
+    model_name="meta-llama/Meta-Llama-3.1-8B",
+    max_seq_length=max_seq_length,
+    load_in_4bit=False, # using LoRA instead of QLoRA
+)
+
+model = FastLanguageModel.get_peft_model(
+    model,
+    r=32,
+    lora_alpha=32,
+    lora_dropout=0,
+    target_modules=["q_proj", "k_proj", "v_proj", "up_proj", "down_proj", "o_proj", "gate_proj"],
+)
+# we have to load in more samples and only take 10000 samples
+dataset1 = load_dataset("mlabonne/llmtwin")
+dataset2 = load_dataset("mlabonne/FineTome-Alpaca-100k", split="train[:10000]")
+dataset = concatenate_datasets([dataset1, dataset2])
+
+# format data using a chat template, we manually add EOS (end of sentence)
+# to ensure that the model learns to output it, otherwise it will keep generating answers without stopping
+alpaca_template = """Below is an instruction that describes a task. Write a response that appropriately completes the request.
+### Instruction:
+{}
+### Response:
+{}"""
+EOS_TOKEN = tokenizer.eos_token
+dataset = dataset.map(format_samples, batched=True, remove_columns=dataset.column_names)
+
+# training 95%, 5% test
+dataset = dataset.train_test_split(test_size=0.05)
+
+# SFTTrainer stores all hyperparameters
+trainer = SFTTrainer(
+    model=model,
+   tokenizer=tokenizer,
+    train_dataset=dataset["train"],
+    eval_dataset=dataset["test"],
+    dataset_text_field="text",
+    max_seq_length=max_seq_length,
+    dataset_num_proc=2,
+    packing=True,
+    args=TrainingArguments(
+        learning_rate=3e-4,
+        lr_scheduler_type="linear",
+        per_device_train_batch_size=2,
+        gradient_accumulation_steps=8,
+        num_train_epochs=3,
+        fp16=not is_bfloat16_supported(),
+        bf16=is_bfloat16_supported(),
+        logging_steps=1,
+        optim="adamw_8bit",
+        weight_decay=0.01,
+        warmup_steps=10,
+        output_dir="output",
+        report_to="comet_ml",
+        seed=0,
+    ),
+)
+trainer.train()
+
+# empty answer format() this forces model to answer the instruction instead of completing it
+FastLanguageModel.for_inference(model)
+message = alpaca_prompt.format("Write a paragraph to introduce supervised fine-tuning.", "")
+inputs = tokenizer([message], return_tensors="pt").to("cuda")
+text_streamer = TextStreamer(tokenizer)
+_ = model.generate(**inputs, streamer=text_streamer, max_new_tokens=256, use_cache=True)
+====================================================
+Answer:
+====================================================
+Supervised fine-tuning is a method used to enhance a language model by providing it with a curated dataset of instructions and their corresponding answers. This process is designed to align the model's 
+responses with human expectations, thereby improving its accuracy and relevance. The goal is to ensure that the model can respond effectively to a wide range of queries, making it a valuable tool for applications such as chatbots and virtual assistants.
+====================================================
+# we can save our model locally and/or push to Hugging Face hub
+model.save_pretrained_merged("model", tokenizer, save_method="merged_16bit")
+model.push_to_hub_merged("MemoryOverload/TwinLlama-3.1-8B", tokenizer, save_method="merged_16bit")
+
+You can use comet to visulaize different metrics
+- Training Loss
+	How well is the model doing on the task its being trained for
+- Validation Loss
+	measures the loss using the validation set instead of training set
+	if taining loss continues to decrease while validation loss increase we overfitted
+	vise versa underfitting 
+- Gradient norm
+	magnitude of the gradient vector during training
+	A stable or decreasing gradient norm means the model is converging towards local optimum
+	to mitigate large gradient norms use gradient clipping
+---------------------------------------------------------
+
+Preference alignment addresses shortcomings of SFT by adding direct human or Ai feedback into the training process
+
+DPO datasets (Direct preference optimization)
+Each instruction is paried with one preferred answer and one rejected answer, the objective is to train the model to generate the perferred response.
+
+- Chatbots
+	responses depends on subjective factors like naturalness, engagement, and context.
+- Content moderation
+	is content appropriate? Preference dataset can learn borderline cases
+- Summarization
+	is it concise, relevant, and coherent. Preference can learn to generate summaries
+	SFT might result in summaries taht are correct but less perferable to humans
+- Code generation
+	multiple correct solutions, some more readable. Preference help model learn code quality
+- Creative writting
+	this is highly subjective, Preference datasets can capture human judgements about style, creativity, and emotional impact
+- Translations
+	Preference datasets can help produce translations that native speakers prefer
+
+This is not only technically accurate but also better aligned with huiman judgment and preferences in complex open-ended tasks.
+
+Data quantity
+---------------------------------------------------------
+Large number of preference pairs is beneficial for data quality
+Nvidia and Meta are converging on similar post-training pipelines involving multiple rounds of perference alignment and extensive use of synthetic data.
+
+DPO is less destructive than SFT and has a milder impact on the final model.
+
+When creating preference datasets, data generation and evaluation are closely linked. We create answers and then rate them to make final dataset
+
+Generating preferences
+---------------------------------------------------------
+its good to look at relevant open-source datasets before making new preference data
+a well known one is the Anthropic HH-RLHF dataset, which has human preferences for helpful and harmless Ai responses and the OpenAI Summarize from Human Feedback dataset focuses on article summaries
+
+DPO datasets can be created using various methods
+- Human generated, human-evaluate datasets
+	extermely resource-intensive and difficult to scale, involves hiteing people, but ideal for complex tasks
+- Human generated, LLM-evaluated datasets
+	useful if you have a lot of existing human-generated content, requires significant human input for response generation
+- LMM generated, human-evaluated datasets
+	good balance between quality and efficiency. LLMs generate responses to prompts and humans rank these. This is perferred method, humans are better judging answers than writing from scratch, may not provide creative or unexpected responses
+- LLM generated, LLM-evauluated
+	fully synthetic datasets, increasingly common due to their scalablility and cost-effectiveness. massive datasets quickly and improves as LLM capabilities advance
+
+`Intel/orca_dpo_pairs` dataset on hugging face hub is an instruction-following Ai. Datasets like this are key to building models similar to OpenAI’s ChatGPT or Anthropic’s Claude, where human preferences play a crucial role in defining the quality of the output.
+
+`Intel/orca_dpo_pairs` provides a foundational building block for preference-based tuning!
+
+Introducing variability in the outputs is another crucial aspect of generating synthetic preference datasets. You can do this by manipulating the temperature settings or trying other sampling methods in the LLM. Higher tempature settings tend to produce more creative and diverse responses, lower settings result in more focused and deterministic outputs which creates a trade-off, depends also on the data you want to generate
+
+Using multiple LLMs to generate samples can be better than just one model introduces variety. used by datasets like `argilla/Capybara-Preferences` combining GPT-4 with open weight models. The evaluation process selected the chosen and rejected answers
+
+Pairwise ranking involves presenting the LLM with two responses and asking it to choose the better one or rank them
+example of two approaches:
+====================================================
+"Rate the following response on a scale of 1-5 based on relevance, coherence, and helpfulness: [INSERT RESPONSE]." For pairwise ranking, the prompt could be: "Compare the following two responses. Which one is better in terms of relevance, coherence, and helpfulness? Response A: [INSERT RESPONSE A] Response B: [INSERT RESPONSE B]."
+====================================================
+Pairwise ranking is an ideal approach more closely correlated to human judgment than absolute scoring.
+
+chain-of-thought reasoning encourges evaluating LLM to condsider multiple aspect of responses and articulate its decision making process leading to more thorough evaluations.
+
+LLM-as-a-judge prompt to perform pairwise ranking:
+====================================================
+Instruction
+
+You are an answer judge. Your goal is to compare answer A and answer B. I want to know which answer does a better job of answering the instruction in terms of relevance, accuracy, completeness, clarity, structure, and conciseness.
+Instruction: {instruction}
+Answer A: {answer_a}
+Answer B: {answer_b}
+Explain your reasoning step by step and output the letter of the best answer using the following structure:
+Reasoning: (compare the two answers)
+Best answer: (A or B)
+====================================================
+introduces bias
+- Position bias
+	LLM judges prefer first answer
+- Length bias
+	LLM prefers longer answers (overlooking shorter concise responses)
+- Family bias
+	LLM favor responses generated by themselves or models from same family
+
+You can randomize the order, provide few-shot examples that demonstrate a balance distrubition of scores also can employ multiple models as a jury rather than relying on a single LLM judge
+
+generation pipeline:
+this time we need triples (instruction, answer1, answer2)
+load_articles_from_json() and clean_text() are the same as before
+====================================================
+import concurrent.futures
+import json
+import re
+from typing import List, Tuple
+from datasets import Dataset
+from openai import OpenAI
+from tqdm.auto import tqdm
+
+class PreferenceSet:
+    def __init__(self, triples: List[Tuple[str, str, str]]):
+        self.triples = triples
+
+    @classmethod
+    def from_json(cls, json_str: str) -> 'PreferenceSet':
+        data = json.loads(json_str)
+        triples = [(triple['instruction'], triple['generated_answer'], triple['extracted_answer'])
+                   for triple in data['preference_triples']]
+        return cls(triples)
+
+    def __iter__(self):
+        return iter(self.triples)
+
+	def load_articles_from_json(file_path: str) -> Dataset:
+	    with open(file_path, "r") as file:
+	        data = json.load(file)
+	    return Dataset.from_dict(
+	        {
+	            "id": [item["id"] for item in data["artifact_data"]],
+	            "content": [item["content"] for item in data["artifact_data"]],
+	            "platform": [item["platform"] for item in data["artifact_data"]],
+	            "author_id": [item["author_id"] for item in data["artifact_data"]],
+	            "author_full_name": [item["author_full_name"] for item in data["artifact_data"]],
+	            "link": [item["link"] for item in data["artifact_data"]],
+	        }
+	    )
+
+	def clean_text(text: str) -> str:
+		text = re.sub(r"[^\w\s.,!?']", " ", text)
+		text = re.sub(r"\s+", " ", text)
+		return text.strip()
+
+	def extract_substrings(dataset: Dataset, min_length: int = 1000, max_length: int = 2000) -> List[str]:
+	    extracts = []
+	    sentence_pattern = r"(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?|\!)\s"
+	    for article in dataset["content"]:
+	        cleaned_article = clean_text(article)
+	        sentences = re.split(sentence_pattern, cleaned_article)
+	        current_chunk = ""
+	        for sentence in sentences:
+	            sentence = sentence.strip()
+	            if not sentence:
+	                continue
+	            if len(current_chunk) + len(sentence) <= max_length:
+	                current_chunk += sentence + " "
+	            else:
+	                if len(current_chunk) >= min_length:
+	                    extracts.append(current_chunk.strip())
+	                current_chunk = sentence + " "
+	        if len(current_chunk) >= min_length:
+	            extracts.append(current_chunk.strip())
+	    return extracts
+
+	def generate_preference_triples(extract: str, client: OpenAI) -> List[Tuple[str, str, str]]:
+	    prompt = f"""Based on the following extract, generate five instruction-answer triples. Each triple should consist of:
+		1. An instruction asking about a specific topic in the context.
+		2. A generated answer that attempts to answer the instruction based on the context.
+		3. An extracted answer that is a relevant excerpt directly from the given context.
+		Instructions must be self-contained and general, without explicitly mentioning a context, system, course, or extract.
+		Important:
+		- Ensure that the extracted answer is a verbatim copy from the context, including all punctuation and apostrophes.
+		- Do not add any ellipsis (...) or [...]  to indicate skipped text in the extracted answer.
+		- If the relevant text is not continuous, use two separate sentences from the context instead of skipping text.
+		Provide your response in JSON format with the following structure:
+		{{
+		    "preference_triples": [
+		        {{
+		            "instruction": "...",
+		            "generated_answer": "...",
+		            "extracted_answer": "..."
+		        }},
+		        ...
+		    ]
+		}}
+		    Extract:
+		    {extract}
+		"""
+		completion = client.chat.completions.create(
+	        model="gpt-4o-mini",
+	        messages=[
+	            {
+	                "role": "system",
+	                "content": "You are a helpful assistant who generates instruction-answer triples based on the given context. Each triple should include an instruction, a generated answer, and an extracted answer from the context. Provide your response in JSON format.",
+	            },
+	            {"role": "user", "content": prompt},
+	        ],
+	        response_format={"type": "json_object"},
+	        max_tokens=2000,
+	        temperature=0.7,
+	    )
+	    result = PreferenceSet.from_json(completion.choices[0].message.content)
+	    return result.triples
+
+
+
+
+
+
+
+
