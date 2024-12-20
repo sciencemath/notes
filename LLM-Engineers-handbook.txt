@@ -1774,7 +1774,7 @@ instruction_dataset = create_instruction_dataset(raw_dataset, client)
     print(instruction_dataset.to_pandas())
     # 3. Train/test split and export
     filtered_dataset = instruction_dataset.train_test_split(test_size=0.1)
-    filtered_dataset.push_to_hub("MemoryOverflow/llmtwin")
+    filtered_dataset.push_to_hub("memoryallocation/llmtwin")
     return filtered_dataset
 Dataset({
     features: ['instruction', 'output'],
@@ -2281,10 +2281,183 @@ class PreferenceSet:
 	    result = PreferenceSet.from_json(completion.choices[0].message.content)
 	    return result.triples
 
+		def filter_short_answers(dataset: Dataset, min_length: int = 100) -> Dataset:
+		    def is_long_enough(example):
+		        return len(example['chosen']) >= min_length
+		    return dataset.filter(is_long_enough)
 
+		def filter_answer_format(dataset: Dataset) -> Dataset:
+		    def is_valid_format(example):
+		        chosen = example['chosen']
+		        return (len(chosen) > 0 and
+		                chosen[0].isupper() and
+		                chosen[-1] in ('.', '!', '?'))
+		    return dataset.filter(is_valid_format)
 
+		def create_preference_dataset(dataset: Dataset, client: OpenAI, num_workers: int = 4) -> Dataset:
+		    extracts = extract_substrings(dataset)
+		    preference_triples = []
+		    with concurrent.futures.ThreadPoolExecutor(max_workers=num_workers) as executor:
+		        futures = [
+		            executor.submit(generate_preference_triples, extract, client)
+		            for extract in extracts
+		        ]
+		        for future in tqdm(concurrent.futures.as_completed(futures), total=len(futures)):
+		            preference_triples.extend(future.result())
+		    instructions, generated_answers, extracted_answers = zip(*preference_triples)
+		    return Dataset.from_dict(
+		        {
+		            "prompt": list(instructions),
+		            "rejected": list(generated_answers),
+		            "chosen": list(extracted_answers)
+		        }
+		    )
 
+		def main(dataset_id: str) -> Dataset:
+		    client = OpenAI()
+		    # 1. Load the raw data
+		    raw_dataset = load_articles_from_json("cleaned_documents.json")
+		    print("Raw dataset:")
+		    print(raw_dataset.to_pandas())
+		    # 2. Create preference dataset
+		    dataset = create_preference_dataset(raw_dataset, client)
+		    print("Preference dataset:")
+		    print(dataset.to_pandas())
+		    # 3. Filter out samples with short answers
+		    dataset = filter_short_answers(dataset)
+		    # 4. Filter answers based on format
+		    dataset = filter_answer_format(dataset)
+		    # 5. Export
+		    dataset.push_to_hub(dataset_id)
+		    return dataset
+====================================================
 
+Preference alignment regroups techniques to fine-tune models on preference data.
 
+Reinforcement Learning from Human Feedback (RLHF) combines reinforcement learning (RL) with human input to align models with human preference and values.
 
+RLHF works iteratively improving both a reward model and policy
+- Reward model learning
+	usually uses a Bradley-Terry model to train reward model. Instead of using a pre-defined reward function RLHF learns a reward model from human feedback
+- Policy optimization
+	standard RL algorithms can be used to optimize a policy generates new behaviors to maximize the predicted rewards
+- Iterative improvement
+	As policy improves it generates new behaviors
 
+A popular RLHF algorithm is Proximal Policy Optimization (PPO) algorithm
+Reward is regularized by Killback-Leibler (KL) divergence ensuring distribution of tokens stays similar to the model before training (frozen model)
+
+Direct Preference Optimization: Your Language Model is Secretly a Reward Model (2023 paper)
+
+DPO expresses the prefernece learning problem directly in terms of policy, eliminating the need for a separate reward model or complex reinforcement learning algorithms
+
+DPO can be implemented as a simple binary cross-entropy loss function that operates directly on the language model's output probabilities. The model assigns higher prob to preferred responses and vise versa. The reference model is controlled via beta parameter between 0 and 1. This allows optimization using gradient descent, wihtout the need for sampling from model during training or implementing complex RL algorithms
+
+DPO matches performance of more complex RLHF methods
+Both RLHF and DPO benefit significantly from the integration of synthetic data
+As LLMs become more capable they can generate data the surpasses human-created content in quality and diversity.
+There may be scenarios where the added flexibility of RLHF is beneficial such as complex tasks.
+
+DPO is ideal in most cases
+
+Implementing DPO
+====================================================
+from unsloth import PatchDPOTrainer
+
+PatchDPOTrainer()
+
+import os
+import torch
+from datasets import load_dataset
+from transformers import TrainingArguments, TextStreamer
+from unsloth import FastLanguageModel, is_bfloat16_supportedfrom trl import DPOConfig, DPOTrainer
+
+max_seq_length = 2048
+model, tokenizer = FastLanguageModel.from_pretrained(
+    model_name="mlabonne/TwinLlama-3.1-8B",
+    max_seq_length=max_seq_length,
+    load_in_4bit=False,
+)
+
+model = FastLanguageModel.get_peft_model(
+    model,
+    r=32,
+    lora_alpha=32,
+    lora_dropout=0,
+    target_modules=["q_proj", "k_proj", "v_proj", "up_proj", "down_proj", "o_proj", "gate_proj"],
+)
+
+dataset = load_dataset("mlabonne/llmtwin-dpo", split="train")
+
+alpaca_template = """Below is an instruction that describes a task. Write a response that appropriately completes the request.
+### Instruction:
+{}
+### Response:
+"""
+EOS_TOKEN = tokenizer.eos_token
+def format_samples(example):
+    example["prompt"] = alpaca_template.format(example["prompt"])
+    example["chosen"] = example['chosen'] + EOS_TOKEN
+    example["rejected"] = example['rejected'] + EOS_TOKEN
+    return {"prompt": example["prompt"], "chosen": example["chosen"], "rejected": example["rejected"]}
+dataset = dataset.map(format_samples)
+dataset = dataset.train_test_split(test_size=0.05)
+
+trainer = DPOTrainer(
+    model=model,
+    ref_model=None,
+    tokenizer=tokenizer,
+    beta=0.5,
+    train_dataset=dataset["train"],
+    eval_dataset=dataset["test"],
+    max_length=max_seq_length//2,
+    max_prompt_length=max_seq_length//2,
+    args=DPOConfig(
+        learning_rate=2e-6,
+        lr_scheduler_type="linear",
+        per_device_train_batch_size=2,
+        per_device_eval_batch_size=2,
+        gradient_accumulation_steps=8,
+        num_train_epochs=1,
+        fp16=not is_bfloat16_supported(),
+        bf16=is_bfloat16_supported(),
+        optim="adamw_8bit",
+        weight_decay=0.01,
+        warmup_steps=10,
+        output_dir="output",
+        eval_strategy="steps",
+        eval_steps=0.2,
+        logging_steps=1,
+        report_to="comet_ml",
+        seed=0,
+    ),
+)
+trainer.train()
+
+FastLanguageModel.for_inference(model)
+message = alpaca_template.format("Write a paragraph to introduce supervised fine-tuning.", "")
+inputs = tokenizer([message], return_tensors="pt").to("cuda")
+text_streamer = TextStreamer(tokenizer)
+_ = model.generate(**inputs, streamer=text_streamer, max_new_tokens=256, use_cache=True)
+====================================================
+Response
+====================================================
+Supervised fine-tuning is a method used to enhance the performance of pre-trained language models by utilizing labeled data. This technique involves taking a pre-trained model and refining it on a specific task, such as content creation or customer service. By providing the model with relevant data and guidance, it can learn to generate outputs that align more closely with the desired outcomes. This approach allows for the creation of more specialized models that can tackle complex tasks with greater accuracy and efficiency.
+====================================================
+SFT model:
+====================================================
+Supervised fine-tuning is a method used to enhance a language model by providing it with a curated dataset of instructions and their corresponding answers. This process is designed to align the model's responses with human expectations, thereby improving its accuracy and relevance. The goal is to ensure that the model can respond effectively to a wide range of queries, making it a valuable tool for applications such as chatbots and virtual assistants.
+====================================================
+
+DPO is more accurate and closer to the desired writting style
+its less formal, closer to preference
+
+save model:
+model.save_pretrained_merged("model", tokenizer, save_method="merged_16bit")
+
+we want to measure the same metrics as before but with two additional ones
+- Rewards
+	chosen and rejected, mean difference between the log probabilities output by the trained and reference models, the gap between chosen answers and rejected answers should increase this is tracked by the margins metric, should quickly increase then plateau
+- Accuracies
+	percentage of times the model correctly identifities the chosen answers, if this has an accuracy of 100% the dataset might be too easy for the model, add more challenging examples!
+---------------------------------------------------------
