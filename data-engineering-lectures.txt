@@ -1301,3 +1301,79 @@ Allowed lateness vs Watermarking
 	- Allows for reprocessing of events that fall within the late window
 	- CAUTION: will generate/merge with other records
 Allowed Lateness it will reprocess data that might have already been flushed, you might get another window because it will read data from a window that has been closed reading this event and closing it again.
+
+
+Lecture 14
+Design Patterns - Growth Accounting
+--------------------------------------------
+Repeatable analyses (these are your friend!)
+- Reduce cognitive load of thinking about the SQL
+	understanding the right layer of abstraction
+	everything will change understand the higher level patterns
+- Streamline your impact
+Once you understand the higher level picture the pipeline writes itself
+
+Common patterns
+- Aggregation-based patterns
+- Cumulation-based patterns
+- Window-based patterns
+
+Aggregation-based Patterns (SQL: GROUP BY)
+- Trend analysis
+- Root cause analysis
+	if you see a shift in a metric, then you can bring in other dimensions to understand why
+
+Aggregation-based Analyses
+- The most common type of analysis
+- GROUP BY is your friend
+- Upstream dataset is often the "daily metrics"
+- Common types of analysis
+	- Root cause analysis (why is this thing happening)
+	- Trends
+	- Composition
+(should use daily data thats somewhat already aggregated instead of using fact data)
+- Think about the combinations that matter the most
+- Be careful looking at many-combination, long-time frame analyses (>90 days)
+
+Cumulation-based patterns (the change in state between today vs yest)
+- State transition tracking
+- Retention (also called j curves)
+- Time is a significanly different dimensions vs other ones
+- FULL OUTER JOIN is your friend (built on top of cumulative tables)
+	No data is data, FULL OUTER JOIN makes sure we keep everything
+- Common or these following patterns:
+	- State change tracking
+	- Survival analysis (also called retention)
+
+Growth Accounting
+- Special version of state transition track
+	- New (didn't exist yesterday, active today)
+	- Retained (active yesterday, active today)
+	- Churned (active yesterday, inactive today)
+	- Resurrected (inactive yesterday, active today)
+	- Stale (inactive yesterday, inactive today)
+(sometimes there's policies where you can't hold onto someones data all the time)
+Growth: (new + res)/churned
+Could also be used for fake/non-fake
+ML classifier to label fake/non-fake accounts
+Gives you good monitoring with your ML models
+Example: AirBnB hosts the probability of hosts canceling after you flown to their country (risky or not risky)
+
+Survival Analysis (J-curve)
+| 		curve 				|    state check 	  | referecne date |
+|users who stay active      |	 activity on app 	| signup date |
+|cancer patients who continue to live | not dead | diagnosis date |
+|smokers who remain smoke-free after quitting  | not smoking | quit date
+|Attendees who keep attending all sess. | activity on zoom | enrollment date
+
+Window-based Analyses
+- DoD / WoW / MoM / YoY (day over day, week over week, etc)
+	a rate of change over time
+- Rolling Sum / Average
+- Ranking
+- keyword here is rolling
+- Mostly solved using window functions
+	- FUNCTION() OVER (PARTITION BY keys ORDER BY sort ROWS BETWEEN n PRECEDING AND CURRENT ROW)
+(usually sort by date, parition by user_id, country whatever your trying to "cut" by, n here is usually rolling days)
+- Big Data Gotchas
+- Make sure to use PARTITION BY or else it'll OOM on big data!

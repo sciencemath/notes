@@ -1405,8 +1405,56 @@ Feature pipeline runs on a different machine on a schedule to populate the vecto
 6) Reranking
 7) Build the prompt and call the LLM
 8) Answer
+
 *Refer to code file*
 
 Increasing the number of query expansion (using multiple LLMs) will create various perspectives but the more we add the more latency we get, in the code we can parallelize them.
 
 
+An issue w/ plain vector search is retrieving semantically similar but contextually irrelavant documents. For example searching for the word "Python" could retrieve documents about the snake instead of the code
+
+plain vector search can suffer from scalability issues.
+
+filtered vector search is a solution with this it tragets metadata tags or categories. Additonally it improves latency by reducing comparisons the algorithm needs to perform
+
+Metadata for author_id
+====================
+from qdrant_client.models import FieldCondition, Filter, MatchValue
+
+records = qdrant_connection.search(
+            collection_name="articles",
+            query_vector=query_embedding,
+            limit=3,
+            with_payload=True,
+            query_filter= Filter(
+                    must=[
+                        FieldCondition(
+                            key="author_id",
+                            match=MatchValue(
+                                value=str("1234"),
+                            ),
+                        )
+                    ]
+                ),
+        )
+====================
+
+Retrieved context may contain irrelevant chunks that only:
+- Add noise
+- Make the prompt bigger
+- Unaligned with question
+All of these are irrelevant, cluttering information
+
+The solution is to use reranking to order all the N x K retrieved chunks based on their relevance relative to the inital question, first chunk is most relevant, and last is least.
+N = number of searches after query expansion
+K = number of chunks retrieved per search
+
+neural cross-encoders evaluate the semantic similarity between the query and each chunk more accurately than initial retrieval methods based on embeddings and the cosine similarity distance
+
+Reranking works well when combined with query expansion:
+1) Seach for N x K chunks: retrieve multiple sets of chunks using the expanded queries
+2) Reordering using rerank: rerank all retrieved chunks based on their relevance
+3) Take top K: select most relevant chunks for final prompt
+
+*Refer to code file*
+(rerank)

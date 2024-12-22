@@ -1736,3 +1736,50 @@ self_query = SelfQuery()
 query = self_query.generate(query)
 logger.info(f"Extracted author_id: {query.author_id}")
 logger.info(f"Extracted author_full_name: {query.author_full_name}")
+---------------------------------------------------------------------------
+Rerank process:
+---------------------------------------------------------------------------
+from llm_engineering.application.networks import CrossEncoderModelSingleton
+from llm_engineering.domain.embedded_chunks import EmbeddedChunk
+from llm_engineering.domain.queries import Query
+from .base import RAGStep
+
+class Reranker(RAGStep):
+    def __init__(self, mock: bool = False) -> None:
+        super().__init__(mock=mock)
+        self._model = CrossEncoderModelSingleton()
+
+    def generate(self, query: Query, chunks: list[EmbeddedChunk], keep_top_k: int) -> list[EmbeddedChunk]:
+        if self._mock:
+            return chunks
+        # creates pairs of the query content and each chunks content
+        query_doc_tuples = [(query.content, chunk.content) for chunk in chunks]
+        # cross encoder model to score each pair, assessing how well the chunk matches the query
+        scores = self._model(query_doc_tuples)
+        # zips scores with corresponding chunks to create a scored list of tuples
+        scored_query_doc_tuples = list(zip(scores, chunks, strict=False))
+        # sorts list in descending order based on the scores
+        scored_query_doc_tuples.sort(key=lambda x: x[0], reverse=True)
+        # selects the top keep_top_k chunks
+        reranked_documents = scored_query_doc_tuples[:keep_top_k]
+        # extracts the chunks from the tuples
+        reranked_documents = [doc for _, doc in reranked_documents]
+        return reranked_documents
+
+from sentence_transformers.cross_encoder import CrossEncoder
+from .base import SingletonMeta
+
+class CrossEncoderModelSingleton(metaclass=SingletonMeta):
+    def __init__(
+        self,
+        model_id: str = settings.RERANKING_CROSS_ENCODER_MODEL_ID,
+        device: str = settings.RAG_MODEL_DEVICE,
+    ) -> None:
+        """
+        A singleton class that provides a pre-trained cross-encoder model for scoring pairs of input text.
+
+    def __call__(self, pairs: list[tuple[str, str]], to_list: bool = True) -> NDArray[np.float32] | list[float]:
+        scores = self._model.predict(pairs)
+        if to_list:
+            scores = scores.tolist()
+        return scores
