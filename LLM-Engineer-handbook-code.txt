@@ -1566,3 +1566,173 @@ model_ids = [
 for model_id in model_ids:
     evaluate_answers(model_id)
 ---------------------------------------------------------------------------
+from abc import ABC, abstractmethod
+from langchain.prompts import PromptTemplate
+from pydantic import BaseModel
+
+class PromptTemplateFactory(ABC, BaseModel):
+    @abstractmethod
+    def create_template(self) -> PromptTemplate:
+        pass
+
+from typing import Any
+from llm_engineering.domain.queries import Query
+
+class RAGStep(ABC):
+    def __init__(self, mock: bool = False) -> None:
+        self._mock = mock
+    @abstractmethod
+    def generate(self, query: Query, *args, **kwargs) -> Any:
+        pass
+
+from pydantic import UUID4, Field
+from llm_engineering.domain.base import VectorBaseDocument
+from llm_engineering.domain.types import DataCategory
+
+class Query(VectorBaseDocument):
+    content: str
+    author_id: UUID4 | None = None
+    author_full_name: str | None = None
+    metadata: dict = Field(default_factory=dict)
+class Config:
+        category = DataCategory.QUERIES
+
+    @classmethod
+    def from_str(cls, query: str) -> "Query":
+        return Query(content=query.strip("\n "))
+
+    def replace_content(self, new_content: str) -> "Query":
+        return Query(
+            id=self.id,
+            content=new_content,
+            author_id=self.author_id,
+            author_full_name=self.author_full_name,
+            metadata=self.metadata,
+        )
+
+class EmbeddedQuery(Query):
+    embedding: list[float]
+    class Config:
+        category = DataCategory.QUERIES
+
+from langchain_openai import ChatOpenAI
+from llm_engineering.domain.queries import Query
+from llm_engineering.settings import settings
+from .base import RAGStep
+from .prompt_templates import QueryExpansionTemplate
+
+class QueryExpansion(RAGStep):
+    def generate(self, query: Query, expand_to_n: int) -> list[Query]:
+        assert expand_to_n > 0, f"'expand_to_n' should be greater than 0. Got {expand_to_n}."
+        if self._mock:
+            return [query for _ in range(expand_to_n)]
+        query_expansion_template = QueryExpansionTemplate()
+        prompt = query_expansion_template.create_template(expand_to_n - 1)
+        model = ChatOpenAI(model=settings.OPENAI_MODEL_ID, api_key=settings.OPENAI_API_KEY, temperature=0)
+
+        chain = prompt | model
+        response = chain.invoke({"question": query})
+        result = response.content
+
+        queries_content = result.strip().split(
+        	query_expansion_template.separator
+    	)
+        queries = [query]
+        queries += [
+            query.replace_content(stripped_content)
+            for content in queries_content
+            if (stripped_content := content.strip())
+        ]
+        return queries		
+
+from langchain.prompts import PromptTemplate
+from .base import PromptTemplateFactory
+
+class QueryExpansionTemplate(PromptTemplateFactory):
+    prompt: str = """You are an AI language model assistant. Your task is to generate {expand_to_n}
+    different versions of the given user question to retrieve relevant documents from a vector
+    database. By generating multiple perspectives on the user question, your goal is to help
+    the user overcome some of the limitations of the distance-based similarity search.
+    Provide these alternative questions separated by '{separator}'.
+    Original question: {question}"""
+    @property
+    def separator(self) -> str:
+        return "#next-question#"
+    def create_template(self, expand_to_n: int) -> PromptTemplate:
+        return PromptTemplate(
+            template=self.prompt,
+            input_variables=["question"],
+            partial_variables={
+                "separator": self.separator,
+                "expand_to_n": expand_to_n,
+            },
+        )
+
+query = Query.from_str("Write an article about the best types of advanced RAG methods.")
+    query_expander = QueryExpansion()
+    expanded_queries = query_expander.generate(query, expand_to_n=3)
+    for expanded_query in expanded_queries:
+        logger.info(expanded_query.content)
+
+---------------------------------------------------------------------------
+Self querying:
+---------------------------------------------------------------------------
+from langchain_openai import ChatOpenAI
+from llm_engineering.application import utils
+from llm_engineering.domain.documents import UserDocument
+from llm_engineering.domain.queries import Query
+from llm_engineering.settings import settings
+from .base import RAGStep
+from .prompt_templates import SelfQueryTemplate
+
+class SelfQuery(RAGStep):
+    def generate(self, query: Query) -> Query:
+        if self._mock:
+            return query
+        prompt = SelfQueryTemplate().create_template()
+        model = ChatOpenAI(model=settings.OPENAI_MODEL_ID, api_key=settings.OPENAI_API_KEY, temperature=0)
+        chain = prompt | model
+        response = chain.invoke({"question": query})
+        user_full_name = response.content.strip("\n ")
+        if user_full_name == "none":
+            return query
+        first_name, last_name = utils.split_user_full_name(user_full_name)
+        user = UserDocument.get_or_create(first_name=first_name, last_name=last_name)
+        query.author_id = user.id
+        query.author_full_name = user.full_name
+        return query
+
+from langchain.prompts import PromptTemplate
+from .base import PromptTemplateFactory
+
+class SelfQueryTemplate(PromptTemplateFactory):
+    prompt: str = """You are an AI language model assistant. Your task is to extract information from a user question.
+    The required information that needs to be extracted is the user name or user id.
+    Your response should consist of only the extracted user name (e.g., John Doe) or id (e.g. 1345256), nothing else.
+    If the user question does not contain any user name or id, you should return the following token: none.
+   
+    For example:
+    QUESTION 1:
+    My name is Paul Iusztin and I want a post about...
+    RESPONSE 1:
+    Paul Iusztin
+   
+    QUESTION 2:
+    I want to write a post about...
+    RESPONSE 2:
+    none
+   
+    QUESTION 3:
+    My user id is 1345256 and I want to write a post about...
+    RESPONSE 3:
+    1345256
+   
+    User question: {question}"""
+    def create_template(self) -> PromptTemplate:
+        return PromptTemplate(template=self.prompt, input_variables=["question"])
+
+query = Query.from_str("I am Mathias. Write an article about Javascript and WebGPU.")
+self_query = SelfQuery()
+query = self_query.generate(query)
+logger.info(f"Extracted author_id: {query.author_id}")
+logger.info(f"Extracted author_full_name: {query.author_full_name}")
