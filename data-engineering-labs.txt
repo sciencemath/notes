@@ -1947,7 +1947,7 @@ Qaulity Checks (second table):
 		- `m_total_events` > some min number
 
 
-Lecture 11
+LAB 11
 Real-time data pipelines with Kafka and Flink
 --------------------------------------------
 A ScalarFunction takes one column or one row and returns one column or one row, here we get user location based on our ip_address:
@@ -2098,7 +2098,7 @@ Use when you need to process all historical data available in the topic, followe
 Kafka can have a high throughput syncs
 
 
-Lecture 12
+LAB 12
 Real-time data pipelines with Kafka and Flink
 --------------------------------------------
 Standard setup:
@@ -2166,3 +2166,187 @@ You don't want a job to run every 5min in Spark, it takes 3 min to startup and m
 
 if you have a group by longer periods than an hour or more Spark is fine (batch), but a Tumble Window would be good for 5 min
 
+
+LAB 13
+Patterns: Growth Accounting
+--------------------------------------------
+CREATE TABLE users_growth_accounting (
+     user_id TEXT,
+     first_active_date DATE,
+     last_active_date DATE,
+     daily_active_state TEXT,
+     weekly_active_state TEXT,
+     dates_active DATE[],
+     date DATE,
+     PRIMARY KEY (user_id, date)
+)
+
+DAILY ACTIVE STATES:
+new users:
+y.user_id IS NULL AND t.user_id IS NOT NULL THEN 'New'
+
+retained users:
+y.last_active_date = t.today_date - Interval '1 day' THEN 'Retained'
+
+resurrected users:
+y.last_active_date < t.today_date - Interval '1 day' THEN 'Resurrected'
+
+churned users:
+t.today_date IS NULL AND y.last_active_date = y.date THEN 'Churned'
+
+Altogether within a SELECT Clause:
+CASE
+    WHEN y.user_id IS NULL AND t.user_id IS NOT NULL THEN 'New'
+    WHEN y.last_active_date = t.today_date - Interval '1 day' THEN 'Retained'
+    WHEN y.last_active_date < t.today_date - Interval '1 day' THEN 'Resurrected'
+    WHEN t.today_date IS NULL AND y.last_active_date = y.date THEN 'Churned'
+    ELSE 'Stale'
+END as daily_active_state
+
+WEEKLY ACTIVE STATES:
+new users:
+y.user_id IS NULL THEN 'New'
+
+resurrected users:
+y.last_active_date < t.today_date - Interval '7 day' THEN 'Resurrected'
+
+retained users:
+y.last_active_date >= y.date - Interval '7 day' THEN 'Retained'
+
+churned users:
+t.today_date IS NULL AND y.last_active_date = y.date - INTERVAL '7 day' THEN 'Churned'
+
+Query to populate the data:
+INSERT INTO users_growth_accounting
+WITH yesterday AS (
+    SELECT * FROM users_growth_accounting
+    WHERE date = DATE('2023-01-08')
+),
+    today AS (
+        SELECT
+            CAST(user_id AS TEXT) AS user_id,
+            DATE_TRUNC('day', event_time::timestamp) AS today_date,
+            COUNT(1)
+        FROM events
+        WHERE DATE_TRUNC('day', event_time::timestamp) = DATE('2023-01-09')
+        AND user_id IS NOT NULL
+        GROUP BY user_id, DATE_TRUNC('day', event_time::timestamp)
+    )
+
+SELECT
+    COALESCE(t.user_id, y.user_id) AS user_id,
+    COALESCE(y.first_active_date, t.today_date) AS first_active_date,
+    COALESCE(t.today_date, y.last_active_date) AS last_active_date,
+    CASE
+        WHEN y.user_id IS NULL AND t.user_id IS NOT NULL THEN 'New'
+        WHEN y.last_active_date = t.today_date - Interval '1 day' THEN 'Retained'
+        WHEN y.last_active_date < t.today_date - Interval '1 day' THEN 'Resurrected'
+        WHEN t.today_date IS NULL AND y.last_active_date = y.date THEN 'Churned'
+        ELSE 'Stale'
+    END as daily_active_state,
+    CASE
+        WHEN y.user_id IS NULL THEN 'New'
+        WHEN y.last_active_date >= y.date - Interval '7 day' THEN 'Retained'
+        WHEN y.last_active_date < t.today_date - Interval '7 day' THEN 'Resurrected'
+        WHEN t.today_date IS NULL AND y.last_active_date = y.date - INTERVAL '7 day' THEN 'Churned'
+        ELSE 'Stale'
+        END as weekly_active_state,
+    COALESCE(y.dates_active, ARRAY[]::DATE[])
+        || CASE WHEN
+            t.user_id IS NOT NULL
+            THEN ARRAY[t.today_date]
+            ELSE ARRAY[]::DATE[]
+            END AS date_list,
+    COALESCE(t.today_date, y.date + Interval '1 day') AS date
+    FROM today t
+    FULL OUTER JOIN yesterday y
+    ON t.user_id = y.user_id
+
+Ran the query 8 times to populate data two dates had to be changed
+WHERE date = DATE('2023-01-08')
+WHERE DATE_TRUNC('day', event_time::timestamp) = DATE('2023-01-09')
+Each one day apart starting at 2023-01-01 and 2023-01-02 respectively
+
+Get daily users state from our new table:
+SELECT date, daily_active_state, COUNT(1) FROM users_growth_accounting
+GROUP BY date, daily_active_state
+
+COMPLETE SQL DUMP:
+-- CREATE TABLE users_growth_accounting (
+--      user_id TEXT,
+--      first_active_date DATE,
+--      last_active_date DATE,
+--      daily_active_state TEXT,
+--      weekly_active_state TEXT,
+--      dates_active DATE[],
+--      date DATE,
+--      PRIMARY KEY (user_id, date)
+-- )
+
+-- SELECT * FROM events;
+--
+-- SELECT * FROM users_growth_accounting
+--     WHERE date = DATE('2023-03-02')
+-- AND daily_active_state = 'Churned'
+
+SELECT
+    extract(dow FROM first_active_date) AS DOW,
+    date - first_active_date AS days_since_first_active,
+    CAST(COUNT(CASE
+                  WHEN daily_active_state
+                      IN ('Retained', 'Resurrected', 'New') THEN 1 END) AS REAL)/COUNT(1) AS pct_active,
+    COUNT(1) FROM users_growth_accounting
+-- WHERE first_active_date = DATE('2023-01-02')
+GROUP BY date - first_active_date
+
+-- SELECT * FROM users_growth_accounting
+-- SELECT date, daily_active_state, COUNT(1) FROM users_growth_accounting
+-- GROUP BY date, daily_active_state
+
+-- INSERT INTO users_growth_accounting
+-- WITH yesterday AS (
+--     SELECT * FROM users_growth_accounting
+--     WHERE date = DATE('2023-01-08')
+-- ),
+--     today AS (
+--         SELECT
+--             CAST(user_id AS TEXT) AS user_id,
+--             DATE_TRUNC('day', event_time::timestamp) AS today_date,
+--             COUNT(1)
+--         FROM events
+--         WHERE DATE_TRUNC('day', event_time::timestamp) = DATE('2023-01-09')
+--         AND user_id IS NOT NULL
+--         GROUP BY user_id, DATE_TRUNC('day', event_time::timestamp)
+--     )
+--
+-- SELECT
+--     COALESCE(t.user_id, y.user_id) AS user_id,
+--     COALESCE(y.first_active_date, t.today_date) AS first_active_date,
+--     COALESCE(t.today_date, y.last_active_date) AS last_active_date,
+--     CASE
+--         WHEN y.user_id IS NULL AND t.user_id IS NOT NULL THEN 'New'
+--         WHEN y.last_active_date = t.today_date - Interval '1 day' THEN 'Retained'
+--         WHEN y.last_active_date < t.today_date - Interval '1 day' THEN 'Resurrected'
+--         WHEN t.today_date IS NULL AND y.last_active_date = y.date THEN 'Churned'
+--         ELSE 'Stale'
+--     END as daily_active_state,
+--     CASE
+--         WHEN y.user_id IS NULL THEN 'New'
+--         WHEN y.last_active_date >= y.date - Interval '7 day' THEN 'Retained'
+--         WHEN y.last_active_date < t.today_date - Interval '7 day' THEN 'Resurrected'
+--         WHEN t.today_date IS NULL AND y.last_active_date = y.date - INTERVAL '7 day' THEN 'Churned'
+--         ELSE 'Stale'
+--         END as weekly_active_state,
+--     COALESCE(y.dates_active, ARRAY[]::DATE[])
+--         || CASE WHEN
+--             t.user_id IS NOT NULL
+--             THEN ARRAY[t.today_date]
+--             ELSE ARRAY[]::DATE[]
+--             END AS date_list,
+--     COALESCE(t.today_date, y.date + Interval '1 day') AS date
+--     FROM today t
+--     FULL OUTER JOIN yesterday y
+--     ON t.user_id = y.user_id
+--
+--
+--

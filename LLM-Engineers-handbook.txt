@@ -1438,7 +1438,6 @@ records = qdrant_connection.search(
                 ),
         )
 ====================
-
 Retrieved context may contain irrelevant chunks that only:
 - Add noise
 - Make the prompt bigger
@@ -1458,3 +1457,81 @@ Reranking works well when combined with query expansion:
 
 *Refer to code file*
 (rerank)
+
+We can optimize the retrieval phase using a hybrid search algorithm that combines the vector search (based on embeddings) with a keyword search algorithm such as BM25. Hybrid search follow these properties:
+1) Parallel processing
+	search is simultaneously processed through both the vector search and BM25 algorithms
+2) Score normalization
+	This step is important because vector search and BM25 scoring work at different scales.
+3) Result merging
+	normalized scores are combined, through a weighted sum
+
+Instead of using embeddings of a single field to do the vector search, we can combine multiple fields (multi-index vector structures)
+Superlinked is a framework that makes multi-indexing easy.
+====================
+from superlinked.framework.common.schema.id_schema_object import IdField
+from superlinked.framework.common.schema.schema import schema
+from superlinked.framework.common.schema.schema_object import String
+… # Other Superlinked imports. 
+@schema
+class ArticleSchema:
+    id: IdField
+    platform: String
+    content: String
+article = ArticleSchema()
+articles_space_content = TextSimilaritySpace(
+    text=chunk(article.content, chunk_size=500, chunk_overlap=50),
+    model=settings.EMBEDDING_MODEL_ID,
+)
+articles_space_plaform = CategoricalSimilaritySpace(
+    category_input=article.platform,
+    categories=["medium", "substack", "wordpress"],
+    negative_filter=-5.0,
+)
+article_index = Index(
+    [articles_space_content, articles_space_plaform],
+    fields=[article.author_id],
+)
+---------------------------------------------------------
+Three requirements when deploying ML models
+- throughput
+- latency
+- data
+- infrastructure
+Tradeoffs for all
+
+Throughput measured in requests per second (RPS) number of inference requests a system can process in a given period
+
+Latency is the time it takes for a system to process a single inference request from when it is recieved until the result is returned. Sum of the network I/O, serialization and deserialization, and LLM's inference time.
+Even when batching requests at serving time always considfer the min latency
+
+The type and size of the data impact latency and throughput includes format, volume, and complexity
+
+Infrastructure refers to the hardware, software, networking, and system architecture. You might have to sacrifice high throughput in favor of lower latency
+low throughput: optimized to reduce processing time
+high throughput: large data volumns adn request rates.
+
+What are the throughput requirements? Make decision based on throughput's required min, avg, max statistics
+How many requests the system must handle simultaneously?
+What are the latency requirements?
+How should the system scale?
+What are the cost requirements? What data do we work with? images, text, video?
+What is the size of the data we work with?
+
+Inference deplopyment types
+- online real-time inference
+- asynchronous inference
+- offline batch tansform
+
+We can use REST API or gRPC server, the REST API is more accessible but slower using JSON to pass data between client and server.
+This approach is used when serving models outside your internal network to the public
+
+gRPC makes your ML server faster, although you have to implement `protobuf` schemas in your client application which can be compiled into bites.
+
+ChatGPT or Claude often use websockets to stream each token individually to the end user. Other real-time inference RAG, online recommendation engines in platforms like TikTok, although may lead to underutilized resources during low traffic periods.
+
+Asyncronous inference places requests in a queue for processing later on. Depending on the size of the result you can put it either in a different queue or an object storage dedicated to storing the result.
+Client can use polling that checks on a schedule or a push w/ notifications
+Uses resources more efficiently
+Although it does introduce higher latency, and complexity
+A popular choice for problems such as extracting keywords from documents, summarizing them using LLMs, or running deep fake models on top of videos.
