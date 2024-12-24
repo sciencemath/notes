@@ -2051,6 +2051,120 @@ class SagemakerHuggingfaceStrategy(DeploymentStrategy):
 		except Exception as e:
 		    logger.error(f"Error during deployment: {e}")
 		    raise
+---------------------------------------------------------------------------
+Calling the AWS SafeMaker Inference endpoint:
 
+top_p: is the sampling strategy
+temperature: controls the randomness
 
+LLMInferenceSagemakerEndpoint: performs the inference
+execute()
+---------------------------------------------------------------------------
+text = "Write me a post about AWS SageMaker inference endpoints."
+llm = LLMInferenceSagemakerEndpoint(
+        endpoint_name=settings.SAGEMAKER_ENDPOINT_INFERENCE
+    )
+Answer = InferenceExecutor(llm, text).execute()
 
+class LLMInferenceSagemakerEndpoint(Inference):
+    def __init__(
+        self,
+        endpoint_name: str,
+        default_payload: Optional[Dict[str, Any]] = None,
+        inference_component_name: Optional[str] = None,
+    ) -> None:
+        super().__init__()
+        self.client = boto3.client(
+            "sagemaker-runtime",
+            region_name=settings.AWS_REGION,
+            aws_access_key_id=settings.AWS_ACCESS_KEY,
+            aws_secret_access_key=settings.AWS_SECRET_KEY,
+        )
+        self.endpoint_name = endpoint_name
+        self.payload = default_payload if default_payload else self._default_payload()
+        self.inference_component_name = inference_component_name
+
+	def _default_payload(self) -> Dict[str, Any]:
+	    return {
+	        "inputs": "",
+	        "parameters": {
+	            "max_new_tokens": settings.MAX_NEW_TOKENS_INFERENCE,
+	            "top_p": settings.TOP_P_INFERENCE,
+	            "temperature": settings.TEMPERATURE_INFERENCE,
+	            "return_full_text": False,
+	        },
+	    }
+
+	def set_payload(self, inputs: str, parameters: Optional[Dict[str, Any]] = None) -> None:
+	    self.payload["inputs"] = inputs
+	    if parameters:
+	        self.payload["parameters"].update(parameters)
+
+	def inference(self) -> Dict[str, Any]:
+	    try:
+	        logger.info("Inference request sent.")
+	        invoke_args = {
+	            "EndpointName": self.endpoint_name,
+	            "ContentType": "application/json",
+	            "Body": json.dumps(self.payload),
+	        }
+	        if self.inference_component_name not in ["None", None]:
+	            invoke_args["InferenceComponentName"] = self.inference_component_name
+	        response = self.client.invoke_endpoint(**invoke_args)
+	        response_body = response["Body"].read().decode("utf8")
+	        return json.loads(response_body)
+	    except Exception:
+	        logger.exception("SageMaker inference failed.")
+	        raise
+
+class InferenceExecutor:
+    def __init__(
+        self,
+        llm: Inference,
+        query: str,
+        context: str | None = None,
+        prompt: str | None = None,
+    ) -> None:
+        self.llm = llm
+        self.query = query
+        self.context = context if context else ""
+        if prompt is None:
+            self.prompt = """
+    You are a content creator. Write what the user asked you to while using the provided context as the primary source of information for the content.
+User query: {query}
+Context: {context}
+            """
+        else:
+            self.prompt = prompt
+
+	def execute(self) -> str:
+	    self.llm.set_payload(
+	        inputs=self.prompt.format(query=self.query, context=self.context),
+	        parameters={
+	            "max_new_tokens": settings.MAX_NEW_TOKENS_INFERENCE,
+	            "repetition_penalty": 1.1,
+	            "temperature": settings.TEMPERATURE_INFERENCE,
+	        },
+	    )
+	    answer = self.llm.inference()[0]["generated_text"]
+	    return answer
+---------------------------------------------------------------------------
+microservice using FastAPI:
+call_llm_service(): defined earlier
+rag(): defined earlier
+---------------------------------------------------------------------------
+from fastapi import FastAPI
+app = FastAPI()
+
+class QueryRequest(BaseModel):
+    query: str
+class QueryResponse(BaseModel):
+    answer: str
+
+@app.post("/rag", response_model=QueryResponse)
+async def rag_endpoint(request: QueryRequest):
+    try:
+        answer = rag(query=request.query)
+        return {"answer": answer}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e)) from e
