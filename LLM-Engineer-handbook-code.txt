@@ -1817,7 +1817,7 @@ class ContextRetriever:
             n_k_documents = utils.misc.flatten(n_k_documents)
             n_k_documents = list(set(n_k_documents))
         logger.info("All documents retrieved successfully.", num_documents=len(n_k_documents))
-        
+
         if len(n_k_documents) > 0:
             k_documents = self.rerank(query, chunks=n_k_documents, keep_top_k=k)
         else:
@@ -1848,13 +1848,209 @@ class ContextRetriever:
                 query_filter=query_filter,
             )
         embedded_query: EmbeddedQuery = EmbeddingDispatcher.dispatch(query)
+        post_chunks = _search_data_category(EmbeddedPostChunk, embedded_query)
+        articles_chunks = _search_data_category(EmbeddedArticleChunk, embedded_query)
+        repositories_chunks = _search_data_category(EmbeddedRepositoryChunk, embedded_query)
+        retrieved_chunks = post_chunks + articles_chunks + repositories_chunks
+        return retrieved_chunks
+
+    def rerank(self, query: str | Query, chunks: list[EmbeddedChunk], keep_top_k: int) -> list[EmbeddedChunk]:
+        if isinstance(query, str):
+            query = Query.from_str(query)
+        reranked_documents = self._reranker.generate(query=query, chunks=chunks, keep_top_k=keep_top_k)
+        logger.info("Documents reranked successfully.", num_documents=len(reranked_documents))
+        return reranked_documents
 
 
+from loguru import logger
+from llm_engineering.application.rag.retriever import ContextRetriever
+query = """
+        My name is Mathias.
+       
+        Could you draft a LinkedIn post discussing WebGPU?
+        I'm particularly interested in:
+            - how WebGPU works
+            - how it is integrated with the web and how to leverage it for Machine Learning.
+        """
+retriever = ContextRetriever(mock=False)
+documents = retriever.search(query, k=3)
+logger.info("Retrieved documents:")
+for rank, document in enumerate(documents):
+    logger.info(f"{rank + 1}: {document}")
+---------------------------------------------------------------------------
+Bringing everything together call_llm_service(), rag():
+---------------------------------------------------------------------------
+def call_llm_service(query: str, context: str | None) -> str:
+    llm = LLMInferenceSagemakerEndpoint(
+        endpoint_name=settings.SAGEMAKER_ENDPOINT_INFERENCE, inference_component_name=None
+    )
+    answer = InferenceExecutor(llm, query, context).execute()
+    return answer
+---------------------------------------------------------------------------
+prompt = f"""
+You are a content creator. Write what the user asked you to while using the provided context as the primary source of information for the content.
+User query: {query}
+Context: {context}
+          """
+---------------------------------------------------------------------------
+def rag(query: str) -> str:
+    retriever = ContextRetriever(mock=False)
+    documents = retriever.search(query, k=3)
+    context = EmbeddedChunk.to_context(documents)
+    answer = call_llm_service(query, context)
+    return answer
+---------------------------------------------------------------------------
+Deployment:
+---------------------------------------------------------------------------
+def create_endpoint(endpoint_type=EndpointType.INFERENCE_COMPONENT_BASED):
+    llm_image = get_huggingface_llm_image_uri("huggingface", version=None)
+    resource_manager = ResourceManager()
+    deployment_service = DeploymentService(resource_manager=resource_manager)
+    SagemakerHuggingfaceStrategy(deployment_service).deploy(
+        role_arn=settings.ARN_ROLE,
+        llm_image=llm_image,
+        config=hugging_face_deploy_config,
+        endpoint_name=settings.SAGEMAKER_ENDPOINT_INFERENCE,
+        endpoint_config_name=settings.SAGEMAKER_ENDPOINT_CONFIG_INFERENCE,
+        gpu_instance_type=settings.GPU_INSTANCE_TYPE,
+        resources=model_resource_config,
+        endpoint_type=endpoint_type,
+    )
 
+class ResourceManager:
+    def __init__(self) -> None:
+        self.sagemaker_client = boto3.client(
+            "sagemaker",
+            region_name=settings.AWS_REGION,
+            aws_access_key_id=settings.AWS_ACCESS_KEY,
+            aws_secret_access_key=settings.AWS_SECRET_KEY,
+        )
 
+    def endpoint_config_exists(self, endpoint_config_name: str) -> bool:
+        try:
+            self.sagemaker_client.describe_endpoint_config(EndpointConfigName=endpoint_config_name)
+            logger.info(f"Endpoint configuration '{endpoint_config_name}' exists.")
+            return True
+        except ClientError:
+            logger.info(f"Endpoint configuration '{endpoint_config_name}' does not exist.")
+            return False
 
+	def endpoint_exists(self, endpoint_name: str) -> bool:
+	        try:
+	            self.sagemaker_client.describe_endpoint(EndpointName=endpoint_name)
+	            logger.info(f"Endpoint '{endpoint_name}' exists.")
+	            return True
+	        except self.sagemaker_client.exceptions.ResourceNotFoundException:
+	            logger.info(f"Endpoint '{endpoint_name}' does not exist.")
+	            return False
 
+class DeploymentService:
+    def __init__(self, resource_manager):
+        self.sagemaker_client = boto3.client(
+            "sagemaker",
+            region_name=settings.AWS_REGION,
+            aws_access_key_id=settings.AWS_ACCESS_KEY,
+            aws_secret_access_key=settings.AWS_SECRET_KEY,
+        )
+        self.resource_manager = resource_manager
 
+	def deploy(
+	    self,
+	    role_arn: str,
+	    llm_image: str,
+	    config: dict,
+	    endpoint_name: str,
+	    endpoint_config_name: str,
+	    gpu_instance_type: str,
+	    resources: Optional[dict] = None,
+	    endpoint_type: enum.Enum = EndpointType.MODEL_BASED,
+	) -> None:
+	    try:
+	        if self.resource_manager.endpoint_config_exists(endpoint_config_name=endpoint_config_name):
+	            logger.info(f"Endpoint configuration {endpoint_config_name} exists. Using existing configuration...")
+	        else:
+	            logger.info(f"Endpoint configuration{endpoint_config_name} does not exist.")
+	        self.prepare_and_deploy_model(
+	            role_arn=role_arn,
+	            llm_image=llm_image,
+	            config=config,
+	            endpoint_name=endpoint_name,
+	            update_endpoint=False,
+	            resources=resources,
+	            endpoint_type=endpoint_type,
+	            gpu_instance_type=gpu_instance_type,
+	        )
+	        logger.info(f"Successfully deployed/updated model to endpoint {endpoint_name}.")
+	    except Exception as e:
+	        logger.error(f"Failed to deploy model to SageMaker: {e}")
+	        raise
+
+	@staticmethod
+	def prepare_and_deploy_model(
+	    role_arn: str,
+	    llm_image: str,
+	    config: dict,
+	    endpoint_name: str,
+	    update_endpoint: bool,
+	    gpu_instance_type: str,
+	    resources: Optional[dict] = None,
+	    endpoint_type: enum.Enum = EndpointType.MODEL_BASED,
+	) -> None:
+	    huggingface_model = HuggingFaceModel(
+	        role=role_arn,
+	        image_uri=llm_image,
+	        env=config,
+	        transformers_version="4.6",
+	        pytorch_version="1.13",
+	        py_version="py310",
+	    )
+	    huggingface_model.deploy(
+	        instance_type=gpu_instance_type,
+	        initial_instance_count=1,
+	        endpoint_name=endpoint_name,
+	        update_endpoint=update_endpoint,
+	        resources=resources,
+	        tags=[{"Key": "task", "Value": "model_task"}],
+	        endpoint_type=endpoint_type,
+	    )
+---------------------------------------------------------------------------
+SagemakerHuggingfaceStrategy:
+aggregates everything
+---------------------------------------------------------------------------
+class SagemakerHuggingfaceStrategy(DeploymentStrategy):
+	def __init__(self, deployment_service):
+	    self.deployment_service = deployment_service
+
+	def deploy(
+	    self,
+	    role_arn: str,
+	    llm_image: str,
+	    config: dict,
+	    endpoint_name: str,
+	    endpoint_config_name: str,
+	    gpu_instance_type: str,
+	    resources: Optional[dict] = None,
+	    endpoint_type: enum.Enum = EndpointType.MODEL_BASED,
+	) -> None:
+	    logger.info("Starting deployment using Sagemaker Huggingface Strategy...")
+	    logger.info(
+	        f"Deployment parameters: nb of replicas: {settings.COPIES}, nb of gpus:{settings.GPUS}, instance_type:{settings.GPU_INSTANCE_TYPE}"
+	    )
+		try:
+		    self.deployment_service.deploy(
+		        role_arn=role_arn,
+		        llm_image=llm_image,
+		        config=config,
+		        endpoint_name=endpoint_name,
+		        endpoint_config_name=endpoint_config_name,
+		        gpu_instance_type=gpu_instance_type,
+		        resources=resources,
+		        endpoint_type=endpoint_type,
+		    )
+		    logger.info("Deployment completed successfully.")
+		except Exception as e:
+		    logger.error(f"Error during deployment: {e}")
+		    raise
 
 
 
