@@ -1830,7 +1830,6 @@ run pipelines locally:
 disconnect cloud dashboard and use local version:
 `zenml disconnect`
 
-
 if you run into a SageMaker resource error:
 https://repost.aws/knowledge-center/sagemaker-resource-limit-exceeded-error
 
@@ -1839,4 +1838,63 @@ delete old secrets:
 
 exports .env
 `poetry poe export-settings-to-zenml`
+====================
+
+github actions will allow us to automatically build Docker image and push to ECR
+
+this workflow clones current Github repo, and installs python
+====================
+name: Example
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+         - name: Checkout
+           uses: actions/checkout@v3
+         - name: Setup Python
+           uses: actions/setup-python@v3
+           with:
+               python-version: "3.11"
+====================
+
+*refer to code file Github Actions*
+Now that we setup our CI/CD pipeline we will need one for our CT pipeline
+
+We can trigger the data collection pipeline via
+- Manual triggers
+	through CLI or orchestrator dashboard (ZenML)
+- REST API triggers
+	HTTP request trigger
+- Scheduled triggers
+	constant fixed interval (cronjobs)
+
+*refer to code file Pipelines*
+
+We can add the `@track` decorator to `ContextRetriever:search` and `SelfQuery:generate` we capture the prompt sent to LLM and its response
+
+Monitoring everything can be dangerous as it adds to much noise, find good balance
+- Model config
+	model IDs, tempature, RAG layer
+- total number of tokens
+	impact serving costs, if tokens suddenly increases might have a bug in the system
+- duration of each step
+	finding bottlenecks
+
+You can setup alerting if needed via slack/discord etc:
+Alerts are a critical component 
+====================
+from zenml import get_pipeline_context, pipeline
+@pipeline(on_failure=notify_on_failure)
+def training_pipeline(…):
+…
+notify_on_success()
+
+from zenml.client import Client
+alerter = Client().active_stack.alerter
+def notify_on_failure() -> None:
+        alerter.post(message=build_message(status="failed"))
+@step(enable_cache=False)
+def notify_on_success() -> None:
+        alerter.post(message=build_message(status="succeeded"))
 ====================
