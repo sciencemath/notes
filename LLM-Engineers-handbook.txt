@@ -1671,3 +1671,96 @@ Application Auto Scaling simplify the scaling process no need to configure Cloud
 Set min/max scaling limits before creating a policy
 
 You can specify a cooldown period which prevents rapid fluctuations in the number of instances, dealys the removal of instances during scale-in (reduce) and restricts creation of new replicas during scale-out (increase)
+
+---------------------------------------------------------
+
+MLOps concept is similar to DevOps with MLOps theres more moving parts
+data, model, and code
+A build can be triggered if any of these change
+when one component changes it affects one or more of the others.
+
+changes in data that indirectly effects the model
+- After deploying the ML model
+	performance might decay as time passes, need new data to re-train
+- After understanding how to collect data in the real world
+	re-formulate getting data
+- experimentation stage and training model
+	collecting more data or re-labeling it
+- serving model in prod and collecting feedback from users
+	we might have to change our model
+
+MLOps is the extension of the DevOps field that makes data and models their first-class citizen perserving the devOps methodology
+
+- Model registry
+	A centralized repo for trained ML models
+- Feature store
+	preprocessing and storing input data as features for model training and inference pipelines
+- ML metadata store
+	tracks info model config, training/testing data, performance metrics. Compare multiple models
+- ML pipeline orchestrator
+	automating the sequence of steps in ML projects
+
+six core principles guide MLOps field
+- Automation or operationalization
+	automate pipelines through CT and CI/CD
+- Versioning
+	track changes in code, models, and data. versioned thro model registries, data versioning (DVC) or artifact management system
+- Experment tracking
+	comparing multiple experiements based on predefined metrics
+- Testing
+	along with testing code, you should also test data and models.
+- Monitoring
+	detecting performance degradation, logs, system/model metrics
+- Reproducibility
+	setting well-known seeds to generate pseudo-random numbers is essential to achieving consistent outcomes, theres a lot of config/versions/hyperparamters etc.
+
+ML and MLOps can be combined into the same role at small/medium sized companies, just like engineers that act as devOps by building a CI/CD
+
+Data Science/ML Research (no MLOps):
+PyTorch, Tensorflow, HuggingFace etc
+ML Engineering (MLOps might be involved here):
+API, DBs, modularity
+Infrastructure (MLOps)
+Docker, K8s, cloud, etc
+
+LLMOps builds ontop of MLOps (same fundamentals) focueses on their large size, complex training requirements, prompt management, non-deterministic nature generating answers
+
+Keep in mind these topics when training a LLM from scratch
+- Data collection and preparation
+	big data techniques for processing, storing, training datasets
+	GPT-4 was trained on 13 trillion tokens equal to ~10 trillion words
+- Managing large number of parameters
+	vast computation resources, Nvidia GPUs, CUDA
+- Model Training
+	multi-GPU training, optimizing your processes
+- Costs
+	estimated training cost for GPT-4 is ~100 million, only the large players in the industry can afford to train LLMs from scratch :(
+
+LLMOps is MLOps at scale. The trend is shifting away from training Neural Networks from scratch, with the rise of fine tuning and foundational models such as GPT only a few organizations develop these foundational models (OpenAi, Google). Most applications rely on the lightwright fine-tuning of these models, prompt engineering, or optionally distilling data or models into smaller specialized inference networks.
+
+Human Feedback
+A valuable refinement step of your LLM, you must introduce a feedback loop within your application and gather a human feedback dataset. RLHF Reinforcement Learning with Human Feedback or Direct Preference Optimization (DPO), another one is thumbs up/down
+
+You must add guardrails to prevent accidently leaking personal information, hullucinations, secrets, impersonating a dictator. Some protection must be in place.
+- Input guardrails
+	this can be protection against asking LLM how to do malicious things, exposing private information to external APIs, executing harmful prompts that could compromise your system
+- Output guardrails
+	the output of an LLM response, you want to catch failed outputs, empty responses, toxic responses, hallucinations, wrong responses.
+
+Galileo Protect detects prompt injections, toxic language, data privacy, protection leaks and hallucinations. Or use OpenAI's Moderation API for harmful inputs/outputs.
+
+Guardrails will add latency
+
+Prompt monitoring
+- Time to First Token (TTFT)
+	time for first token to be generated
+- Time between Tokens (TBT)
+	interval between each token
+- Tokens per Second (TPS)
+	rate tokens are generated
+- Time per Output Token (TPOT)
+	Time it takes to generate each output token
+- Total Latency
+	Total time required to complete a response
+
+When using RAG systems you can also compute metrics relative to relevance and precision of the retrieved context. Monitoring prompts is to log their full traces, monitoring latency, tokens, and costs at each step, providing a fine-grained view of all the steps.
