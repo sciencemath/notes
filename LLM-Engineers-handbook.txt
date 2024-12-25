@@ -1764,3 +1764,79 @@ Prompt monitoring
 	Total time required to complete a response
 
 When using RAG systems you can also compute metrics relative to relevance and precision of the retrieved context. Monitoring prompts is to log their full traces, monitoring latency, tokens, and costs at each step, providing a fine-grained view of all the steps.
+
+ZenML cloud we can
+- ECR service for storing Docker images
+- S3 object storage storing models and artifacts
+- SageMaker Orchestrator running and scaling ML pipelines
+
+1) build a docker image for dependencies
+2) push image to ECR so SageMaker can access
+3) trigger any pipeline via CLI or ZenML dashboard
+4) Each step in ZenMLs pipleline will be maped to Sagemaker that runs EC2 virtual machine based on dependencies
+5) SageMaker pulls teh Docker image from ECR based on the pulled image it creates a Docker container that executes the pipeline step
+6) now it can access the S3 artifact storage, MongoDB and Qdrant vector DB to query or push the data
+
+.env (mongoDB and qdrant region may have to match wasn't given a region selection option for qdrant)
+====================
+USE_QDRANT_CLOUD=true
+QDRANT_CLOUD_URL=<get values from qdrant site>
+QDRANT_APIKEY=<get values from qdrant site>
+DATABASE_HOST= mongodb+srv://<username>:<password>@twin.vhxy1.mongodb.net
+
+peotry poe run-end-to-end-data-pipeline
+
+https://cloud.zenml.io will provide a 7day free account
+
+run this command to make sure everything works fine
+poetry poe run-digital-data-etl
+====================
+
+*refer to code file to setup Dockerfile*
+
+poetry poe build-docker-image
+
+Will be availble once you run your Dockerfile to push to ECR
+AWS_REGION=<your_region> # e.g. AWS_REGION=eu-central-1
+AWS_ECR_URL=<your_acount_id>
+aws ecr get-login-password --region ${AWS_REGION}| docker login --username AWS --password-stdin ${AWS_ECR_URL}
+
+docker tag llmtwin ${AWS_ECR_URL}:latest
+docker push ${AWS_ECR_URL}:latest
+====================
+Run pipelines on AWS:
+ZenML needs to know how to use the AWS stack
+
+zenml stack set aws-stack
+
+open `configs/end_to_end_data.yaml`
+
+settings:
+  docker:
+    parent_image: <YOUR ECR URL> #e.g., 125839364772.dkr.ecr.eu-central-1.amazonaws.com/zenml-rlwlcs:latest
+    skip_build: True
+
+Will automatically pick up the latest changes made to the code whenever we push a new image
+
+poetry poe export-settings-to-zenml
+zenml orchestrator update aws-stack --synchronous=False
+
+poetry poe run-end-to-end-data-pipeline
+
+to run other pipelines update `settings.docker.parent_image`
+
+run pipelines locally:
+`poetry poe set-local-stack`
+disconnect cloud dashboard and use local version:
+`zenml disconnect`
+
+
+if you run into a SageMaker resource error:
+https://repost.aws/knowledge-center/sagemaker-resource-limit-exceeded-error
+
+delete old secrets:
+`poetry poe delete-settings-zenml`
+
+exports .env
+`poetry poe export-settings-to-zenml`
+====================
