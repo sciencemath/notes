@@ -1377,3 +1377,93 @@ Window-based Analyses
 (usually sort by date, parition by user_id, country whatever your trying to "cut" by, n here is usually rolling days)
 - Big Data Gotchas
 - Make sure to use PARTITION BY or else it'll OOM on big data!
+
+
+Lecture 15
+Design Patterns @ Meta - Funnel Analysis
+--------------------------------------------
+The DE SQL Interview vs SQL on the job
+Things you'll see in data engineering SQL interviews that you will almost do on the job:
+- Rewrite the query without window functions
+	(rank, rolling)
+- Write a query that leverages recursive common table expressions
+- Using correlated subqueries in any capacity
+
+DE Interview does get some stuff right
+- Care about the number of table scans
+	- COUNT(CASE WHEN) is a very powerful combo for interview and on job
+	- Cumulative table design minimizes table scans
+- Write clean SQL code
+	- Common table expressions are your friend
+	- Use aliases
+table scans are usually #1 thing to look out for
+EXAPLAIN keyword is very useful
+
+SQL order of keywords FROM and JOIN happen first, then WHERE, GROUP BY, HAVING, SELECT, ORDERBY
+
+Advanced SQL Techniques to try out
+- GROUPING SETS / GROUP BY CUBE / GROUP BY ROLLUP
+- Self-joins
+- Window Functions (e.g. rolling montly average)
+	- Lag, Lead, Rows Clause
+- CROSS JOIN UNNEST / LATERAL VIEW EXPLODE
+
+GROUPING SETS
+-----
+FROM events_augmented
+GROUP BY GROUPING SETS (
+	(os_type, device_type, browser_type),
+	(os_type, browser_type),
+	(os_type),
+	(browser_type)
+)
+4 queries in one ^
+if you didn't have this you would have 4 different queries GROUP BY and then use UNION ALL which is the most terrible keyword in all of SQL
+
+Make sure none of the columns are never NULL because they get excluded by one of the GROUP BYs (e.g. one of the GROUPING SETS (browser_type) device_type becomes NULL, and browser_type becomes NULL) we wouldn't know if it came in as NULL and if its NULL because we excluded it.
+
+CUBE
+-----
+FROM events_augmented
+GROUP BY CUBE(os_type, device_type, browser_type)
+
+Use at most 3 dimensions for CUBE ^ because its a combintoral construct
+
+grows factorially
+
+some combinations you won't care about which is a waste
+
+ROLLUP (hierarchical data)
+-----
+FROM events_augmented
+GROUP BY ROLLUP(os_type, device_type, browser_type)
+
+grows linear
+
+If using BigQuery you only get Rollup
+
+Window functions
+- Window functions are really important
+- The function (usually RANK, SUM, AVG, DENSE_RANK)
+- The Window
+	- PARTITION BY (how to cut the data e.g. per month, per user)
+	- ORDER BY (sort the window)
+	- ROWS (how big the window can be)
+Try not to use RANK it skips values
+default value for ROWS is between unbounded preceeding (left side of the window), right side of the window is current row
+
+If you don't define a ROWS you get a cumulation of all the rows before the current row
+
+Data modeling  vs Advanced SQL
+If your data analysts need to do SQL gymnastics to solve their analytics problems, you're doing a bad job as a data engineer
+
+When starting a job figure out the bottlenecks in analytics
+
+Symptoms of bad data modeling
+- Slow dashboards
+- Queries with a weird number of CTEs
+	if you see 10 CTEs and 5 of them look the same throughout might think about creating a temp table
+- Lots of CASE WHEN statements in the analytics queries
+(preaggregate against the columns people care about)
+Storage is cheaper than compute!
+
