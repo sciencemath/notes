@@ -1467,3 +1467,90 @@ Symptoms of bad data modeling
 (preaggregate against the columns people care about)
 Storage is cheaper than compute!
 
+
+Lecture 16
+KPIs & Experiments
+--------------------------------------------
+Why do metrics matter?
+- more visibility into your business the better
+- make more clear decisions
+
+Types of metrics
+- Aggregates/Counts
+- Ratios (e.g. percent per country, percent still active)
+- Percentiles (p10, p50, p90 values)
+(if you define a metric you should be able to answer any question about that metric, remember this is important for data engineers only, data scientists will have to answer more with statistical knowledge, i.e. its not your job)
+
+Aggregates / Counts
+- The Swiss army knife and the most common type of data engineers should work with (fact data, actions)
+- You want to give simple metrics
+
+Ratios
+- Data engineers should supply numerators and denominators, NOT THE RATIOS
+	- Conversion rate (additive vs non-additive)
+	- Purchase rate
+	- Cost to acquire a customer
+
+Percentile Metrics
+- Useful for measuring the experience at the extremes
+	- P99 Latency
+	- P10 engagement of active users
+(building a new app called Facebook lite for low end hardware)
+
+Metrics be "gamed" and need balance
+- Experiments can move metrics up short-term but down long-term
+- Notifications
+	- send more -> get more users in the short term
+- Fiddle with the numerator or the denominator
+- Novelty effects of experiments
+- Increased user retention at extreme cost
+
+How does an experiment work?
+- Make a hypothesis
+- Group assignment (test vs control)
+- Collect data
+- Look at the differences between the groups
+
+Hypothesis testing
+The null Hypothesis (also called H naught)
+	There is no difference
+The althernative hypothesis
+	There is a significant difference form the changes
+
+Group Testing
+- Who is eligible?
+	- Are these users in a long-term holdout?
+	- What percentage of users do we want to experiment on?
+(percent allocation)
+
+Collect data
+- You collect data until you get a statistically significant result
+- Make sure to use stable identifiers!
+	- Hash IP addresses to minimize the collection of PII
+	- Leverage Stable ID in Statsig
+- The smaller the effect, the longer you'll have to wait
+- Keeping in mind some effects may be so small you'll never get a stat sig result
+- Do not UNDERPOWER your experiements
+	- The more test cells you have, the more data you will need to collect
+	- its unlikely you have the same data collection as Google and can test 41 different shades of blue
+- Collect all the events and dimensions you want to measure differences!
+(make sure to have all your logging in place)
+
+Look for statistical significance
+- P values are a method we use to determine if a coincidence is actually a coincidence or not
+- P < 0.05 is the industry standard. Depending on your situations you might want higher or lower
+(lower the P value the higher certainty you have not due to randomness)
+
+Statistically significant results may still be worthless
+- result is significant but its a tiny delta
+- multiple statistically significant results in the opposite directions
+
+Gotchas when looking for statistical significance
+- When looking at count data, extreme outliers can skew the distribution the wrong way
+	- Winsorization helps with this
+	(a technique that clips extreme outliers to a less extreme value)
+	- Looking at user counts instead of event counts
+
+Statsig can create metrics
+- You can add your own user-level metrics to Statsig via batch ETLs
+- This is a common pattern in big tech for data engineers to own these
