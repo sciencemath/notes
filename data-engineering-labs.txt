@@ -2550,6 +2550,9 @@ ORDER BY COUNT(1) DESC
 
 
 
-
-
-
+LAB 15
+KPIs and Experiments
+--------------------------------------------
+Most of the lab was done with statsig, setting up an account and using the metrics feature and feature flag.
+One thing to note:
+If you have a Guardrail tagged metric and it doesn't meet statistical significance it will not be pushed to production

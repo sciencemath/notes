@@ -1554,3 +1554,113 @@ Gotchas when looking for statistical significance
 Statsig can create metrics
 - You can add your own user-level metrics to Statsig via batch ETLs
 - This is a common pattern in big tech for data engineers to own these
+
+
+Lecture 17
+KPIs & Experiments
+--------------------------------------------
+Leading vs Lagging metrics
+Ultimately, metrics should be linked to either reduced cost or increased revenue!
+The revenue metric often moves pretty slowly
+(revenue is usually a lagging metric, when creating pipelines the data about the data that your creating is saving money)
+- Are we measuring inputs or outputs
+	- Does our effort impact our output
+- Are inputs and outputs correlated? (i.e. conversion rate)
+	- e.g. amount of people who saw post to amount of people who purchased
+	(every step of this funnel should be analysed, every step can have problems)
+This is applicable beyond product analytics too!
+(if I were to teach an online course)
+- A leading metric in your learning could be "hours spent practicing SQL"
+- A lagging metric in your learning could be "job offers received"
+- An extreme lagging metric in your learning could be "how many students got better jobs from what I taught them"?
+Your conversion rate might be "hours applying divided by job interviews"
+- Most extreme leading metric: ad spent on an impression
+- Most extreme lagging metric: testimonial or a repeat purchase
+
+Learning / job funnel
+effort/learning -> brand building/networking -> job interview -> job success/promotion -> help others/change world
+
+Top of the funnel
+effort/learning -> brand building/networking
+what/how should I learn.
+How should I market the skills, who should I network with?
+common mistakes:
+- tutorial hell
+- going too broad
+- not networking
+- networking only on linkedin
+(provide some value if you can when networking)
+
+Middle of the job funnel
+brand building/networking -> Job interview
+Where should I apply? Where will I increase my skills the most?
+common mistakes
+- applying only to jobs you're 100% qualified for
+- Only filling out apps, not networking
+
+Bottom of the job funnel
+Job interview -> job success/promotion
+How to take job to next level? How do I keep providing value?
+common mistakes
+- not asking questions in interviews
+- not recognizing unsupportive managers
+- only focusing on getting better at code
+(if you could change one aspect of your job what would it be)
+(if I am two weeks behind on a project where I didn't know where its going to go how would you react as a manager)
+
+End of job funnel
+job success/promotion -> help others / change world
+how do I most effectively teach my mentees
+common mistakes
+- stayiung in a toxic job because of pay
+- not caring enough to help others
+
+The funnel that runs the world!
+Impressions -> sign ups/email acquisition -> purchase -> engaged/retained -> referral/testimonial
+
+Top of funnel
+Impressions -> signups/email acquisition
+channel traking, cost per click. Landing page, page speed, responsiveness
+(you need to track where users are coming from)
+YOU CAN START BY SIGN UP EMAILS
+
+Middle of funnel
+signups/email acquisition -> purchase
+pricing structure, elasticities, pricing page
+dont upset customers, sweet spot lower price = more customers
+doesn't work for everyone
+be smart with charging different pricing models, how you nudge people to buy
+
+Retention part of funnel
+purchase -> engaged/retained
+onboarding, notifications, schedule, content
+customer delight is one of the most important parts of building a successful product.
+
+Virtuous cycle of funnels
+engaged/retained -> referral/testimonial
+notifications, incentives
+
+How to think like a product manager
+- through every step of the funnel, "what's sparking joy or pain"
+
+Boot camp examples (impression/prospective student)
+- Students learn something and are happy when they read my content on social media about data engineering
+- Students get deeper knowledge when signing up for newsletter where you maintain a closer connection
+
+Boot camp examples (new student)
+- When you buy boot camp
+	- you get immediate access to a huge content library
+	(students like that)
+	- a delay in getting added to github and discord
+	(students don't like that)
+
+Boot camp examples (engaged student)
+- students are happy
+	- when they're put into groups
+	- they get mentors as a reward for being engaged
+- students are unhappy
+	- overwhelmed by the intensity of a bootcamp
+
+Boot camp examples (referral / testimonial)
+- students feel very happy when they land a better job from the skills learned in a boot camp. 
+word of mouth
