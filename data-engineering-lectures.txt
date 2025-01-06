@@ -1666,7 +1666,7 @@ Boot camp examples (referral / testimonial)
 word of mouth
 
 
-Lecture 18
+Lecture 18 & 19
 Maintain data pipelines, Netflix and Airbnb
 --------------------------------------------
 Every pipeline you build, slowly crushes you w/ maintence costs
@@ -1752,3 +1752,133 @@ Business question
 - Consolidate common questions into a document so you don't have to keep answering the same questions over and over again
 - Is this the same or different oncall from the pipeline oncall?
 - Make sure your analytics partners are looped in here
+
+What are signals of tech debt in data engineering?
+- Painful pipelines that break or are delayed
+- Large cloud bills
+- Multiple sources of truth
+- unclear data sets that aren't documented
+
+Path forward for painful pipelines
+- The only thing better than optimized is deprecated
+- Is there anything that can be done?
+	- new technology
+	- better data modeling
+	- bucketing?
+	- sampling?
+- Deprecating without a replacement can be a hard sell
+make sure all your pipelines use the data, otherwise its good to have meetings about what to get rid of.
+Dont do things just to have, be smart about your pipelines
+
+Technology upgrades for pipelines
+Hive to Spark migration?
+Often sees an order of magnitude increase in efficiency. Especially for pipelines that use high-cardinality GROUP BY and/or JOIN
+50-90% more efficient!
+as a side note it would be interesting how people measure their pipeline performance
+Remember its a tradeoff!
+
+Sampling (if pipelines become unrealiable, and you dont need the whole data set)
+When should you sample?
+if directionality is what you care about, sampling is good enough. Make sure to consult a data scientist on this to guarantee you get the best sample of the data set.
+When should you not sample?
+if you need the entire data set for auditing, sampling won't work
+
+Bucketing
+You should consider bucketing when
+	- You have an expensive high-cardinality JOIN or GROUP BY
+when writing code its done using the remainder via % operator modulo
+left, and right part of the join to bucketed tables so you can do JOINs without suffles (worth it if you have a lot of data 1TB+)
+
+Large cloud bills
+IO is the number one cloud cost!
+then compute and then storage
+- Too much IO can happen because
+	- Duplicative data models
+	- inefficient pipelines (use cumulative design when possible)
+	meaning dont scan 30 days of data scan 1 day of data and use the historical data for the rest of 29 days.
+	- excessive backfills
+	backfill one month first validate to see that looks good then do the whole history
+	- not sampling
+	- not subpartitioning your data correctly (predicate pushdown is your friend)
+- Large IO and compute costs are correlated by
+	- Scanning too much data (use cumulative tables)
+	- O(n^2) algorithms applied in UDFs (nested loops are usually bad)
+- Large IO and storage costs are correlated by
+	- not leveraging parquet file format effectively
+	- duplicative data models
+
+Minimize IO (subpartitioning)
+use something that can have a low partition but high cardinality
+and that users are filtering a lot by
+
+Multiple sources of sources of truth
+- This is some of the hardest (but most impactful) work for data engineers
+	1) Document all the sources and discrepancies
+	2) understand from stakeholders why they needed something different
+	3) Build a spec that outlines a new path forward that can be agreed upon
+example: a word, or a status something that has similar spelling but used in many different contexts
+completeness is important
+
+Document all the sources and all the discrepancies
+- Talk with all relevant stakeholders
+- If you can code search for similar names, that works great
+- Lineage of the shared source data is a good place to start too
+
+Understand from stakeholders why they needed something different
+- Theres usually a reason why theres multiple data sets
+- Could be organizational, ownership, technical, skills, etc
+- Work with stakeholders to find an ownership model that works
+have trust between teams
+
+Build a pipeline spec
+- Capture all the needs from stakeholders
+- Get all the multiple sources of truth owners to sign off (this helps a lot with migrations later)
+
+Models for getting ahead of tech debt
+- Fix "as you go"
+- Allocate a portion of time each quarter (often called tech excellence week)
+- Have the on-call person focus on tech debt during their shift
+
+Fix "as you go"
+- Pros
+	- there isn't much icremental burden
+- Cons
+	- Tech debt rarely actually gets tackled because its the last priority
+Allocate dedicated time each quarter
+- Pros
+	- You fix things in big bursts you actually fix a lot of problems
+- Cons
+	- You tie up the team for a week. Tech debt builds up throughout quarter
+Have the oncall person do tech debt
+- Pros
+	- they fix bugs as they arise
+- Cons
+	- oncall does nothing else that week
+
+Data migration models
+- The extremely cautious approach
+	- Be careful not to break anything
+	- Parallel pipelines for months
+- The bull in a china shop approach
+	- Efficiency wins, minimize risk by migrating high-impact pipelines first
+	- kill the legacy pipeline as soon as you can
+If it can be avoided you don't want the company to use legacy pipeline for months
+
+Proper oncall responsibilities
+- Set proper expectations with your stakeholders
+- DOCUMENT every failure and bug
+- oncall handoff
+	- should be a 20-30 sync to pass context from one oncall to the next
+
+Runbooks (common issues)
+- Complex pipelines need runbooks (which should be linked in the spec)
+- Most important pieces
+	- primary and secondary owners (you and someone else running the same pipelines)
+	- upstream owners (teams not individuals)
+	- common issues (if any)
+	- Critical downstream owners (teams not individuals)
+	turnovers happen more than re-orgs always go to the team for needs not the individual
+	- SLAs (service level agreements)
+	"the data is not late until its this many hours after midnight"
+
+As a data engineer you want to form relationship building with upstream and downstream ownership
