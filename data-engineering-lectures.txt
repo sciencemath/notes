@@ -1664,3 +1664,91 @@ Boot camp examples (engaged student)
 Boot camp examples (referral / testimonial)
 - students feel very happy when they land a better job from the skills learned in a boot camp. 
 word of mouth
+
+
+Lecture 18
+Maintain data pipelines, Netflix and Airbnb
+--------------------------------------------
+Every pipeline you build, slowly crushes you w/ maintence costs
+Data Engineers and Software Engineers experience 80%+ burnout
+
+The difficult parts of data engineering
+- High expectations / Burnout
+- Data quality issues
+- Unclear priorities / Adhoc requests
+
+High Expectations
+- Building pipelines is a Marathon
+- Analytics is a Sprint (the sooner you can answer a question about the business the better)
+- Say no to sprinting the marathon!
+
+Ad-hoc requests
+- Analytics need to solve URGENT problems
+- Allocate 5-10% per quarter to ad-hoc requests
+	- If the request is ad-hoc and complex, you shouldn't drop what your doing
+	- Low hanging fruit can be prioritized though
+push back unless its a quick request
+- Most analytics questions are less urgent than they appear
+- Get analytics partners input for quarterly planning so ad-hoc requests become scalable models
+
+Ownership models
+Who owns what?
+- Data sets
+- Data pipeline
+- Data documentation
+- Metrics
+- Experiments
+A burnout could occur if you own to much!
+Business questions should go to metrics which is owned by data analyst/scientist ownership
+
+Where do ownership problems arise?
+At the Boundaries
+- Data engineers owning logging
+- Data scientists writing pipelines
+- Data engineers owning metrics
+Dont over extend yourself
+
+What happens when these crossed boundaries persist?
+BURNOUT!
+BAD TEAM DYNAMIC!
+THE BLAME GAME!
+BAD CROSS-FUNCTIONAL SUPPORT!
+if you leave or go on vacation there should be a secondary person to perform the primary tasks that you do
+
+Common issues in pipelines you're bound to face as a data engineer
+- Skewed pipelines that OOM
+- Missing data / scheme change of upstream data
+- Backfill needs to trigger downstream data sets
+- Business questions about where and how to use data
+
+How to fix skew
+- Best option:
+	- upgrade to spark 3 and enable adaptive execution
+- Second best option:
+	- Bump up the executor memory and hope it's not more skewed later
+- Third:
+	- Update the job to include a skew join salt
+	(adds a random value (a "salt") to the key colmn)
+
+Missing data / Schema change
+- Pre-check your upstream data
+	- This will prevent your pipeline from running if it's missing data
+- Track down the upstream owner
+	- Fill out a task/ticket/etc to have them fix the issue
+	both unblock and long-term fix
+
+Backfill Triggers downstream pipelines
+- Small migrations
+	- Do a parallel backfill into table_backfill
+	- if everything looks good, do the "shell game"
+		- rename production to production_old
+		- rename table_backfill to production
+- If people need a lot more time migrate (a lot more painful)
+	- Build a parallel pipeline that populates table_v2 while production get migrated
+	- After all references to production have been updated, drop production and rename table_v2 (and all its ref) to production
+
+Business question
+- Set an SLA on when you'll get back to people. Maybe it's 2 hours maybe it's a day?
+- Consolidate common questions into a document so you don't have to keep answering the same questions over and over again
+- Is this the same or different oncall from the pipeline oncall?
+- Make sure your analytics partners are looped in here
