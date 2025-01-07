@@ -1882,3 +1882,111 @@ Runbooks (common issues)
 	"the data is not late until its this many hours after midnight"
 
 As a data engineer you want to form relationship building with upstream and downstream ownership
+
+
+Lecture 20
+Data Driven Buiness value with Tableau Viz
+--------------------------------------------
+The types of impact you can have as a data engineer
+- Measurable
+	- Efficiency improvements and experimentation outcomes
+- Hard-to-measure
+	- Quality improvements, team enablement outcomes
+- Immeasurable
+	- Changing intuitions, team culture improvements, being a "glue" person
+	(hard to measure)
+
+How does your time as a data engineer translate into value
+- Supplying insight
+- preventing bugs and maintaining data trust
+- increasing pipeline efficiencies
+- enabling other engineers to work faster
+- persuading decision makers to use data
+
+When is an insight valuable?
+- insights do one of three things:
+	- reinforce intuitions
+	- contradict intuitions
+	- fail to support or contradict intuitions
+- supplying insights is often overvalued
+
+How to know when your org is overvaluing insights
+- A "crisis" happens
+- You start feeling burnt out
+- Long-term planning disappears
+- AD HOC request HELL
+Qaulity > Quantity
+
+How do you push back when insights are overvalued?
+- Don't be afraid to say no
+- Leverage your manager for support
+- Communicate that robust data models are btter than one-off pipelines
+
+How do you maintain trust in data sets you produce
+- Quality checks
+- Documentation
+- good engineering practices
+- clear expectations (i.e. SLAs documentd gaps)
+- this type of value is often undervalued (harder to measure)
+
+How do you increase pipeline efficiencies?
+- Proper data modeling
+- imrpoving oncall processes
+- reducing data volumes
+- picking the right tool for the job (i.e. migrations) 
+- simplifying model and reducing capabilities a little bit (80/20 rule)
+think of the columns your using you don't want to bring in something that people "may" need or only use every year
+
+Performant dashboard best practices
+- Pre-aggregate the data
+	- GROUPING SETS are your friend
+- Don't do JOINS on the fly (denormalize and pre-aggregate)
+- Use a low-latency storage solution like Druid
+- use grouping sets
+
+How to build dashboards that make sense
+- Who is your customer?
+	- Execs (very easy to understand immediately)
+	- Analysts (more charts, more density, more exploration capabilities)
+
+What are the types of questions that can be asked?
+- Top line questions
+(how many users do we have, how much time people spending on app)
+- Trend questions
+(this year vs last year)
+- Composition questions
+(% users android, iphone)
+
+What numbers matter?
+- Total aggregates
+- Time-based aggregates
+- Time & Entity-based aggregates
+- Derivative metrics (week-over-week, month-over-month, year-over-year)
+- Dimensional mix (e.g. %US vs %India, %Android vs %iphone)
+- Retention/Survivorship (% left after N number of days)
+
+Why do these numbers matter?
+- Total aggregates
+	- Get reported to Wall St
+	- Easily be used in marketing material (e.g FB hits 2 Billion users)
+	- Are the "top-of-line" and represent how good or bad the business is doing overall
+- Time-based aggregates
+	- Get reported to Wall st
+	- Catch trends earlier than totals (a bad quarter is a potential signal of a bad year)
+	- these charts identify trends and growth
+- Time & Entity-based aggregates (i.e. daily user-level metrics)
+	- easily plug into AB testing frameworks
+	- used by data scientists to look cut aggregated fact data in a way that is performant
+	- often times included in daily master data
+- Derivative metrics
+	- more sensitive to changes
+	- % increase is a better indicator than absolute number
+	- YoY growth was one of the most important metrics that Facebook looked at
+	- in 2021, year over 2 year growth was one of the most important metrics Airbnb looked at because COVID-19 pandemic caused so many issues, otherwise the growth would look spectacular
+- Dimensional Mix
+	- identifies impact opportunities
+	- spot trends in populations, not just over time
+- Retention/Survivorship (% left after N number of days)
+	- also called J-curves
+	- great at predicting lifetime customer value
+	- understanding stickiness of the app you're building

@@ -2556,3 +2556,18 @@ KPIs and Experiments
 Most of the lab was done with statsig, setting up an account and using the metrics feature and feature flag.
 One thing to note:
 If you have a Guardrail tagged metric and it doesn't meet statistical significance it will not be pushed to production
+
+
+
+LAB 16
+Runbooks
+--------------------------------------------
+Create a run book based on the end of Lecture 18 & 19
+(a simple word doc)
+
+
+LAB 17
+Tableau visualization
+--------------------------------------------
+this lab was all done through Tableau
+If you make your Dashboards beautiful people will use it more
